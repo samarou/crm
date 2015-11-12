@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="ehcache.xsd"
+         updateCheck="true" monitoring="autodetect" dynamicConfig="true">
+
+    <diskStore path="java.io.tmpdir/ehcache"/>
+
+    <defaultCache maxEntriesLocalHeap="1000"
+                  eternal="false"
+                  timeToIdleSeconds="120"
+                  timeToLiveSeconds="120"
+                  diskSpoolBufferSizeMB="30"
+                  maxEntriesLocalDisk="10000"
+                  diskExpiryThreadIntervalSeconds="120"
+                  memoryStoreEvictionPolicy="LRU"
+                  statistics="true">
+        <persistence strategy="localTempSwap"/>
+    </defaultCache>
+
+    <cache name="security.user"
+           maxEntriesLocalHeap="500"
+           eternal="false"
+           timeToIdleSeconds="30"
+           timeToLiveSeconds="120"/>
+
+    <cache name="security.roleHierarchy"
+           maxEntriesLocalHeap="1"
+           eternal="false"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"/>
+
+    <cache name="security.aclCache"/>
+
+    <cache name="objectType"
+           maxEntriesLocalHeap="100"
+           eternal="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="3600"/>
+
+    <cache name="action"
+           maxEntriesLocalHeap="100"
+           eternal="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="3600">
+    </cache>
+
+    <cache name="privilege"
+           maxEntriesLocalHeap="500"
+           eternal="false"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"/>
+
+</ehcache>
