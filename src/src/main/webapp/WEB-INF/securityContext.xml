@@ -61,30 +61,15 @@
 
     <!-- ACL security -->
 
-    <bean id="aclService" class="org.springframework.security.acls.jdbc.JdbcMutableAclService">
-        <constructor-arg ref="dataSource"/>
-        <constructor-arg ref="aclLookupStrategy"/>
-        <constructor-arg ref="aclCache"/>
+    <bean id="aclService" class="com.itechart.sample.security.acl.jdbc.JdbcAclService">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="aclCache" ref="aclCache"/>
     </bean>
 
-    <bean id="aclLookupStrategy" class="org.springframework.security.acls.jdbc.BasicLookupStrategy">
-        <constructor-arg ref="dataSource"/>
-        <constructor-arg ref="aclCache"/>
-        <constructor-arg ref="aclAuthorizationStrategy"/>
-        <constructor-arg ref="permissionGrantingStrategy"/>
-        <property name="permissionFactory" ref="permissionFactory"/>
-    </bean>
 
-    <bean id="aclCache" class="org.springframework.security.acls.domain.EhCacheBasedAclCache">
-        <constructor-arg>
-            <bean class="org.springframework.cache.ehcache.EhCacheFactoryBean">
-                <property name="cacheManager" ref="ehCacheManager"/>
-                <property name="cacheName" value="security.aclCache"/>
-            </bean>
-        </constructor-arg>
-        <constructor-arg ref="permissionGrantingStrategy"/>
-        <constructor-arg ref="aclAuthorizationStrategy"/>
-    </bean>
+
+
+
 
     <bean id="aclPermissionEvaluator" class="org.springframework.security.acls.AclPermissionEvaluator">
         <constructor-arg ref="aclService"/>
@@ -104,26 +89,9 @@
         <constructor-arg value="com.itechart.sample.security.acl.AclPermission" type="java.lang.Class"/>
     </bean>
 
-
-
-
-
-
-    <bean id="permissionGrantingStrategy"
-          class="org.springframework.security.acls.domain.DefaultPermissionGrantingStrategy">
-        <constructor-arg ref="auditLogger"/>
-    </bean>
-
-
-
-
     <bean id="oidRetrievalStrategy" class="com.itechart.sample.security.acl.ObjectIdentityRetrievalStrategyImpl"/>
 
     <bean id="sidRetrievalStrategy" class="com.itechart.sample.security.acl.SidRetrievalStrategyImpl"/>
-
-    <bean id="aclAuthorizationStrategy" class="com.itechart.sample.security.acl.AclAuthorizationStrategyImpl"/>
-
-    <bean id="auditLogger" class="org.springframework.security.acls.domain.ConsoleAuditLogger"/>
 
     <!-- Cache configuration -->
 
@@ -142,4 +110,12 @@
         </property>
     </bean>
 
+    <bean id="aclCache" class="com.itechart.sample.security.acl.EhCacheBasedAclCache">
+        <property name="cache">
+            <bean class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+                <property name="cacheManager" ref="ehCacheManager"/>
+                <property name="cacheName" value="security.aclCache"/>
+            </bean>
+        </property>
+    </bean>
 </beans>

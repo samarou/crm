@@ -23,7 +23,7 @@ INSERT INTO `privilege` (`id`, `object_type_id`, `action_id`) VALUES
 (8, 2, 4);
 
 INSERT INTO `user` (`id`, `user_name`, `password`, `active`) VALUES 
-(1, 'test', '$2a$10$0IY.OHOugvJ8MnUTVczIjuFg710aQf/6KQSVAd9oBRtvC91GFkU16user', true),
+(1, 'test', '$2a$10$0IY.OHOugvJ8MnUTVczIjuFg710aQf/6KQSVAd9oBRtvC91GFkU16', true),
 (2, 'admin', '$2a$10$gXqyc1sgCadb6XnCsTkm/OInAIo6BfR3pw2AHhGiHDT3buRaS1itO', true);
 
 INSERT INTO `group` (`id`, `name`, `description`) VALUES 

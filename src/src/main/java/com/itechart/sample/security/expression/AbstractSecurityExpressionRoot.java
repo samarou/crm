@@ -35,6 +35,10 @@ public abstract class AbstractSecurityExpressionRoot implements ExtendedSecurity
     // Granted and inherited roles of current authentication
     private Set<RoleAuthority> grantedRoles;
 
+    // Allow "permitAll" and "denyAll" expressions
+    public final boolean permitAll = true;
+    public final boolean denyAll = false;
+
     public AbstractSecurityExpressionRoot(Authentication authentication) {
         Assert.notNull(authentication, "Authentication object cannot be null");
         this.authentication = authentication;

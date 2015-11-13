@@ -78,7 +78,7 @@ CREATE TABLE `role_privilege` (
 	`privilege_id` BIGINT UNSIGNED NOT NULL,
     PRIMARY KEY (`role_id`, `privilege_id`),
 	CONSTRAINT `fk_role_privilege_role_id` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
-	CONSTRAINT `k_role_privilege_privilege_id` FOREIGN KEY (`privilege_id`) REFERENCES `privilege` (`id`)
+	CONSTRAINT `fk_role_privilege_privilege_id` FOREIGN KEY (`privilege_id`) REFERENCES `privilege` (`id`)
 ) ENGINE=InnoDB;
 
 
@@ -129,8 +129,8 @@ CREATE TABLE `acl_object_identity` (
 	`entries_inheriting` TINYINT(1) NOT NULL,
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `uk_acl_object_identity` (`object_id_class`,`object_id_identity`),
-	KEY `fk_acl_object_identity_parent` (`parent_object`),
-	KEY `fk_acl_object_identity_owner` (`owner_sid`),
+	INDEX `fk_acl_object_identity_parent` (`parent_object`),
+	INDEX `fk_acl_object_identity_owner` (`owner_sid`),
 	CONSTRAINT `fk_acl_object_identity_class` FOREIGN KEY (`object_id_class`) REFERENCES `acl_class` (`id`),
 	CONSTRAINT `fk_acl_object_identity_owner` FOREIGN KEY (`owner_sid`) REFERENCES `acl_sid` (`id`),
 	CONSTRAINT `fk_acl_object_identity_parent` FOREIGN KEY (`parent_object`) REFERENCES `acl_object_identity` (`id`)
@@ -148,7 +148,7 @@ CREATE TABLE `acl_entry` (
 	`audit_failure` TINYINT(1) NOT NULL,
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `unique_acl_entry` (`acl_object_identity`,`ace_order`),
-	KEY `fk_acl_entry_acl` (`sid`),
+	INDEX `fk_acl_entry_acl` (`sid`),
 	CONSTRAINT `fk_acl_entry_acl` FOREIGN KEY (`sid`) REFERENCES `acl_sid` (`id`),
 	CONSTRAINT `fk_acl_entry_object` FOREIGN KEY (`acl_object_identity`) REFERENCES `acl_object_identity` (`id`)
 ) ENGINE=InnoDB;
