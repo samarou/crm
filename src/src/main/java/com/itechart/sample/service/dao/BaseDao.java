@@ -21,4 +21,8 @@ public interface BaseDao<T extends BaseEntity> {
     void update(T object);
 
     T merge(T object);
+
+    void delete(T object);
+
+    void deleteById(Long id);
 }

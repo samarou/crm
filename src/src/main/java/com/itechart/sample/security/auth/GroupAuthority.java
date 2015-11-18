@@ -11,21 +11,28 @@ import org.springframework.util.Assert;
  */
 public class GroupAuthority implements GrantedAuthority {
 
-    private String group;
+    private Long groupId;
+    private String groupName;
 
     public GroupAuthority(Group group) {
         Assert.notNull(group);
+        Assert.notNull(group);
         Assert.hasText(group.getName());
-        this.group = group.getName();
+        this.groupId = group.getId();
+        this.groupName = group.getName();
     }
 
-    public String getGroup() {
-        return group;
+    public Long getGroupId() {
+        return groupId;
+    }
+
+    public String getGroupName() {
+        return groupName;
     }
 
     @Override
     public String getAuthority() {
-        return "GROUP:" + group;
+        return "GROUP:" + groupName;
     }
 
     @Override
@@ -36,11 +43,14 @@ public class GroupAuthority implements GrantedAuthority {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        return group.equals(((GroupAuthority) o).group);
+        GroupAuthority that = (GroupAuthority) o;
+        return groupId.equals(that.groupId) && groupName.equals(that.groupName);
     }
 
     @Override
     public int hashCode() {
-        return group.hashCode();
+        int result = groupId.hashCode();
+        result = 31 * result + groupName.hashCode();
+        return result;
     }
 }

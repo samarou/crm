@@ -2,9 +2,6 @@ package com.itechart.sample.service.dao.impl;
 
 import com.itechart.sample.model.persistent.BaseEntity;
 import com.itechart.sample.service.dao.BaseDao;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
@@ -19,14 +16,9 @@ import java.util.List;
  * @author andrei.samarou
  */
 @Repository
-public abstract class BaseHibernateDao<T extends BaseEntity> extends HibernateDaoSupport implements BaseDao<T> {
+public abstract class BaseHibernateDao<T extends BaseEntity> extends AbstractHibernateDao implements BaseDao<T> {
 
     private Class<T> persistentClass;
-
-    @Autowired
-    public void init(SessionFactory sessionFactory) {
-        setSessionFactory(sessionFactory);
-    }
 
     public BaseHibernateDao() {
         persistentClass = resolvePersistentClass();
@@ -62,19 +54,17 @@ public abstract class BaseHibernateDao<T extends BaseEntity> extends HibernateDa
         return getHibernateTemplate().merge(object);
     }
 
-    @SuppressWarnings("unchecked")
-    protected List<T> find(String queryString, Object... values) {
-        return (List<T>) getHibernateTemplate().find(queryString, values);
+    @Override
+    public void delete(T object) {
+        getHibernateTemplate().delete(object);
     }
 
-    @SuppressWarnings("unchecked")
-    protected T findObject(String queryString, Object... values) {
-        List<?> result = getHibernateTemplate().find(queryString, values);
-        return !result.isEmpty() ? (T) result.get(0) : null;
-    }
-
-    protected int executeUpdate(String query, Object... values) {
-        return getHibernateTemplate().bulkUpdate(query, values);
+    @Override
+    public void deleteById(Long id) {
+        T entity = get(id);
+        if (entity != null) {
+            delete(entity);
+        }
     }
 
     @SuppressWarnings("unchecked")

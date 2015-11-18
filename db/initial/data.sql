@@ -22,13 +22,19 @@ INSERT INTO `privilege` (`id`, `object_type_id`, `action_id`) VALUES
 (7, 2, 3),
 (8, 2, 4);
 
+INSERT INTO `principal` (`id`) VALUES 
+(1),
+(2),
+(3),
+(4);
+
 INSERT INTO `user` (`id`, `user_name`, `password`, `active`) VALUES 
 (1, 'test', '$2a$10$0IY.OHOugvJ8MnUTVczIjuFg710aQf/6KQSVAd9oBRtvC91GFkU16', true),
 (2, 'admin', '$2a$10$gXqyc1sgCadb6XnCsTkm/OInAIo6BfR3pw2AHhGiHDT3buRaS1itO', true);
 
 INSERT INTO `group` (`id`, `name`, `description`) VALUES 
-(1, 'viewers', 'viewers group'),
-(2, 'managers', 'managers group');
+(3, 'viewers', 'viewers group'),
+(4, 'managers', 'managers group');
 
 INSERT INTO `role` (`id`, `name`, `description`, `parent_id`) VALUES 
 (1, 'ROOT', 'ROOT ROLE', null),
@@ -41,8 +47,8 @@ INSERT INTO `user_role` (`user_id`, `role_id`) VALUES
 (2, 2);
 
 INSERT INTO `user_group` (`user_id`, `group_id`) VALUES
-(1, 1),
-(2, 2);
+(1, 3),
+(2, 4);
 
 INSERT INTO `role_privilege` (`role_id`, `privilege_id`) VALUES 
 (1, 1),
@@ -79,10 +85,10 @@ INSERT INTO `order` (`id`, `product`, `count`, `price`, `customer_id`) VALUES
 ALTER TABLE `action` AUTO_INCREMENT = 10;
 ALTER TABLE `object_type` AUTO_INCREMENT = 10;
 ALTER TABLE `privilege` AUTO_INCREMENT = 10;
-ALTER TABLE `user` AUTO_INCREMENT = 10;
-ALTER TABLE `group` AUTO_INCREMENT = 10;
-ALTER TABLE `role` AUTO_INCREMENT = 10;
-ALTER TABLE `customer` AUTO_INCREMENT = 10;
+ALTER TABLE `principal` AUTO_INCREMENT = 10;
 ALTER TABLE `role` AUTO_INCREMENT = 10;
 ALTER TABLE `customer` AUTO_INCREMENT = 10;
 ALTER TABLE `order` AUTO_INCREMENT = 10;
+ALTER TABLE `acl_object_identity` AUTO_INCREMENT = 10;
+ALTER TABLE `acl_entry` AUTO_INCREMENT = 10;
+

@@ -1,6 +1,6 @@
 package com.itechart.sample.model.persistent;
 
-import com.itechart.sample.security.acl.SecuredObject;
+import com.itechart.sample.model.security.ObjectIdentity;
 
 import java.io.Serializable;
 
@@ -9,7 +9,7 @@ import java.io.Serializable;
  *
  * @author andrei.samarou
  */
-public abstract class BaseEntity implements SecuredObject, Serializable {
+public abstract class BaseEntity implements ObjectIdentity, Serializable {
 
     public abstract Serializable getId();
 
@@ -38,5 +38,10 @@ public abstract class BaseEntity implements SecuredObject, Serializable {
     @Override
     public int hashCode() {
         return getId() != null ? getId().hashCode() : super.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "{id=" + getId() + "}";
     }
 }

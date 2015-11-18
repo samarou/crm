@@ -55,29 +55,29 @@
 
     <bean id="userDetailsService" class="com.itechart.sample.security.UserDetailsServiceImpl"/>
 
-    <bean id="roleHierarchy" class="com.itechart.sample.security.DaoRoleHierarchy">
+    <bean id="roleHierarchy" class="com.itechart.sample.security.RoleHierarchyImpl">
         <property name="roleHierarchyCache" ref="roleHierarchyCache"/>
     </bean>
 
     <!-- ACL security -->
 
-    <bean id="aclService" class="com.itechart.sample.security.acl.jdbc.JdbcAclService">
-        <property name="dataSource" ref="dataSource"/>
+    <bean id="aclService" class="com.itechart.sample.service.impl.AclServiceImpl">
         <property name="aclCache" ref="aclCache"/>
     </bean>
 
-
-
-
-
-
-    <bean id="aclPermissionEvaluator" class="org.springframework.security.acls.AclPermissionEvaluator">
-        <constructor-arg ref="aclService"/>
-        <property name="objectIdentityGenerator" ref="oidRetrievalStrategy"/>
-        <property name="objectIdentityRetrievalStrategy" ref="oidRetrievalStrategy"/>
-        <property name="sidRetrievalStrategy" ref="sidRetrievalStrategy"/>
-        <property name="permissionFactory" ref="permissionFactory"/>
+    <bean id="aclPermissionEvaluator" class="com.itechart.sample.security.acl.AclPermissionEvaluator">
+        <property name="aclService" ref="aclService"/>
+        <property name="roleHierarchy" ref="roleHierarchy"/>
     </bean>
+
+
+
+
+
+
+
+
+
 
     <bean id="aclPermissionCacheOptimizer" class="org.springframework.security.acls.AclPermissionCacheOptimizer">
         <constructor-arg ref="aclService"/>
@@ -85,13 +85,14 @@
         <property name="sidRetrievalStrategy" ref="sidRetrievalStrategy"/>
     </bean>
 
-    <bean id="permissionFactory" class="org.springframework.security.acls.domain.DefaultPermissionFactory">
-        <constructor-arg value="com.itechart.sample.security.acl.AclPermission" type="java.lang.Class"/>
-    </bean>
 
-    <bean id="oidRetrievalStrategy" class="com.itechart.sample.security.acl.ObjectIdentityRetrievalStrategyImpl"/>
 
-    <bean id="sidRetrievalStrategy" class="com.itechart.sample.security.acl.SidRetrievalStrategyImpl"/>
+
+
+
+
+
+
 
     <!-- Cache configuration -->
 

@@ -1,5 +1,25 @@
 USE security_sample;
 
+
+DROP TABLE IF EXISTS `order`;
+DROP TABLE IF EXISTS `customer`;
+DROP TABLE IF EXISTS `acl_entry`;
+DROP TABLE IF EXISTS `acl_object_identity`;
+DROP TABLE IF EXISTS `user_role`;
+DROP TABLE IF EXISTS `user_group`;
+DROP TABLE IF EXISTS `role_privilege`;
+DROP TABLE IF EXISTS `role`;
+DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `group`;
+DROP TABLE IF EXISTS `principal`;
+DROP TABLE IF EXISTS `privilege`;
+DROP TABLE IF EXISTS `object_type`;
+DROP TABLE IF EXISTS `action`;
+
+DROP TRIGGER IF EXISTS `trg_user_adr`;
+DROP TRIGGER IF EXISTS `trg_group_adr`;
+
+
 -- COMMON TABLES -------------------------------------------------------------------
 
 CREATE TABLE `action` (
@@ -38,20 +58,27 @@ CREATE TABLE `role` (
 ) ENGINE=InnoDB;
 
 
+CREATE TABLE `principal` (
+	`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
+) ENGINE=InnoDB;
+
+
 CREATE TABLE `group` (
-	`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	`id` BIGINT UNSIGNED NOT NULL PRIMARY KEY,
 	`name` VARCHAR(50) NOT NULL,
 	`description` VARCHAR(250),
-    UNIQUE KEY `uk_group_name` (`name`)
+    UNIQUE KEY `uk_group_name` (`name`),
+    CONSTRAINT `fk_group_principle_id` FOREIGN KEY (`id`) REFERENCES `principal` (`id`)
 ) ENGINE=InnoDB;
 
 
 CREATE TABLE `user` (
-	`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	`id` BIGINT UNSIGNED NOT NULL PRIMARY KEY,
 	`user_name` VARCHAR(50) NOT NULL,
 	`password` VARCHAR(60) NOT NULL,
     `active` BOOLEAN NOT NULL DEFAULT TRUE,
-    UNIQUE KEY `uk_user_user_name` (`user_name`)
+    UNIQUE KEY `uk_user_user_name` (`user_name`),
+    CONSTRAINT `fk_user_principle_id` FOREIGN KEY (`id`) REFERENCES `principal` (`id`)
 ) ENGINE=InnoDB;
 
 
@@ -97,61 +124,56 @@ CREATE TABLE `order` (
 	`count` INT UNSIGNED NOT NULL,
 	`price` DECIMAL(10, 2) UNSIGNED NOT NULL,
     `customer_id` BIGINT UNSIGNED NOT NULL,
+    INDEX `idx_order_customer_id` (`customer_id`),
 	CONSTRAINT `fk_order_customer_id` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`)
 ) ENGINE=InnoDB;
 
+DELIMITER $$
+
+CREATE TRIGGER `trg_user_adr` 
+ AFTER DELETE on `user`
+ FOR EACH ROW
+BEGIN
+	DELETE FROM `principal` WHERE id = old.id;
+END$$
+
+
+CREATE TRIGGER `trg_group_adr` 
+ AFTER DELETE on `group`
+ FOR EACH ROW
+BEGIN
+	DELETE FROM `principal` WHERE id = old.id;
+END$$
+
+DELIMITER ;
 
 -- ACL TABLES ------------------------------------------------------------------------
 
-CREATE TABLE `acl_class` (
-	`id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`class` VARCHAR(100) NOT NULL,
-	PRIMARY KEY (`id`),
-	UNIQUE KEY `uk_acl_class` (`class`)
-) ENGINE=InnoDB;
-
-
-CREATE TABLE `acl_sid` (
-	`id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`principal` TINYINT(1) NOT NULL,
-	`sid` VARCHAR(100) NOT NULL,
-	PRIMARY KEY (`id`),
-	UNIQUE KEY `unique_acl_sid` (`sid` , `principal`)
-)  ENGINE=InnoDB;
-
 
 CREATE TABLE `acl_object_identity` (
-	`id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`object_id_class` BIGINT(20) UNSIGNED NOT NULL,
-	`object_id_identity` BIGINT(20) NOT NULL,
-	`parent_object` BIGINT(20) UNSIGNED DEFAULT NULL,
-	`owner_sid` BIGINT(20) UNSIGNED DEFAULT NULL,
-	`entries_inheriting` TINYINT(1) NOT NULL,
-	PRIMARY KEY (`id`),
-	UNIQUE KEY `uk_acl_object_identity` (`object_id_class`,`object_id_identity`),
-	INDEX `fk_acl_object_identity_parent` (`parent_object`),
-	INDEX `fk_acl_object_identity_owner` (`owner_sid`),
-	CONSTRAINT `fk_acl_object_identity_class` FOREIGN KEY (`object_id_class`) REFERENCES `acl_class` (`id`),
-	CONSTRAINT `fk_acl_object_identity_owner` FOREIGN KEY (`owner_sid`) REFERENCES `acl_sid` (`id`),
-	CONSTRAINT `fk_acl_object_identity_parent` FOREIGN KEY (`parent_object`) REFERENCES `acl_object_identity` (`id`)
+	`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	`object_type_id` BIGINT UNSIGNED NOT NULL,
+	`object_id` BIGINT UNSIGNED NOT NULL,
+	`parent_id` BIGINT UNSIGNED,
+	`owner_id` BIGINT UNSIGNED,
+	`inheriting` BOOLEAN NOT NULL DEFAULT FALSE,
+	UNIQUE KEY `uk_acl_object_identity` (`object_type_id`, `object_id`),
+	INDEX `idx_acl_object_identity_parent_id` (`parent_id`),
+	INDEX `idx_acl_object_identity_owner_id` (`owner_id`),
+	CONSTRAINT `fk_acl_object_identity_object_type_id` FOREIGN KEY (`object_type_id`) REFERENCES `object_type` (`id`),
+	CONSTRAINT `fk_acl_object_identity_parent_id` FOREIGN KEY (`parent_id`) REFERENCES `acl_object_identity` (`id`) ON DELETE SET NULL,
+	CONSTRAINT `fk_acl_object_identity_owner_id` FOREIGN KEY (`owner_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB;
 
 
 CREATE TABLE `acl_entry` (
-	`id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`acl_object_identity` BIGINT(20) UNSIGNED NOT NULL,
-	`ace_order` INT(11) NOT NULL,
-	`sid` BIGINT(20) UNSIGNED NOT NULL,
-	`mask` INT(10) UNSIGNED NOT NULL,
-	`granting` TINYINT(1) NOT NULL,
-	`audit_success` TINYINT(1) NOT NULL,
-	`audit_failure` TINYINT(1) NOT NULL,
-	PRIMARY KEY (`id`),
-	UNIQUE KEY `unique_acl_entry` (`acl_object_identity`,`ace_order`),
-	INDEX `fk_acl_entry_acl` (`sid`),
-	CONSTRAINT `fk_acl_entry_acl` FOREIGN KEY (`sid`) REFERENCES `acl_sid` (`id`),
-	CONSTRAINT `fk_acl_entry_object` FOREIGN KEY (`acl_object_identity`) REFERENCES `acl_object_identity` (`id`)
+	`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	`object_identity_id` BIGINT UNSIGNED NOT NULL,
+    `principal_id` BIGINT UNSIGNED NOT NULL,
+	`permission_mask` INT UNSIGNED NOT NULL,
+	UNIQUE KEY `uk_acl_entry` (`object_identity_id`, `principal_id`),
+	INDEX `idx_acl_entry_principal_id` (`principal_id`),
+	CONSTRAINT `fk_acl_entry_identity_id` FOREIGN KEY (`object_identity_id`) REFERENCES `acl_object_identity` (`id`),
+	CONSTRAINT `fk_acl_entry_principal_id` FOREIGN KEY (`principal_id`) REFERENCES `principal` (`id`)
 ) ENGINE=InnoDB;
-
-
 

@@ -1,13 +1,14 @@
 package com.itechart.sample.security.acl;
 
+import com.itechart.sample.model.persistent.security.acl.Acl;
+import com.itechart.sample.model.security.ObjectIdentity;
 import net.sf.ehcache.CacheException;
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.security.acls.model.AclCache;
-import org.springframework.security.acls.model.MutableAcl;
-import org.springframework.security.acls.model.ObjectIdentity;
 import org.springframework.util.Assert;
 
 import java.io.Serializable;
@@ -19,99 +20,124 @@ import java.io.Serializable;
  */
 public class EhCacheBasedAclCache implements AclCache, InitializingBean {
 
+    private static final Log logger = LogFactory.getLog(EhCacheBasedAclCache.class);
+
     private Ehcache cache;
 
     public void afterPropertiesSet() throws Exception {
         Assert.notNull(cache, "cache required");
     }
 
-    public void evictFromCache(Serializable id) {
-        Assert.notNull(id, "Primary key (identifier) required");
-
-        MutableAcl acl = getFromCache(id);
-
-        if (acl != null) {
-            cache.remove(acl.getId());
-            cache.remove(acl.getObjectIdentity());
-        }
-    }
-
-    public void evictFromCache(ObjectIdentity objectIdentity) {
-        Assert.notNull(objectIdentity, "ObjectIdentity required");
-
-        MutableAcl acl = getFromCache(objectIdentity);
-
-        if (acl != null) {
-            cache.remove(acl.getId());
-            cache.remove(acl.getObjectIdentity());
-        }
-    }
-
-    public MutableAcl getFromCache(ObjectIdentity objectIdentity) {
-        Assert.notNull(objectIdentity, "ObjectIdentity required");
-
+    @Override
+    public Acl get(Serializable aclId) {
+        Assert.notNull(aclId, "aclId required");
         Element element = null;
-
         try {
-            element = cache.get(objectIdentity);
+            element = cache.get(aclId);
+        } catch (CacheException ce) {
+            logger.warn(ce);
         }
-        catch (CacheException ignored) {
+        if (element != null) {
+            return (Acl) element.getObjectValue();
         }
-
-        if (element == null) {
-            return null;
-        }
-
-        return initializeTransientFields((MutableAcl) element.getValue());
+        return null;
     }
 
-    public MutableAcl getFromCache(Serializable id) {
-        Assert.notNull(id, "Primary key (identifier) required");
-
+    @Override
+    public Acl get(ObjectIdentity objectIdentity) {
+        Assert.notNull(objectIdentity, "objectIdentity required");
         Element element = null;
-
         try {
-            element = cache.get(id);
+            element = cache.get(new ObjectIdentityKey(objectIdentity));
+        } catch (CacheException ce) {
+            logger.warn(ce);
         }
-        catch (CacheException ignored) {
+        if (element != null) {
+            return (Acl) element.getObjectValue();
         }
-
-        if (element == null) {
-            return null;
-        }
-
-        return initializeTransientFields((MutableAcl) element.getValue());
+        return null;
     }
 
-    public void putInCache(MutableAcl acl) {
+    @Override
+    public void put(Acl acl) {
         Assert.notNull(acl, "Acl required");
-        Assert.notNull(acl.getObjectIdentity(), "ObjectIdentity required");
-        Assert.notNull(acl.getId(), "ID required");
-
-
-
-        if ((acl.getParentAcl() != null) && (acl.getParentAcl() instanceof MutableAcl)) {
-            putInCache((MutableAcl) acl.getParentAcl());
+        Assert.notNull(acl.getId(), "Acl id required");
+        if (acl.getParent() != null) {
+            put(acl.getParent());
         }
-
-        cache.put(new Element(acl.getObjectIdentity(), acl));
         cache.put(new Element(acl.getId(), acl));
+        cache.put(new Element(new ObjectIdentityKey(acl), acl));
     }
 
-    private MutableAcl initializeTransientFields(MutableAcl value) {
-
-        if (value.getParentAcl() != null) {
-            initializeTransientFields((MutableAcl) value.getParentAcl());
+    @Override
+    public void evict(Serializable aclId) {
+        Assert.notNull(aclId, "aclId required");
+        Acl acl = get(aclId);
+        if (acl != null) {
+            cache.remove(acl.getId());
+            cache.remove(new ObjectIdentityKey(acl));
         }
-        return value;
+    }
+
+    @Override
+    public void evict(ObjectIdentity objectIdentity) {
+        Assert.notNull(objectIdentity, "objectIdentity required");
+        Acl acl = get(objectIdentity);
+        if (acl != null) {
+            cache.remove(acl.getId());
+            cache.remove(objectIdentity);
+        }
     }
 
     public void clearCache() {
         cache.removeAll();
     }
 
-@Required
+    @Required
     public void setCache(Ehcache cache) {
         this.cache = cache;
     }
+
+    /**
+     * Wrapping key for ObjectIdentity
+     */
+    private static class ObjectIdentityKey {
+        private Serializable id;
+        private int type;
+
+        public ObjectIdentityKey(ObjectIdentity objectIdentity) {
+            this(objectIdentity.getId(), objectIdentity.getType());
+        }
+
+        public ObjectIdentityKey(Acl acl) {
+            this(acl.getObjectId(), acl.getObjectType().getName());
+        }
+
+        public ObjectIdentityKey(Serializable objectId, String objectType) {
+            Assert.notNull(objectId);
+            Assert.notNull(objectType);
+            this.id = objectId;
+            this.type = objectType.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            ObjectIdentityKey that = (ObjectIdentityKey) o;
+            return id.equals(that.id) && type == that.type;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = id.hashCode();
+            result = 31 * result + type;
+            return result;
+        }
+    }
+
 }

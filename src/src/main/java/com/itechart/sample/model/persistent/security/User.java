@@ -1,7 +1,5 @@
 package com.itechart.sample.model.persistent.security;
 
-import com.itechart.sample.model.persistent.BaseEntity;
-
 import javax.persistence.*;
 import java.util.Set;
 
@@ -12,11 +10,8 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "user")
-public class User extends BaseEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@PrimaryKeyJoinColumn(name="id")
+public class User extends Principal {
 
     @Column(name = "user_name", unique = true, nullable = false, length = 50)
     private String userName;
@@ -40,12 +35,8 @@ public class User extends BaseEntity {
     private Set<Group> groups;
 
     @Override
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public String getName() {
+        return userName;
     }
 
     public String getUserName() {

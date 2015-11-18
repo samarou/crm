@@ -2,18 +2,18 @@ package com.itechart.sample.security;
 
 import com.itechart.sample.model.persistent.security.Group;
 import com.itechart.sample.model.persistent.security.Role;
+import com.itechart.sample.model.security.User;
 import com.itechart.sample.security.auth.GroupAuthority;
 import com.itechart.sample.security.auth.RoleAuthority;
 import com.itechart.sample.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -24,7 +24,7 @@ import java.util.Set;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired(required = true)
+    @Autowired
     private UserService userService;
 
     @Override
@@ -33,7 +33,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User " + username + " was not found");
         }
-        ArrayList<GrantedAuthority> authorities = new ArrayList<>();
+        Set<GrantedAuthority> authorities = new HashSet<>();
         Set<Role> roles = user.getRoles();
         if (roles != null && roles.size() > 0) {
             for (Role role : roles) {
@@ -46,6 +46,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 authorities.add(new GroupAuthority(group));
             }
         }
-        return new User(username, user.getPassword(), user.isActive(), true, true, true, authorities);
+        return new User(user.getId(), username, user.getPassword(), user.isActive(), authorities);
     }
 }

@@ -17,7 +17,7 @@ import java.util.*;
  *
  * @author andrei.samarou
  */
-public class DaoRoleHierarchy implements RoleHierarchy {
+public class RoleHierarchyImpl implements RoleHierarchy {
 
     public static final String CACHE_KEY = "roleToParentsMap";
 
