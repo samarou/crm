@@ -1,8 +1,6 @@
 package com.itechart.sample.model.persistent.security.acl;
 
 import com.itechart.sample.model.persistent.BaseEntity;
-import com.itechart.sample.model.persistent.security.ObjectType;
-import com.itechart.sample.model.persistent.security.Principal;
 import com.itechart.sample.model.security.Permission;
 import org.springframework.util.Assert;
 
@@ -12,8 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * ACL entity
- *
+ * ACL entity.
  * Represents a single domain object instance with some additional information
  * like ownership and inheritance. Contains permissions for principals on this object
  *
@@ -27,38 +24,34 @@ public class Acl extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "object_type_id", nullable = false, updatable = false)
-    private ObjectType objectType;
+    @Embedded
+    private AclObjectKey objectKey;
 
-    @Column(name = "object_id", nullable = false, updatable = false)
-    private Long objectId;
+    @Column(name = "parent_id", updatable = false)
+    private Long parentId;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "parent_id", updatable = false)
-    private Acl parent;
+    @Column(name = "owner_id", updatable = false)
+    private Long ownerId;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "owner_id", updatable = false)
-    private Principal owner;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "object")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "acl")
     private Set<AclEntry> entries;
 
     @Column(name = "inheriting")
     private boolean inheriting;
 
-    public Acl(ObjectType objectType, Long objectId) {
-        this(objectType, objectId, null, null);
+    public Acl() {
     }
 
-    public Acl(ObjectType objectType, Long objectId, Acl parent, Principal owner) {
-        Assert.notNull(objectType);
-        Assert.notNull(objectId);
-        this.objectType = objectType;
-        this.objectId = objectId;
-        this.parent = parent;
-        this.owner = owner;
+    public Acl(Long objectTypeId, Long objectId) {
+        this(new AclObjectKey(objectTypeId, objectId), null, null);
+    }
+
+    public Acl(AclObjectKey objectKey, Long parentId, Long ownerId) {
+        Assert.notNull(objectKey);
+        this.objectKey = objectKey;
+        this.parentId = parentId;
+        this.ownerId = ownerId;
+        this.inheriting = parentId != null;
     }
 
     @Override
@@ -70,47 +63,23 @@ public class Acl extends BaseEntity {
         this.id = id;
     }
 
-    public ObjectType getObjectType() {
-        return objectType;
+    public AclObjectKey getObjectKey() {
+        return objectKey;
     }
 
-    public void setObjectType(ObjectType objectType) {
-        this.objectType = objectType;
+    public Long getParentId() {
+        return parentId;
     }
 
-    public Long getObjectId() {
-        return objectId;
-    }
-
-    public void setObjectId(Long objectId) {
-        this.objectId = objectId;
-    }
-
-    public Acl getParent() {
-        return parent;
-    }
-
-    public void setParent(Acl parent) {
-        this.parent = parent;
-    }
-
-    public Principal getOwner() {
-        return owner;
-    }
-
-    public void setOwner(Principal owner) {
-        this.owner = owner;
+    public Long getOwnerId() {
+        return ownerId;
     }
 
     public Set<AclEntry> getEntries() {
         return entries;
     }
 
-    public void setEntries(Set<AclEntry> entries) {
-        this.entries = entries;
-    }
-
-    public void addEntry(AclEntry entry) {
+    protected void addEntry(AclEntry entry) {
         if (entries == null) {
             entries = new HashSet<>();
         }

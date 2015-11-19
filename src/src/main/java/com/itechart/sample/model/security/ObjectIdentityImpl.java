@@ -27,7 +27,7 @@ public class ObjectIdentityImpl implements ObjectIdentity {
     }
 
     @Override
-    public String getType() {
+    public String getObjectType() {
         return type;
     }
 

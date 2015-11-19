@@ -25,4 +25,8 @@ public interface BaseDao<T extends BaseEntity> {
     void delete(T object);
 
     void deleteById(Long id);
+
+    List<T> findByIds(List<? extends Serializable> ids);
+
+    String getIdPropertyName();
 }

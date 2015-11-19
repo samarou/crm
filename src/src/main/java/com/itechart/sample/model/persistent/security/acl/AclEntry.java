@@ -25,7 +25,7 @@ public class AclEntry extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "object_identity_id", nullable = false, updatable = false)
-    private Acl objectIdentity;
+    private Acl acl;
 
     @Column(name = "principal_id", nullable = false, updatable = false)
     private Long principalId;
@@ -36,10 +36,10 @@ public class AclEntry extends BaseEntity {
     public AclEntry() {
     }
 
-    public AclEntry(Acl objectIdentity, Long principalId, Set<Permission> permissions) {
-        Assert.notNull(objectIdentity);
+    public AclEntry(Acl acl, Long principalId, Set<Permission> permissions) {
+        Assert.notNull(acl);
         Assert.notNull(principalId);
-        this.objectIdentity = objectIdentity;
+        this.acl = acl;
         this.principalId = principalId;
         setPermissions(permissions);
     }
@@ -53,12 +53,12 @@ public class AclEntry extends BaseEntity {
         this.id = id;
     }
 
-    public Acl getObjectIdentity() {
-        return objectIdentity;
+    public Acl getAcl() {
+        return acl;
     }
 
-    public void setObjectIdentity(Acl objectIdentity) {
-        this.objectIdentity = objectIdentity;
+    public void setAcl(Acl acl) {
+        this.acl = acl;
     }
 
     public Long getPrincipalId() {

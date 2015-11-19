@@ -1,7 +1,7 @@
 package com.itechart.sample.model.persistent.business;
 
 import com.itechart.sample.model.enums.ObjectTypes;
-import com.itechart.sample.model.persistent.BaseEntity;
+import com.itechart.sample.model.persistent.SecuredEntity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -13,7 +13,7 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name = "order")
-public class Order extends BaseEntity {
+public class Order extends SecuredEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -74,7 +74,7 @@ public class Order extends BaseEntity {
     }
 
     @Override
-    public String getType() {
+    public String getObjectType() {
         return ObjectTypes.ORDER.getName();
     }
 }

@@ -12,6 +12,6 @@ public interface ObjectIdentity {
 
     Serializable getId();
 
-    String getType();
+    String getObjectType();
 
 }

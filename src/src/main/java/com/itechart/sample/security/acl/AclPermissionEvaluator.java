@@ -77,7 +77,7 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
                 if (logger.isDebugEnabled()) {
                     logger.debug("Permissions found on " + oid + ". Required permissions is granted");
                 }
-                return false;
+                return true;
             }
         }
         // if acl or permissions on acl wasn't found then check user roles and permissions
@@ -86,7 +86,7 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
         boolean granted = true;
         for (Permission requiredPermission : requiredPermissions) {
             // todo нужен маппинг привилегий на роли
-            granted &= securityOperations.hasPrivilege(oid.getType(), requiredPermission.name());
+            granted &= securityOperations.hasPrivilege(oid.getObjectType(), requiredPermission.name());
         }
         if (logger.isDebugEnabled()) {
             logger.debug("Have no any permissions on " + oid + ", but required permissions granted througth roles/privileges");
@@ -97,11 +97,16 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
 
     /**
      * Method checks that principals have required permissions on acl.
-     * Returns: true - if permissions was granted;
+     * Returns: true - if permissions was granted (or current principal is object owner);
      * false - if any permissions was found, but required permissions wasn't granted,
      * null - if permissions wasn't found for principals on acl
      */
     private Boolean hasPermissions(Acl acl, List<Long> principalIds, List<Permission> requiredPermissions) {
+        if (acl.getOwnerId() != null) {
+            if (principalIds.contains(acl.getOwnerId())) {
+                return true;
+            }
+        }
         boolean permissionsFound = false;
         for (Permission requiredPermission : requiredPermissions) {
             boolean permitted = false;

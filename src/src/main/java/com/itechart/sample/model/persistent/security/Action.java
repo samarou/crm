@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Entity
 @Immutable
 @Table(name = "action")
-//todo @Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region = "action")
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region = "action")
 public class Action extends BaseEntity {
 
     @Id

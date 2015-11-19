@@ -1,7 +1,5 @@
 package com.itechart.sample.model.persistent;
 
-import com.itechart.sample.model.security.ObjectIdentity;
-
 import java.io.Serializable;
 
 /**
@@ -9,13 +7,9 @@ import java.io.Serializable;
  *
  * @author andrei.samarou
  */
-public abstract class BaseEntity implements ObjectIdentity, Serializable {
+public abstract class BaseEntity implements Serializable {
 
     public abstract Serializable getId();
-
-    public String getType() {
-        return getClass().getName();
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -27,12 +21,7 @@ public abstract class BaseEntity implements ObjectIdentity, Serializable {
         }
 
         BaseEntity that = (BaseEntity) o;
-
-        if (getId() == null || !getId().equals(that.getId())) {
-            return false;
-        }
-
-        return true;
+        return getId() != null && getId().equals(that.getId());
     }
 
     @Override

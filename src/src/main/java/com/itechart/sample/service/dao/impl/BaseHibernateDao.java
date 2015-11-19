@@ -2,6 +2,8 @@ package com.itechart.sample.service.dao.impl;
 
 import com.itechart.sample.model.persistent.BaseEntity;
 import com.itechart.sample.service.dao.BaseDao;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
@@ -65,6 +67,19 @@ public abstract class BaseHibernateDao<T extends BaseEntity> extends AbstractHib
         if (entity != null) {
             delete(entity);
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<T> findByIds(List<? extends Serializable> ids) {
+        return (List<T>) getHibernateTemplate().executeWithNativeSession(session -> {
+            Criteria criteria = session.createCriteria(getPersistentClass());
+            criteria.add(Restrictions.in(getIdPropertyName(), ids));
+            return criteria.list();
+        });
+    }
+
+    public String getIdPropertyName() {
+        return getSessionFactory().getClassMetadata(getPersistentClass()).getIdentifierPropertyName();
     }
 
     @SuppressWarnings("unchecked")

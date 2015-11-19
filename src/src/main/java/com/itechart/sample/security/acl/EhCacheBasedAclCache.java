@@ -1,7 +1,7 @@
 package com.itechart.sample.security.acl;
 
 import com.itechart.sample.model.persistent.security.acl.Acl;
-import com.itechart.sample.model.security.ObjectIdentity;
+import com.itechart.sample.model.persistent.security.acl.AclObjectKey;
 import net.sf.ehcache.CacheException;
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
@@ -44,11 +44,11 @@ public class EhCacheBasedAclCache implements AclCache, InitializingBean {
     }
 
     @Override
-    public Acl get(ObjectIdentity objectIdentity) {
-        Assert.notNull(objectIdentity, "objectIdentity required");
+    public Acl get(AclObjectKey objectKey) {
+        Assert.notNull(objectKey, "objectKey required");
         Element element = null;
         try {
-            element = cache.get(new ObjectIdentityKey(objectIdentity));
+            element = cache.get(objectKey);
         } catch (CacheException ce) {
             logger.warn(ce);
         }
@@ -62,11 +62,8 @@ public class EhCacheBasedAclCache implements AclCache, InitializingBean {
     public void put(Acl acl) {
         Assert.notNull(acl, "Acl required");
         Assert.notNull(acl.getId(), "Acl id required");
-        if (acl.getParent() != null) {
-            put(acl.getParent());
-        }
         cache.put(new Element(acl.getId(), acl));
-        cache.put(new Element(new ObjectIdentityKey(acl), acl));
+        cache.put(new Element(acl.getObjectKey(), acl));
     }
 
     @Override
@@ -75,17 +72,17 @@ public class EhCacheBasedAclCache implements AclCache, InitializingBean {
         Acl acl = get(aclId);
         if (acl != null) {
             cache.remove(acl.getId());
-            cache.remove(new ObjectIdentityKey(acl));
+            cache.remove(acl.getObjectKey());
         }
     }
 
     @Override
-    public void evict(ObjectIdentity objectIdentity) {
-        Assert.notNull(objectIdentity, "objectIdentity required");
-        Acl acl = get(objectIdentity);
+    public void evict(AclObjectKey objectKey) {
+        Assert.notNull(objectKey, "objectKey required");
+        Acl acl = get(objectKey);
         if (acl != null) {
             cache.remove(acl.getId());
-            cache.remove(objectIdentity);
+            cache.remove(objectKey);
         }
     }
 
@@ -96,48 +93,6 @@ public class EhCacheBasedAclCache implements AclCache, InitializingBean {
     @Required
     public void setCache(Ehcache cache) {
         this.cache = cache;
-    }
-
-    /**
-     * Wrapping key for ObjectIdentity
-     */
-    private static class ObjectIdentityKey {
-        private Serializable id;
-        private int type;
-
-        public ObjectIdentityKey(ObjectIdentity objectIdentity) {
-            this(objectIdentity.getId(), objectIdentity.getType());
-        }
-
-        public ObjectIdentityKey(Acl acl) {
-            this(acl.getObjectId(), acl.getObjectType().getName());
-        }
-
-        public ObjectIdentityKey(Serializable objectId, String objectType) {
-            Assert.notNull(objectId);
-            Assert.notNull(objectType);
-            this.id = objectId;
-            this.type = objectType.hashCode();
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            ObjectIdentityKey that = (ObjectIdentityKey) o;
-            return id.equals(that.id) && type == that.type;
-        }
-
-        @Override
-        public int hashCode() {
-            int result = id.hashCode();
-            result = 31 * result + type;
-            return result;
-        }
     }
 
 }

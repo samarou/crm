@@ -61,38 +61,16 @@
 
     <!-- ACL security -->
 
-    <bean id="aclService" class="com.itechart.sample.service.impl.AclServiceImpl">
-        <property name="aclCache" ref="aclCache"/>
-    </bean>
+    <bean id="aclService" class="com.itechart.sample.service.impl.AclServiceImpl"/>
 
     <bean id="aclPermissionEvaluator" class="com.itechart.sample.security.acl.AclPermissionEvaluator">
         <property name="aclService" ref="aclService"/>
         <property name="roleHierarchy" ref="roleHierarchy"/>
     </bean>
 
-
-
-
-
-
-
-
-
-
-    <bean id="aclPermissionCacheOptimizer" class="org.springframework.security.acls.AclPermissionCacheOptimizer">
-        <constructor-arg ref="aclService"/>
-        <property name="objectIdentityRetrievalStrategy" ref="oidRetrievalStrategy"/>
-        <property name="sidRetrievalStrategy" ref="sidRetrievalStrategy"/>
+    <bean id="aclPermissionCacheOptimizer" class="com.itechart.sample.security.acl.AclPermissionCacheOptimizer">
+        <property name="aclService" ref="aclService"/>
     </bean>
-
-
-
-
-
-
-
-
-
 
     <!-- Cache configuration -->
 

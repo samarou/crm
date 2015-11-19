@@ -1,6 +1,5 @@
 package com.itechart.sample.service;
 
-import com.itechart.sample.model.persistent.security.Principal;
 import com.itechart.sample.model.persistent.security.acl.Acl;
 import com.itechart.sample.model.security.ObjectIdentity;
 import com.itechart.sample.model.security.Permission;
@@ -23,15 +22,9 @@ public interface AclService {
 
     List<Acl> findAclsWithAncestors(List<ObjectIdentity> objectIdentities);
 
-
-
-
     List<Acl> findAclWithAncestors(ObjectIdentity objectIdentity);
 
-
-
-
-    Acl createAcl(ObjectIdentity objectIdentity, ObjectIdentity parentIdentity, Principal owner, Set<Permission> permissions);
+    Acl createAcl(ObjectIdentity objectIdentity, ObjectIdentity parentIdentity, Long ownerId, Set<Permission> permissions);
 
     void saveAcl(Acl acl);
 
