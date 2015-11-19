@@ -61,9 +61,12 @@ public class EhCacheBasedAclCache implements AclCache, InitializingBean {
     @Override
     public void put(Acl acl) {
         Assert.notNull(acl, "Acl required");
-        Assert.notNull(acl.getId(), "Acl id required");
-        cache.put(new Element(acl.getId(), acl));
+        Assert.notNull(acl.getObjectKey(), "Acl key required");
         cache.put(new Element(acl.getObjectKey(), acl));
+        if (acl.getId() != null) {
+            // case for fake empty ACL
+            cache.put(new Element(acl.getId(), acl));
+        }
     }
 
     @Override
@@ -81,8 +84,11 @@ public class EhCacheBasedAclCache implements AclCache, InitializingBean {
         Assert.notNull(objectKey, "objectKey required");
         Acl acl = get(objectKey);
         if (acl != null) {
-            cache.remove(acl.getId());
             cache.remove(objectKey);
+            if (acl.getId() != null) {
+                // case for fake empty ACL
+                cache.remove(acl.getId());
+            }
         }
     }
 

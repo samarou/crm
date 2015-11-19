@@ -43,8 +43,8 @@ INSERT INTO `role` (`id`, `name`, `description`, `parent_id`) VALUES
 (4, 'GUEST', 'GUEST ROLE', 1);
 
 INSERT INTO `user_role` (`user_id`, `role_id`) VALUES
-(1, 1),
-(2, 2);
+(1, 2),
+(2, 3);
 
 INSERT INTO `user_group` (`user_id`, `group_id`) VALUES
 (1, 3),
@@ -53,14 +53,14 @@ INSERT INTO `user_group` (`user_id`, `group_id`) VALUES
 INSERT INTO `role_privilege` (`role_id`, `privilege_id`) VALUES 
 (1, 1),
 (1, 5),
-(2, 1),
-(2, 2),
-(2, 3),
-(2, 4),
-(2, 5),
-(2, 6),
-(2, 7),
-(2, 8);
+(3, 1),
+(3, 2),
+(3, 3),
+(3, 4),
+(3, 5),
+(3, 6),
+(3, 7),
+(3, 8);
 
 INSERT INTO `customer` (`id`, `firstName`, `lastName`, `email`, `address`) VALUES 
 (1, 'john', 'smith', '123@gmail.com', 'addr'),
@@ -74,10 +74,13 @@ INSERT INTO `order` (`id`, `product`, `count`, `price`, `customer_id`) VALUES
 -- ACL DATA -------------------------------------------------------------------
 
 
+INSERT INTO `acl_object_identity` (`id`, `object_type_id`, `object_id`, `parent_id`, `owner_id`, `inheriting`) VALUES 
+(1, 1, 1, null, 2, true),
+(2, 2, 1, 1, 2, true);
 
 
-
-
+INSERT INTO `acl_entry` (`id`, `object_identity_id`, `principal_id`, `permission_mask`) VALUES
+(1, 1, 1, 1);
 
 
 -- SEQUENCE FIX ---------------------------------------------------------------

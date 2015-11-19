@@ -107,6 +107,9 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
                 return true;
             }
         }
+        if (!acl.hasAnyPermissions()) {
+            return null;
+        }
         boolean permissionsFound = false;
         for (Permission requiredPermission : requiredPermissions) {
             boolean permitted = false;

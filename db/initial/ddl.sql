@@ -1,5 +1,8 @@
-USE security_sample;
+CREATE SCHEMA IF NOT EXISTS security_sample 
+	DEFAULT CHARACTER SET utf8 
+    DEFAULT COLLATE utf8_unicode_ci;
 
+USE security_sample;
 
 DROP TABLE IF EXISTS `order`;
 DROP TABLE IF EXISTS `customer`;

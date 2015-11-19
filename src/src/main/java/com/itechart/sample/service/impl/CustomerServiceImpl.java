@@ -5,7 +5,6 @@ import com.itechart.sample.service.CustomerService;
 import com.itechart.sample.service.dao.CustomerDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostFilter;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +23,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional(readOnly = true)
     //@PreAuthorize("hasPrivilege('sample.Customer', 'READ') or hasRole('ROOT')")
     //@PreAuthorize("@mySecurityService.hasPermission('special')")
+    //@PreAuthorize("hasPermission(#objectId, 'ObjectType', 'READ')")
     @PostFilter("hasPermission(filterObject, 'READ')")
     public List<Customer> getCustomers() {
         return customerDao.loadAll();

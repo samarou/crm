@@ -42,8 +42,8 @@ public class Acl extends BaseEntity {
     public Acl() {
     }
 
-    public Acl(Long objectTypeId, Long objectId) {
-        this(new AclObjectKey(objectTypeId, objectId), null, null);
+    public Acl(AclObjectKey objectKey) {
+        this(objectKey, null, null);
     }
 
     public Acl(AclObjectKey objectKey, Long parentId, Long ownerId) {
@@ -75,7 +75,7 @@ public class Acl extends BaseEntity {
         return ownerId;
     }
 
-    public Set<AclEntry> getEntries() {
+    protected Set<AclEntry> getEntries() {
         return entries;
     }
 
@@ -138,6 +138,10 @@ public class Acl extends BaseEntity {
 
     public void denyAll(Long principalId) {
         setPermissions(principalId, null);
+    }
+
+    public boolean hasAnyPermissions() {
+        return entries != null && !entries.isEmpty();
     }
 
     private AclEntry findEntry(Long principalId) {

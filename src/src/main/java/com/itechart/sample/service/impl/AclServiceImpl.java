@@ -36,6 +36,9 @@ public class AclServiceImpl implements AclService {
         Acl acl = aclCache.get(aclId);
         if (acl == null) {
             acl = aclDao.get(aclId);
+            if (acl == null) {
+                throw new RuntimeException("ACL wasn't found by id: " + aclId);
+            }
             aclCache.put(acl);
         }
         return acl;
@@ -48,6 +51,11 @@ public class AclServiceImpl implements AclService {
         Acl acl = aclCache.get(objectKey);
         if (acl == null) {
             acl = aclDao.findByObjectKey(objectKey);
+            if (acl == null) {
+                // put to cache and return fake empty ACL,
+                // to prevent repeating queries
+                acl = new Acl(objectKey);
+            }
             aclCache.put(acl);
         }
         return acl;
@@ -58,7 +66,7 @@ public class AclServiceImpl implements AclService {
     public List<Acl> findAcls(List<ObjectIdentity> objectIdentities) {
         Collection<AclObjectKey> objectKeys = getObjectKeys(objectIdentities);
         List<Acl> result = new ArrayList<>(objectIdentities.size());
-        List<AclObjectKey> objectKeysForLoad = new ArrayList<>();
+        Set<AclObjectKey> objectKeysForLoad = new HashSet<>();
         for (AclObjectKey objectKey : objectKeys) {
             Acl acl = aclCache.get(objectKey);
             if (acl == null) {
@@ -68,11 +76,18 @@ public class AclServiceImpl implements AclService {
             }
         }
         if (!objectKeysForLoad.isEmpty()) {
-            List<Acl> loadedAcls = aclDao.findByObjectKeys(objectKeysForLoad);
+            List<Acl> loadedAcls = aclDao.findByObjectKeys(new ArrayList<>(objectKeysForLoad));
             for (Acl loadedAcl : loadedAcls) {
+                objectKeysForLoad.remove(loadedAcl.getObjectKey());
                 aclCache.put(loadedAcl);
             }
             result.addAll(loadedAcls);
+            // for absent ACLs put to cache fake empty ACLs, to prevent repeating queries
+            for (AclObjectKey objectKey : objectKeysForLoad) {
+                Acl emptyAcl = new Acl(objectKey);
+                aclCache.put(emptyAcl);
+                result.add(emptyAcl);
+            }
         }
         return result;
     }
