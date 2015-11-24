@@ -8,8 +8,8 @@ import com.itechart.sample.model.security.User;
 import com.itechart.sample.security.SecurityOperations;
 import com.itechart.sample.security.auth.GroupAuthority;
 import com.itechart.sample.service.AclService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
@@ -28,7 +28,7 @@ import java.util.*;
  */
 public class AclPermissionEvaluator implements PermissionEvaluator {
 
-    private final static Log logger = LogFactory.getLog(AclPermissionEvaluator.class);
+    private final static Logger logger = LoggerFactory.getLogger(AclPermissionEvaluator.class);
 
     private AclService aclService;
 

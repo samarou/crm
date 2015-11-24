@@ -5,8 +5,8 @@ import com.itechart.sample.model.persistent.security.acl.AclObjectKey;
 import net.sf.ehcache.CacheException;
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.util.Assert;
@@ -20,7 +20,7 @@ import java.io.Serializable;
  */
 public class EhCacheBasedAclCache implements AclCache, InitializingBean {
 
-    private static final Log logger = LogFactory.getLog(EhCacheBasedAclCache.class);
+    private static final Logger logger = LoggerFactory.getLogger(EhCacheBasedAclCache.class);
 
     private Ehcache cache;
 
@@ -35,7 +35,7 @@ public class EhCacheBasedAclCache implements AclCache, InitializingBean {
         try {
             element = cache.get(aclId);
         } catch (CacheException ce) {
-            logger.warn(ce);
+            logger.warn(ce.getMessage(), ce);
         }
         if (element != null) {
             return (Acl) element.getObjectValue();
@@ -50,7 +50,7 @@ public class EhCacheBasedAclCache implements AclCache, InitializingBean {
         try {
             element = cache.get(objectKey);
         } catch (CacheException ce) {
-            logger.warn(ce);
+            logger.warn(ce.getMessage(), ce);
         }
         if (element != null) {
             return (Acl) element.getObjectValue();

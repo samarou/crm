@@ -2,8 +2,8 @@ package com.itechart.sample.security.expression.method;
 
 import com.itechart.sample.security.expression.BaseSecurityExpressionHandler;
 import org.aopalliance.intercept.MethodInvocation;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
@@ -30,7 +30,7 @@ import java.util.List;
 public class MethodSecurityExpressionHandlerImpl extends BaseSecurityExpressionHandler<MethodInvocation>
         implements MethodSecurityExpressionHandler {
 
-    private final Log logger = LogFactory.getLog(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private ParameterNameDiscoverer parameterNameDiscoverer = new DefaultSecurityParameterNameDiscoverer();
     private PermissionCacheOptimizer permissionCacheOptimizer;

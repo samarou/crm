@@ -1,8 +1,8 @@
 package com.itechart.sample.security.expression.method;
 
 import org.aopalliance.intercept.MethodInvocation;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.AopProxyUtils;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.core.ParameterNameDiscoverer;
@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
  */
 public class MethodSecurityEvaluationContext extends StandardEvaluationContext {
 
-    private static final Log logger = LogFactory.getLog(MethodSecurityEvaluationContext.class);
+    private static final Logger logger = LoggerFactory.getLogger(MethodSecurityEvaluationContext.class);
 
     private ParameterNameDiscoverer parameterNameDiscoverer;
     private final MethodInvocation mi;
@@ -71,8 +71,6 @@ public class MethodSecurityEvaluationContext extends StandardEvaluationContext {
         Class<?> targetClass = AopProxyUtils.ultimateTargetClass(targetObject);
 
         if (targetClass == null) {
-            // TODO: Spring should do this, but there's a bug in ultimateTargetClass()
-            // which returns null
             targetClass = targetObject.getClass();
         }
 

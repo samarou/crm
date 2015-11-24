@@ -6,11 +6,11 @@ package com.itechart.sample.model.security;
  * @author andrei.samarou
  */
 public enum Permission {
-    READ,
-    WRITE,
-    CREATE,
-    DELETE,
-    ADMIN;
+    READ,   // 1
+    WRITE,  // 2
+    CREATE, // 4
+    DELETE, // 8
+    ADMIN;  // 16
 
     public int getMask() {
         return 1 << ordinal();
