@@ -1,42 +1,37 @@
 package com.itechart.sample.security.hibernate.filter;
 
-import com.itechart.sample.model.security.SecuredObject;
 import org.hibernate.Filter;
 import org.hibernate.engine.spi.FilterDefinition;
-import org.springframework.util.Assert;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
- * Parameter's holder for populating of security filters
+ * Parameter's holder for populating of hibernate security filters
  *
  * @author andrei.samarou
  */
-//todo
 public class FilterParamsSource {
 
-    Map<String, Object> parameters;
+    private Map<String, Object> parameters;
 
-    public FilterParamsSource(Class filteredType) {
-        Assert.isAssignable(SecuredObject.class, filteredType,
-                "filteredType is not subclass of " + SecuredObject.class);
+    public FilterParamsSource() {
         parameters = new HashMap<>();
+    }
 
+    public void setObjectTypeId(Long objectTypeId) {
+        parameters.put("objectTypeId", objectTypeId);
+    }
 
-        parameters.put("", "");
+    public void setPrincipleIds(List<Long> principleIds) {
+        parameters.put("principleIds", principleIds);
+    }
 
+    public void setPermissionMask(int permissionMask) {
+        parameters.put("permissionMask", permissionMask);
+    }
 
-        /*
-            parameters.put("principleIds", LongType.INSTANCE);
-            parameters.put("permissionMask", IntegerType.INSTANCE);
-            parameters.put("hasPrivelege", BooleanType.INSTANCE);
-            parameters.put("objectTypeId", LongType.INSTANCE);
-         */
-
-
+    public void setHasPrivilege(boolean hasPrivilege) {
+        parameters.put("hasPrivilege", hasPrivilege);
     }
 
     public void populate(Filter filter) {
@@ -53,11 +48,21 @@ public class FilterParamsSource {
                 } else {
                     throw new RuntimeException("Primitive array as filter parameters isn't allowed: " + parameterName);
                 }
-            } else if (parameterValue instanceof Collections) {
+            } else if (parameterValue instanceof Collection) {
                 filter.setParameterList(parameterName, (Collection) parameterValue);
             } else {
                 filter.setParameter(parameterName, parameterValue);
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("FilterParamsSource{\n");
+        for (Map.Entry<String, Object> entry : parameters.entrySet()) {
+            sb.append(entry.getKey()).append("=").append(entry.getValue()).append(";\n");
+        }
+        sb.append('}');
+        return sb.toString();
     }
 }

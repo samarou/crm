@@ -4,8 +4,8 @@ import com.itechart.sample.model.security.Permission;
 import com.itechart.sample.model.security.SecuredObject;
 import com.itechart.sample.security.annotation.AclObjectFilter;
 import com.itechart.sample.security.annotation.AclRule;
+import com.itechart.sample.security.hibernate.filter.FilterParamsBuilder;
 import com.itechart.sample.security.hibernate.filter.FilterParamsSource;
-import com.itechart.sample.security.hibernate.filter.FilterParamsFactory;
 import com.itechart.sample.security.hibernate.filter.FilterType;
 import com.itechart.sample.security.hibernate.filter.SecurityFilterUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -49,7 +49,7 @@ public class AclHibernateSecurityAspect {
 
     private static final Map<Method, Set<FilterConfig>> methodFilters = new ConcurrentHashMap<>();
 
-    private FilterParamsFactory filterParamsFactory;
+    private FilterParamsBuilder filterParamsBuilder;
 
     @Around("@annotation(aclObjectFilter) && (within(HibernateSecuredDao+) || within(org.springframework.orm..HibernateDaoSupport+))")
     public Object applySecurityFilter(ProceedingJoinPoint joinPoint, AclObjectFilter aclObjectFilter) throws Throwable {
@@ -93,12 +93,12 @@ public class AclHibernateSecurityAspect {
     private void enableFilters(SessionFactory sessionFactory, Set<FilterConfig> filters) {
         Session session = sessionFactory.getCurrentSession();
         for (FilterConfig filter : filters) {
+            FilterParamsSource params = filterParamsBuilder.build(filter.getObjectType(), filter.getPermissions());
             if (logger.isDebugEnabled()) {
-                logger.debug("Enable security filter " + filter.getFilterName());
+                logger.debug("Enable security filter " + filter.getFilterName() + "\nwith parameters: " + params);
             }
             Filter hbmFilter = session.enableFilter(filter.getFilterName());
-            FilterParamsSource source = filterParamsFactory.create(filter.getObjectType());
-            source.populate(hbmFilter);
+            params.populate(hbmFilter);
         }
     }
 
@@ -276,8 +276,8 @@ public class AclHibernateSecurityAspect {
     }
 
     @Required
-    public void setFilterParamsFactory(FilterParamsFactory filterParamsFactory) {
-        this.filterParamsFactory = filterParamsFactory;
+    public void setFilterParamsBuilder(FilterParamsBuilder filterParamsBuilder) {
+        this.filterParamsBuilder = filterParamsBuilder;
     }
 
     /**

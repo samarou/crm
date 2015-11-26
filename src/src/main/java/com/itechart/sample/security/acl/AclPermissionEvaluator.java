@@ -4,9 +4,8 @@ import com.itechart.sample.model.persistent.security.acl.Acl;
 import com.itechart.sample.model.security.ObjectIdentity;
 import com.itechart.sample.model.security.ObjectIdentityImpl;
 import com.itechart.sample.model.security.Permission;
-import com.itechart.sample.model.security.User;
 import com.itechart.sample.security.SecurityOperations;
-import com.itechart.sample.security.auth.GroupAuthority;
+import com.itechart.sample.security.SecurityUtils;
 import com.itechart.sample.service.AclService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,11 +13,13 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Implementation of strategy used in expression evaluation to determine whether
@@ -58,7 +59,7 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
         List<Acl> acls = aclService.findAclWithAncestors(oid);
         if (!CollectionUtils.isEmpty(acls)) {
             Boolean permissionsFound = false;
-            List<Long> principalIds = getAuthenticationPrincipalIds(authentication);
+            List<Long> principalIds = SecurityUtils.getPrincipalIds(authentication);
             for (Acl acl : acls) {
                 Boolean hasRequiredPerms = hasPermissions(acl, principalIds, requiredPermissions);
                 if (hasRequiredPerms != null) {
@@ -137,20 +138,6 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
             }
         }
         return false;
-    }
-
-    private List<Long> getAuthenticationPrincipalIds(Authentication authentication) {
-        List<Long> result = new ArrayList<>();
-        Object principal = authentication.getPrincipal();
-        if (principal instanceof User) {
-            result.add(((User) principal).getUserId());
-        }
-        for (GrantedAuthority authority : authentication.getAuthorities()) {
-            if (authority instanceof GroupAuthority) {
-                result.add(((GroupAuthority) authority).getGroupId());
-            }
-        }
-        return result;
     }
 
     private List<Permission> resolvePermission(Object permissionObject) {

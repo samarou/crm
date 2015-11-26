@@ -11,7 +11,7 @@ import org.springframework.util.Assert;
  */
 public class SecurityFilterUtils {
 
-    private static final String FILTER_NAME_PREFIX = "security.";
+    private static final String FILTER_NAME_PREFIX = "security_";
 
     public static boolean isFilterableEntity(Class entityClass) {
         return entityClass != null && SecuredObject.class.isAssignableFrom(entityClass);
@@ -40,6 +40,8 @@ public class SecurityFilterUtils {
         if (!isFilterableEntity(entityClass)) {
             throw new IllegalArgumentException("Entity does't allow filtering: " + entityClass);
         }
-        return FILTER_NAME_PREFIX + filterType.name().toLowerCase() + '.' + entityClass.getName();
+        // hibernate does not like dots in filter name
+        String entityName = entityClass.getName().replace('.', '_');
+        return FILTER_NAME_PREFIX + filterType.name().toLowerCase() + '_' + entityName;
     }
 }

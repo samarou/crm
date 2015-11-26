@@ -62,11 +62,11 @@ public class SecurityOperations {
     }
 
     public final boolean hasAnyPrivilege(String objectType, String... action) {
-        // fistly, try to find target privileges in user-granted priveleges
+        // fistly, try to find target privileges in user-granted privileges
         if (containsAnyPrivilege(authentication.getAuthorities(), objectType, action)) {
             return true;
         }
-        // then, search target privileges in role-granted priveleges
+        // then, search target privileges in role-granted privileges
         if (grantedRoles != null) {
             return containsAnyRolePrivilege(grantedRoles, objectType, action);
         } else {

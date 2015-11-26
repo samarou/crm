@@ -5,7 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.util.Assert;
 
 /**
- * PrivilegeAuthority represents user or role -granted privelege
+ * PrivilegeAuthority represents user or role -granted privilege
  *
  * @author andrei.samarou
  */

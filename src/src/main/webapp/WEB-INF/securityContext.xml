@@ -79,8 +79,11 @@
     <!-- ACL security aspects -->
 
     <bean class="com.itechart.sample.security.hibernate.aop.AclHibernateSecurityAspect">
-        <property name="filterParamsFactory">
-            <bean class="com.itechart.sample.security.hibernate.filter.FilterParamsFactory"/>
+        <property name="filterParamsBuilder">
+            <bean class="com.itechart.sample.security.hibernate.filter.FilterParamsBuilder">
+                <property name="dictionaryService" ref="dictionaryServiceImpl"/>
+                <property name="roleHierarchy" ref="roleHierarchy"/>
+            </bean>
         </property>
     </bean>
 
