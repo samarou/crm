@@ -1,8 +1,12 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:sec="http://www.springframework.org/schema/security"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <aop:aspectj-autoproxy/>
 
     <!-- Web Security -->
 
@@ -59,7 +63,7 @@
         <property name="roleHierarchyCache" ref="roleHierarchyCache"/>
     </bean>
 
-    <!-- ACL security -->
+    <!-- ACL security commons -->
 
     <bean id="aclService" class="com.itechart.sample.service.impl.AclServiceImpl"/>
 
@@ -70,6 +74,14 @@
 
     <bean id="aclPermissionCacheOptimizer" class="com.itechart.sample.security.acl.AclPermissionCacheOptimizer">
         <property name="aclService" ref="aclService"/>
+    </bean>
+
+    <!-- ACL security aspects -->
+
+    <bean class="com.itechart.sample.security.hibernate.aop.AclHibernateSecurityAspect">
+        <property name="filterParamsFactory">
+            <bean class="com.itechart.sample.security.hibernate.filter.FilterParamsFactory"/>
+        </property>
     </bean>
 
     <!-- Cache configuration -->

@@ -13,6 +13,7 @@
         <spring.version>4.2.2.RELEASE</spring.version>
         <spring-security.version>4.0.3.RELEASE</spring-security.version>
         <hibernate.version>5.0.2.Final</hibernate.version>
+        <aspectj.version>1.8.7</aspectj.version>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -64,6 +65,11 @@
             <version>${spring.version}</version>
             <scope>runtime</scope>
         </dependency>
+        <!--dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+            <version>${spring.version}</version>
+        </dependency-->
 
         <!-- Spring security -->
         <dependency>
@@ -95,7 +101,20 @@
             <version>${hibernate.version}</version>
         </dependency>
 
+        <!-- AspectJ -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>${aspectj.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectj.version}</version>
+        </dependency>
+
         <!-- Other stuff -->
+        <!-- todo make review -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -107,10 +126,6 @@
             <artifactId>ehcache-core</artifactId>
             <version>2.6.11</version>
         </dependency>
-
-
-
-
 
 
         <dependency>
@@ -133,17 +148,10 @@
         </dependency>
 
 
-
         <dependency>
             <groupId>org.apache.taglibs</groupId>
             <artifactId>taglibs-standard-jstlel</artifactId>
             <version>1.2.1</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <version>2.3.2</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -167,24 +175,55 @@
 
     </dependencies>
 
-
-
-
     <build>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
             <!--plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.3</version>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>aspectj-maven-plugin</artifactId>
+                <version>1.8</version>
                 <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <showWeaveInfo>true</showWeaveInfo>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <Xlint>ignore</Xlint>
+                    <complianceLevel>${java.version}</complianceLevel>
+                    <encoding>UTF-8</encoding>
+                    <verbose>true</verbose>
+                    <aspectLibraries>
+                        <aspectLibrary>
+                            <groupId>org.springframework</groupId>
+                            <artifactId>spring-aspects</artifactId>
+                        </aspectLibrary>
+                    </aspectLibraries>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>test-compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjrt</artifactId>
+                        <version>${aspectj.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjtools</artifactId>
+                        <version>${aspectj.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin-->
         </plugins>
     </build>
