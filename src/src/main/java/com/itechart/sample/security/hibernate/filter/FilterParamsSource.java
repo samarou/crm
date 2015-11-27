@@ -22,6 +22,10 @@ public class FilterParamsSource {
         parameters.put("objectTypeId", objectTypeId);
     }
 
+    public void setUserId(Long userId) {
+        parameters.put("userId", userId);
+    }
+
     public void setPrincipleIds(List<Long> principleIds) {
         parameters.put("principleIds", principleIds);
     }

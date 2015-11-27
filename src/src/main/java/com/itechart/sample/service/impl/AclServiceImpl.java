@@ -104,8 +104,6 @@ public class AclServiceImpl implements AclService {
                 Acl loadedAcl = loadedAcls.get(i);
                 Long parentId = loadedAcl.getParentId();
                 if (parentId != null && loadedAcl.isInheriting()) {
-                    // Parent is lazy. Don't use it directly
-                    // Try to find it in cache or load by batch
                     Acl cachedParent = aclCache.get(parentId);
                     if (cachedParent == null) {
                         parentIdsForLoad.add(parentId);

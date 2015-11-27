@@ -28,8 +28,9 @@
            eternal="false"
            timeToIdleSeconds="300"
            timeToLiveSeconds="600"/>
+
     <cache name="security.aclCache"
-           maxEntriesLocalHeap="500"/>
+           maxEntriesLocalHeap="100000"/>
 
     <cache name="objectType"
            maxEntriesLocalHeap="100"

@@ -59,9 +59,10 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
         List<Acl> acls = aclService.findAclWithAncestors(oid);
         if (!CollectionUtils.isEmpty(acls)) {
             Boolean permissionsFound = false;
+            Long userId = SecurityUtils.getUserId(authentication);
             List<Long> principalIds = SecurityUtils.getPrincipalIds(authentication);
             for (Acl acl : acls) {
-                Boolean hasRequiredPerms = hasPermissions(acl, principalIds, requiredPermissions);
+                Boolean hasRequiredPerms = hasPermissions(acl, userId, principalIds, requiredPermissions);
                 if (hasRequiredPerms != null) {
                     permissionsFound = true;
                     if (!hasRequiredPerms) {
@@ -102,11 +103,9 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
      * false - if any permissions was found, but required permissions wasn't granted,
      * null - if permissions wasn't found for principals on acl
      */
-    private Boolean hasPermissions(Acl acl, List<Long> principalIds, List<Permission> requiredPermissions) {
-        if (acl.getOwnerId() != null) {
-            if (principalIds.contains(acl.getOwnerId())) {
-                return true;
-            }
+    private Boolean hasPermissions(Acl acl, Long userId, List<Long> principalIds, List<Permission> requiredPermissions) {
+        if (userId.equals(acl.getOwnerId())) {
+            return true;
         }
         if (!acl.hasAnyPermissions()) {
             return null;

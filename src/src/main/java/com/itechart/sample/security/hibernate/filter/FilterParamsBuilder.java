@@ -52,6 +52,7 @@ public class FilterParamsBuilder {
         params.setObjectTypeId(objectTypeEntity.getId());
 
         params.setPrincipleIds(SecurityUtils.getAuthenticatedPrincipalIds());
+        params.setUserId(SecurityUtils.getAuthenticatedUserId());
 
         SecurityOperations securityOperations = SecurityUtils.getSecurityOperations();
         securityOperations.setRoleHierarchy(roleHierarchy);

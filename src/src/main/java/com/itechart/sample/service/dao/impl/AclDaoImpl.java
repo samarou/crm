@@ -4,6 +4,7 @@ import com.itechart.sample.model.persistent.security.acl.Acl;
 import com.itechart.sample.model.persistent.security.acl.AclObjectKey;
 import com.itechart.sample.service.dao.AclDao;
 import com.itechart.sample.util.BatchExecutor;
+import org.hibernate.Criteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -45,6 +46,7 @@ public class AclDaoImpl extends BaseHibernateDao<Acl> implements AclDao {
             List<Acl> result = new ArrayList<>(keys.size());
             BatchExecutor.execute(batch ->
                     result.addAll(session.createCriteria(Acl.class)
+                            .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
                             .add(Restrictions.in("objectKey", batch))
                             .list()), keys, BATCH_SIZE);
             return result;
