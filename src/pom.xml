@@ -65,11 +65,11 @@
             <version>${spring.version}</version>
             <scope>runtime</scope>
         </dependency>
-        <!--dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aspects</artifactId>
             <version>${spring.version}</version>
-        </dependency-->
+        </dependency>
 
         <!-- Spring security -->
         <dependency>
@@ -185,7 +185,7 @@
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
-            <!--plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>aspectj-maven-plugin</artifactId>
                 <version>1.8</version>
@@ -224,7 +224,7 @@
                         <version>${aspectj.version}</version>
                     </dependency>
                 </dependencies>
-            </plugin-->
+            </plugin>
         </plugins>
     </build>
 </project>
