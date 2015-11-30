@@ -18,6 +18,7 @@ public class CustomerDaoImpl extends BaseHibernateDao<Customer> implements Custo
     @Override
     //@AclObjectFilter
     @AclObjectFilter(@AclRule(type = Customer.class, permissions = {Permission.WRITE}))
+    //@AclObjectFilter(@AclRule(type = Customer.class, permissions = {Permission.WRITE}, inherit = true))
     public List<Customer> loadAll() {
         return super.loadAll();
     }
