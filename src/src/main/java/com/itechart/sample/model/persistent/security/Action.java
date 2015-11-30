@@ -1,8 +1,6 @@
 package com.itechart.sample.model.persistent.security;
 
 import com.itechart.sample.model.persistent.BaseEntity;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Immutable;
 
 import javax.persistence.*;
@@ -15,7 +13,7 @@ import javax.persistence.*;
 @Entity
 @Immutable
 @Table(name = "action")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region = "action")
+//todo @Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region = "action")
 public class Action extends BaseEntity {
 
     @Id

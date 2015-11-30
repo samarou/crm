@@ -3,13 +3,17 @@
        xmlns:jndi="http://www.springframework.org/schema/jee"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:cache="http://www.springframework.org/schema/cache"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
 
     <context:annotation-config/>
     <context:component-scan base-package="com.itechart.sample.service"/>
+
+    <cache:annotation-driven mode="aspectj"/>
 
     <tx:annotation-driven/>
 
@@ -45,6 +49,14 @@
 
     <bean id="ehCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
         <property name="acceptExisting" value="true"/>
+    </bean>
+
+    <bean id="mapBasedCacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+        <property name="caches">
+            <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
+                <property name="name" value="objectTypeByName"/>
+            </bean>
+        </property>
     </bean>
 
 </beans>
