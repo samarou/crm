@@ -12,6 +12,7 @@ import com.itechart.sample.service.dao.AclDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 
@@ -21,6 +22,8 @@ import java.util.*;
 @Service
 public class AclServiceImpl implements AclService {
 
+    public static final int DEFAULT_MAX_BATCH_SIZE = 10000;
+
     @Autowired
     private AclDao aclDao;
 
@@ -29,6 +32,8 @@ public class AclServiceImpl implements AclService {
 
     @Autowired
     private DictionaryService dictionaryService;
+
+    private int maxBatchSize = DEFAULT_MAX_BATCH_SIZE;
 
     @Override
     @Transactional(readOnly = true)
@@ -64,6 +69,13 @@ public class AclServiceImpl implements AclService {
     @Override
     @Transactional(readOnly = true)
     public List<Acl> findAcls(List<ObjectIdentity> objectIdentities) {
+        if (CollectionUtils.isEmpty(objectIdentities)) {
+            return Collections.emptyList();
+        }
+        if (objectIdentities.size() > maxBatchSize) {
+            throw new RuntimeException("Count of object identities for retrieving ACL's exceeded "
+                    + maxBatchSize + ": " + objectIdentities.size());
+        }
         Collection<AclObjectKey> objectKeys = getObjectKeys(objectIdentities);
         List<Acl> result = new ArrayList<>(objectIdentities.size());
         Set<AclObjectKey> objectKeysForLoad = new HashSet<>();
@@ -176,5 +188,9 @@ public class AclServiceImpl implements AclService {
     private AclObjectKey getObjectKey(ObjectIdentity objectIdentity) {
         ObjectType objectType = dictionaryService.getObjectTypeByName(objectIdentity.getObjectType());
         return new AclObjectKey(objectType.getId(), (Long) objectIdentity.getId());
+    }
+
+    public void setMaxBatchSize(int maxBatchSize) {
+        this.maxBatchSize = maxBatchSize;
     }
 }
