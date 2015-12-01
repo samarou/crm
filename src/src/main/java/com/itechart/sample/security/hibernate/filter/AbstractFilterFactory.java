@@ -1,9 +1,13 @@
 package com.itechart.sample.security.hibernate.filter;
 
+import org.hibernate.mapping.Column;
+import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Selectable;
 import org.hibernate.type.Type;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +36,19 @@ public abstract class AbstractFilterFactory implements FilterFactory {
     }
 
     protected abstract FilterCondition buildCondition(PersistentClass persistentClass, FilterType filterType);
+
+    protected String getIdentifierColumn(PersistentClass persistentClass) {
+        KeyValue identifier = persistentClass.getIdentifier();
+        if (identifier == null) {
+            throw new RuntimeException("Filtered entity must have identifier");
+        }
+        Iterator<Selectable> columns = identifier.getColumnIterator();
+        Column column = (Column) columns.next();
+        if (columns.hasNext()) {
+            throw new RuntimeException("Filtered entity can't have compound identifier");
+        }
+        return column.getName();
+    }
 
     public static class FilterCondition {
 

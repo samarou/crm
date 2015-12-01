@@ -21,11 +21,12 @@ public class MySQLFilterFactory extends AbstractFilterFactory {
     @Override
     protected FilterCondition buildCondition(PersistentClass persistentClass, FilterType filterType) {
         FilterCondition condition = new FilterCondition();
+        String idColumn = getIdentifierColumn(persistentClass);
         if (filterType == FilterType.ACL_PLAIN) {
             condition.setSqlCondition(
                 "(select ifnull(min(if(aoi.owner_id = :userId, 1, ae.permission_mask >= :permissionMask)), :hasPrivilege)" +
-                " from acl_object_identity aoi left join acl_entry ae on aoi.id = ae.object_identity_id and ae.principal_id in (:principleIds)" +
-                " where aoi.object_type_id = :objectTypeId and aoi.object_id = {alias}.id) > 0");
+                " from acl_object_identity aoi left join acl_entry ae on ae.object_identity_id = aoi.id and ae.principal_id in (:principleIds)" +
+                " where aoi.object_type_id = :objectTypeId and aoi.object_id = {alias}." + idColumn + ") > 0");
         } else if (filterType == FilterType.ACL_HIERARCHY) {
             // process ACLs up to second parent (this -> parent1 -> parent2)
             condition.setSqlCondition(
@@ -40,7 +41,7 @@ public class MySQLFilterFactory extends AbstractFilterFactory {
                 "   left join acl_entry ae1 on ae1.object_identity_id = aoi1.id and ae1.principal_id in (:principleIds) " +
                 "   left join acl_entry ae2 on ae2.object_identity_id = aoi2.id and ae2.principal_id in (:principleIds) " +
                 "   left join acl_entry ae3 on ae3.object_identity_id = aoi3.id and ae3.principal_id in (:principleIds) " +
-                " where aoi1.object_type_id = :objectTypeId and aoi1.object_id = {alias}.id) > 0"
+                " where aoi1.object_type_id = :objectTypeId and aoi1.object_id = {alias}." + idColumn + ") > 0"
             );
         } else {
             throw new UnsupportedOperationException(MySQLFilterFactory.class + " supports only "
