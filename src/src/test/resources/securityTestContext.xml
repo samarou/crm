@@ -19,7 +19,7 @@
 
     <bean id="userDetailsService" class="com.itechart.sample.security.UserDetailsServiceImpl"/>
 
-    <sec:global-method-security pre-post-annotations="enabled">
+    <sec:global-method-security pre-post-annotations="enabled" proxy-target-class="true">
         <sec:expression-handler ref="methodSecurityExpressionHandler"/>
     </sec:global-method-security>
 
