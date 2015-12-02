@@ -6,7 +6,9 @@ import com.itechart.sample.model.security.SecuredObject;
 import java.lang.annotation.*;
 
 /**
- * Rule describes required ACL constraints
+ * Rule describes required ACL constraints.
+ * For details about permission's inheritance see implementations
+ * of ACL filtering
  *
  * @author andrei.samarou
  */
