@@ -16,6 +16,7 @@ import java.util.List;
  */
 public class SecuredService {
 
+    @SuppressWarnings("unused")
     public boolean hasAccess(boolean has) {
         return has;
     }

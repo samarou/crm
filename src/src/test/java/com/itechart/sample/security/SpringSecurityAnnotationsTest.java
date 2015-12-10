@@ -5,7 +5,7 @@ import com.itechart.sample.model.persistent.security.User;
 import com.itechart.sample.model.persistent.security.acl.Acl;
 import com.itechart.sample.model.security.ObjectIdentityImpl;
 import com.itechart.sample.model.security.Permission;
-import com.itechart.sample.model.security.SecuredObject;
+import com.itechart.sample.security.model.TestObject;
 import com.itechart.sample.security.service.SecuredService;
 import com.itechart.sample.security.util.AclBuilder;
 import com.itechart.sample.security.util.RoleBuilder;
@@ -40,11 +40,17 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
+ * Unit for testing spring security annotations
+ * that can be applied to business service
+ *
  * @author andrei.samarou
+ * @see org.springframework.security.access.prepost.PreAuthorize
+ * @see org.springframework.security.access.prepost.PreFilter
+ * @see org.springframework.security.access.prepost.PostFilter
  */
 @RunWith(ContextAwareJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:securityTestContext.xml")
-public class SecurityAnnotationsTest {
+public class SpringSecurityAnnotationsTest {
 
     @Autowired
     private UserService userServiceMock;
@@ -214,18 +220,6 @@ public class SecurityAnnotationsTest {
     }
 
     @WithUser("userEmpty")
-    @PreAuthorize("isAuthenticated()")
-    @Test
-    public void testIsAuthenticated1() {
-    }
-
-    @WithUser("userEmpty")
-    @PreAuthorize("!isAuthenticated()")
-    @Test(expected = AccessDeniedException.class)
-    public void testIsAuthenticated2() {
-    }
-
-    @WithUser("userEmpty")
     @PreAuthorize("@securedService.hasAccess(true)")
     @Test
     public void testCustomMethod1() {
@@ -263,6 +257,7 @@ public class SecurityAnnotationsTest {
 
     @WithUser("userRoleManager")
     @PreAuthorize("hasPermission(999, 'TestObject', 'WRITE')")
+    @Test
     public void testHasPermission11() {
     }
 
@@ -274,6 +269,7 @@ public class SecurityAnnotationsTest {
 
     @WithUser("userRoleOther")
     @PreAuthorize("hasPermission(999, 'OtherObject', 'Read')")
+    @Test(expected = IllegalArgumentException.class)
     public void testHasPermission13() {
     }
 
@@ -451,7 +447,7 @@ public class SecurityAnnotationsTest {
     @Test
     public void testPostFilterByPermissionWriteArrays() {
         TestObject object = new TestObject(999L);
-        TestObject[] objects = new TestObject[] {object};
+        TestObject[] objects = new TestObject[]{object};
 
         setAuthentication("userRoleUser");
         assertEquals(0, securedService.doPostFilterByPermissionWrite(objects).length);
@@ -478,7 +474,7 @@ public class SecurityAnnotationsTest {
     @Test
     public void testPreFilterByOwningAndPermissionHierarchy() {
         TestObject object = new TestObject(999L);
-        TestObject[] objects = new TestObject[] {object};
+        TestObject[] objects = new TestObject[]{object};
 
         setAuthentication("userRoleOther");
         assertEquals(0, securedService.doPostFilterByPermissionWrite(objects).length);
@@ -546,8 +542,6 @@ public class SecurityAnnotationsTest {
         assertArrayEquals(objects, securedService.doPostFilterByPermissionWrite(objects));
     }
 
-    //todo tests for @AclObjectFilter
-
     @Before
     public void initAuthData() {
         Role rootRole = RoleBuilder.create("Root").build();
@@ -592,41 +586,4 @@ public class SecurityAnnotationsTest {
             throw new RuntimeException("Can't unwrap proxied object", e);
         }
     }
-
-    public static class TestObject implements SecuredObject {
-
-        private Long id;
-        private String property;
-
-        public TestObject(Long id) {
-            this.id = id;
-        }
-
-        public TestObject(String property) {
-            this.property = property;
-        }
-
-        @Override
-        public Long getId() {
-            return id;
-        }
-
-        public void setId(Long id) {
-            this.id = id;
-        }
-
-        public String getProperty() {
-            return property;
-        }
-
-        public void setProperty(String property) {
-            this.property = property;
-        }
-
-        @Override
-        public String getObjectType() {
-            return "TestObject";
-        }
-    }
-
 }
