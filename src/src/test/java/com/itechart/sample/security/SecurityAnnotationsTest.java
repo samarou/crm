@@ -404,7 +404,146 @@ public class SecurityAnnotationsTest {
 
         reset(aclServiceMock);
         // now manager have no privilege 'read' explicitly. it isn't inherited from manager's 'write'
-        assertEquals(0, securedServiceSpy.doPreFilterByPermissionRead(new ArrayList<>(objects)).size());
+        assertTrue(securedServiceSpy.doPreFilterByPermissionRead(new ArrayList<>(objects)).isEmpty());
+    }
+
+    @Test
+    public void testPostFilterByPermissionRead() {
+        setAuthentication("userRoleUser");
+        try {
+            List<Object> nonSecuredObjects = Collections.singletonList(new Object());
+            securedServiceSpy.doPostFilterByPermissionRead(nonSecuredObjects);
+            fail("IllegalArgumentException expected");
+        } catch (IllegalArgumentException ignored) {
+            // only successors of SecuredObject are allowed
+        }
+        TestObject object = new TestObject(999L);
+        List<TestObject> objects = Collections.singletonList(object);
+
+        reset(unwrap(securedServiceSpy));
+        assertEquals(objects, securedServiceSpy.doPostFilterByPermissionRead(objects));
+        verify(unwrap(securedServiceSpy)).doPostFilterByPermissionRead(objects);
+
+        setAuthentication("userRoleManager");
+        assertEquals(objects, securedServiceSpy.doPreFilterByPermissionRead(new ArrayList<>(objects)));
+
+        Acl acl = AclBuilder.create(1L, 999L).privilege("userRoleOther", Permission.READ).build();
+        when(aclServiceMock.findAclWithAncestors(object)).thenReturn(Collections.singletonList(acl));
+        assertEquals(objects, securedServiceSpy.doPostFilterByPermissionRead(new ArrayList<>(objects)));
+
+        reset(aclServiceMock);
+        // 'write' permission includes lower permission 'read'
+        acl = AclBuilder.create(1L, 999L).privilege("userRoleOther", Permission.WRITE).build();
+        when(aclServiceMock.findAclWithAncestors(object)).thenReturn(Collections.singletonList(acl));
+        assertEquals(objects, securedServiceSpy.doPostFilterByPermissionRead(new ArrayList<>(objects)));
+        // check findAclsWithAncestors was invoked while batch caching and findAclWithAncestors from evaluator
+        verify(aclServiceMock).findAclsWithAncestors(eq(Collections.singletonList(object)));
+        verify(aclServiceMock).findAclWithAncestors(object);
+
+        setAuthentication("userRoleManager");
+        mock(UserBuilder.create("userRoleManager").build());
+
+        reset(aclServiceMock);
+        // now manager have no privilege 'read' explicitly. it isn't inherited from manager's 'write'
+        assertEquals(0, securedServiceSpy.doPostFilterByPermissionRead(new ArrayList<>(objects)).size());
+    }
+
+    @Test
+    public void testPostFilterByPermissionWriteArrays() {
+        TestObject object = new TestObject(999L);
+        TestObject[] objects = new TestObject[] {object};
+
+        setAuthentication("userRoleUser");
+        assertEquals(0, securedService.doPostFilterByPermissionWrite(objects).length);
+
+        setAuthentication("userRoleManager");
+        assertArrayEquals(objects, securedService.doPostFilterByPermissionWrite(objects));
+
+        setAuthentication("userRoleOther");
+        assertEquals(0, securedService.doPostFilterByPermissionWrite(objects).length);
+
+        Acl acl = AclBuilder.create(1L, 999L).privilege("userRoleOther", Permission.READ).build();
+        when(aclServiceMock.findAclWithAncestors(object)).thenReturn(Collections.singletonList(acl));
+        assertEquals(0, securedService.doPostFilterByPermissionWrite(objects).length);
+
+        reset(aclServiceMock);
+        acl = AclBuilder.create(1L, 999L).privilege("userRoleOther", Permission.WRITE).build();
+        when(aclServiceMock.findAclWithAncestors(object)).thenReturn(Collections.singletonList(acl));
+        assertArrayEquals(objects, securedService.doPostFilterByPermissionWrite(objects));
+        // check findAclsWithAncestors was invoked while batch caching and findAclWithAncestors from evaluator
+        verify(aclServiceMock).findAclsWithAncestors(eq(Collections.singletonList(object)));
+        verify(aclServiceMock).findAclWithAncestors(object);
+    }
+
+    @Test
+    public void testPreFilterByOwningAndPermissionHierarchy() {
+        TestObject object = new TestObject(999L);
+        TestObject[] objects = new TestObject[] {object};
+
+        setAuthentication("userRoleOther");
+        assertEquals(0, securedService.doPostFilterByPermissionWrite(objects).length);
+
+        Acl objAcl = AclBuilder.create(1L, 999L).privilege("userRoleOther", Permission.READ).build();
+        when(aclServiceMock.findAclWithAncestors(object)).thenReturn(Collections.singletonList(objAcl));
+        assertEquals(0, securedService.doPostFilterByPermissionWrite(objects).length);
+
+        objAcl = AclBuilder.create(1L, 999L).owner("userRoleOther").privilege("userRoleOther", Permission.READ).build();
+        when(aclServiceMock.findAclWithAncestors(object)).thenReturn(Collections.singletonList(objAcl));
+        assertArrayEquals(objects, securedService.doPostFilterByPermissionWrite(objects));
+
+        objAcl = AclBuilder.create(1L, 999L).owner("userRoleOther").build();
+        when(aclServiceMock.findAclWithAncestors(object)).thenReturn(Collections.singletonList(objAcl));
+        assertArrayEquals(objects, securedService.doPostFilterByPermissionWrite(objects));
+
+        Acl parentAcl = AclBuilder.create(1L, 888L).owner("userRoleOther").build();
+        objAcl = AclBuilder.create(1L, 999L).parent(parentAcl).build();
+        when(aclServiceMock.findAclWithAncestors(object)).thenReturn(Arrays.asList(objAcl, parentAcl));
+        assertArrayEquals(objects, securedService.doPostFilterByPermissionWrite(objects));
+
+        parentAcl = AclBuilder.create(1L, 888L).owner("userRoleOther").build();
+        objAcl = AclBuilder.create(1L, 999L).parent(parentAcl).privilege("userRoleOther", Permission.READ).build();
+        when(aclServiceMock.findAclWithAncestors(object)).thenReturn(Arrays.asList(objAcl, parentAcl));
+        assertEquals(0, securedService.doPostFilterByPermissionWrite(objects).length);
+
+        Acl parentAcl1 = AclBuilder.create(1L, 777L).owner("userRoleOther").build();
+        Acl parentAcl2 = AclBuilder.create(1L, 888L).parent(parentAcl).privilege("userRoleOther", Permission.READ).build();
+        objAcl = AclBuilder.create(1L, 999L).parent(parentAcl).build();
+        when(aclServiceMock.findAclWithAncestors(object)).thenReturn(Arrays.asList(objAcl, parentAcl1, parentAcl2));
+        assertEquals(0, securedService.doPostFilterByPermissionWrite(objects).length);
+
+        parentAcl1 = AclBuilder.create(1L, 777L).owner("userRoleOther").build();
+        parentAcl2 = AclBuilder.create(1L, 888L).parent(parentAcl).build();
+        objAcl = AclBuilder.create(1L, 999L).parent(parentAcl).build();
+        when(aclServiceMock.findAclWithAncestors(object)).thenReturn(Arrays.asList(objAcl, parentAcl1, parentAcl2));
+        assertArrayEquals(objects, securedService.doPostFilterByPermissionWrite(objects));
+
+        parentAcl = AclBuilder.create(1L, 888L).privilege("userRoleOther", Permission.WRITE).build();
+        objAcl = AclBuilder.create(1L, 999L).parent(parentAcl).privilege("userRoleOther", Permission.READ).build();
+        when(aclServiceMock.findAclWithAncestors(object)).thenReturn(Arrays.asList(objAcl, parentAcl));
+        assertEquals(0, securedService.doPostFilterByPermissionWrite(objects).length);
+
+        parentAcl = AclBuilder.create(1L, 888L).privilege("userRoleOther", Permission.WRITE).build();
+        objAcl = AclBuilder.create(1L, 999L).parent(parentAcl).build();
+        when(aclServiceMock.findAclWithAncestors(object)).thenReturn(Arrays.asList(objAcl, parentAcl));
+        assertArrayEquals(objects, securedService.doPostFilterByPermissionWrite(objects));
+
+        parentAcl1 = AclBuilder.create(1L, 777L).privilege("userRoleOther", Permission.WRITE).build();
+        parentAcl2 = AclBuilder.create(1L, 888L).parent(parentAcl).privilege("userRoleOther", Permission.WRITE).build();
+        objAcl = AclBuilder.create(1L, 999L).parent(parentAcl).build();
+        when(aclServiceMock.findAclWithAncestors(object)).thenReturn(Arrays.asList(objAcl, parentAcl1, parentAcl2));
+        assertArrayEquals(objects, securedService.doPostFilterByPermissionWrite(objects));
+
+        parentAcl1 = AclBuilder.create(1L, 777L).privilege("userRoleOther", Permission.WRITE).build();
+        parentAcl2 = AclBuilder.create(1L, 888L).parent(parentAcl).privilege("userRoleOther", Permission.READ).build();
+        objAcl = AclBuilder.create(1L, 999L).parent(parentAcl).build();
+        when(aclServiceMock.findAclWithAncestors(object)).thenReturn(Arrays.asList(objAcl, parentAcl1, parentAcl2));
+        assertEquals(0, securedService.doPostFilterByPermissionWrite(objects).length);
+
+        parentAcl1 = AclBuilder.create(1L, 777L).privilege("userRoleOther", Permission.WRITE).build();
+        parentAcl2 = AclBuilder.create(1L, 888L).parent(parentAcl).build();
+        objAcl = AclBuilder.create(1L, 999L).parent(parentAcl).build();
+        when(aclServiceMock.findAclWithAncestors(object)).thenReturn(Arrays.asList(objAcl, parentAcl1, parentAcl2));
+        assertArrayEquals(objects, securedService.doPostFilterByPermissionWrite(objects));
     }
 
     //todo tests for @AclObjectFilter

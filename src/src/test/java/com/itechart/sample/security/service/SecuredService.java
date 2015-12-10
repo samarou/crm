@@ -39,8 +39,8 @@ public class SecuredService {
         return new ArrayList<>(input);
     }
 
-    @PreFilter("hasPermission(filterObject, 'WRITE')")
-    public <T> T[] doPreFilterByPermissionWrite(T[] input) {
+    @PostFilter("hasPermission(filterObject, 'WRITE')")
+    public <T> T[] doPostFilterByPermissionWrite(T[] input) {
         return Arrays.copyOf(input, input.length);
     }
 
@@ -49,5 +49,4 @@ public class SecuredService {
         return new ArrayList<>(input);
     }
 
-    //todo hasAnyPermission
 }

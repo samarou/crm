@@ -26,7 +26,7 @@ public class AclBuilder {
         return new AclBuilder(objectTypeId, objectId);
     }
 
-    public AclBuilder ownerId(String ownerName) {
+    public AclBuilder owner(String ownerName) {
         Assert.hasLength(ownerName, "ownerName is empty");
         this.ownerName = ownerName;
         return this;
