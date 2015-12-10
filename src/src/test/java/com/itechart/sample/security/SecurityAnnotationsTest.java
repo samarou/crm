@@ -2,7 +2,12 @@ package com.itechart.sample.security;
 
 import com.itechart.sample.model.persistent.security.Role;
 import com.itechart.sample.model.persistent.security.User;
+import com.itechart.sample.model.persistent.security.acl.Acl;
+import com.itechart.sample.model.security.ObjectIdentityImpl;
+import com.itechart.sample.model.security.Permission;
+import com.itechart.sample.model.security.SecuredObject;
 import com.itechart.sample.security.service.SecuredService;
+import com.itechart.sample.security.util.AclBuilder;
 import com.itechart.sample.security.util.RoleBuilder;
 import com.itechart.sample.security.util.UserBuilder;
 import com.itechart.sample.security.util.auth.WithUser;
@@ -13,6 +18,9 @@ import com.itechart.sample.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.aop.TargetSource;
+import org.springframework.aop.framework.Advised;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,9 +30,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 
 import javax.annotation.Resource;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author andrei.samarou
@@ -39,6 +52,8 @@ public class SecurityAnnotationsTest {
     private RoleService roleServiceMock;
     @Autowired
     private AclService aclServiceMock;
+    @Autowired
+    private SecuredService securedService;
     @Resource
     private SecuredService securedServiceSpy;
 
@@ -79,115 +94,115 @@ public class SecurityAnnotationsTest {
     }
 
     @WithUser("userRoleManager")
-    @PreAuthorize("hasPrivilege('Object', 'READ')")
+    @PreAuthorize("hasPrivilege('TestObject', 'READ')")
     @Test
     public void testHasPrivilege11() {
     }
 
     @WithUser("userRoleManager")
-    @PreAuthorize("hasPrivilege('Object', 'WRITE')")
+    @PreAuthorize("hasPrivilege('TestObject', 'WRITE')")
     @Test
     public void testHasPrivilege12() {
     }
 
     @WithUser("userRoleAdmin")
-    @PreAuthorize("hasPrivilege('Object', 'ADMIN')")
+    @PreAuthorize("hasPrivilege('TestObject', 'ADMIN')")
     @Test
     public void testHasPrivilege13() {
     }
 
     @WithUser("userRoleAdmin")
-    @PreAuthorize("hasPrivilege('Object', 'READ')")
+    @PreAuthorize("hasPrivilege('TestObject', 'READ')")
     @Test
     public void testHasPrivilege14() {
     }
 
     @WithUser("userRoleAdmin")
-    @PreAuthorize("hasPrivilege('OBJECT', 'WRITE')")
+    @PreAuthorize("hasPrivilege('TESTobject', 'WRITE')")
     @Test(expected = AccessDeniedException.class)
     public void testHasPrivilege21() {
     }
 
     @WithUser("userRoleAdmin")
-    @PreAuthorize("hasPrivilege('Object', 'wRITE')")
+    @PreAuthorize("hasPrivilege('TestObject', 'wRITE')")
     @Test(expected = AccessDeniedException.class)
     public void testHasPrivilege22() {
     }
 
     @WithUser("userRoleUser")
-    @PreAuthorize("hasPrivilege('Object', 'WRITE')")
+    @PreAuthorize("hasPrivilege('TestObject', 'WRITE')")
     @Test(expected = AccessDeniedException.class)
     public void testHasPrivilege23() {
     }
 
     @WithUser("userRoleManager")
-    @PreAuthorize("hasPrivilege('Object', 'ADMIN')")
+    @PreAuthorize("hasPrivilege('TestObject', 'ADMIN')")
     @Test(expected = AccessDeniedException.class)
     public void testHasPrivilege24() {
     }
 
     @WithUser("userEmpty")
-    @PreAuthorize("hasPrivilege('Object', 'READ')")
+    @PreAuthorize("hasPrivilege('TestObject', 'READ')")
     @Test(expected = AccessDeniedException.class)
     public void testHasPrivilege25() {
     }
 
     @WithUser("userEmpty")
-    @PreAuthorize("hasPrivilege('Object', 'WRITE')")
+    @PreAuthorize("hasPrivilege('TestObject', 'WRITE')")
     @Test(expected = AccessDeniedException.class)
     public void testHasPrivilege26() {
     }
 
     @WithUser("userRoleOther")
-    @PreAuthorize("hasPrivilege('Object', 'READ')")
+    @PreAuthorize("hasPrivilege('TestObject', 'READ')")
     @Test(expected = AccessDeniedException.class)
     public void testHasPrivilege27() {
     }
 
     @WithUser("userRoleUser")
-    @PreAuthorize("hasAnyPrivilege('Object', 'READ')")
+    @PreAuthorize("hasAnyPrivilege('TestObject', 'READ')")
     @Test
     public void testHasAnyPrivilege11() {
     }
 
     @WithUser("userRoleManager")
-    @PreAuthorize("hasAnyPrivilege('Object', 'READ', 'WRITE')")
+    @PreAuthorize("hasAnyPrivilege('TestObject', 'READ', 'WRITE')")
     @Test
     public void testHasAnyPrivilege12() {
     }
 
     @WithUser("userRoleAdmin")
-    @PreAuthorize("hasAnyPrivilege('Object', 'READ', 'WRITE', 'ADMIN')")
+    @PreAuthorize("hasAnyPrivilege('TestObject', 'READ', 'WRITE', 'ADMIN')")
     @Test
     public void testHasAnyPrivilege13() {
     }
 
     @WithUser("userRoleAdmin")
-    @PreAuthorize("hasAnyPrivilege('Object', 'READ')")
+    @PreAuthorize("hasAnyPrivilege('TestObject', 'READ')")
     @Test
     public void testHasAnyPrivilege14() {
     }
 
     @WithUser("userRoleUser")
-    @PreAuthorize("hasAnyPrivilege('Object', 'READ', 'WRITE')")
+    @PreAuthorize("hasAnyPrivilege('TestObject', 'READ', 'WRITE')")
     @Test
     public void testHasAnyPrivilege15() {
     }
 
     @WithUser("userRoleUser")
-    @PreAuthorize("hasAnyPrivilege('Object', 'WRITE')")
+    @PreAuthorize("hasAnyPrivilege('TestObject', 'WRITE')")
     @Test(expected = AccessDeniedException.class)
     public void testHasAnyPrivilege21() {
     }
 
     @WithUser("userRoleManager")
-    @PreAuthorize("hasAnyPrivilege('Object', 'ADMIN')")
+    @PreAuthorize("hasAnyPrivilege('TestObject', 'ADMIN')")
     @Test(expected = AccessDeniedException.class)
     public void testHasAnyPrivilege22() {
     }
 
     @WithUser("userEmpty")
-    @PreAuthorize("hasAnyPrivilege('Object')")
+    @PreAuthorize("hasAnyPrivilege('TestObject')")
     @Test(expected = AccessDeniedException.class)
     public void testHasAnyPrivilege23() {
     }
@@ -211,31 +226,32 @@ public class SecurityAnnotationsTest {
     }
 
     @WithUser("userEmpty")
-    @PreAuthorize("@securedServiceSpy.hasAccess(true)")
+    @PreAuthorize("@securedService.hasAccess(true)")
     @Test
     public void testCustomMethod1() {
     }
 
     @WithUser("userEmpty")
-    @PreAuthorize("@securedServiceSpy.hasAccess(false)")
+    @PreAuthorize("@securedService.hasAccess(false)")
     @Test(expected = AccessDeniedException.class)
     public void testCustomMethod2() {
     }
 
     @WithUser("userRoleManager")
-    @PreAuthorize("hasPrivilege('Object', 'WRITE') or hasRole('Admin')")
+    @PreAuthorize("hasPrivilege('TestObject', 'WRITE') or hasRole('Admin')")
     @Test
     public void testCompound1() {
     }
 
     @WithUser("userRoleManager")
-    @PreAuthorize("hasPrivilege('Object', 'WRITE') and hasRole('Admin')")
+    @PreAuthorize("hasPrivilege('TestObject', 'WRITE') and hasRole('Admin')")
     @Test(expected = AccessDeniedException.class)
     public void testCompound2() {
     }
 
     @WithUser("userRoleManager")
     @PreAuthorize("hasRole('Manager') and hasRole('Root')")
+    @Test
     public void testCompound3() {
     }
 
@@ -246,12 +262,12 @@ public class SecurityAnnotationsTest {
     }
 
     @WithUser("userRoleManager")
-    @PreAuthorize("hasPermission(999, 'Object', 'WRITE')")
+    @PreAuthorize("hasPermission(999, 'TestObject', 'WRITE')")
     public void testHasPermission11() {
     }
 
     @WithUser("userRoleManager")
-    @PreAuthorize("hasPermission(999, 'Object', 'ADMIN')")
+    @PreAuthorize("hasPermission(999, 'TestObject', 'ADMIN')")
     @Test(expected = AccessDeniedException.class)
     public void testHasPermission12() {
     }
@@ -265,34 +281,140 @@ public class SecurityAnnotationsTest {
     @PreAuthorize("hasPermission(999, 'OtherObject', 'READ')")
     @Test(expected = AccessDeniedException.class)
     public void testHasPermission14() {
-        // ACL for object 999 doesn't exist, so we check user privileges.
+        // ACL for object with id=999 doesn't exist, so we check user privileges.
         // But we have mapping of privileges to permissions by name and
         // privilege's name 'Read' (in role Other) != permission name 'READ'
     }
 
-    //todo test next cases of SecuredService
-    // doPreAuthorizeByObjectId(Long objectId) {
-    // doPreFilterWithObjectPropertyEqUserName(List<T> input) {
-    // doPostFilterWithObjectPropertyEqUserName() {
-    // doPreFilterByPermissionRead(List<T> input) {
-    // doPostFilterByPermissionRead(List<T> input) {
+    @Test
+    public void testPreAuthorizeByReadObjectId() {
+        setAuthentication("userRoleManager");
+        securedService.doPreAuthorizeByReadObjectId(999L);
+
+        setAuthentication("userRoleOther");
+        try {
+            securedService.doPreAuthorizeByReadObjectId(999L);
+            fail("AccessDeniedException expected");
+        } catch (AccessDeniedException ignored) {
+        }
+
+        Acl acl = AclBuilder.create(1L, 999L).privilege("userRoleOther", Permission.READ).build();
+        when(aclServiceMock.findAclWithAncestors(new ObjectIdentityImpl(999L, "TestObject")))
+                .thenReturn(Collections.singletonList(acl));
+
+        securedService.doPreAuthorizeByReadObjectId(999L);
+    }
+
+    @Test
+    @WithUser("userEmpty")
+    @SuppressWarnings("unchecked")
+    public void testPreFilterWithObjectPropertyEqUserName() {
+        TestObject object = new TestObject("userEmpty");
+        List<TestObject> objects = Collections.singletonList(object);
+
+        reset(unwrap(securedServiceSpy));
+        assertEquals(objects, securedServiceSpy.doPreFilterWithObjectPropertyEqUserName(objects));
+        verify(unwrap(securedServiceSpy)).doPreFilterWithObjectPropertyEqUserName(objects);
+
+        reset(unwrap(securedServiceSpy));
+        object.setProperty("notUserName");
+        List<TestObject> input = new ArrayList<>(objects); // mutable list expected
+        List<TestObject> result = securedServiceSpy.doPreFilterWithObjectPropertyEqUserName(input);
+        // while filtering we change input collection, so check that is same object by reference
+        verify(unwrap(securedServiceSpy)).doPreFilterWithObjectPropertyEqUserName(same(input));
+        verify(unwrap(securedServiceSpy)).doPreFilterWithObjectPropertyEqUserName(eq(result));
+        assertTrue(result.isEmpty());
+
+        try {
+            securedServiceSpy.doPreFilterWithObjectPropertyEqUserName(objects);
+            fail("UnsupportedOperationException expected");
+        } catch (UnsupportedOperationException ignored) {
+            // Exception when we try to modify/filter immutable list
+        }
+    }
+
+    @Test
+    @WithUser("userEmpty")
+    public void testPostFilterWithObjectPropertyEqUserName() {
+        TestObject object = new TestObject("userEmpty");
+        List<TestObject> objects = Collections.singletonList(object);
+
+        reset(unwrap(securedServiceSpy));
+        assertEquals(objects, securedServiceSpy.doPostFilterWithObjectPropertyEqUserName(objects));
+        verify(unwrap(securedServiceSpy)).doPostFilterWithObjectPropertyEqUserName(objects);
+
+        reset(unwrap(securedServiceSpy));
+        object.setProperty("notUserName");
+        List<TestObject> result = securedServiceSpy.doPostFilterWithObjectPropertyEqUserName(objects);
+        verify(unwrap(securedServiceSpy)).doPostFilterWithObjectPropertyEqUserName(objects);
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void testPreFilterByPermissionRead() {
+        setAuthentication("userRoleUser");
+        try {
+            List<Object> nonSecuredObjects = Collections.singletonList(new Object());
+            securedServiceSpy.doPreFilterByPermissionRead(nonSecuredObjects);
+            fail("IllegalArgumentException expected");
+        } catch (IllegalArgumentException ignored) {
+            // only successors of SecuredObject are allowed
+        }
+
+        TestObject object = new TestObject(999L);
+        List<TestObject> objects = Collections.singletonList(object);
+
+        reset(unwrap(securedServiceSpy));
+        assertEquals(objects, securedServiceSpy.doPreFilterByPermissionRead(objects));
+        verify(unwrap(securedServiceSpy)).doPreFilterByPermissionRead(objects);
+
+        setAuthentication("userRoleManager");
+        assertEquals(objects, securedServiceSpy.doPreFilterByPermissionRead(new ArrayList<>(objects)));
+
+        setAuthentication("userRoleOther");
+        try {
+            securedServiceSpy.doPreFilterByPermissionRead(objects);
+            fail("UnsupportedOperationException expected");
+        } catch (UnsupportedOperationException e) {
+            // Exception when we try to modify/filter immutable list
+        }
+
+        reset(unwrap(securedServiceSpy));
+        List<TestObject> input = new ArrayList<>(objects);
+        List<TestObject> result = securedServiceSpy.doPreFilterByPermissionRead(input);
+        verify(unwrap(securedServiceSpy)).doPreFilterByPermissionRead(eq(result));
+        verify(unwrap(securedServiceSpy)).doPreFilterByPermissionRead(same(input));
+        assertTrue(result.isEmpty());
+
+        Acl acl = AclBuilder.create(1L, 999L).privilege("userRoleOther", Permission.READ).build();
+        when(aclServiceMock.findAclWithAncestors(object)).thenReturn(Collections.singletonList(acl));
+        assertEquals(objects, securedServiceSpy.doPreFilterByPermissionRead(new ArrayList<>(objects)));
+
+        reset(aclServiceMock);
+        // 'write' permission includes lower permission 'read'
+        acl = AclBuilder.create(1L, 999L).privilege("userRoleOther", Permission.WRITE).build();
+        when(aclServiceMock.findAclWithAncestors(object)).thenReturn(Collections.singletonList(acl));
+        assertEquals(objects, securedServiceSpy.doPreFilterByPermissionRead(new ArrayList<>(objects)));
+        // check findAclsWithAncestors was invoked while batch caching and findAclWithAncestors from evaluator
+        verify(aclServiceMock).findAclsWithAncestors(eq(Collections.singletonList(object)));
+        verify(aclServiceMock).findAclWithAncestors(object);
+
+        setAuthentication("userRoleManager");
+        mock(UserBuilder.create("userRoleManager").build());
+
+        reset(aclServiceMock);
+        // now manager have no privilege 'read' explicitly. it isn't inherited from manager's 'write'
+        assertEquals(0, securedServiceSpy.doPreFilterByPermissionRead(new ArrayList<>(objects)).size());
+    }
 
     //todo tests for @AclObjectFilter
-
-    /*
-ArgumentCaptor<Person> peopleCaptor = ArgumentCaptor.forClass(Person.class);
-verify(mock, times(2)).doSomething(peopleCaptor.capture());
-List<Person> capturedPeople = peopleCaptor.getAllValues();
-assertEquals("John", capturedPeople.get(0).getName());
-assertEquals("Jane", capturedPeople.get(1).getName());
-     */
 
     @Before
     public void initAuthData() {
         Role rootRole = RoleBuilder.create("Root").build();
-        Role userRole = RoleBuilder.create("User", rootRole).privilege("Object", "READ").build();
-        Role managerRole = RoleBuilder.create("Manager", userRole).privilege("Object", "WRITE").build();
-        Role adminRole = RoleBuilder.create("Admin", userRole).privilege("Object", "WRITE").privilege("Object", "ADMIN").build();
+        Role userRole = RoleBuilder.create("User", rootRole).privilege("TestObject", "READ").build();
+        Role managerRole = RoleBuilder.create("Manager", userRole).privilege("TestObject", "WRITE").build();
+        Role adminRole = RoleBuilder.create("Admin", userRole).privilege("TestObject", "WRITE").privilege("TestObject", "ADMIN").build();
         mock(rootRole, userRole, managerRole, adminRole);
 
         mock(UserBuilder.create("userEmpty").build());
@@ -310,8 +432,62 @@ assertEquals("Jane", capturedPeople.get(1).getName());
         when(roleServiceMock.getRoles()).thenReturn(Arrays.asList(role));
     }
 
-    public static void setAuthentication(String userName) {
+    private void setAuthentication(String userName) {
         Authentication token = new UsernamePasswordAuthenticationToken(userName, userName);
         SecurityContextHolder.getContext().setAuthentication(token);
     }
+
+    @SuppressWarnings("unchecked")
+    private <T> T unwrap(T proxy) {
+        try {
+            Class<?> proxyClass = proxy.getClass();
+            if (proxyClass.getName().toLowerCase().contains("cglib")) {
+                Method targetSourceMethod = proxyClass.getDeclaredMethod("getTargetSource");
+                targetSourceMethod.setAccessible(true);
+                return (T) ((TargetSource) targetSourceMethod.invoke(proxy)).getTarget();
+            } else if (AopUtils.isJdkDynamicProxy(proxy)) {
+                return (T) ((Advised) proxy).getTargetSource().getTarget();
+            }
+            return proxy;
+        } catch (Exception e) {
+            throw new RuntimeException("Can't unwrap proxied object", e);
+        }
+    }
+
+    public static class TestObject implements SecuredObject {
+
+        private Long id;
+        private String property;
+
+        public TestObject(Long id) {
+            this.id = id;
+        }
+
+        public TestObject(String property) {
+            this.property = property;
+        }
+
+        @Override
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+        public String getProperty() {
+            return property;
+        }
+
+        public void setProperty(String property) {
+            this.property = property;
+        }
+
+        @Override
+        public String getObjectType() {
+            return "TestObject";
+        }
+    }
+
 }

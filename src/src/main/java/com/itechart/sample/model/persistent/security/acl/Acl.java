@@ -145,9 +145,11 @@ public class Acl extends BaseEntity {
     }
 
     private AclEntry findEntry(Long principalId) {
-        for (AclEntry entry : getEntries()) {
-            if (entry.getPrincipalId().equals(principalId)) {
-                return entry;
+        if (entries != null) {
+            for (AclEntry entry : entries) {
+                if (entry.getPrincipalId().equals(principalId)) {
+                    return entry;
+                }
             }
         }
         return null;

@@ -149,14 +149,14 @@ public class MethodSecurityExpressionHandlerImpl extends BaseSecurityExpressionH
         if (node instanceof CompoundExpression) {
             return false;
         }
+        if (node instanceof MethodReference) {
+            String exprMethodName = ((MethodReference) node).getName();
+            if (exprMethodName.equals(methodName)) {
+                return true;
+            }
+        }
         for (int i = 0, count = node.getChildCount(); i < count; i++) {
             SpelNode child = node.getChild(i);
-            if (child instanceof MethodReference) {
-                String exprMethodName = ((MethodReference) child).getName();
-                if (exprMethodName.equals(methodName)) {
-                    return true;
-                }
-            }
             if (hasMethodExpression(child, methodName)) {
                 return true;
             }
