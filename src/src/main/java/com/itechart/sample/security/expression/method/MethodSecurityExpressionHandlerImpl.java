@@ -7,6 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
+import org.springframework.expression.spel.SpelNode;
+import org.springframework.expression.spel.ast.CompoundExpression;
+import org.springframework.expression.spel.ast.MethodReference;
+import org.springframework.expression.spel.standard.SpelExpression;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.security.access.PermissionCacheOptimizer;
 import org.springframework.security.access.expression.ExpressionUtils;
@@ -62,6 +66,12 @@ public class MethodSecurityExpressionHandlerImpl extends BaseSecurityExpressionH
             logger.debug("Filtering with expression: " + filterExpression.getExpressionString());
         }
 
+        boolean needToCachePermissions = false;
+        if (filterExpression instanceof SpelExpression) {
+            SpelNode node = ((SpelExpression) filterExpression).getAST();
+            needToCachePermissions = hasMethodExpression(node, "hasPermission");
+        }
+
         if (filterTarget instanceof Collection) {
             Collection collection = (Collection) filterTarget;
             retainList = new ArrayList(collection.size());
@@ -70,12 +80,11 @@ public class MethodSecurityExpressionHandlerImpl extends BaseSecurityExpressionH
                 logger.debug("Filtering collection with " + collection.size() + " elements");
             }
 
-            if (permissionCacheOptimizer != null) {
-                permissionCacheOptimizer.cachePermissionsFor(
-                        rootObject.getAuthentication(), collection);
+            if (permissionCacheOptimizer != null && needToCachePermissions) {
+                permissionCacheOptimizer.cachePermissionsFor(rootObject.getAuthentication(), collection);
             }
 
-            for (Object filterObject : (Collection) filterTarget) {
+            for (Object filterObject : collection) {
                 rootObject.setFilterObject(filterObject);
 
                 if (ExpressionUtils.evaluateAsBoolean(filterExpression, ctx)) {
@@ -87,10 +96,12 @@ public class MethodSecurityExpressionHandlerImpl extends BaseSecurityExpressionH
                 logger.debug("Retaining elements: " + retainList);
             }
 
-            collection.clear();
-            collection.addAll(retainList);
+            if (collection.size() != retainList.size()) {
+                collection.clear();
+                collection.addAll(retainList);
+            }
 
-            return filterTarget;
+            return collection;
         }
 
         if (filterTarget.getClass().isArray()) {
@@ -101,16 +112,15 @@ public class MethodSecurityExpressionHandlerImpl extends BaseSecurityExpressionH
                 logger.debug("Filtering array with " + array.length + " elements");
             }
 
-            if (permissionCacheOptimizer != null) {
-                permissionCacheOptimizer.cachePermissionsFor(
-                        rootObject.getAuthentication(), Arrays.asList(array));
+            if (permissionCacheOptimizer != null && needToCachePermissions) {
+                permissionCacheOptimizer.cachePermissionsFor(rootObject.getAuthentication(), Arrays.asList(array));
             }
 
-            for (Object o : array) {
-                rootObject.setFilterObject(o);
+            for (Object filterObject : array) {
+                rootObject.setFilterObject(filterObject);
 
                 if (ExpressionUtils.evaluateAsBoolean(filterExpression, ctx)) {
-                    retainList.add(o);
+                    retainList.add(filterObject);
                 }
             }
 
@@ -118,19 +128,40 @@ public class MethodSecurityExpressionHandlerImpl extends BaseSecurityExpressionH
                 logger.debug("Retaining elements: " + retainList);
             }
 
-            Object[] filtered = (Object[]) Array.newInstance(
-                    filterTarget.getClass().getComponentType(), retainList.size());
+            if (array.length != retainList.size()) {
+                array = (Object[]) Array.newInstance(
+                        array.getClass().getComponentType(), retainList.size());
 
-            for (int i = 0; i < retainList.size(); i++) {
-                filtered[i] = retainList.get(i);
+                for (int i = 0; i < retainList.size(); i++) {
+                    array[i] = retainList.get(i);
+                }
             }
 
-            return filtered;
+            return array;
         }
 
         throw new IllegalArgumentException(
                 "Filter target must be a collection or array type, but was "
                         + filterTarget);
+    }
+
+    private boolean hasMethodExpression(SpelNode node, String methodName) {
+        if (node instanceof CompoundExpression) {
+            return false;
+        }
+        for (int i = 0, count = node.getChildCount(); i < count; i++) {
+            SpelNode child = node.getChild(i);
+            if (child instanceof MethodReference) {
+                String exprMethodName = ((MethodReference) child).getName();
+                if (exprMethodName.equals(methodName)) {
+                    return true;
+                }
+            }
+            if (hasMethodExpression(child, methodName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void setParameterNameDiscoverer(ParameterNameDiscoverer parameterNameDiscoverer) {
