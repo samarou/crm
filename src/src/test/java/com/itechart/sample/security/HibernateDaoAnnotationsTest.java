@@ -44,6 +44,7 @@ public class HibernateDaoAnnotationsTest {
     private SecuredDao securedDao;
 
     @Test
+    @WithUser("userRoleUser")
     public void testBadDeclaration() {
         assertThrown(IllegalStateException.class, securedDao::doBadDeclaration1);
         assertThrown(IllegalStateException.class, securedDao::doBadDeclaration2);
@@ -51,6 +52,9 @@ public class HibernateDaoAnnotationsTest {
         assertThrown(IllegalStateException.class, securedDao::doBadDeclaration4);
         assertThrown(IllegalStateException.class, securedDao::doBadDeclaration5);
         assertThrown(IllegalStateException.class, () -> securedDao.doBadDeclaration6(null));
+        assertThrown(IllegalStateException.class, securedDao::doBadDeclaration7);
+        assertThrown(IllegalStateException.class, securedDao::doBadDeclaration8);
+        assertThrown(IllegalStateException.class, securedDao::doBadDeclaration9);
     }
 
     @Test
@@ -66,7 +70,21 @@ public class HibernateDaoAnnotationsTest {
         securedDao.doGoodDeclaration8();
         securedDao.doGoodDeclaration9();
         securedDao.doGoodDeclaration10();
+        securedDao.doGoodDeclaration11();
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @PostConstruct
     public void initialize() {

@@ -150,8 +150,9 @@ public class AclHibernateSecurityAspect {
         for (FilterConfig filter : filters) {
             FilterConfig existed = filtersMap.get(filter.getObjectType());
             if (existed != null && !existed.equals(filter)) {
-                throw new RuntimeException("Found two security rules on same object type, " +
-                        "but with different parameters in " + method + ". Check duplicated " + AclFilterRule.class);
+                throw new IllegalStateException("Found two security rules on same object type, "
+                        + "but with different parameters in " + method + ". Check duplicated annotation @"
+                        + AclFilterRule.class.getSimpleName());
             }
             filtersMap.put(filter.getObjectType(), filter);
         }

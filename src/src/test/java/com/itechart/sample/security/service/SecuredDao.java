@@ -1,5 +1,6 @@
 package com.itechart.sample.security.service;
 
+import com.itechart.sample.model.security.Permission;
 import com.itechart.sample.security.annotation.AclFilter;
 import com.itechart.sample.security.annotation.AclFilterRule;
 import com.itechart.sample.security.hibernate.aop.HibernateSecuredDao;
@@ -48,6 +49,23 @@ public class SecuredDao implements HibernateSecuredDao {
     public void doBadDeclaration6(List<TestObject> objects) {
     }
 
+    @AclFilter({
+            @AclFilterRule(type = TestObject.class),
+            @AclFilterRule(type = TestObject.class, inherit = true)
+    })
+    public void doBadDeclaration7() {
+    }
+
+    @AclFilterRule(type = TestObject.class)
+    @AclFilterRule(type = TestObject.class, permissions = Permission.WRITE)
+    public void doBadDeclaration8() {
+    }
+
+    @AclFilterRule(type = TestObject.class, permissions = Permission.READ)
+    @AclFilterRule(type = TestObject.class, permissions = Permission.WRITE)
+    public void doBadDeclaration9() {
+    }
+
     @AclFilter
     public TestObject doGoodDeclaration1() {
         return null;
@@ -84,17 +102,24 @@ public class SecuredDao implements HibernateSecuredDao {
     }
 
     @AclFilter(@AclFilterRule(type = TestObject.class))
-    public <K, V> Map<K, V>  doGoodDeclaration8() {
+    public <K, V> Map<K, V> doGoodDeclaration8() {
         return null;
     }
 
     @AclFilterRule(type = TestObject.class)
-    public void doGoodDeclaration9(){
+    public void doGoodDeclaration9() {
+    }
+
+    @AclFilter({
+            @AclFilterRule(type = TestObject.class),
+            @AclFilterRule(type = TestObject.class, permissions = Permission.READ)
+    })
+    public void doGoodDeclaration10() {
     }
 
     @AclFilterRule(type = TestObject.class)
     @AclFilterRule(type = TestObject.class)
-    public void doGoodDeclaration10(){
+    public void doGoodDeclaration11() {
     }
 
     @Override
