@@ -36,6 +36,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static com.itechart.sample.security.util.junit.ThrowableAssert.assertThrown;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -58,6 +59,7 @@ public class SpringSecurityAnnotationsTest {
     private RoleService roleServiceMock;
     @Autowired
     private AclService aclServiceMock;
+
     @Autowired
     private SecuredService securedService;
     @Resource
@@ -288,11 +290,7 @@ public class SpringSecurityAnnotationsTest {
         securedService.doPreAuthorizeByReadObjectId(999L);
 
         setAuthentication("userRoleOther");
-        try {
-            securedService.doPreAuthorizeByReadObjectId(999L);
-            fail("AccessDeniedException expected");
-        } catch (AccessDeniedException ignored) {
-        }
+        assertThrown(AccessDeniedException.class, () -> securedService.doPreAuthorizeByReadObjectId(999L));
 
         Acl acl = AclBuilder.create(1L, 999L).privilege("userRoleOther", Permission.READ).build();
         when(aclServiceMock.findAclWithAncestors(new ObjectIdentityImpl(999L, "TestObject")))
@@ -321,12 +319,8 @@ public class SpringSecurityAnnotationsTest {
         verify(unwrap(securedServiceSpy)).doPreFilterWithObjectPropertyEqUserName(eq(result));
         assertTrue(result.isEmpty());
 
-        try {
-            securedServiceSpy.doPreFilterWithObjectPropertyEqUserName(objects);
-            fail("UnsupportedOperationException expected");
-        } catch (UnsupportedOperationException ignored) {
-            // Exception when we try to modify/filter immutable list
-        }
+        assertThrown(UnsupportedOperationException.class,
+                () -> securedServiceSpy.doPreFilterWithObjectPropertyEqUserName(objects));
     }
 
     @Test
@@ -349,13 +343,10 @@ public class SpringSecurityAnnotationsTest {
     @Test
     public void testPreFilterByPermissionRead() {
         setAuthentication("userRoleUser");
-        try {
-            List<Object> nonSecuredObjects = Collections.singletonList(new Object());
-            securedServiceSpy.doPreFilterByPermissionRead(nonSecuredObjects);
-            fail("IllegalArgumentException expected");
-        } catch (IllegalArgumentException ignored) {
-            // only successors of SecuredObject are allowed
-        }
+
+        List<Object> nonSecuredObjects = Collections.singletonList(new Object());
+        assertThrown(IllegalArgumentException.class,
+                () -> securedServiceSpy.doPreFilterByPermissionRead(nonSecuredObjects));
 
         TestObject object = new TestObject(999L);
         List<TestObject> objects = Collections.singletonList(object);
@@ -368,51 +359,18 @@ public class SpringSecurityAnnotationsTest {
         assertEquals(objects, securedServiceSpy.doPreFilterByPermissionRead(new ArrayList<>(objects)));
 
         setAuthentication("userRoleOther");
-        try {
-            securedServiceSpy.doPreFilterByPermissionRead(objects);
-            fail("UnsupportedOperationException expected");
-        } catch (UnsupportedOperationException e) {
-            // Exception when we try to modify/filter immutable list
-        }
-
-        reset(unwrap(securedServiceSpy));
-        List<TestObject> input = new ArrayList<>(objects);
-        List<TestObject> result = securedServiceSpy.doPreFilterByPermissionRead(input);
-        verify(unwrap(securedServiceSpy)).doPreFilterByPermissionRead(eq(result));
-        verify(unwrap(securedServiceSpy)).doPreFilterByPermissionRead(same(input));
-        assertTrue(result.isEmpty());
-
-        Acl acl = AclBuilder.create(1L, 999L).privilege("userRoleOther", Permission.READ).build();
-        when(aclServiceMock.findAclWithAncestors(object)).thenReturn(Collections.singletonList(acl));
-        assertEquals(objects, securedServiceSpy.doPreFilterByPermissionRead(new ArrayList<>(objects)));
-
-        reset(aclServiceMock);
-        // 'write' permission includes lower permission 'read'
-        acl = AclBuilder.create(1L, 999L).privilege("userRoleOther", Permission.WRITE).build();
-        when(aclServiceMock.findAclWithAncestors(object)).thenReturn(Collections.singletonList(acl));
-        assertEquals(objects, securedServiceSpy.doPreFilterByPermissionRead(new ArrayList<>(objects)));
-        // check findAclsWithAncestors was invoked while batch caching and findAclWithAncestors from evaluator
-        verify(aclServiceMock).findAclsWithAncestors(eq(Collections.singletonList(object)));
-        verify(aclServiceMock).findAclWithAncestors(object);
-
-        setAuthentication("userRoleManager");
-        mock(UserBuilder.create("userRoleManager").build());
-
-        reset(aclServiceMock);
-        // now manager have no privilege 'read' explicitly. it isn't inherited from manager's 'write'
-        assertTrue(securedServiceSpy.doPreFilterByPermissionRead(new ArrayList<>(objects)).isEmpty());
+        assertThrown(UnsupportedOperationException.class,
+                () -> securedServiceSpy.doPreFilterByPermissionRead(objects));
     }
 
     @Test
     public void testPostFilterByPermissionRead() {
         setAuthentication("userRoleUser");
-        try {
-            List<Object> nonSecuredObjects = Collections.singletonList(new Object());
-            securedServiceSpy.doPostFilterByPermissionRead(nonSecuredObjects);
-            fail("IllegalArgumentException expected");
-        } catch (IllegalArgumentException ignored) {
-            // only successors of SecuredObject are allowed
-        }
+
+        List<Object> nonSecuredObjects = Collections.singletonList(new Object());
+        assertThrown(IllegalArgumentException.class,
+                () -> securedServiceSpy.doPostFilterByPermissionRead(nonSecuredObjects));
+
         TestObject object = new TestObject(999L);
         List<TestObject> objects = Collections.singletonList(object);
 
