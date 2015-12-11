@@ -15,7 +15,6 @@ import com.itechart.sample.security.util.junit.ContextAwareJUnit4ClassRunner;
 import com.itechart.sample.service.AclService;
 import com.itechart.sample.service.RoleService;
 import com.itechart.sample.service.UserService;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.aop.TargetSource;
@@ -29,6 +28,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -500,7 +500,7 @@ public class SpringSecurityAnnotationsTest {
         assertArrayEquals(objects, securedService.doPostFilterByPermissionWrite(objects));
     }
 
-    @Before
+    @PostConstruct
     public void initAuthData() {
         Role rootRole = RoleBuilder.create("Root").build();
         Role userRole = RoleBuilder.create("User", rootRole).privilege("TestObject", "READ").build();

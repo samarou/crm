@@ -1,10 +1,17 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sec="http://www.springframework.org/schema/security"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:sec="http://www.springframework.org/schema/security"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
-       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
+    <!--todo import resource="localDBTestContext.xml"/-->
+
+    <aop:aspectj-autoproxy/>
+    <context:spring-configured/>
     <context:annotation-config/>
 
     <!-- Security config -->
@@ -41,7 +48,43 @@
 
     <bean name="roleHierarchy" class="com.itechart.sample.security.RoleHierarchyImpl"/>
 
+    <bean class="com.itechart.sample.security.hibernate.aop.AclHibernateSecurityAspect">
+        <property name="filterParamsBuilder">
+            <bean class="com.itechart.sample.security.hibernate.filter.FilterParamsBuilder">
+                <property name="dictionaryService" ref="dictionaryServiceMock"/>
+                <property name="roleHierarchy" ref="roleHierarchy"/>
+            </bean>
+        </property>
+    </bean>
+
+    <!-- Dao config -->
+
+    <bean id="dataSource" class="com.itechart.sample.security.util.dao.NullDataSource"/>
+
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="annotatedClasses" value="com.itechart.sample.security.model.TestObject"/>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean name="securedDao" class="com.itechart.sample.security.service.SecuredDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
     <!-- Mocked services -->
+
+    <bean id="dictionaryServiceMock" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="com.itechart.sample.service.DictionaryService"/>
+    </bean>
 
     <bean id="userServiceMock" class="org.mockito.Mockito" factory-method="mock">
         <constructor-arg value="com.itechart.sample.service.UserService"/>
