@@ -41,11 +41,8 @@ public class AclBuilder {
     public AclBuilder privilege(String userName, Permission... permission) {
         Assert.hasLength(userName, "userName is empty");
         Assert.notEmpty(permission, "permission is empty");
-        Set<Permission> userPermissions = permissions.get(userName);
-        if (userPermissions == null) {
-            userPermissions = EnumSet.noneOf(Permission.class);
-            permissions.put(userName, userPermissions);
-        }
+        Set<Permission> userPermissions = permissions.computeIfAbsent(
+                userName, s -> EnumSet.noneOf(Permission.class));
         userPermissions.addAll(Arrays.asList(permission));
         return this;
     }
@@ -54,9 +51,7 @@ public class AclBuilder {
         Acl acl = new Acl(key,
                 parent != null ? (long) parent.getObjectKey().hashCode() : null,
                 ownerName != null ? (long) ownerName.hashCode() : null);
-        for (Map.Entry<String, Set<Permission>> entry : permissions.entrySet()) {
-            acl.addPermissions((long) entry.getKey().hashCode(), entry.getValue());
-        }
+        permissions.forEach((userName, permissions) -> acl.addPermissions((long) userName.hashCode(), permissions));
         return acl;
     }
 }
