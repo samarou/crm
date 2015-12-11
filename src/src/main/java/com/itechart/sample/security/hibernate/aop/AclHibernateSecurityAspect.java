@@ -2,8 +2,8 @@ package com.itechart.sample.security.hibernate.aop;
 
 import com.itechart.sample.model.security.Permission;
 import com.itechart.sample.model.security.SecuredObject;
-import com.itechart.sample.security.annotation.AclObjectFilter;
-import com.itechart.sample.security.annotation.AclRule;
+import com.itechart.sample.security.annotation.AclFilter;
+import com.itechart.sample.security.annotation.AclFilterRule;
 import com.itechart.sample.security.hibernate.filter.FilterParamsBuilder;
 import com.itechart.sample.security.hibernate.filter.FilterParamsSource;
 import com.itechart.sample.security.hibernate.filter.FilterType;
@@ -29,7 +29,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Aspect that intercepts all methods annotated with {@link AclObjectFilter}
+ * Aspect that intercepts all methods annotated with {@link AclFilter}
  * It enables predefined hibernate security filters on method's execution time.
  * <p>
  * Note: Because we need to work with the hibernate session, there is requirement
@@ -53,13 +53,13 @@ public class AclHibernateSecurityAspect {
 
     private FilterParamsBuilder filterParamsBuilder;
 
-    @Around("@annotation(aclObjectFilter) && (within(HibernateSecuredDao+) || within(org.springframework.orm..HibernateDaoSupport+))")
-    public Object applySecurityFilter(ProceedingJoinPoint joinPoint, AclObjectFilter aclObjectFilter) throws Throwable {
+    @Around("@annotation(aclFilter) && (within(HibernateSecuredDao+) || within(org.springframework.orm..HibernateDaoSupport+))")
+    public Object applySecurityFilter(ProceedingJoinPoint joinPoint, AclFilter aclFilter) throws Throwable {
         Set<FilterConfig> filters = null;
         SessionFactory sessionFactory = null;
         try {
-            if (aclObjectFilter == null) {
-                throw new IllegalStateException("Advised method doesn't have annotation " + AclObjectFilter.class);
+            if (aclFilter == null) {
+                throw new IllegalStateException("Advised method doesn't have annotation " + AclFilter.class);
             }
             Method method = getDeclaredMethod(joinPoint);
 
@@ -67,7 +67,7 @@ public class AclHibernateSecurityAspect {
             filters = methodFilters.get(method);
 
             if (filters == null) {
-                filters = getFilterConfigs(joinPoint, aclObjectFilter);
+                filters = getFilterConfigs(joinPoint, aclFilter);
 
                 // cache recognized filters
                 methodFilters.put(method, filters);
@@ -120,22 +120,22 @@ public class AclHibernateSecurityAspect {
     /**
      * Get configurations of filters appropriated for adviced method
      */
-    private Set<FilterConfig> getFilterConfigs(ProceedingJoinPoint joinPoint, AclObjectFilter aclObjectFilter) throws NoSuchMethodException {
+    private Set<FilterConfig> getFilterConfigs(ProceedingJoinPoint joinPoint, AclFilter aclFilter) throws NoSuchMethodException {
         Method method = getDeclaredMethod(joinPoint);
         List<FilterConfig> filters;
-        AclRule[] aclRules = aclObjectFilter.value();
-        if (aclRules.length != 0) {
+        AclFilterRule[] aclFilterRules = aclFilter.value();
+        if (aclFilterRules.length != 0) {
             // create filter configs based on annotation
-            filters = createFilterConfigs(aclRules);
+            filters = createFilterConfigs(aclFilterRules);
             if (logger.isDebugEnabled()) {
-                logger.debug("Recognized " + filters.size() + " filter configs for " + method + " based on " + AclRule.class);
+                logger.debug("Recognized " + filters.size() + " filter configs for " + method + " based on " + AclFilterRule.class);
             }
         } else {
             // if annotation is empty then create filter configs based on method's return types
             List<Class> filterableTypes = getFilterableTypesFromReturnType(joinPoint);
             if (CollectionUtils.isEmpty(filterableTypes)) {
                 throw new IllegalStateException(
-                        "Can't recognize filterable entity type from method's return type. Define least one " + AclRule.class);
+                        "Can't recognize filterable entity type from method's return type. Define least one " + AclFilterRule.class);
             }
             filters = createFilterConfigs(filterableTypes);
             if (logger.isDebugEnabled()) {
@@ -151,7 +151,7 @@ public class AclHibernateSecurityAspect {
             FilterConfig existed = filtersMap.get(filter.getObjectType());
             if (existed != null && !existed.equals(filter)) {
                 throw new RuntimeException("Found two security rules on same object type, " +
-                        "but with different parameters in " + method + ". Check duplicated " + AclRule.class);
+                        "but with different parameters in " + method + ". Check duplicated " + AclFilterRule.class);
             }
             filtersMap.put(filter.getObjectType(), filter);
         }
@@ -159,13 +159,13 @@ public class AclHibernateSecurityAspect {
     }
 
     /**
-     * Create filter configurations based on {@link AclRule} annotation
+     * Create filter configurations based on {@link AclFilterRule} annotation
      */
-    private List<FilterConfig> createFilterConfigs(AclRule[] aclRules) {
+    private List<FilterConfig> createFilterConfigs(AclFilterRule[] aclFilterRules) {
         List<FilterConfig> filterConfigs = new ArrayList<>();
-        for (AclRule aclRule : aclRules) {
-            for (Class<? extends SecuredObject> type : aclRule.type()) {
-                filterConfigs.add(new FilterConfig(type, aclRule.permissions(), aclRule.inherit()));
+        for (AclFilterRule aclFilterRule : aclFilterRules) {
+            for (Class<? extends SecuredObject> type : aclFilterRule.type()) {
+                filterConfigs.add(new FilterConfig(type, aclFilterRule.permissions(), aclFilterRule.inherit()));
             }
         }
         return filterConfigs;
@@ -173,7 +173,7 @@ public class AclHibernateSecurityAspect {
 
     /**
      * Create filter configurations based on filterable types
-     * from method's return type in case of empty {@link AclObjectFilter}
+     * from method's return type in case of empty {@link AclFilter}
      */
     private List<FilterConfig> createFilterConfigs(List<Class> filterableTypes) {
         List<FilterConfig> filterConfigs = new ArrayList<>();

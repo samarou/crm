@@ -14,9 +14,9 @@ import java.lang.annotation.*;
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-@Repeatable(AclObjectFilter.class)
+@Repeatable(AclFilter.class)
 @Documented
-public @interface AclRule {
+public @interface AclFilterRule {
 
     /**
      * Secured object types

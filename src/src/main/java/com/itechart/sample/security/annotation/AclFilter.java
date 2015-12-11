@@ -19,10 +19,10 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Documented
-public @interface AclObjectFilter {
+public @interface AclFilter {
 
     /**
      * List of filter rules
      */
-    AclRule[] value() default {};
+    AclFilterRule[] value() default {};
 }
