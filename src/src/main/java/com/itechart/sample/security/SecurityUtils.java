@@ -20,7 +20,10 @@ public class SecurityUtils {
     public static Authentication getAuthentication() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
-            throw new RuntimeException("Authentication information is not available");
+            throw new AuthenticationException("Authentication information is not available");
+        }
+        if (!authentication.isAuthenticated()) {
+            throw new AuthenticationException("Principal is not fully authenticated");
         }
         return authentication;
     }

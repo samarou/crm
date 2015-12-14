@@ -20,6 +20,8 @@ public class SecuredDao implements HibernateSecuredDao {
 
     private SessionFactory sessionFactory;
 
+    /////////////////////// Bad declarations ////////////////////////
+
     @AclFilter
     public void doBadDeclaration1() {
     }
@@ -65,6 +67,8 @@ public class SecuredDao implements HibernateSecuredDao {
     @AclFilterRule(type = TestObject.class, permissions = Permission.WRITE)
     public void doBadDeclaration9() {
     }
+
+    /////////////////////// Good declarations ////////////////////////
 
     @AclFilter
     public TestObject doGoodDeclaration1() {
@@ -121,6 +125,8 @@ public class SecuredDao implements HibernateSecuredDao {
     @AclFilterRule(type = TestObject.class)
     public void doGoodDeclaration11() {
     }
+
+    //////////////////////////////////////////////////////////////////////
 
     @Override
     public SessionFactory getSessionFactory() {
