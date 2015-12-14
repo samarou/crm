@@ -32,6 +32,9 @@ public class SecurityOperations {
     public SecurityOperations(Authentication authentication) {
         Assert.notNull(authentication, "Authentication object cannot be null");
         this.authentication = authentication;
+        if (!authentication.isAuthenticated()) {
+            throw new AuthenticationException("Principal is not fully authenticated");
+        }
     }
 
     public Authentication getAuthentication() {

@@ -3,7 +3,10 @@ package com.itechart.sample.security.hibernate.filter;
 import org.hibernate.Filter;
 import org.hibernate.engine.spi.FilterDefinition;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Parameter's holder for populating of hibernate security filters
@@ -26,7 +29,7 @@ public class FilterParamsSource {
         parameters.put("userId", userId);
     }
 
-    public void setPrincipleIds(List<Long> principleIds) {
+    public void setPrincipleIds(Collection<Long> principleIds) {
         parameters.put("principleIds", principleIds);
     }
 
@@ -58,6 +61,10 @@ public class FilterParamsSource {
                 filter.setParameter(parameterName, parameterValue);
             }
         }
+    }
+
+    public Map<String, Object> getParameters() {
+        return Collections.unmodifiableMap(parameters);
     }
 
     @Override

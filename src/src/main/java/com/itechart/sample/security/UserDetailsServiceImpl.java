@@ -48,4 +48,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
         return new User(user.getId(), username, user.getPassword(), user.isActive(), authorities);
     }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 }

@@ -513,6 +513,8 @@ public class SpringSecurityAnnotationsTest {
         mock(UserBuilder.create("userRoleManager").role(managerRole).build());
         mock(UserBuilder.create("userRoleAdmin").role(adminRole).build());
         mock(UserBuilder.create("userRoleOther").role("Other").privilege("OtherObject", "Read").build());
+
+        SecurityContextHolder.clearContext();
     }
 
     private void mock(User user) {

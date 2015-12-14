@@ -1,8 +1,8 @@
-package com.itechart.sample.security;
+package com.itechart.sample.security.hibernate;
 
 import com.itechart.sample.model.persistent.security.ObjectType;
-import com.itechart.sample.model.persistent.security.Role;
 import com.itechart.sample.model.persistent.security.User;
+import com.itechart.sample.security.AuthenticationException;
 import com.itechart.sample.security.annotation.AclFilter;
 import com.itechart.sample.security.annotation.AclFilterRule;
 import com.itechart.sample.security.hibernate.aop.HibernateSecuredDao;
@@ -10,11 +10,10 @@ import com.itechart.sample.security.hibernate.filter.FilterType;
 import com.itechart.sample.security.hibernate.filter.SecurityFilterUtils;
 import com.itechart.sample.security.model.TestObject;
 import com.itechart.sample.security.service.SecuredDao;
-import com.itechart.sample.security.util.RoleBuilder;
 import com.itechart.sample.security.util.UserBuilder;
 import com.itechart.sample.security.util.auth.WithUser;
+import com.itechart.sample.security.util.junit.ContextAwareJUnit4ClassRunner;
 import com.itechart.sample.service.DictionaryService;
-import com.itechart.sample.service.RoleService;
 import com.itechart.sample.service.UserService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -27,12 +26,11 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 
@@ -45,15 +43,13 @@ import static org.mockito.Mockito.when;
  *
  * @author andrei.samarou
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(ContextAwareJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:securityTestContext.xml")
 @Transactional
 public class HibernateDaoAnnotationsTest implements HibernateSecuredDao {
 
     @Autowired
     private UserService userServiceMock;
-    @Autowired
-    private RoleService roleServiceMock;
     @Autowired
     private DictionaryService dictionaryServiceMock;
 
@@ -63,7 +59,7 @@ public class HibernateDaoAnnotationsTest implements HibernateSecuredDao {
     private SessionFactory sessionFactory;
 
     @Test
-    @WithUser("userRoleUser")
+    @WithUser("user")
     public void testBadDeclaration() {
         assertThrown(IllegalStateException.class, securedDao::doBadDeclaration1);
         assertThrown(IllegalStateException.class, securedDao::doBadDeclaration2);
@@ -77,7 +73,7 @@ public class HibernateDaoAnnotationsTest implements HibernateSecuredDao {
     }
 
     @Test
-    @WithUser("userRoleUser")
+    @WithUser("user")
     public void testGoodDeclaration() {
         securedDao.doGoodDeclaration1();
         securedDao.doGoodDeclaration2();
@@ -92,10 +88,15 @@ public class HibernateDaoAnnotationsTest implements HibernateSecuredDao {
         securedDao.doGoodDeclaration11();
     }
 
-    @Test
-    @WithUser("userRoleUser")
+    @Test(expected = AuthenticationException.class)
     @AclFilter(@AclFilterRule(type = TestObject.class))
-    public void testFiltersDeclarations() {
+    public void testAuthenticationUnavailable() {
+    }
+
+    @Test
+    @WithUser("user")
+    @AclFilter(@AclFilterRule(type = TestObject.class))
+    public void testFiltersDefinitions() {
         Set filterNames = getSessionFactory().getDefinedFilterNames();
         assertEquals(2, filterNames.size());
 
@@ -150,6 +151,33 @@ public class HibernateDaoAnnotationsTest implements HibernateSecuredDao {
         assertEquals(IntegerType.INSTANCE, hierParameterTypes.get("permissionMask"));
     }
 
+    @Test
+    @WithUser("user")
+    @AclFilter(@AclFilterRule(type = TestObject.class))
+    public void testPlainFilterEnabled1() {
+        Session session = getSessionFactory().getCurrentSession();
+        assertNotNull(session.getEnabledFilter(SecurityFilterUtils.getFilterName(TestObject.class, FilterType.ACL_PLAIN)));
+        assertNull(session.getEnabledFilter(SecurityFilterUtils.getFilterName(TestObject.class, FilterType.ACL_HIERARCHY)));
+    }
+
+    @Test
+    @WithUser("user")
+    @AclFilter(@AclFilterRule(type = TestObject.class, inherit = false))
+    public void testPlainFilterEnabled2() {
+        Session session = getSessionFactory().getCurrentSession();
+        assertNotNull(session.getEnabledFilter(SecurityFilterUtils.getFilterName(TestObject.class, FilterType.ACL_PLAIN)));
+        assertNull(session.getEnabledFilter(SecurityFilterUtils.getFilterName(TestObject.class, FilterType.ACL_HIERARCHY)));
+    }
+
+    @Test
+    @WithUser("user")
+    @AclFilter(@AclFilterRule(type = TestObject.class, inherit = true))
+    public void testHierFilterEnabled() {
+        Session session = getSessionFactory().getCurrentSession();
+        assertNull(session.getEnabledFilter(SecurityFilterUtils.getFilterName(TestObject.class, FilterType.ACL_PLAIN)));
+        assertNotNull(session.getEnabledFilter(SecurityFilterUtils.getFilterName(TestObject.class, FilterType.ACL_HIERARCHY)));
+    }
+
     @After
     @SuppressWarnings("unchecked")
     public void checkFiltersDisabled() {
@@ -162,25 +190,15 @@ public class HibernateDaoAnnotationsTest implements HibernateSecuredDao {
 
     @PostConstruct
     public void initialize() {
-        Role userRole = RoleBuilder.create("User").privilege("TestObject", "READ").build();
-        Role managerRole = RoleBuilder.create("Manager", userRole).privilege("TestObject", "WRITE").build();
-        mock(userRole, managerRole);
-
-        mock(UserBuilder.create("userRoleUser").role(userRole).build());
-        mock(UserBuilder.create("userRoleManager").role(managerRole).build());
+        User user = UserBuilder.create("user").build();
+        when(userServiceMock.findByName("user")).thenReturn(user);
 
         ObjectType objectType = new ObjectType();
         objectType.setId(1L);
         objectType.setName("TestObject");
         when(dictionaryServiceMock.getObjectTypeByName("TestObject")).thenReturn(objectType);
-    }
 
-    private void mock(User user) {
-        when(userServiceMock.findByName(user.getName())).thenReturn(user);
-    }
-
-    private void mock(Role... role) {
-        when(roleServiceMock.getRoles()).thenReturn(Arrays.asList(role));
+        SecurityContextHolder.clearContext();
     }
 
     @Override

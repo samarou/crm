@@ -33,7 +33,7 @@ public class SecurityIntegrator implements SessionFactoryBuilderFactory {
     @Override
     public SessionFactoryBuilder getSessionFactoryBuilder(MetadataImplementor metadata, SessionFactoryBuilderImplementor defaultBuilder) {
         injectSecurityFilters(metadata);
-        // returt null - means that we only hook the process,
+        // return null - means that we only hook the process,
         // but don't define own SessionFactory builder
         return null;
     }
