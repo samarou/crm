@@ -5,11 +5,15 @@ import com.itechart.sample.security.annotation.AclFilter;
 import com.itechart.sample.security.annotation.AclFilterRule;
 import com.itechart.sample.security.hibernate.aop.HibernateSecuredDao;
 import com.itechart.sample.security.model.TestObject;
+import com.itechart.sample.security.model.TestObjectExt;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Dao containing a set of methods that allows to test security annotations
@@ -127,6 +131,16 @@ public class SecuredDao implements HibernateSecuredDao {
     }
 
     //////////////////////////////////////////////////////////////////////
+
+    @AclFilter
+    @SuppressWarnings("unchecked")
+    public Map<TestObject, TestObjectExt> doDeclarationWithTwoImplicitTypes(List<String> forEnabledFilters) {
+        // putting enabled filter's names to forEnabledFilters to analyze them in caller
+        Session session = getSessionFactory().getCurrentSession();
+        forEnabledFilters.addAll(((Set<String>) getSessionFactory().getDefinedFilterNames()).stream()
+                .filter(filterName -> session.getEnabledFilter(filterName) != null).collect(Collectors.toList()));
+        return null;
+    }
 
     @Override
     public SessionFactory getSessionFactory() {

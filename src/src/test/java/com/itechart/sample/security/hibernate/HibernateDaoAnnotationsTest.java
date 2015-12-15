@@ -7,8 +7,8 @@ import com.itechart.sample.security.annotation.AclFilter;
 import com.itechart.sample.security.annotation.AclFilterRule;
 import com.itechart.sample.security.hibernate.aop.HibernateSecuredDao;
 import com.itechart.sample.security.hibernate.filter.FilterType;
-import com.itechart.sample.security.hibernate.filter.SecurityFilterUtils;
 import com.itechart.sample.security.model.TestObject;
+import com.itechart.sample.security.model.TestObjectExt;
 import com.itechart.sample.security.service.SecuredDao;
 import com.itechart.sample.security.util.UserBuilder;
 import com.itechart.sample.security.util.auth.WithUser;
@@ -31,9 +31,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 
+import static com.itechart.sample.security.hibernate.filter.SecurityFilterUtils.getFilterName;
 import static com.itechart.sample.security.util.junit.ThrowableAssert.assertThrown;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
@@ -98,10 +101,10 @@ public class HibernateDaoAnnotationsTest implements HibernateSecuredDao {
     @AclFilter(@AclFilterRule(type = TestObject.class))
     public void testFiltersDefinitions() {
         Set filterNames = getSessionFactory().getDefinedFilterNames();
-        assertEquals(2, filterNames.size());
+        assertEquals(4, filterNames.size());
 
         // filter for first-level ACLs
-        String plainFilterName = SecurityFilterUtils.getFilterName(TestObject.class, FilterType.ACL_PLAIN);
+        String plainFilterName = getFilterName(TestObject.class, FilterType.ACL_PLAIN);
         FilterDefinition plainFilter = getSessionFactory().getFilterDefinition(plainFilterName);
         assertNotNull(plainFilter);
 
@@ -126,7 +129,7 @@ public class HibernateDaoAnnotationsTest implements HibernateSecuredDao {
         assertEquals(IntegerType.INSTANCE, plainParameterTypes.get("permissionMask"));
 
         // filter for ACLs hierarchy
-        String hierFilterName = SecurityFilterUtils.getFilterName(TestObject.class, FilterType.ACL_HIERARCHY);
+        String hierFilterName = getFilterName(TestObject.class, FilterType.ACL_HIERARCHY);
         FilterDefinition hierFilter = getSessionFactory().getFilterDefinition(hierFilterName);
         assertNotNull(hierFilter);
 
@@ -156,8 +159,8 @@ public class HibernateDaoAnnotationsTest implements HibernateSecuredDao {
     @AclFilter(@AclFilterRule(type = TestObject.class))
     public void testPlainFilterEnabled1() {
         Session session = getSessionFactory().getCurrentSession();
-        assertNotNull(session.getEnabledFilter(SecurityFilterUtils.getFilterName(TestObject.class, FilterType.ACL_PLAIN)));
-        assertNull(session.getEnabledFilter(SecurityFilterUtils.getFilterName(TestObject.class, FilterType.ACL_HIERARCHY)));
+        assertNotNull(session.getEnabledFilter(getFilterName(TestObject.class, FilterType.ACL_PLAIN)));
+        assertNull(session.getEnabledFilter(getFilterName(TestObject.class, FilterType.ACL_HIERARCHY)));
     }
 
     @Test
@@ -165,8 +168,8 @@ public class HibernateDaoAnnotationsTest implements HibernateSecuredDao {
     @AclFilter(@AclFilterRule(type = TestObject.class, inherit = false))
     public void testPlainFilterEnabled2() {
         Session session = getSessionFactory().getCurrentSession();
-        assertNotNull(session.getEnabledFilter(SecurityFilterUtils.getFilterName(TestObject.class, FilterType.ACL_PLAIN)));
-        assertNull(session.getEnabledFilter(SecurityFilterUtils.getFilterName(TestObject.class, FilterType.ACL_HIERARCHY)));
+        assertNotNull(session.getEnabledFilter(getFilterName(TestObject.class, FilterType.ACL_PLAIN)));
+        assertNull(session.getEnabledFilter(getFilterName(TestObject.class, FilterType.ACL_HIERARCHY)));
     }
 
     @Test
@@ -174,8 +177,33 @@ public class HibernateDaoAnnotationsTest implements HibernateSecuredDao {
     @AclFilter(@AclFilterRule(type = TestObject.class, inherit = true))
     public void testHierFilterEnabled() {
         Session session = getSessionFactory().getCurrentSession();
-        assertNull(session.getEnabledFilter(SecurityFilterUtils.getFilterName(TestObject.class, FilterType.ACL_PLAIN)));
-        assertNotNull(session.getEnabledFilter(SecurityFilterUtils.getFilterName(TestObject.class, FilterType.ACL_HIERARCHY)));
+        assertNull(session.getEnabledFilter(getFilterName(TestObject.class, FilterType.ACL_PLAIN)));
+        assertNotNull(session.getEnabledFilter(getFilterName(TestObject.class, FilterType.ACL_HIERARCHY)));
+    }
+
+    @Test
+    @WithUser("user")
+    @AclFilterRule(type = TestObject.class)
+    @AclFilterRule(type = TestObjectExt.class)
+    public void testMultipleFiltersEnabled() {
+        Session session = getSessionFactory().getCurrentSession();
+        assertNotNull(session.getEnabledFilter(getFilterName(TestObject.class, FilterType.ACL_PLAIN)));
+        assertNotNull(session.getEnabledFilter(getFilterName(TestObjectExt.class, FilterType.ACL_PLAIN)));
+        assertNull(session.getEnabledFilter(getFilterName(TestObject.class, FilterType.ACL_HIERARCHY)));
+        assertNull(session.getEnabledFilter(getFilterName(TestObjectExt.class, FilterType.ACL_HIERARCHY)));
+    }
+
+    @Test
+    @WithUser("user")
+    public void testMultipleImplicitFiltersEnabled() {
+        ArrayList<String> enabledFilters = new ArrayList<>();
+        // test this case in such way because test-method can't return values
+        securedDao.doDeclarationWithTwoImplicitTypes(enabledFilters);
+        assertTrue(enabledFilters.containsAll(Arrays.asList(
+                getFilterName(TestObject.class, FilterType.ACL_PLAIN),
+                getFilterName(TestObjectExt.class, FilterType.ACL_PLAIN)
+        )));
+        assertEquals(2, enabledFilters.size());
     }
 
     @After
@@ -197,6 +225,11 @@ public class HibernateDaoAnnotationsTest implements HibernateSecuredDao {
         objectType.setId(1L);
         objectType.setName("TestObject");
         when(dictionaryServiceMock.getObjectTypeByName("TestObject")).thenReturn(objectType);
+
+        objectType = new ObjectType();
+        objectType.setId(2L);
+        objectType.setName("TestObjectExt");
+        when(dictionaryServiceMock.getObjectTypeByName("TestObjectExt")).thenReturn(objectType);
 
         SecurityContextHolder.clearContext();
     }
