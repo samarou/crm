@@ -37,7 +37,7 @@ public class RoleHierarchyImpl implements RoleHierarchy {
         if (CollectionUtils.isEmpty(roleToParentsMap)) {
             return Collections.emptyList();
         }
-        List<GrantedAuthority> result = new ArrayList<>();
+        Set<GrantedAuthority> result = new HashSet<>();
         for (GrantedAuthority authority : authorities) {
             if (authority instanceof RoleAuthority) {
                 result.add(authority);
@@ -51,7 +51,7 @@ public class RoleHierarchyImpl implements RoleHierarchy {
     }
 
     @SuppressWarnings("unchecked")
-    public Map<RoleAuthority, List<RoleAuthority>> getRoleToParensMap() {
+    private Map<RoleAuthority, List<RoleAuthority>> getRoleToParensMap() {
         if (roleHierarchyCache != null) {
             Element element = roleHierarchyCache.get(CACHE_KEY);
             if (element != null) {
@@ -87,7 +87,7 @@ public class RoleHierarchyImpl implements RoleHierarchy {
             }
         }
         if (roleHierarchyCache != null) {
-            roleHierarchyCache.put(new Element("roleToParentsMap", roleToParentsMap));
+            roleHierarchyCache.put(new Element(CACHE_KEY, roleToParentsMap));
         }
         return roleToParentsMap;
     }

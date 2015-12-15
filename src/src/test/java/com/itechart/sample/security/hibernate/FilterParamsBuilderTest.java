@@ -55,7 +55,9 @@ public class FilterParamsBuilderTest {
         assertEquals(5, parameters.size());
 
         assertEquals(user.getId(), parameters.get("userId"));
-        assertEquals(principalIds, new HashSet((Collection) parameters.get("principleIds")));
+        Collection principleIds = (Collection) parameters.get("principleIds");
+        assertEquals(principalIds, new HashSet(principleIds));
+        assertEquals(principalIds.size(), (principleIds).size());
         assertEquals(1L, parameters.get("objectTypeId"));
         assertEquals(6, parameters.get("permissionMask"));
         assertEquals(true, parameters.get("hasPrivilege"));

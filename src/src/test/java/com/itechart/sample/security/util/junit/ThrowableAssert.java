@@ -5,6 +5,8 @@ import static org.hamcrest.core.Is.isA;
 import static org.junit.Assert.assertThat;
 
 /**
+ * Utility class for testing that method throws exceptions
+ *
  * @author andrei.samarou
  */
 public class ThrowableAssert {
