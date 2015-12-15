@@ -45,13 +45,14 @@ public class FilterParamsBuilderTest {
 
         FilterParamsSource source = builder.build(TestObject.class, EnumSet.of(Permission.WRITE, Permission.CREATE));
 
-        Map<String, Object> parameters = source.getParameters();
-
         Set<Long> principalIds = new HashSet<>();
         principalIds.add(user.getId());
         for (Group group : user.getGroups()) {
             principalIds.add(group.getId());
         }
+
+        Map<String, Object> parameters = source.getParameters();
+        assertEquals(5, parameters.size());
 
         assertEquals(user.getId(), parameters.get("userId"));
         assertEquals(principalIds, new HashSet((Collection) parameters.get("principleIds")));

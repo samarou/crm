@@ -5,6 +5,7 @@ import com.itechart.sample.security.UserDetailsServiceImpl;
 import com.itechart.sample.service.UserService;
 import org.mockito.Mockito;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -15,14 +16,15 @@ import static org.mockito.Mockito.when;
  */
 public class Utils {
 
-    public static void authenticate(User user) {
+    public static Authentication authenticate(User user) {
         UserService userService = Mockito.mock(UserService.class);
         when(userService.findByName(user.getName())).thenReturn(user);
         UserDetailsServiceImpl userDetailsService = new UserDetailsServiceImpl();
         userDetailsService.setUserService(userService);
         UserDetails userDetails = userDetailsService.loadUserByUsername(user.getName());
-        UsernamePasswordAuthenticationToken token =
+        Authentication authentication =
                 new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(token);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return authentication;
     }
 }

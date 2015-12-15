@@ -95,4 +95,8 @@ public class RoleHierarchyImpl implements RoleHierarchy {
     public void setRoleHierarchyCache(Ehcache roleHierarchyCache) {
         this.roleHierarchyCache = roleHierarchyCache;
     }
+
+    public void setRoleService(RoleService roleService) {
+        this.roleService = roleService;
+    }
 }

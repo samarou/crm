@@ -20,7 +20,8 @@ import static org.junit.Assert.assertEquals;
 public class FilterParamsSourceTest {
 
     @Test
-    public void test() {
+    public void testPopulateParams() {
+
         FilterParamsSource source = new FilterParamsSource();
         source.setUserId(1L);
         source.setPrincipleIds(Collections.singletonList(1L));
