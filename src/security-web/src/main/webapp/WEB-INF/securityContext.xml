@@ -1,0 +1,119 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:sec="http://www.springframework.org/schema/security"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <aop:aspectj-autoproxy/>
+
+    <context:spring-configured/>
+
+    <!-- Web Security -->
+
+    <sec:http pattern="/css/**" security="none"/>
+
+    <sec:http pattern="/rest/**" create-session="stateless">
+        <sec:expression-handler ref="webSecurityExpressionHandler"/>
+        <sec:intercept-url pattern="/**" access="hasRole('REMOTE_SYSTEM')"/>
+        <sec:http-basic/>
+    </sec:http>
+
+    <sec:http>
+        <sec:expression-handler ref="webSecurityExpressionHandler"/>
+        <sec:intercept-url pattern="/login" access="permitAll()"/>
+        <sec:intercept-url pattern="/**" access="isAuthenticated()"/>
+        <sec:form-login login-page="/login" authentication-failure-url="/login?error" default-target-url="/customers"/>
+        <sec:logout/>
+    </sec:http>
+
+    <bean id="webSecurityExpressionHandler"
+          class="com.itechart.security.core.expression.web.WebSecurityExpressionHandler">
+        <property name="roleHierarchy" ref="roleHierarchy"/>
+    </bean>
+
+    <!-- Method Security -->
+
+    <sec:global-method-security pre-post-annotations="enabled">
+        <sec:expression-handler ref="methodSecurityExpressionHandler"/>
+    </sec:global-method-security>
+
+    <bean id="methodSecurityExpressionHandler"
+          class="com.itechart.security.core.expression.method.MethodSecurityExpressionHandlerImpl">
+        <property name="permissionEvaluator" ref="aclPermissionEvaluator"/>
+        <property name="permissionCacheOptimizer" ref="aclPermissionCacheOptimizer"/>
+        <property name="roleHierarchy" ref="roleHierarchy"/>
+    </bean>
+
+    <!-- Authentication / authorization -->
+
+    <sec:authentication-manager>
+        <sec:authentication-provider ref="daoAuthenticationProvider"/>
+    </sec:authentication-manager>
+
+    <bean id="daoAuthenticationProvider"
+          class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <property name="userDetailsService" ref="userDetailsService"/>
+        <property name="userCache" ref="userCache"/>
+        <property name="passwordEncoder" ref="passwordEncoder"/>
+    </bean>
+
+    <bean id="userDetailsService" class="com.itechart.security.core.userdetails.UserDetailsServiceImpl"/>
+
+    <bean id="roleHierarchy" class="com.itechart.security.core.authority.RoleHierarchyImpl">
+        <property name="roleHierarchyCache" ref="roleHierarchyCache"/>
+    </bean>
+
+    <!-- ACL security commons -->
+
+    <bean id="aclService" class="com.itechart.sample.service.impl.AclServiceImpl"/>
+
+    <bean id="aclPermissionEvaluator" class="com.itechart.security.core.acl.AclPermissionEvaluator">
+        <property name="securityRepository" ref="aclService"/>
+        <property name="roleHierarchy" ref="roleHierarchy"/>
+    </bean>
+
+    <bean id="aclPermissionCacheOptimizer" class="com.itechart.sample.service.acl.AclPermissionCacheOptimizer">
+        <property name="securityRepository" ref="aclService"/>
+    </bean>
+
+    <!-- ACL security aspects -->
+
+    <bean class="com.itechart.security.hibernate.aop.AclHibernateSecurityAspect">
+        <property name="filterParamsBuilder">
+            <bean class="com.itechart.security.hibernate.filter.FilterParamsBuilder">
+                <property name="securityRepository" ref="dictionaryServiceImpl"/>
+                <property name="roleHierarchy" ref="roleHierarchy"/>
+            </bean>
+        </property>
+    </bean>
+
+    <!-- Cache configuration -->
+
+    <bean id="roleHierarchyCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+        <property name="cacheManager" ref="ehCacheManager"/>
+        <property name="cacheName" value="security.roleHierarchy"/>
+        <property name="blocking" value="true"/>
+    </bean>
+
+    <bean id="userCache" class="org.springframework.security.core.userdetails.cache.EhCacheBasedUserCache">
+        <property name="cache">
+            <bean class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+                <property name="cacheManager" ref="ehCacheManager"/>
+                <property name="cacheName" value="security.user"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="aclCache" class="com.itechart.sample.service.acl.EhCacheBasedAclCache">
+        <property name="cache">
+            <bean class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+                <property name="cacheManager" ref="ehCacheManager"/>
+                <property name="cacheName" value="security.aclCache"/>
+            </bean>
+        </property>
+    </bean>
+</beans>
