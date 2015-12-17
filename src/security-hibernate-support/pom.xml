@@ -8,9 +8,9 @@
         <artifactId>security-project</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>security-hibernate</artifactId>
+    <artifactId>security-hibernate-support</artifactId>
     <packaging>jar</packaging>
-    <name>Hibernate ORM Security</name>
+    <name>Hibernate ORM Security Support</name>
     <description>Support of security features in the Hibernate ORM</description>
     <dependencies>
         <dependency>

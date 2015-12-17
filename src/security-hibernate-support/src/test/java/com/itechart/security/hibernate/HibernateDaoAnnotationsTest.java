@@ -39,7 +39,7 @@ import static org.mockito.Mockito.when;
  * @author andrei.samarou
  */
 @RunWith(ContextAwareJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:testContext.xml")
+@ContextConfiguration(locations = "classpath:hbmSupportTestContext.xml")
 @Transactional
 public class HibernateDaoAnnotationsTest implements HibernateSecuredDao {
 
