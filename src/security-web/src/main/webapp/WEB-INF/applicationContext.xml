@@ -41,6 +41,10 @@
         </property>
     </bean>
 
+    <bean id="aclService" class="com.itechart.sample.service.impl.AclServiceImpl"/>
+
+    <bean id="securityRepository" class="com.itechart.sample.service.impl.SecurityRepositoryImpl"/>
+
     <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 
     <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">

@@ -61,23 +61,24 @@
         <property name="passwordEncoder" ref="passwordEncoder"/>
     </bean>
 
-    <bean id="userDetailsService" class="com.itechart.security.core.userdetails.UserDetailsServiceImpl"/>
+    <bean id="userDetailsService" class="com.itechart.security.core.userdetails.UserDetailsServiceImpl">
+        <property name="securityRepository" ref="securityRepository"/>
+    </bean>
 
     <bean id="roleHierarchy" class="com.itechart.security.core.authority.RoleHierarchyImpl">
+        <property name="securityRepository" ref="securityRepository"/>
         <property name="roleHierarchyCache" ref="roleHierarchyCache"/>
     </bean>
 
     <!-- ACL security commons -->
 
-    <bean id="aclService" class="com.itechart.sample.service.impl.AclServiceImpl"/>
-
     <bean id="aclPermissionEvaluator" class="com.itechart.security.core.acl.AclPermissionEvaluator">
-        <property name="securityRepository" ref="aclService"/>
+        <property name="securityRepository" ref="securityRepository"/>
         <property name="roleHierarchy" ref="roleHierarchy"/>
     </bean>
 
     <bean id="aclPermissionCacheOptimizer" class="com.itechart.sample.service.acl.AclPermissionCacheOptimizer">
-        <property name="securityRepository" ref="aclService"/>
+        <property name="aclService" ref="aclService"/>
     </bean>
 
     <!-- ACL security aspects -->
@@ -85,7 +86,7 @@
     <bean class="com.itechart.security.hibernate.aop.AclHibernateSecurityAspect">
         <property name="filterParamsBuilder">
             <bean class="com.itechart.security.hibernate.filter.FilterParamsBuilder">
-                <property name="securityRepository" ref="dictionaryServiceImpl"/>
+                <property name="securityRepository" ref="securityRepository"/>
                 <property name="roleHierarchy" ref="roleHierarchy"/>
             </bean>
         </property>

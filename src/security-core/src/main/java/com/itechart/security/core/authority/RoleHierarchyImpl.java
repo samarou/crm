@@ -90,12 +90,12 @@ public class RoleHierarchyImpl implements RoleHierarchy {
         return roleToParentsMap;
     }
 
-    public void setRoleHierarchyCache(Ehcache roleHierarchyCache) {
-        this.roleHierarchyCache = roleHierarchyCache;
-    }
-
     @Required
     public void setSecurityRepository(SecurityRepository securityRepository) {
         this.securityRepository = securityRepository;
+    }
+
+    public void setRoleHierarchyCache(Ehcache roleHierarchyCache) {
+        this.roleHierarchyCache = roleHierarchyCache;
     }
 }

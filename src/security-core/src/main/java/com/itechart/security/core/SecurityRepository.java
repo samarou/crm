@@ -20,7 +20,7 @@ public interface SecurityRepository {
 
     List<SecurityAcl> findAcls(ObjectIdentity oid);
 
-    List<SecurityAcl> findAcls(List<ObjectIdentity> objects);
+    List<SecurityAcl> findAcls(List<ObjectIdentity> oids);
 
     Long getObjectTypeIdByName(String objectTypeName);
 }
