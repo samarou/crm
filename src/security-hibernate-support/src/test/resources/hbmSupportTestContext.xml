@@ -1,21 +1,10 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <context:spring-configured/>
     <aop:aspectj-autoproxy proxy-target-class="true"/>
-
-    <bean class="com.itechart.security.hibernate.aop.AclHibernateSecurityAspect">
-        <property name="filterParamsBuilder">
-            <bean class="com.itechart.security.hibernate.filter.FilterParamsBuilder">
-                <property name="securityRepository" ref="securityRepositoryMock"/>
-            </bean>
-        </property>
-    </bean>
 
     <bean id="dataSource" class="com.itechart.security.hibernate.util.NullDataSource"/>
 
@@ -36,6 +25,14 @@
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
             </props>
+        </property>
+    </bean>
+
+    <bean class="com.itechart.security.hibernate.aop.AclHibernateSecurityAspect">
+        <property name="filterParamsBuilder">
+            <bean class="com.itechart.security.hibernate.filter.FilterParamsBuilder">
+                <property name="securityRepository" ref="securityRepositoryMock"/>
+            </bean>
         </property>
     </bean>
 

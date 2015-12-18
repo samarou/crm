@@ -92,13 +92,6 @@
             <version>${hibernate.version}</version>
         </dependency>
 
-        <!-- AspectJ -->
-        <!--todo dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-            <version>${aspectj.version}</version>
-        </dependency-->
-
         <!-- Other stuff -->
         <dependency>
             <groupId>javax.servlet</groupId>

@@ -7,6 +7,7 @@ import com.itechart.security.sample.dao.CustomerDao;
 import com.itechart.security.sample.model.persistent.Customer;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +21,6 @@ public class CustomerDaoImpl extends AbstractHibernateDao implements CustomerDao
     //@AclFilter(@AclFilterRule(type = Customer.class, permissions = {Permission.WRITE}, inherit = true))
     @AclFilter(@AclFilterRule(type = Customer.class, permissions = {Permission.WRITE}))
     public List<Customer> loadAll() {
-        return getHibernateTemplate().loadAll(Customer.class);
+        return new ArrayList<>();//return getHibernateTemplate().loadAll(Customer.class);
     }
 }
