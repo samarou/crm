@@ -9,8 +9,8 @@ import java.lang.annotation.*;
  * <p>
  * If annotation is declared with empty body, then automatic type recognition
  * will be performed by analyzing return type of annotated method. In this case,
- * required permission will be set to {@link com.itechart.sample.model.security.Permission#READ}
- * and ACL inheritence won't be used. Subclasses of {@link com.itechart.sample.model.security.SecuredObject}
+ * required permission will be set to {@link com.itechart.security.core.model.acl.Permission#READ}
+ * and ACL inheritence won't be used. Subclasses of {@link com.itechart.security.core.model.acl.SecuredObject}
  * will have to be presented in method result type
  *
  * @author andrei.samarou

@@ -40,7 +40,7 @@ public class SecurityIntegrator implements SessionFactoryBuilderFactory {
 
     /**
      * Create and inject security filters for hibernate entities that
-     * inherits from {@link com.itechart.sample.model.security.SecuredObject}
+     * inherits from {@link com.itechart.security.core.model.acl.SecuredObject}
      *
      * @see SecurityFilterUtils#isFilterableEntity
      */
