@@ -1,66 +1,17 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:jndi="http://www.springframework.org/schema/jee"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:sec="http://www.springframework.org/schema/security"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+		  http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
-    <context:annotation-config/>
-    <context:component-scan base-package="com.itechart.sample.service"/>
+    <import resource="classpath*:securityServicesContext.xml"/>
 
-    <cache:annotation-driven mode="aspectj"/>
+    <sec:http pattern="/pages/**" security="none"/>
 
-    <tx:annotation-driven/>
-
-    <jndi:jndi-lookup id="dataSource" jndi-name="jdbc/SecuritySampleDB"/>
-
-    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory"/>
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
-
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="packagesToScan" value="com.itechart.sample.model.persistent"/>
-        <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
-                <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory</prop>
-                <prop key="hibernate.cache.use_second_level_cache">true</prop>
-                <!-- for development mode-->
-                <prop key="hibernate.cache.use_structured_entries">true</prop>
-                <prop key="hibernate.generate_statistics">true</prop>
-                <prop key="hibernate.show_sql">true</prop>
-                <prop key="hibernate.format_sql">true</prop>
-            </props>
-        </property>
-    </bean>
-
-    <bean id="aclService" class="com.itechart.sample.service.impl.AclServiceImpl"/>
-
-    <bean id="securityRepository" class="com.itechart.sample.service.impl.SecurityRepositoryImpl"/>
-
-    <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
-
-    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
-        <property name="cacheManager" ref="ehCacheManager"/>
-    </bean>
-
-    <bean id="ehCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
-        <property name="acceptExisting" value="true"/>
-    </bean>
-
-    <bean id="mapBasedCacheManager" class="org.springframework.cache.support.SimpleCacheManager">
-        <property name="caches">
-            <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
-                <property name="name" value="objectTypeByName"/>
-            </bean>
-        </property>
-    </bean>
+    <sec:http pattern="/rest/**" create-session="stateless">
+        <sec:expression-handler ref="webSecurityExpressionHandler"/>
+        <sec:intercept-url pattern="/**" access="hasRole('USER')"/>
+        <sec:http-basic/>
+    </sec:http>
 
 </beans>

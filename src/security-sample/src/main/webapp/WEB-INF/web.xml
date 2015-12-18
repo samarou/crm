@@ -3,11 +3,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 
-    <display-name>Security Web Application</display-name>
+    <display-name>Security Sample Project</display-name>
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/applicationContext.xml</param-value>
+        <param-value>
+            /WEB-INF/applicationContext.xml
+            /WEB-INF/securityContext.xml
+        </param-value>
     </context-param>
 
     <listener>
@@ -46,7 +49,7 @@
     </resource-ref>
 
     <welcome-file-list>
-        <welcome-file>/pages/index.html</welcome-file>
+        <welcome-file>/index.jsp</welcome-file>
     </welcome-file-list>
 
 </web-app>

@@ -1,0 +1,69 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:sec="http://www.springframework.org/schema/security"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <aop:aspectj-autoproxy/>
+    <context:spring-configured/>
+    <context:annotation-config/>
+
+    <!-- Security config -->
+
+    <sec:authentication-manager>
+        <sec:authentication-provider ref="authenticationProvider"/>
+    </sec:authentication-manager>
+
+    <bean id="authenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <property name="userDetailsService" ref="userDetailsService"/>
+    </bean>
+
+    <bean id="userDetailsService" class="com.itechart.security.core.userdetails.UserDetailsServiceImpl">
+        <property name="securityRepository" ref="securityRepositoryMock"/>
+    </bean>
+
+    <sec:global-method-security pre-post-annotations="enabled" proxy-target-class="true">
+        <sec:expression-handler ref="methodSecurityExpressionHandler"/>
+    </sec:global-method-security>
+
+    <bean id="methodSecurityExpressionHandler"
+          class="com.itechart.security.core.expression.method.MethodSecurityExpressionHandlerImpl">
+        <property name="permissionEvaluator" ref="aclPermissionEvaluator"/>
+        <property name="permissionCacheOptimizer" ref="aclPermissionCacheOptimizer"/>
+        <property name="roleHierarchy" ref="roleHierarchy"/>
+    </bean>
+
+    <bean id="aclPermissionEvaluator" class="com.itechart.security.core.acl.AclPermissionEvaluator">
+        <property name="securityRepository" ref="securityRepositoryMock"/>
+        <property name="roleHierarchy" ref="roleHierarchy"/>
+    </bean>
+
+    <bean id="aclPermissionCacheOptimizer" class="com.itechart.security.acl.AclPermissionCacheOptimizer">
+        <property name="aclService" ref="aclServiceMock"/>
+    </bean>
+
+    <bean name="roleHierarchy" class="com.itechart.security.core.authority.RoleHierarchyImpl">
+        <property name="securityRepository" ref="securityRepositoryMock"/>
+    </bean>
+
+    <!-- Mocked services -->
+
+    <bean id="securityRepositoryMock" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="com.itechart.security.core.SecurityRepository"/>
+    </bean>
+
+    <bean id="aclServiceMock" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="com.itechart.security.service.AclService"/>
+    </bean>
+
+    <bean name="securedServiceSpy" class="org.mockito.Mockito" factory-method="spy">
+        <constructor-arg value="com.itechart.security.service.SecuredService" type="java.lang.Class"/>
+    </bean>
+
+    <bean name="securedService" class="com.itechart.security.service.SecuredService"/>
+
+</beans>

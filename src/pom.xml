@@ -11,8 +11,10 @@
     <description>Role/privilege-based and ACL security support</description>
     <modules>
         <module>security-core</module>
-        <module>security-hibernate</module>
+        <module>security-hibernate-support</module>
+        <module>security-services</module>
         <module>security-web</module>
+        <module>security-sample</module>
     </modules>
     <properties>
         <spring.version>4.2.2.RELEASE</spring.version>
