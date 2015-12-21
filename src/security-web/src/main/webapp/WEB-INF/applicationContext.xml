@@ -6,7 +6,7 @@
 
     <import resource="classpath*:securityServicesContext.xml"/>
 
-    <sec:http pattern="/pages/**" security="none"/>
+    <sec:http pattern="/app/**" security="none"/>
 
     <sec:http pattern="/rest/**" create-session="stateless">
         <sec:expression-handler ref="webSecurityExpressionHandler"/>
