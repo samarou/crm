@@ -19,7 +19,7 @@ import java.util.Map;
 public abstract class AbstractFilterFactory implements FilterFactory {
 
     @Override
-    public final List<FilterConfig> createFilter(PersistentClass persistentClass) {
+    public final List<FilterConfig> createFilters(PersistentClass persistentClass) {
         if (!SecurityFilterUtils.isFilterableEntity(persistentClass)) {
             throw new IllegalArgumentException("PersistentClass " + persistentClass + " doesn't allow security filtering");
         }

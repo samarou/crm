@@ -6,15 +6,15 @@ import org.hibernate.dialect.MySQLDialect;
 import org.springframework.util.Assert;
 
 /**
- * Filter factory resolver based on hibernate {@link Dialect}
+ * Implementation of {@link FilterFactoryProvider} is used to provide
+ * filter factories according to database structure and {@link org.hibernate.SessionFactory}
+ * configuration
  *
  * @author andrei.samarou
- * @see FilterFactory
- * @see Dialect
  */
-public class FilterFactoryResolver {
+public class FilterFactoryProviderImpl implements FilterFactoryProvider {
 
-    public static FilterFactory resolve(Dialect dialect) {
+    public FilterFactory getFactory(Dialect dialect) {
         Assert.notNull(dialect, "dialect is required");
         if (dialect instanceof MySQLDialect) {
             return new MySQLFilterFactory();

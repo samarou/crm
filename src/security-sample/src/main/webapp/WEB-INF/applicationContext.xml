@@ -25,6 +25,7 @@
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+                <prop key="security.filter_factory_provider">com.itechart.security.hibernate.filter.TestFilterFactoryProvider</prop>
                 <!-- for development mode-->
                 <prop key="hibernate.cache.use_structured_entries">true</prop>
                 <prop key="hibernate.generate_statistics">true</prop>

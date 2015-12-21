@@ -6,6 +6,7 @@ import com.itechart.security.core.annotation.AclFilterRule;
 import com.itechart.security.core.exception.AuthenticationException;
 import com.itechart.security.core.model.SecurityUser;
 import com.itechart.security.core.test.UserBuilder;
+import com.itechart.security.core.test.auth.WithUser;
 import com.itechart.security.core.test.junit.ContextAwareJUnit4ClassRunner;
 import com.itechart.security.core.test.util.SecurityTestUtils;
 import com.itechart.security.hibernate.aop.HibernateSecuredDao;
@@ -15,6 +16,11 @@ import com.itechart.security.hibernate.model.TestObject;
 import com.itechart.security.hibernate.model.TestObjectExt;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.engine.spi.FilterDefinition;
+import org.hibernate.type.BooleanType;
+import org.hibernate.type.IntegerType;
+import org.hibernate.type.LongType;
+import org.hibernate.type.Type;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Set;
 
 import static com.itechart.security.core.test.util.ThrowableAssert.assertThrown;
@@ -130,6 +137,65 @@ public class HibernateDaoAnnotationsTest implements HibernateSecuredDao {
                 getFilterName(TestObjectExt.class, FilterType.ACL_PLAIN)
         )));
         assertEquals(2, enabledFilters.size());
+    }
+
+    @Test
+    @WithUser("user")
+    @AclFilter(@AclFilterRule(type = TestObject.class))
+    public void testFiltersDefinitions() {
+        // Test filters was created with TestFilterFactoryProvider
+        Set filterNames = getSessionFactory().getDefinedFilterNames();
+        assertEquals(4, filterNames.size());
+
+        // filter for ACL_PLAIN
+        String plainFilterName = getFilterName(TestObject.class, FilterType.ACL_PLAIN);
+        FilterDefinition plainFilter = getSessionFactory().getFilterDefinition(plainFilterName);
+        assertNotNull(plainFilter);
+
+        assertEquals(plainFilter.getDefaultFilterCondition(), "plain sql");
+
+        Map<String, Type> plainParameterTypes = plainFilter.getParameterTypes();
+        assertEquals(5, plainParameterTypes.size());
+
+        assertTrue(plainParameterTypes.containsKey("hasPrivilege"));
+        assertEquals(BooleanType.INSTANCE, plainParameterTypes.get("hasPrivilege"));
+
+        assertTrue(plainParameterTypes.containsKey("objectTypeId"));
+        assertEquals(LongType.INSTANCE, plainParameterTypes.get("objectTypeId"));
+
+        assertTrue(plainParameterTypes.containsKey("principleIds"));
+        assertEquals(LongType.INSTANCE, plainParameterTypes.get("principleIds"));
+
+        assertTrue(plainParameterTypes.containsKey("userId"));
+        assertEquals(LongType.INSTANCE, plainParameterTypes.get("userId"));
+
+        assertTrue(plainParameterTypes.containsKey("permissionMask"));
+        assertEquals(IntegerType.INSTANCE, plainParameterTypes.get("permissionMask"));
+
+        // filter for ACL_HIERARCHY
+        String hierFilterName = getFilterName(TestObject.class, FilterType.ACL_HIERARCHY);
+        FilterDefinition hierFilter = getSessionFactory().getFilterDefinition(hierFilterName);
+        assertNotNull(hierFilter);
+
+        assertEquals(hierFilter.getDefaultFilterCondition(), "hierarchy sql");
+
+        Map<String, Type> hierParameterTypes = hierFilter.getParameterTypes();
+        assertEquals(5, hierParameterTypes.size());
+
+        assertTrue(hierParameterTypes.containsKey("hasPrivilege"));
+        assertEquals(BooleanType.INSTANCE, hierParameterTypes.get("hasPrivilege"));
+
+        assertTrue(hierParameterTypes.containsKey("objectTypeId"));
+        assertEquals(LongType.INSTANCE, hierParameterTypes.get("objectTypeId"));
+
+        assertTrue(hierParameterTypes.containsKey("principleIds"));
+        assertEquals(LongType.INSTANCE, hierParameterTypes.get("principleIds"));
+
+        assertTrue(hierParameterTypes.containsKey("userId"));
+        assertEquals(LongType.INSTANCE, hierParameterTypes.get("userId"));
+
+        assertTrue(hierParameterTypes.containsKey("permissionMask"));
+        assertEquals(IntegerType.INSTANCE, hierParameterTypes.get("permissionMask"));
     }
 
     @After

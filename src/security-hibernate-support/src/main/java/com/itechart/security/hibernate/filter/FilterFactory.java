@@ -13,5 +13,5 @@ import java.util.List;
  */
 public interface FilterFactory {
 
-    List<FilterConfig> createFilter(PersistentClass persistentClass);
+    List<FilterConfig> createFilters(PersistentClass persistentClass);
 }
