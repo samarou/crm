@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 /**
- * SecurityGroup of users
+ * Group of users
  *
  * @author andrei.samarou
  */

@@ -79,6 +79,9 @@ CREATE TABLE `user` (
 	`id` BIGINT UNSIGNED NOT NULL PRIMARY KEY,
 	`user_name` VARCHAR(50) NOT NULL,
 	`password` VARCHAR(60) NOT NULL,
+	`first_name` VARCHAR(50) NOT NULL,
+	`last_name` VARCHAR(50) NOT NULL,
+	`email` VARCHAR(100) NOT NULL,
     `active` BOOLEAN NOT NULL DEFAULT TRUE,
     UNIQUE KEY `uk_user_user_name` (`user_name`),
     CONSTRAINT `fk_user_principle_id` FOREIGN KEY (`id`) REFERENCES `principal` (`id`)
