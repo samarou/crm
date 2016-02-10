@@ -1,12 +1,12 @@
 package com.itechart.security.core.acl;
 
+import com.itechart.security.core.SecurityOperations;
+import com.itechart.security.core.SecurityRepository;
+import com.itechart.security.core.SecurityUtils;
 import com.itechart.security.core.model.acl.ObjectIdentity;
 import com.itechart.security.core.model.acl.ObjectIdentityImpl;
 import com.itechart.security.core.model.acl.Permission;
 import com.itechart.security.core.model.acl.SecurityAcl;
-import com.itechart.security.core.SecurityOperations;
-import com.itechart.security.core.SecurityRepository;
-import com.itechart.security.core.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -52,9 +52,7 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
     }
 
     private boolean checkPermission(Authentication authentication, ObjectIdentity oid, Object permissionObject) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("Checking permission '" + permissionObject + "' for object '" + oid + "'");
-        }
+        logger.debug("Checking permission '{}' for object '{}'", permissionObject, oid);
         List<Permission> requiredPermissions = resolvePermission(permissionObject);
         List<SecurityAcl> acls = securityRepository.findAcls(oid);
         if (!CollectionUtils.isEmpty(acls)) {
@@ -67,18 +65,14 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
                     permissionsFound = true;
                     if (!hasRequiredPerms) {
                         // permissions was found, but access isn't granted for one of acl's in hierarchy
-                        if (logger.isDebugEnabled()) {
-                            logger.debug("Permissions found on " + oid + ". Required permissions isn't granted in " + acl);
-                        }
+                        logger.debug("Permissions found on {}. Required permissions isn't granted in {}", oid, acl);
                         return false;
                     }
                 }
             }
             if (permissionsFound) {
                 // permissions was found and access is granted
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Permissions found on " + oid + ". Required permissions is granted");
-                }
+                logger.debug("Permissions found on {}. Required permissions is granted", oid);
                 return true;
             }
         }
@@ -90,9 +84,7 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
             // todo нужен маппинг привилегий на роли
             granted &= securityOperations.hasPrivilege(oid.getObjectType(), requiredPermission.name());
         }
-        if (logger.isDebugEnabled()) {
-            logger.debug("Have no any permissions on " + oid + ", but required permissions granted througth roles/privileges");
-        }
+        logger.debug("Have no any permissions on {}, but required permissions granted througth roles/privileges", oid);
         return granted;
     }
 

@@ -78,9 +78,9 @@ public class MethodSecurityEvaluationContext extends StandardEvaluationContext {
         String[] paramNames = parameterNameDiscoverer.getParameterNames(method);
 
         if (paramNames == null) {
-            logger.warn("Unable to resolve method parameter names for method: "
-                    + method
-                    + ". Debug symbol information is required if you are using parameter names in expressions.");
+            logger.warn("Unable to resolve method parameter names for method: {}. " +
+                    "Debug symbol information is required if you are using parameter names in expressions.",
+                    method);
             return;
         }
 
