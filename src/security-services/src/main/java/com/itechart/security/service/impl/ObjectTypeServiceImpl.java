@@ -1,14 +1,16 @@
 package com.itechart.security.service.impl;
 
+import com.itechart.security.dao.ObjectTypeDao;
 import com.itechart.security.model.persistent.ObjectType;
 import com.itechart.security.service.ObjectTypeService;
-import com.itechart.security.dao.ObjectTypeDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
+ * Service for read-only access to object types
+ *
  * @author andrei.samarou
  */
 @Service

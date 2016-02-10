@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface SecurityRepository {
 
-    SecurityUser findUserByName(String userName);
+    SecurityUser findUser(String userName);
 
     List<SecurityRole> getRoles();
 

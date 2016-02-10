@@ -28,9 +28,9 @@ INSERT INTO `principal` (`id`) VALUES
 (3),
 (4);
 
-INSERT INTO `user` (`id`, `user_name`, `password`, `active`) VALUES 
-(1, 'test', '$2a$10$0IY.OHOugvJ8MnUTVczIjuFg710aQf/6KQSVAd9oBRtvC91GFkU16', true),
-(2, 'admin', '$2a$10$gXqyc1sgCadb6XnCsTkm/OInAIo6BfR3pw2AHhGiHDT3buRaS1itO', true);
+INSERT INTO `user` (`id`, `user_name`, `password`, `first_name`, `last_name`, `email`, `active`) VALUES 
+(1, 'test', '$2a$10$0IY.OHOugvJ8MnUTVczIjuFg710aQf/6KQSVAd9oBRtvC91GFkU16', 'john', 'smith', 'test1@test.com', true),
+(2, 'admin', '$2a$10$gXqyc1sgCadb6XnCsTkm/OInAIo6BfR3pw2AHhGiHDT3buRaS1itO', 'brad', 'pitt', 'test2@test.com', true);
 
 INSERT INTO `group` (`id`, `name`, `description`) VALUES 
 (3, 'viewers', 'viewers group'),

@@ -1,5 +1,3 @@
-/src/target/
-/src/security-web/node_modules/
-/src/security-web/src/main/webapp/bower_components/
-/src/.idea
+target
+.idea
 *.iml

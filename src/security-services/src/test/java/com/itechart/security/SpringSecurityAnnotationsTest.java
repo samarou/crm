@@ -523,7 +523,7 @@ public class SpringSecurityAnnotationsTest {
     }
 
     private void mock(SecurityUser user) {
-        when(securityRepositoryMock.findUserByName(user.getUserName())).thenReturn(user);
+        when(securityRepositoryMock.findUser(user.getUserName())).thenReturn(user);
     }
 
     private void mock(SecurityRole... role) {

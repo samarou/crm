@@ -211,7 +211,7 @@ public class HibernateDaoAnnotationsTest implements HibernateSecuredDao {
     @Before
     public void initialize() {
         SecurityUser user = UserBuilder.create("user").build();
-        when(securityRepository.findUserByName("user")).thenReturn(user);
+        when(securityRepository.findUser("user")).thenReturn(user);
         SecurityTestUtils.authenticate(user);
 
         when(securityRepository.getObjectTypeIdByName("TestObject")).thenReturn(1L);

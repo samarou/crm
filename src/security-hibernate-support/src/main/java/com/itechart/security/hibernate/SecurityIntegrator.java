@@ -68,17 +68,17 @@ public class SecurityIntegrator implements SessionFactoryBuilderFactory {
         for (PersistentClass persistentClass : metadata.getEntityBindings()) {
             if (SecurityFilterUtils.isFilterableEntity(persistentClass)) {
                 if (filterFactoryProvider == null) {
-                    logger.warn("Secured entity " + persistentClass.getMappedClass()
-                            + " was found in hibernate metadata, but filter factory provider is not configured!");
+                    logger.warn("Secured entity {} was found in hibernate metadata, but filter factory provider is not configured!",
+                            persistentClass.getMappedClass());
                     break;
                 }
-                logger.debug("Generating security filters for " + persistentClass.getMappedClass());
+                logger.debug("Generating security filters for {}", persistentClass.getMappedClass());
                 List<FilterConfig> filters = filterFactory.createFilters(persistentClass);
                 for (FilterConfig filter : filters) {
                     persistentClass.addFilter(filter.getName(), filter.getSqlCondition(), false, null, null);
                     metadata.getFilterDefinitions().put(filter.getName(),
                             new FilterDefinition(filter.getName(), filter.getSqlCondition(), filter.getParameters()));
-                    logger.debug("Added security filter: " + filter.getName());
+                    logger.debug("Added security filter: {}", filter.getName());
                 }
             }
         }

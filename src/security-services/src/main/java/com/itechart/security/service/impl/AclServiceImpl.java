@@ -1,14 +1,13 @@
 package com.itechart.security.service.impl;
 
+import com.itechart.security.acl.AclCache;
+import com.itechart.security.core.model.acl.ObjectIdentity;
+import com.itechart.security.dao.AclDao;
 import com.itechart.security.model.persistent.ObjectType;
 import com.itechart.security.model.persistent.acl.Acl;
 import com.itechart.security.model.persistent.acl.AclObjectKey;
-import com.itechart.security.core.model.acl.ObjectIdentity;
-import com.itechart.security.core.model.acl.Permission;
-import com.itechart.security.service.ObjectTypeService;
-import com.itechart.security.acl.AclCache;
 import com.itechart.security.service.AclService;
-import com.itechart.security.dao.AclDao;
+import com.itechart.security.service.ObjectTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,7 +56,7 @@ public class AclServiceImpl implements AclService {
         if (acl == null) {
             acl = aclDao.findByObjectKey(objectKey);
             if (acl == null) {
-                // put to cache and return fake empty ACL,
+                // put to cache and return empty ACL,
                 // to prevent repeating queries
                 acl = new Acl(objectKey);
             }
@@ -94,7 +93,7 @@ public class AclServiceImpl implements AclService {
                 aclCache.put(loadedAcl);
             }
             result.addAll(loadedAcls);
-            // for absent ACLs put to cache fake empty ACLs, to prevent repeating queries
+            // for absent ACLs put to cache empty ACLs, to prevent repeating queries
             for (AclObjectKey objectKey : objectKeysForLoad) {
                 Acl emptyAcl = new Acl(objectKey);
                 aclCache.put(emptyAcl);
@@ -111,7 +110,8 @@ public class AclServiceImpl implements AclService {
         List<Long> parentIdsForLoad = new ArrayList<>();
         List<Acl> loadedAcls = result;
         while (loadedAcls != null && !loadedAcls.isEmpty()) {
-            // don't change to foreach cause concurrent modification
+            // don't change to foreach because of concurrent modification
+            //noinspection ForLoopReplaceableByForEach
             for (int i = 0, size = loadedAcls.size(); i < size; i++) {
                 Acl loadedAcl = loadedAcls.get(i);
                 Long parentId = loadedAcl.getParentId();
@@ -146,20 +146,25 @@ public class AclServiceImpl implements AclService {
 
     @Override
     @Transactional
-    public Acl createAcl(ObjectIdentity objectIdentity, ObjectIdentity parentIdentity, Long ownerId, Set<Permission> permissions) {
-        Acl parentAcl = getAcl(parentIdentity);
-        if (parentAcl == null) {
-            throw new RuntimeException("Parent ACL wasn't found for " + parentIdentity);
+    public Acl createAcl(ObjectIdentity objectIdentity, ObjectIdentity parentIdentity, Long ownerId) {
+        Long parentId = null;
+        if (parentIdentity != null) {
+            Acl parentAcl = aclDao.findByObjectKey(getObjectKey(parentIdentity));
+            if (parentAcl == null) {
+                throw new RuntimeException("Parent ACL wasn't found for " + parentIdentity);
+            }
+            parentId = parentAcl.getId();
         }
-        Acl acl = new Acl(getObjectKey(objectIdentity), parentAcl.getId(), ownerId);
+        Acl acl = new Acl(getObjectKey(objectIdentity), parentId, ownerId);
+        aclDao.save(acl);
         aclCache.put(acl);
         return acl;
     }
 
     @Override
     @Transactional
-    public void saveAcl(Acl acl) {
-        aclDao.save(acl);
+    public void updateAcl(Acl acl) {
+        aclDao.update(acl);
         aclCache.evict(acl.getId());
     }
 

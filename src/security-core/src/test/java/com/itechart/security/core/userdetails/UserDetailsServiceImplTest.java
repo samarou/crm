@@ -33,7 +33,7 @@ public class UserDetailsServiceImplTest {
                 .build();
 
         SecurityRepository securityRepository = Mockito.mock(SecurityRepository.class);
-        when(securityRepository.findUserByName(user.getUserName())).thenReturn(user);
+        when(securityRepository.findUser(user.getUserName())).thenReturn(user);
 
         UserDetailsServiceImpl userDetailsService = new UserDetailsServiceImpl();
         userDetailsService.setSecurityRepository(securityRepository);
@@ -63,7 +63,7 @@ public class UserDetailsServiceImplTest {
         assertEquals(expectedAuthorities, authorities);
 
         user = UserBuilder.create("user", false).build();
-        when(securityRepository.findUserByName(user.getUserName())).thenReturn(user);
+        when(securityRepository.findUser(user.getUserName())).thenReturn(user);
 
         userDetails = userDetailsService.loadUserByUsername(user.getUserName());
         assertTrue(userDetails.isAccountNonExpired());

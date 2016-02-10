@@ -96,9 +96,7 @@ public class AclHibernateSecurityAspect {
         Session session = sessionFactory.getCurrentSession();
         for (FilterConfig filter : filters) {
             FilterParamsSource params = filterParamsBuilder.build(filter.getObjectType(), filter.getPermissions());
-            if (logger.isDebugEnabled()) {
-                logger.debug("Enable security filter " + filter.getFilterName() + "\nwith parameters: " + params);
-            }
+            logger.debug("Enable security filter {}\nwith parameters: {}", filter.getFilterName(), params);
             Filter hbmFilter = session.enableFilter(filter.getFilterName());
             params.populate(hbmFilter);
         }
@@ -110,9 +108,7 @@ public class AclHibernateSecurityAspect {
     private void disableFilters(SessionFactory sessionFactory, Set<FilterConfig> filters) {
         Session session = sessionFactory.getCurrentSession();
         for (FilterConfig filter : filters) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("Disable security filter " + filter.getFilterName());
-            }
+            logger.debug("Disable security filter {}", filter.getFilterName());
             session.disableFilter(filter.getFilterName());
         }
     }
@@ -127,9 +123,7 @@ public class AclHibernateSecurityAspect {
         if (aclFilterRules.length != 0) {
             // create filter configs based on annotation
             filters = createFilterConfigs(aclFilterRules);
-            if (logger.isDebugEnabled()) {
-                logger.debug("Recognized " + filters.size() + " filter configs for " + method + " based on " + AclFilterRule.class);
-            }
+            logger.debug("Recognized {} filter configs for {} based on {}", filters.size(), method, AclFilterRule.class);
         } else {
             // if annotation is empty then create filter configs based on method's return types
             List<Class> filterableTypes = getFilterableTypesFromReturnType(joinPoint);
@@ -222,9 +216,7 @@ public class AclHibernateSecurityAspect {
     private SessionFactory getSessionFactory(ProceedingJoinPoint joinPoint) {
         Object target = joinPoint.getTarget();
         Class<?> targetClass = target.getClass();
-        if (logger.isDebugEnabled()) {
-            logger.debug("Try to get SessionFactory from instance of " + targetClass);
-        }
+        logger.debug("Try to get SessionFactory from instance of {}", targetClass);
         if (target instanceof HibernateSecuredDao) {
             SessionFactory sessionFactory = ((HibernateSecuredDao) target).getSessionFactory();
             if (sessionFactory == null) {

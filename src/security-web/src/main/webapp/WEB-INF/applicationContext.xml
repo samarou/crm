@@ -14,4 +14,8 @@
         <sec:http-basic/>
     </sec:http>
 
+    <sec:authentication-manager>
+        <sec:authentication-provider ref="daoAuthenticationProvider"/>
+    </sec:authentication-manager>
+
 </beans>

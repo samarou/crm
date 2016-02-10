@@ -24,9 +24,9 @@ public interface AclService {
 
     List<Acl> findAclWithAncestors(ObjectIdentity objectIdentity);
 
-    Acl createAcl(ObjectIdentity objectIdentity, ObjectIdentity parentIdentity, Long ownerId, Set<Permission> permissions);
+    Acl createAcl(ObjectIdentity objectIdentity, ObjectIdentity parentIdentity, Long ownerId);
 
-    void saveAcl(Acl acl);
+    void updateAcl(Acl acl);
 
     void deleteAcl(Acl acl);
 }
