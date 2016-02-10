@@ -5,7 +5,10 @@ import com.itechart.security.model.filter.UserFilter;
 import com.itechart.security.model.persistent.User;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -26,17 +29,25 @@ public class UserDaoImpl extends BaseHibernateDao<User> implements UserDao {
         return getHibernateTemplate().execute(session -> {
             Criteria criteria = session.createCriteria(User.class, "u");
             criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-
-            /*
-
-•	Поиск по подстроке. Одно текстовое поле на все текстовые атрибуты пользователя.
-•	Выпадающий список с перечислением всех ролей отсортированных по имени
-•	Выпадающий список с перечислением всех групп отсортированных по имени
-•	Флажок ‘Только активные’. По умолчанию включен
-
-*/
-
-
+            if (filter.getRoleId() != null) {
+                criteria.createAlias("u.roles", "r");
+                criteria.add(Restrictions.eq("r.id", filter.getRoleId()));
+            }
+            if (filter.getGroupId() != null) {
+                criteria.createAlias("u.groups", "g");
+                criteria.add(Restrictions.eq("g.id", filter.getGroupId()));
+            }
+            if (filter.isActive()) {
+                criteria.add(Restrictions.eq("u.active", true));
+            }
+            if (!StringUtils.hasText(filter.getText())) {
+                criteria.add(Restrictions.disjunction(
+                        Restrictions.ilike("e.userName", filter.getText(), MatchMode.ANYWHERE),
+                        Restrictions.ilike("e.firstName", filter.getText(), MatchMode.ANYWHERE),
+                        Restrictions.ilike("e.lastName", filter.getText(), MatchMode.ANYWHERE),
+                        Restrictions.ilike("e.email", filter.getText(), MatchMode.ANYWHERE)
+                ));
+            }
             appendSortableFilterConditions(criteria, filter);
             return criteria.list();
         });
