@@ -32,7 +32,7 @@ public class SecurityRepositoryImpl implements SecurityRepository {
     private ObjectTypeService objectTypeService;
 
     @Override
-    public SecurityUser findUserByName(String userName) {
+    public SecurityUser findUser(String userName) {
         return userService.findByName(userName);
     }
 

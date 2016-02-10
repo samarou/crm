@@ -16,7 +16,7 @@ public class SecurityTestUtils {
 
     public static Authentication authenticate(SecurityUser user) {
         SecurityRepository securityRepository = Mockito.mock(SecurityRepository.class);
-        Mockito.when(securityRepository.findUserByName(user.getUserName())).thenReturn(user);
+        Mockito.when(securityRepository.findUser(user.getUserName())).thenReturn(user);
         UserDetailsServiceImpl userDetailsService = new UserDetailsServiceImpl();
         userDetailsService.setSecurityRepository(securityRepository);
         UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUserName());

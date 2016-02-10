@@ -1,15 +1,21 @@
 package com.itechart.security.dao.impl;
 
+import com.itechart.security.model.filter.PageableFilter;
+import com.itechart.security.model.filter.SortableFilter;
 import com.itechart.security.model.persistent.BaseEntity;
 import com.itechart.security.dao.BaseDao;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.internal.CriteriaImpl;
+import org.hibernate.sql.JoinType;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -76,6 +82,64 @@ abstract class BaseHibernateDao<T extends BaseEntity> extends AbstractHibernateD
             criteria.add(Restrictions.in(getIdPropertyName(), ids));
             return criteria.list();
         });
+    }
+
+    protected Criteria appendSortableFilterConditions(Criteria criteria, SortableFilter filter) {
+        String sortProperty = filter.getSortProperty();
+        if (sortProperty != null) {
+            String[] propertyPath = sortProperty.split("\\.");
+            String property = propertyPath[propertyPath.length - 1];
+            if (propertyPath.length > 1) {
+                String alias = addPropertyPathAliases(criteria, propertyPath);
+                property = alias + '.' + property;
+            } else {
+                property = criteria.getAlias() + '.' + property;
+            }
+            criteria.addOrder(filter.isSortAsc() ? Order.asc(property) : Order.desc(property));
+        }
+        if (filter instanceof PageableFilter) {
+            if (sortProperty == null) {
+                criteria.addOrder(Order.asc(getIdPropertyName()));
+            }
+            PageableFilter paginalFilter = (PageableFilter) filter;
+            if (paginalFilter.getFrom() != null) {
+                criteria.setFirstResult(paginalFilter.getFrom());
+            }
+            if (paginalFilter.getCount() != null) {
+                criteria.setMaxResults(paginalFilter.getCount());
+            }
+        }
+        return criteria;
+    }
+
+    private String addPropertyPathAliases(Criteria criteria, String[] propertyPath) {
+        String alias = criteria.getAlias();
+        for (int i = 0; i < propertyPath.length - 1; i++) {
+            String property = propertyPath[i];
+            if (alias != null) {
+                property = alias + "." + property;
+            }
+            String propertyAlias = findPropertyAlias(criteria, property);
+            if (propertyAlias == null) {
+                propertyAlias = propertyPath[i] + '_' + propertyPath[i].hashCode();
+                criteria.createAlias(property, propertyAlias, JoinType.LEFT_OUTER_JOIN);
+            }
+            alias = propertyAlias;
+        }
+        return alias;
+    }
+
+    private String findPropertyAlias(Criteria criteria, String property) {
+        if (criteria instanceof CriteriaImpl) {
+            Iterator<CriteriaImpl.Subcriteria> subCriterias = ((CriteriaImpl) criteria).iterateSubcriteria();
+            while (subCriterias.hasNext()) {
+                CriteriaImpl.Subcriteria subCriteria = subCriterias.next();
+                if (subCriteria.getPath().equals(property)) {
+                    return subCriteria.getAlias();
+                }
+            }
+        }
+        return null;
     }
 
     public String getIdPropertyName() {
