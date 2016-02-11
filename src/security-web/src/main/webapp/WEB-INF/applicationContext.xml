@@ -5,6 +5,7 @@
 		  http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
     <import resource="classpath*:securityServicesContext.xml"/>
+    <import resource="classpath*:businessServicesContext.xml"/>
 
     <sec:http pattern="/app/**" security="none"/>
 
