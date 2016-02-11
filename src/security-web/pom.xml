@@ -59,19 +59,12 @@
     </dependencies>
 
     <build>
-        <finalName>Security Web Application</finalName>
-
         <plugins>
-            <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-            </plugin>
-
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
+                <version>1.4.0</version>
                 <executions>
-
                     <execution>
                         <id>exec-npm-install</id>
                         <phase>initialize</phase>
@@ -85,19 +78,6 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
-                    <!--<execution>-->
-                        <!--<id>exec-bower-install</id>-->
-                        <!--<phase>generate-sources</phase>-->
-                        <!--<configuration>-->
-                            <!--<executable>bower</executable>-->
-                            <!--<arguments>-->
-                                <!--<argument>install</argument>-->
-                            <!--</arguments>-->
-                        <!--</configuration>-->
-                        <!--<goals>-->
-                            <!--<goal>exec</goal>-->
-                        <!--</goals>-->
-                    <!--</execution>-->
                     <execution>
                         <id>exec-grunt</id>
                         <phase>process-resources</phase>
