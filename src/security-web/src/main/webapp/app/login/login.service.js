@@ -1,31 +1,19 @@
-(function() {
-	'use strict';
-	
-	angular
-		.module('app')
-		.factory('LoginService', LoginService);
-		
-		
-	
-	LoginService.$inject = ['$http', '$rootScope', 'UserService'];
+(function () {
+    'use strict';
 
-	function LoginService($http, $rootScope, UserService) {
-		console.log("LoginService");
+    angular
+        .module('app')
+        .service('LoginService', LoginService);
 
-		var service = {};
+    LoginService.$inject = ['$http'];
 
-		service.Login = Login;
-		return service;
-
-		function Login(username, password, callback) {
-			$http.post('/login', {
-				username : username,
-				password : password
-			}).success(function(response) {
-				callback(response);
-			});
-		}
-
-	}
+    function LoginService($http) {
+        this.login = function (username, password) {
+            return $http.post('/rest/login', {
+                username: username,
+                password: password
+            });
+        }
+    }
 
 })();

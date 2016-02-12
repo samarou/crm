@@ -7,15 +7,16 @@
     <import resource="classpath*:securityServicesContext.xml"/>
     <import resource="classpath*:businessServicesContext.xml"/>
 
-    <sec:http pattern="/app/**" security="none"/>
-
-    <sec:http pattern="/rest/**" create-session="stateless">
+    <sec:http pattern="/rest/**" create-session="stateless" entry-point-ref="unauthorizedEntryPoint">
         <sec:expression-handler ref="webSecurityExpressionHandler"/>
+        <sec:intercept-url pattern="/rest/login" access="permitAll"/>
         <sec:intercept-url pattern="/**" access="hasRole('USER')"/>
-        <sec:http-basic/>
+        <sec:csrf disabled="true"/>
     </sec:http>
 
-    <sec:authentication-manager>
+    <bean id="unauthorizedEntryPoint" class="com.itechart.security.web.security.UnauthorizedEntryPoint"/>
+
+    <sec:authentication-manager id="authenticationManager">
         <sec:authentication-provider ref="daoAuthenticationProvider"/>
     </sec:authentication-manager>
 

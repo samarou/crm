@@ -1,4 +1,4 @@
-package com.itechart.security.web.model;
+package com.itechart.security.web.model.dto;
 
 /**
  * @author andrei.samarou

@@ -1,8 +1,8 @@
 package com.itechart.security.web.controller;
 
 import com.itechart.security.service.UserService;
-import com.itechart.security.web.model.UserDto;
-import com.itechart.security.web.model.UserFilterDto;
+import com.itechart.security.web.model.dto.UserDto;
+import com.itechart.security.web.model.dto.UserFilterDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
