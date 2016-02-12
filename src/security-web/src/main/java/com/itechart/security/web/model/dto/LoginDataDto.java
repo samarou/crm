@@ -1,26 +1,12 @@
-package com.itechart.crm.model;
+package com.itechart.security.web.model.dto;
 
 /**
- *
+ * @author andrei.samarou
  */
-public class LoginDetails {
+public class LoginDataDto {
+
     private String username;
     private String password;
-    private String ip;
-
-    public LoginDetails(String username, String password, String ip) {
-        this.username = username;
-        this.password = password;
-        this.ip = ip;
-    }
-
-    public String getIp() {
-        return ip;
-    }
-
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
 
     public String getUsername() {
         return username;

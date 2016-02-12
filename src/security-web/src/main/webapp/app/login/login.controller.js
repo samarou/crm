@@ -1,32 +1,26 @@
 (function () {
     'use strict';
- 
+
     angular
         .module('app')
         .controller('LoginController', LoginController);
-        
-    LoginController.$inject = ['$location', 'LoginService'];
 
+    LoginController.$inject = ['$location', '$http', 'LoginService'];
 
-	function LoginController($location, LoginService) {
-		console.log("Login Controller");
+    function LoginController($location, $http, LoginService) {
+        var vm = this;
+        vm.login = function () {
+            LoginService.login(vm.username, vm.password).then(
+                function (response) {
+                    var data = response.data;
+                    $http.defaults.headers.common['X-Auth-Token'] = data.token;
+                    $location.path('/users');
+                },
+                function (error) {
+                    console.log(error);
+                    vm.error = "Invalid login or password";
+                });
+        };
+    }
 
-		var vm = this;
-
-		vm.login = login;
-
-		function login() {
-			console.log('login: ' + vm.username + " " + vm.password);
-			LoginService.Login(vm.username, vm.password, function(response) {
-				if(response.success) {
-					$location.path('/users');
-				} else {
-					//Error
-					console.log('Error');
-				}
-			});
-		};
-	}
-
- 
 })();

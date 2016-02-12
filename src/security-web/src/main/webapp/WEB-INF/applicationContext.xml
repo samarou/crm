@@ -5,37 +5,18 @@
 		  http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
     <import resource="classpath*:securityServicesContext.xml"/>
+    <import resource="classpath*:businessServicesContext.xml"/>
 
-    <!--<bean id="restAuthenticateProvider" class="com.itechart.crm.security.RestAuthenticateProvider">-->
-        <!--<constructor-arg name="randomizer">-->
-            <!--<bean class="com.itechart.crm.security.util.SecureRandomizer"/>-->
-        <!--</constructor-arg>-->
-        <!--<property name="userDetailsService" ref="userDetailsService"/>-->
-        <!--<property name="passwordEncoder" ref="passwordEncoder"/>-->
-        <!--<property name="userCache" ref="userCache"/>-->
-    <!--</bean>-->
-
-    <bean id="tokenFactory" class="com.itechart.crm.security.TokenFactory">
-        <constructor-arg name="randomizer">
-            <bean id="secureRandomizer" class="com.itechart.crm.security.util.SecureRandomizer"/>
-        </constructor-arg>
-    </bean>
-
-    <sec:http pattern="/app/**" security="none"/>
-
-    <sec:http pattern="/rest/**" create-session="stateless">
+    <sec:http pattern="/rest/**" create-session="stateless" entry-point-ref="unauthorizedEntryPoint">
         <sec:expression-handler ref="webSecurityExpressionHandler"/>
+        <sec:intercept-url pattern="/rest/login" access="permitAll"/>
         <sec:intercept-url pattern="/**" access="hasRole('USER')"/>
-        <sec:http-basic/>
-    </sec:http>
-
-    <sec:http>
-        <sec:form-login/>
-        <sec:intercept-url pattern="/login" access="permitAll"/>
         <sec:csrf disabled="true"/>
     </sec:http>
 
-    <sec:authentication-manager>
+    <bean id="unauthorizedEntryPoint" class="com.itechart.security.web.security.UnauthorizedEntryPoint"/>
+
+    <sec:authentication-manager id="authenticationManager">
         <sec:authentication-provider ref="daoAuthenticationProvider"/>
     </sec:authentication-manager>
 
