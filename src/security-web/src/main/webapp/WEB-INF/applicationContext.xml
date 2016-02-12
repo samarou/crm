@@ -6,12 +6,33 @@
 
     <import resource="classpath*:securityServicesContext.xml"/>
 
+    <!--<bean id="restAuthenticateProvider" class="com.itechart.crm.security.RestAuthenticateProvider">-->
+        <!--<constructor-arg name="randomizer">-->
+            <!--<bean class="com.itechart.crm.security.util.SecureRandomizer"/>-->
+        <!--</constructor-arg>-->
+        <!--<property name="userDetailsService" ref="userDetailsService"/>-->
+        <!--<property name="passwordEncoder" ref="passwordEncoder"/>-->
+        <!--<property name="userCache" ref="userCache"/>-->
+    <!--</bean>-->
+
+    <bean id="tokenFactory" class="com.itechart.crm.security.TokenFactory">
+        <constructor-arg name="randomizer">
+            <bean id="secureRandomizer" class="com.itechart.crm.security.util.SecureRandomizer"/>
+        </constructor-arg>
+    </bean>
+
     <sec:http pattern="/app/**" security="none"/>
 
     <sec:http pattern="/rest/**" create-session="stateless">
         <sec:expression-handler ref="webSecurityExpressionHandler"/>
         <sec:intercept-url pattern="/**" access="hasRole('USER')"/>
         <sec:http-basic/>
+    </sec:http>
+
+    <sec:http>
+        <sec:form-login/>
+        <sec:intercept-url pattern="/login" access="permitAll"/>
+        <sec:csrf disabled="true"/>
     </sec:http>
 
     <sec:authentication-manager>
