@@ -11,15 +11,14 @@
         var vm = this;
         vm.login = function () {
             LoginService.login(vm.username, vm.password).then(
-                function (sessionInfo) {
-                    console.log(sessionInfo);
-                    $http.defaults.headers.common['X-Auth-Token'] = sessionInfo.token;
+                function (response) {
+                    var data = response.data;
+                    $http.defaults.headers.common['X-Auth-Token'] = data.token;
                     $location.path('/users');
                 },
                 function (error) {
                     console.log(error);
-                    vm.error = error.statusText;
-                    vm.password = '';
+                    vm.error = "Invalid login or password";
                 });
         };
     }

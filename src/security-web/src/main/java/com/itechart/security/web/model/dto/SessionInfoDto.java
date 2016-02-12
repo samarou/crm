@@ -10,11 +10,11 @@ package com.itechart.security.web.model.dto;
 public class SessionInfoDto {
 
     private String username;
-    private String tocken;
+    private String token;
 
-    public SessionInfoDto(String username, String tocken) {
+    public SessionInfoDto(String username, String token) {
         this.username = username;
-        this.tocken = tocken;
+        this.token = token;
     }
 
     public String getUsername() {
@@ -25,11 +25,11 @@ public class SessionInfoDto {
         this.username = username;
     }
 
-    public String getTocken() {
-        return tocken;
+    public String getToken() {
+        return token;
     }
 
-    public void setTocken(String tocken) {
-        this.tocken = tocken;
+    public void setToken(String token) {
+        this.token = token;
     }
 }
