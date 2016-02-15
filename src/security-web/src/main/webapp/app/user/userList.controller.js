@@ -13,7 +13,7 @@
 
 		var vm = this;
 		vm.userList = UserService.GetAll;
-
+		
 	}
 
  

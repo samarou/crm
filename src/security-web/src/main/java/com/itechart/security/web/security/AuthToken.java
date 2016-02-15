@@ -12,15 +12,13 @@ import static java.lang.System.currentTimeMillis;
 /**
  * @author yauheni.putsykovich
  */
-public class TokenExtended extends DefaultToken {
-    //todo: extract in the outside configuration file or something else
-    private long lifeTime = TimeUnit.MINUTES.toMillis(3);
+public class AuthToken extends DefaultToken {
     private String ip;
     private String id;
     private String name;
     private Collection<GrantedAuthority> authorities;
 
-    public TokenExtended(String key, long keyCreationTime, String extendedInformation) {
+    public AuthToken(String key, long keyCreationTime, String extendedInformation) {
         super(key, keyCreationTime, extendedInformation);
     }
 
@@ -30,10 +28,6 @@ public class TokenExtended extends DefaultToken {
 
     public void setAuthorities(Collection<GrantedAuthority> authorities) {
         this.authorities = authorities;
-    }
-
-    public boolean isAlive(){
-        return currentTimeMillis() - getKeyCreationTime() < lifeTime;
     }
 
     public String getName() {

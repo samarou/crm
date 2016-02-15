@@ -1,6 +1,7 @@
 package com.itechart.security.web.security;
 
 import com.itechart.security.core.userdetails.UserDetailsImpl;
+import com.itechart.security.web.exception.InvalidTokenException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -16,7 +17,6 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
@@ -24,22 +24,25 @@ import java.util.stream.Collectors;
  * @author yauheni.putsykovich
  */
 @Component
-public class TokenServiceExtended extends KeyBasedPersistenceTokenService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(TokenServiceExtended.class);
-
+public class TokenWorker extends KeyBasedPersistenceTokenService {
     private static final String DELIMITER = "_";
 
-    public TokenServiceExtended() throws NoSuchAlgorithmException {
+    public TokenWorker() throws NoSuchAlgorithmException {
         super.setSecureRandom(SecureRandom.getInstance("SHA1PRNG"));
         super.setServerInteger(KeyGenerators.string().hashCode());
         super.setServerSecret(KeyGenerators.string().generateKey());
     }
 
-    public Token unwrapToken(String rawToken) throws Exception {
-        Token t = super.verifyToken(rawToken);
+    public Token unwrapToken(String rawToken) throws InvalidTokenException {
+        Token t;
+        try {
+            t = super.verifyToken(rawToken);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidTokenException("Verification of token failed", e);
+        }
         String info = t.getExtendedInformation();
         String[] parts = info.split(DELIMITER);
-        TokenExtended token = new TokenExtended(t.getKey(), t.getKeyCreationTime(), t.getExtendedInformation());
+        AuthToken token = new AuthToken(t.getKey(), t.getKeyCreationTime(), t.getExtendedInformation());
         token.setIp(parts[0]);
         token.setId(parts[1]);
         token.setName(parts[2]);
@@ -55,24 +58,13 @@ public class TokenServiceExtended extends KeyBasedPersistenceTokenService {
     public Token wrapToken(HttpServletRequest request, Authentication authentication) throws UnsupportedEncodingException {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         String extraInformation = new StringBuilder()
-                .append(extractUserIp(request)).append(DELIMITER)
+                .append(request.getRemoteAddr()).append(DELIMITER)
                 .append(userDetails.getUserId()).append(DELIMITER)
                 .append(userDetails.getUsername()).append(DELIMITER)
                 .append(userDetails.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority)
                         .collect(Collectors.joining(DELIMITER))).toString();
 
-        Token token = super.allocateToken(extraInformation);
-
-        return token;
-    }
-
-    public String extractUserIp(HttpServletRequest request) {
-        String ipAddress = request.getHeader("X-FORWARDED-FOR");
-        if (ipAddress == null) {
-            ipAddress = request.getRemoteAddr();
-        }
-
-        return ipAddress;
+        return super.allocateToken(extraInformation);
     }
 }

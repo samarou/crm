@@ -1,7 +1,5 @@
 package com.itechart.security.web.model.dto;
 
-import java.util.Date;
-
 /**
  * @author andrei.samarou
  */

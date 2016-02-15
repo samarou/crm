@@ -1,9 +1,9 @@
 package com.itechart.security.web.security;
 
+import com.itechart.security.web.exception.InvalidTokenException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,36 +13,33 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.List;
+
+import static java.lang.System.currentTimeMillis;
 
 /**
  * @author yauheni.putsykovich
  */
 public class CustomTokenAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
-    public final String HEADER_SECURITY_TOKEN = "X-Auth-Token";
+    private static final Logger log = LoggerFactory.getLogger(CustomTokenAuthenticationFilter.class);
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomTokenAuthenticationFilter.class);
+    private static final String HEADER_SECURITY_TOKEN = "X-Auth-Token";
 
-    private List<String> excludedUrls;
+    private long tokenLifetime;
 
     @Autowired
-    @Qualifier("tokenService")
-    private TokenServiceExtended tokenService;
+    private TokenWorker tokenWorker;
 
-    public CustomTokenAuthenticationFilter(List<String> excludedUrls, String defaultFilterProcessesUrl, AuthenticationManager authenticationManager, AuthenticationSuccessHandler authenticationSuccessHandler) {
+    public CustomTokenAuthenticationFilter(long tokeLifetime, String defaultFilterProcessesUrl, AuthenticationManager authenticationManager, AuthenticationSuccessHandler authenticationSuccessHandler) {
         super(defaultFilterProcessesUrl);
         super.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher(defaultFilterProcessesUrl));
         setAuthenticationManager(authenticationManager);
         setAuthenticationSuccessHandler(authenticationSuccessHandler);
-        this.excludedUrls = excludedUrls;
+        this.tokenLifetime = tokeLifetime;
     }
 
     /**
@@ -50,40 +47,35 @@ public class CustomTokenAuthenticationFilter extends AbstractAuthenticationProce
      */
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-        String rawToken = request.getHeader(HEADER_SECURITY_TOKEN);
-        TokenExtended token;
-        String errorMessage = "Bad Token";
-        try {
-            if (rawToken != null) {
-                LOGGER.info("Token found:" + rawToken);
-                token = (TokenExtended) tokenService.unwrapToken(rawToken);
-                if (token.isAlive()) {
-                    String ip = tokenService.extractUserIp(request);
-                    if (token.getIp().equals(ip)) {
-                        return new UsernamePasswordAuthenticationToken(token.getName(), null, token.getAuthorities());
-                    } else {
-                        LOGGER.info(errorMessage = "Token ip({}) is not equals user ip({})", token.getId(), ip);
-                    }
-                } else LOGGER.info(errorMessage = "Lifetime of the token has expired");
-            } else LOGGER.error(errorMessage = "Authenticate impossible without authentication token");
-        } catch (Exception e) {
-            LOGGER.error("Authenticate user by token error: ", e);
-        }
-        throw new AuthenticationServiceException(MessageFormat.format("Error | {0}", errorMessage));
-    }
+        String logMessage;
 
-    @Override
-    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
-        //checking if is urls, which need to skip
-        if (excludedUrls != null) {
-            String uri = ((HttpServletRequest) req).getRequestURI();
-            if (excludedUrls.indexOf(uri) != -1) {
-                //than skip this filter
-                chain.doFilter(req, res);
-                return;
-            }
+        String rawToken = request.getHeader(HEADER_SECURITY_TOKEN);
+        if (rawToken == null) {
+            logMessage = "Authenticate impossible without authentication token";
+            log.error(logMessage);
+            throw new AuthenticationServiceException(MessageFormat.format("Error | {0}", logMessage));
         }
-        //else, apply this filter
-        super.doFilter(req, res, chain);
+
+        AuthToken token;
+        try {
+            log.info("Token found:" + rawToken);
+            token = (AuthToken) tokenWorker.unwrapToken(rawToken);
+            if (currentTimeMillis() - token.getKeyCreationTime() > tokenLifetime) {
+                logMessage = "Lifetime of the token has expired";
+                log.info(logMessage);
+                throw new AuthenticationServiceException(MessageFormat.format("Error | {0}", logMessage));
+            }
+        } catch (InvalidTokenException e) {
+            log.error("Authenticate user by token error: ", e);
+            throw new AuthenticationServiceException("Error | Bad Token");
+        }
+
+        if (!token.getIp().equals(request.getRemoteAddr())) {
+            logMessage = MessageFormat.format("Token ip({0}) is not equals user ip({1})", token.getId(), request.getRemoteAddr());
+            log.info(logMessage);
+            throw new AuthenticationServiceException(MessageFormat.format("Error | {0}", logMessage));
+        }
+
+        return new UsernamePasswordAuthenticationToken(token.getName(), null, token.getAuthorities());
     }
 }

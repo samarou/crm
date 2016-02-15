@@ -3,7 +3,7 @@ package com.itechart.security.web.controller;
 import com.itechart.security.core.exception.AuthenticationException;
 import com.itechart.security.web.model.dto.LoginDataDto;
 import com.itechart.security.web.model.dto.SessionInfoDto;
-import com.itechart.security.web.security.TokenServiceExtended;
+import com.itechart.security.web.security.TokenWorker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,6 @@ import java.io.UnsupportedEncodingException;
  * @author andrei.samarou
  */
 @Controller
-@RequestMapping("/rest")
 public class LoginController {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
@@ -35,17 +34,10 @@ public class LoginController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    @Qualifier("tokenService")
-    private TokenServiceExtended tokenService;
+    private TokenWorker tokenWorker;
 
     @ResponseBody
-    @RequestMapping("/test.rest")
-    public void test() {
-        LOGGER.info("/rest/test.rest");
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/login.rest", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public SessionInfoDto login(@RequestBody LoginDataDto data, HttpServletRequest request) {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(data.getUsername(), data.getPassword());
@@ -53,7 +45,7 @@ public class LoginController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         Token token;
         try {
-            token = tokenService.wrapToken(request, authentication);
+            token = tokenWorker.wrapToken(request, authentication);
         } catch (UnsupportedEncodingException e) {
             LOGGER.error("attempt login fails: ", e);
             throw new AuthenticationException("Creating authentication token failed");

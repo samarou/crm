@@ -1,7 +1,5 @@
 package com.itechart.security.web.model.dto;
 
-import org.springframework.security.core.token.Token;
-
 /**
  * For storing information about the logged user's session.
  * It isn't related to HTTP session and only stores logged user's
