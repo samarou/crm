@@ -15,7 +15,7 @@ import java.util.List;
  * @author andrei.samarou
  */
 @Controller
-@RequestMapping("/api/users")
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
