@@ -2,8 +2,6 @@ package com.itechart.security.web.security;
 
 import com.itechart.security.core.userdetails.UserDetailsImpl;
 import com.itechart.security.web.exception.InvalidTokenException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,6 +19,12 @@ import java.util.HashSet;
 import java.util.stream.Collectors;
 
 /**
+ * {@link KeyBasedPersistenceTokenService}
+ *
+ * Provides methods to performs
+ * wrapping(create a new token from information about user) and
+ * unwrapping(extracts information from token) of authentication token.
+ *
  * @author yauheni.putsykovich
  */
 @Component

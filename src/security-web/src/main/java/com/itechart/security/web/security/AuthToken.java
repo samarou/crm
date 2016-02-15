@@ -10,6 +10,10 @@ import java.util.concurrent.TimeUnit;
 import static java.lang.System.currentTimeMillis;
 
 /**
+ * {@link DefaultToken}
+ *
+ * Container to information about user to build authentication token.
+ *
  * @author yauheni.putsykovich
  */
 public class AuthToken extends DefaultToken {
