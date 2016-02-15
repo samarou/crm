@@ -7,10 +7,12 @@
     <import resource="classpath*:securityServicesContext.xml"/>
     <import resource="classpath*:businessServicesContext.xml"/>
 
-    <sec:http pattern="/rest/**" create-session="stateless" auto-config="false" entry-point-ref="unauthorizedEntryPoint">
+    <sec:http pattern="/rest/**" create-session="stateless" auto-config="false"
+              entry-point-ref="unauthorizedEntryPoint">
         <sec:expression-handler ref="webSecurityExpressionHandler"/>
+        <sec:intercept-url pattern="/rest/login.rest" access="permitAll"/>
+        <sec:intercept-url pattern="/rest/test.rest" access="hasRole('USER')"/>
         <sec:custom-filter ref="customTokenAuthenticationFilter" position="FORM_LOGIN_FILTER"/>
-        <sec:intercept-url pattern="/rest/login" access="permitAll"/>
         <sec:intercept-url pattern="/**" access="hasRole('USER')"/>
         <sec:csrf disabled="true"/>
     </sec:http>
@@ -20,14 +22,20 @@
     </sec:authentication-manager>
 
     <bean id="unauthorizedEntryPoint" class="com.itechart.security.web.security.UnauthorizedEntryPoint"/>
+    <bean id="authenticationSuccessHandler" class="com.itechart.security.web.security.TokenSimpleUrlAuthenticationSuccessHandler"/>
+
+    <bean id="tokenService" class="com.itechart.security.web.security.TokenServiceExtended"/>
 
     <bean id="customTokenAuthenticationFilter"
           class="com.itechart.security.web.security.CustomTokenAuthenticationFilter">
+        <constructor-arg name="excludedUrls">
+            <list>
+                <value>/rest/login.rest</value>
+            </list>
+        </constructor-arg>
         <constructor-arg name="defaultFilterProcessesUrl" value="/rest/**"/>
         <constructor-arg name="authenticationManager" ref="authenticationManager"/>
-        <constructor-arg name="authenticationSuccessHandler">
-            <bean class="com.itechart.security.web.security.TokenSimpleUrlAuthenticationSuccessHandler"/>
-        </constructor-arg>
+        <constructor-arg name="authenticationSuccessHandler" ref="authenticationSuccessHandler"/>
     </bean>
 
 </beans>

@@ -15,11 +15,16 @@ import java.util.List;
  * @author andrei.samarou
  */
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @RequestMapping("/")
+    public List<UserDto> findAll(){
+        return Collections.singletonList(new UserDto());
+    }
 
     @ResponseBody
     @RequestMapping("find")

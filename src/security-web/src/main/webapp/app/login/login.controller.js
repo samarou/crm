@@ -13,6 +13,7 @@
             LoginService.login(vm.username, vm.password).then(
                 function (response) {
                     var data = response.data;
+                    console.log("data: " + data);
                     $http.defaults.headers.common['X-Auth-Token'] = data.token;
                     $location.path('/users');
                 },

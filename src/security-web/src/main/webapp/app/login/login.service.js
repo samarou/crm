@@ -9,7 +9,7 @@
 
     function LoginService($http) {
         this.login = function (username, password) {
-            return $http.post('/rest/login', {
+            return $http.post('/rest/login.rest', {
                 username: username,
                 password: password
             });
