@@ -2,8 +2,6 @@ package com.itechart.security.web.security;
 
 import com.itechart.security.core.userdetails.UserDetailsImpl;
 import com.itechart.security.web.exception.InvalidTokenException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
