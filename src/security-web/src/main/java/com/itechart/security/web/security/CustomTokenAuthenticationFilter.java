@@ -4,14 +4,11 @@ import com.itechart.security.web.exception.InvalidTokenException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +19,11 @@ import java.text.MessageFormat;
 import static java.lang.System.currentTimeMillis;
 
 /**
+ * {@link AbstractAuthenticationProcessingFilter}
+ *
+ * Custom token authentication filter to process request to rest api.
+ * Executes extracting token from request and checks it.
+ *
  * @author yauheni.putsykovich
  */
 public class CustomTokenAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
