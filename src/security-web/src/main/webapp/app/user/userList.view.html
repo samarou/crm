@@ -1,3 +1,21 @@
 <div class="col-md-4 col-md-offset-4">
-
+    <table class="table">
+        <caption>Users</caption>
+        <thead><tr>
+            <td>#</td>
+            <td>First name</td>
+            <td>Last name</td>
+            <td>Username</td>
+            <td>Email</td>
+        </tr></thead>
+        <tbody>
+            <tr ng-repeat="user in vm.userList">
+                <td>{{$index + 1}}</td>
+                <td>{{user.firstName}}</td>
+                <td>{{user.lastName}}</td>
+                <td>{{user.userName}}</td>
+                <td>{{user.email}}</td>
+            </tr>
+        </tbody>
+    </table>
 </div>

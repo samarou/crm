@@ -40,12 +40,12 @@ public class UserDaoImpl extends BaseHibernateDao<User> implements UserDao {
             if (filter.isActive()) {
                 criteria.add(Restrictions.eq("u.active", true));
             }
-            if (!StringUtils.hasText(filter.getText())) {
+            if (StringUtils.hasText(filter.getText())) {
                 criteria.add(Restrictions.disjunction(
-                        Restrictions.ilike("e.userName", filter.getText(), MatchMode.ANYWHERE),
-                        Restrictions.ilike("e.firstName", filter.getText(), MatchMode.ANYWHERE),
-                        Restrictions.ilike("e.lastName", filter.getText(), MatchMode.ANYWHERE),
-                        Restrictions.ilike("e.email", filter.getText(), MatchMode.ANYWHERE)
+                        Restrictions.ilike("u.userName", filter.getText(), MatchMode.ANYWHERE),
+                        Restrictions.ilike("u.firstName", filter.getText(), MatchMode.ANYWHERE),
+                        Restrictions.ilike("u.lastName", filter.getText(), MatchMode.ANYWHERE),
+                        Restrictions.ilike("u.email", filter.getText(), MatchMode.ANYWHERE)
                 ));
             }
             appendSortableFilterConditions(criteria, filter);

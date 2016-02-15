@@ -1,8 +1,10 @@
 package com.itechart.security.web.controller;
 
+import com.itechart.security.model.filter.UserFilter;
+import com.itechart.security.model.persistent.User;
 import com.itechart.security.service.UserService;
 import com.itechart.security.web.model.dto.UserDto;
-import com.itechart.security.web.model.dto.UserFilterDto;
+import com.itechart.security.web.model.dto.util.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,20 +17,18 @@ import java.util.List;
  * @author andrei.samarou
  */
 @Controller
-@RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @RequestMapping("/")
-    public List<UserDto> findAll(){
-        return Collections.singletonList(new UserDto());
-    }
-
     @ResponseBody
-    @RequestMapping("find")
-    public List<UserDto> find(UserFilterDto filter) {
-        return Collections.singletonList(new UserDto());
+    @RequestMapping("/users")
+    public List<UserDto> findAll() {
+        List<User> users = userService.findUsers(new UserFilter());
+        if (users != null) {
+            return Converter.toUserDtoList(users);
+        }
+        return Collections.emptyList();
     }
 }

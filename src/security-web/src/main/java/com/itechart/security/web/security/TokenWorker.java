@@ -49,9 +49,10 @@ public class TokenWorker extends KeyBasedPersistenceTokenService {
         AuthToken token = new AuthToken(t.getKey(), t.getKeyCreationTime(), t.getExtendedInformation());
         token.setIp(parts[0]);
         token.setId(parts[1]);
-        token.setName(parts[2]);
-        if (parts.length > 2) {
-            token.setAuthorities(Arrays.stream(parts, 3, parts.length)
+        token.setUsername(parts[2]);
+        token.setPassword(parts[3]);
+        if (parts.length > 3) {
+            token.setAuthorities(Arrays.stream(parts, 4, parts.length)
                     .map(SimpleGrantedAuthority::new)
                     .collect(Collectors.toCollection(HashSet::new)));
         }
@@ -59,12 +60,13 @@ public class TokenWorker extends KeyBasedPersistenceTokenService {
         return token;
     }
 
-    public Token wrapToken(HttpServletRequest request, Authentication authentication) throws UnsupportedEncodingException {
+    public Token wrapToken(HttpServletRequest request, Authentication authentication, String rawPassword) throws UnsupportedEncodingException {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         String extraInformation = new StringBuilder()
                 .append(request.getRemoteAddr()).append(DELIMITER)
                 .append(userDetails.getUserId()).append(DELIMITER)
                 .append(userDetails.getUsername()).append(DELIMITER)
+                .append(rawPassword).append(DELIMITER)
                 .append(userDetails.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority)
                         .collect(Collectors.joining(DELIMITER))).toString();

@@ -4,10 +4,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.token.DefaultToken;
 
 import java.util.Collection;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
-
-import static java.lang.System.currentTimeMillis;
 
 /**
  * {@link DefaultToken}
@@ -19,7 +15,8 @@ import static java.lang.System.currentTimeMillis;
 public class AuthToken extends DefaultToken {
     private String ip;
     private String id;
-    private String name;
+    private String username;
+    private String password;
     private Collection<GrantedAuthority> authorities;
 
     public AuthToken(String key, long keyCreationTime, String extendedInformation) {
@@ -34,12 +31,20 @@ public class AuthToken extends DefaultToken {
         this.authorities = authorities;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getId() {

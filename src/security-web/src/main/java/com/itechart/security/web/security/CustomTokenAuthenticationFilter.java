@@ -27,7 +27,7 @@ import static java.lang.System.currentTimeMillis;
  * @author yauheni.putsykovich
  */
 public class CustomTokenAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
-    private static final Logger log = LoggerFactory.getLogger(CustomTokenAuthenticationFilter.class);
+    private static final Logger l = LoggerFactory.getLogger(CustomTokenAuthenticationFilter.class);
 
     private static final String HEADER_SECURITY_TOKEN = "X-Auth-Token";
 
@@ -51,30 +51,30 @@ public class CustomTokenAuthenticationFilter extends AbstractAuthenticationProce
         String rawToken = request.getHeader(HEADER_SECURITY_TOKEN);
         if (rawToken == null) {
             logMessage = "Authenticate impossible without authentication token";
-            log.error(logMessage);
+            l.error(logMessage);
             throw new AuthenticationServiceException(MessageFormat.format("Error | {0}", logMessage));
         }
 
         AuthToken token;
         try {
-            log.info("Token found:" + rawToken);
+            l.info("Token found:" + rawToken);
             token = (AuthToken) tokenWorker.unwrapToken(rawToken);
             if (currentTimeMillis() - token.getKeyCreationTime() > tokenLifetime) {
                 logMessage = "Lifetime of the token has expired";
-                log.info(logMessage);
+                l.info(logMessage);
                 throw new AuthenticationServiceException(MessageFormat.format("Error | {0}", logMessage));
             }
         } catch (InvalidTokenException e) {
-            log.error("Authenticate user by token error: ", e);
+            l.error("Authenticate user by token error: ", e);
             throw new AuthenticationServiceException("Error | Bad Token");
         }
 
         if (!token.getIp().equals(request.getRemoteAddr())) {
             logMessage = MessageFormat.format("Token ip({0}) is not equals user ip({1})", token.getId(), request.getRemoteAddr());
-            log.info(logMessage);
+            l.info(logMessage);
             throw new AuthenticationServiceException(MessageFormat.format("Error | {0}", logMessage));
         }
 
-        return new UsernamePasswordAuthenticationToken(token.getName(), null, token.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(token.getUsername(), token.getPassword(), token.getAuthorities());
     }
 }
