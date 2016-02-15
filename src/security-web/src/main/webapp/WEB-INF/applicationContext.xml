@@ -25,11 +25,17 @@
     <bean id="unauthorizedEntryPoint" class="com.itechart.security.web.security.UnauthorizedEntryPoint"/>
     <bean id="authenticationSuccessHandler" class="com.itechart.security.web.security.TokenSimpleUrlAuthenticationSuccessHandler"/>
     <bean id="tokenService" class="com.itechart.security.web.security.TokenWorker"/>
-    <bean id="customTokenAuthenticationFilter" class="com.itechart.security.web.security.CustomTokenAuthenticationFilter">
-        <constructor-arg name="tokeLifetime" value="300000"/><!--5 minutes-->
-        <constructor-arg name="defaultFilterProcessesUrl" value="/rest/**"/>
-        <constructor-arg name="authenticationManager" ref="authenticationManager"/>
-        <constructor-arg name="authenticationSuccessHandler" ref="authenticationSuccessHandler"/>
-    </bean>
 
+    <bean id="antPathRequestMatcher" class="org.springframework.security.web.util.matcher.AntPathRequestMatcher">
+        <constructor-arg name="pattern" value="/rest/**"/>
+    </bean>
+    <bean id="customTokenAuthenticationFilter"
+          class="com.itechart.security.web.security.CustomTokenAuthenticationFilter">
+        <constructor-arg name="tokeLifetime" value="300000"/>
+        <constructor-arg name="defaultFilterProcessesUrl" value="/rest/**"/>
+        <!--5 minutes-->
+        <property name="requiresAuthenticationRequestMatcher" ref="antPathRequestMatcher"/>
+        <property name="authenticationManager" ref="authenticationManager"/>
+        <property name="authenticationSuccessHandler" ref="authenticationSuccessHandler"/>
+    </bean>
 </beans>

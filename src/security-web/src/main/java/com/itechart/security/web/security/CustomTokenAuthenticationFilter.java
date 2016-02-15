@@ -34,11 +34,8 @@ public class CustomTokenAuthenticationFilter extends AbstractAuthenticationProce
     @Autowired
     private TokenWorker tokenWorker;
 
-    public CustomTokenAuthenticationFilter(long tokeLifetime, String defaultFilterProcessesUrl, AuthenticationManager authenticationManager, AuthenticationSuccessHandler authenticationSuccessHandler) {
+    public CustomTokenAuthenticationFilter(long tokeLifetime, String defaultFilterProcessesUrl) {
         super(defaultFilterProcessesUrl);
-        super.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher(defaultFilterProcessesUrl));
-        setAuthenticationManager(authenticationManager);
-        setAuthenticationSuccessHandler(authenticationSuccessHandler);
         this.tokenLifetime = tokeLifetime;
     }
 
