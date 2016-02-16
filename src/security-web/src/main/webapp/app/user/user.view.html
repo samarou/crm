@@ -1,6 +1,5 @@
 <div class="col-md-6 col-md-offset-3">
     <h2>{{vm.formTitle}}</h2>
-
     <form class="form">
         <div class="form-group">
             <label for="lastName">First name</label>
@@ -18,6 +17,7 @@
             <label for="email">Email</label>
             <input id="email" class="form-control" name="email" ng-model="vm.user.email">
         </div>
+        <!--add directive-->
         <div class="form-group row">
             <div class="row-height">
                 <div class="form-group col-md-5">
@@ -28,7 +28,7 @@
                     </ul>
                 </div>
                 <div class="form-group col-md-7">
-                    <label for="groups">User Groups</label>
+                    <label for="groups" ng-hide="vm.user.groups.length === 0">User Groups</label>
                     <ul id="groups" class="list-inline">
                         <li class="list-group-item" ng-repeat="group in vm.user.groups">
                             {{group.name}} <span class="glyphicon glyphicon-remove-sign pull-xs-right" ng-click="vm.unselectGroup(group)"></span>
@@ -47,7 +47,7 @@
                     </ul>
                 </div>
                 <div class="form-group col-md-7">
-                    <label for="groups">User Roles</label>
+                    <label for="groups" ng-hide="vm.user.roles.length === 0">User Roles</label>
                     <ul id="roles" class="list-inline">
                         <li class="list-group-item" ng-repeat="role in vm.user.roles">
                             {{role.name}} <span class="glyphicon glyphicon-remove-sign pull-xs-right" ng-click="vm.unselectRole(role)"></span>

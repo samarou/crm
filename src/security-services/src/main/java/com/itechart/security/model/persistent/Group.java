@@ -1,5 +1,6 @@
 package com.itechart.security.model.persistent;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.itechart.security.core.model.SecurityGroup;
 
 import javax.persistence.*;
@@ -21,6 +22,7 @@ public class Group extends Principal implements SecurityGroup {
     @Column(name = "description", length = 250)
     private String description;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "groups")
     private Set<User> users;
 

@@ -21,4 +21,5 @@ public interface UserService {
 
     boolean changePassword(String userName, String oldPassword, String newPassword);
 
+    User get(Long id);
 }

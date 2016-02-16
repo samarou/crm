@@ -22,6 +22,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
+    @Override
+    public User get(Long id) {
+        return userDao.get(id);
+    }
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 

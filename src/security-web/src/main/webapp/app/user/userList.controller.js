@@ -7,7 +7,6 @@
 
 	UserListController.$inject = ['$location', 'UserService'];
 
-
 	function UserListController($location, UserService) {
 		console.log("User List Controller");
 
@@ -17,9 +16,6 @@
 		});
 		UserService.GetAll(function (data) {
 			vm.userList = data.data;
-			console.log("adasdasd  " + vm.userList);
 		});
 	}
-
- 
 })();

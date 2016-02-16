@@ -1,60 +1,58 @@
 "use strict";
 
-angular.module("app").controller("UserController", ["UserService", "$routeParams", "$location",
-    function (UserService, $routeParams, $location) {
+angular.module("app").controller("UserController", ["$routeParams", "$location", "$q", "UserService", "GroupService", "RoleService",
+    function ($routeParams, $location, $q, UserService, GroupService, RoleService) {
         console.log("UserController: " + $routeParams.param);
         var vm = this;
+        var tasks = [];
+        var loadGroupsPromise = GroupService.fetchAll();
+        var loadRolesPromise = RoleService.fetchAll();
+        loadGroupsPromise.then(function (response) {
+            vm.groups = response.data;
+            vm.selectedGroup = vm.groups[0];
+        });
+        loadRolesPromise.then(function (response) {
+            vm.roles = response.data;
+            vm.selectedRole = vm.roles[0];
+        });
+
         vm.isCreation = $routeParams.param === "new";
         if (vm.isCreation) {
             vm.formTitle = "Creating a New User";
             vm.actionTitle = "Add";
-            vm.action = function (user) {
-                UserService.CreateUser(user, successCallback);
+            vm.action = function (user) { UserService.CreateUser(user, successCallback); };
+            vm.user = {
+                "userName": null,
+                "email": null,
+                "firstName": null,
+                "lastName": null,
+                "active": true,
+                "roles": [],
+                "groups": []
             };
         } else {
             vm.formTitle = "Editing User";
             vm.actionTitle = "Update";
-            vm.action = function (user) {
-                UserService.UpdateUser(user, successCallback);
-            };
-            UserService.GetByUsername($routeParams.param, function (response) {
+            vm.action = function (user) { UserService.UpdateUser(user, successCallback); };
+            UserService.GetById($routeParams.param, function (response) {
+                function comparator(f, w) { return f.id === w.id; }
+
                 vm.user = response.data;
-                vm.user.groups = [
-                    {
-                        id: 1,
-                        name: "viewers",
-                        description: "viewers group"
-                    }
-                ];
-                vm.user.roles = [
-                    {
-                        id: 1,
-                        name: "ROOT",
-                        description: "ROOT ROLE",
-                        parent: null
-                    },
-                    {
-                        id: 2,
-                        name: "USER",
-                        description: "USER ROLE",
-                        parent: 1
-                    }
-                ];
+                $q.all(tasks).then(function () {
+                    vm.groups = difference(vm.groups, vm.user.groups, comparator);
+                    vm.roles = difference(vm.roles, vm.user.roles, comparator);
+                    vm.selectedGroup = vm.groups[0];
+                    vm.selectedRole = vm.roles[0];
+                });
             });
         }
 
+        //todo: add directive to encapsulate this login
         vm.unselectGroup = function (group) {
             var index = vm.user.groups.indexOf(group);
             vm.user.groups.splice(index, 1);
             vm.groups.push(group);
             vm.selectedGroup = group;
-        };
-
-        vm.selectGroup = function (group) {
-            var index = vm.groups.indexOf(group);
-            vm.groups.splice(index, 1);
-            vm.user.groups.push(group);
-            vm.selectedGroup = vm.groups[0];
         };
 
         vm.unselectRole = function (role) {
@@ -64,6 +62,13 @@ angular.module("app").controller("UserController", ["UserService", "$routeParams
             vm.selectedRole = role;
         };
 
+        vm.selectGroup = function (group) {
+            var index = vm.groups.indexOf(group);
+            vm.groups.splice(index, 1);
+            vm.user.groups.push(group);
+            vm.selectedGroup = vm.groups[0];
+        };
+
         vm.selectRole = function (role) {
             var index = vm.roles.indexOf(role);
             vm.roles.splice(index, 1);
@@ -71,30 +76,15 @@ angular.module("app").controller("UserController", ["UserService", "$routeParams
             vm.selectedRole = vm.roles[0];
         };
 
-        vm.groups = [
-            {
-                id: 2,
-                name: "managers",
-                description: "managers"
-            }
-        ];
-        vm.selectedGroup = vm.groups[0];
-
-        vm.roles = [
-            {
-                id: 3,
-                name: "ADMIN",
-                description: "ADMIN ROLE",
-                parent: 2
-            },
-            {
-                id: 4,
-                name: "GUEST",
-                description: "GUEST ROLE",
-                parent: 1
-            }
-        ];
-        vm.selectedRole = vm.roles[0];
+        function difference(from, what, comparer) {
+            if (!from) return what;
+            if (!what) return from;
+            return from.filter(function (f) {
+                return !what.some(function (w) {
+                    return comparer(f, w);
+                })
+            })
+        }
 
         function successCallback() {
             $location.path("users");
