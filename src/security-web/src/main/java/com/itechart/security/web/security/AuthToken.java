@@ -6,11 +6,10 @@ import org.springframework.security.core.token.DefaultToken;
 import java.util.Collection;
 
 /**
- * {@link DefaultToken}
- *
  * Container to information about user to build authentication token.
  *
  * @author yauheni.putsykovich
+ * @see DefaultToken
  */
 public class AuthToken extends DefaultToken {
     private String ip;

@@ -12,6 +12,9 @@
 		console.log("User List Controller");
 
 		var vm = this;
+		UserService.GetAll(function (response) {
+			vm.userList = response.data;
+		});
 		UserService.GetAll(function (data) {
 			vm.userList = data.data;
 			console.log("adasdasd  " + vm.userList);

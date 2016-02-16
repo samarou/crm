@@ -19,13 +19,12 @@ import java.util.HashSet;
 import java.util.stream.Collectors;
 
 /**
- * {@link KeyBasedPersistenceTokenService}
- *
  * Provides methods to performs
  * wrapping(create a new token from information about user) and
  * unwrapping(extracts information from token) of authentication token.
  *
  * @author yauheni.putsykovich
+ * @see KeyBasedPersistenceTokenService
  */
 @Component
 public class TokenWorker extends KeyBasedPersistenceTokenService {

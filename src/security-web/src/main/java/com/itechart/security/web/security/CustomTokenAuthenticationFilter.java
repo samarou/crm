@@ -19,15 +19,14 @@ import java.text.MessageFormat;
 import static java.lang.System.currentTimeMillis;
 
 /**
- * {@link AbstractAuthenticationProcessingFilter}
- *
  * Custom token authentication filter to process request to rest api.
  * Executes extracting token from request and checks it.
  *
  * @author yauheni.putsykovich
+ * @see AbstractAuthenticationProcessingFilter
  */
 public class CustomTokenAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
-    private static final Logger l = LoggerFactory.getLogger(CustomTokenAuthenticationFilter.class);
+    private static final Logger log = LoggerFactory.getLogger(CustomTokenAuthenticationFilter.class);
 
     private static final String HEADER_SECURITY_TOKEN = "X-Auth-Token";
 
@@ -51,27 +50,27 @@ public class CustomTokenAuthenticationFilter extends AbstractAuthenticationProce
         String rawToken = request.getHeader(HEADER_SECURITY_TOKEN);
         if (rawToken == null) {
             logMessage = "Authenticate impossible without authentication token";
-            l.error(logMessage);
+            log.error(logMessage);
             throw new AuthenticationServiceException(MessageFormat.format("Error | {0}", logMessage));
         }
 
         AuthToken token;
         try {
-            l.info("Token found:" + rawToken);
+            log.info("Token found:" + rawToken);
             token = (AuthToken) tokenWorker.unwrapToken(rawToken);
             if (currentTimeMillis() - token.getKeyCreationTime() > tokenLifetime) {
                 logMessage = "Lifetime of the token has expired";
-                l.info(logMessage);
+                log.info(logMessage);
                 throw new AuthenticationServiceException(MessageFormat.format("Error | {0}", logMessage));
             }
         } catch (InvalidTokenException e) {
-            l.error("Authenticate user by token error: ", e);
+            log.error("Authenticate user by token error: ", e);
             throw new AuthenticationServiceException("Error | Bad Token");
         }
 
         if (!token.getIp().equals(request.getRemoteAddr())) {
             logMessage = MessageFormat.format("Token ip({0}) is not equals user ip({1})", token.getId(), request.getRemoteAddr());
-            l.info(logMessage);
+            log.info(logMessage);
             throw new AuthenticationServiceException(MessageFormat.format("Error | {0}", logMessage));
         }
 

@@ -4,10 +4,24 @@ package com.itechart.security.web.model.dto;
  * @author andrei.samarou
  */
 public class UserDto {
+    private Long id;
     private String userName;
     private String email;
     private String firstName;
     private String lastName;
+    private boolean active;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
     public String getUserName() {
         return userName;
@@ -37,7 +51,11 @@ public class UserDto {
         return lastName;
     }
 
-    public void setLstName(String secondName) {
-        this.lastName = secondName;
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
