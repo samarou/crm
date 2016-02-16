@@ -1,0 +1,64 @@
+<div class="col-md-6 col-md-offset-3">
+    <h2>{{vm.formTitle}}</h2>
+    <form class="form">
+        <div class="form-group">
+            <label for="lastName">First name</label>
+            <input id="lastName" class="form-control" name="lastName" ng-model="vm.user.lastName">
+        </div>
+        <div class="form-group">
+            <label for="firstName">Last name</label>
+            <input id="firstName" class="form-control" name="firstName" ng-model="vm.user.firstName">
+        </div>
+        <div class="form-group">
+            <label for="userName">User name</label>
+            <input id="userName" class="form-control" name="userName" ng-model="vm.user.userName">
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" class="form-control" name="email" ng-model="vm.user.email">
+        </div>
+        <!--add directive-->
+        <div class="form-group row">
+            <div class="row-height">
+                <div class="form-group col-md-5">
+                    <label>Groups</label>
+                    <ul class="list-inline">
+                        <li class="col-md-9"><select class="form-control" ng-options="group as group.name for group in vm.groups track by group.id" ng-model="vm.selectedGroup"></select></li>
+                        <li class="col-md-3"><button class="btn btn-success" ng-click="vm.selectGroup(vm.selectedGroup)" ng-disabled="vm.groups.length === 0">Add</button></li>
+                    </ul>
+                </div>
+                <div class="form-group col-md-7">
+                    <label for="groups" ng-hide="vm.user.groups.length === 0">User Groups</label>
+                    <ul id="groups" class="list-inline">
+                        <li class="list-group-item" ng-repeat="group in vm.user.groups">
+                            {{group.name}} <span class="glyphicon glyphicon-remove-sign pull-xs-right" ng-click="vm.unselectGroup(group)"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="row-height">
+                <div class="form-group col-md-5">
+                    <label>Roles</label>
+                    <ul class="list-inline">
+                        <li class="col-md-9"><select class="form-control" ng-options="role as role.name for role in vm.roles track by role.id" ng-model="vm.selectedRole"></select></li>
+                        <li class="col-md-3"><button class="btn btn-success" ng-click="vm.selectRole(vm.selectedRole)" ng-disabled="vm.roles.length === 0">Add</button></li>
+                    </ul>
+                </div>
+                <div class="form-group col-md-7">
+                    <label for="groups" ng-hide="vm.user.roles.length === 0">User Roles</label>
+                    <ul id="roles" class="list-inline">
+                        <li class="list-group-item" ng-repeat="role in vm.user.roles">
+                            {{role.name}} <span class="glyphicon glyphicon-remove-sign pull-xs-right" ng-click="vm.unselectRole(role)"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="button-bar">
+        <a class="btn btn-warning" onclick="window.history.back()">Back</a>
+        <a class="btn btn-primary" ng-click="vm.action(vm.user)">{{vm.actionTitle}}</a>
+    </div>
+</div>

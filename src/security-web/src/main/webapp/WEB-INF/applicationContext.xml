@@ -12,7 +12,6 @@
     <sec:http pattern="/rest/**" create-session="stateless" auto-config="false"
               entry-point-ref="unauthorizedEntryPoint">
         <sec:expression-handler ref="webSecurityExpressionHandler"/>
-        <sec:intercept-url pattern="/rest/test" access="hasRole('USER')"/>
         <sec:custom-filter ref="customTokenAuthenticationFilter" position="FORM_LOGIN_FILTER"/>
         <sec:intercept-url pattern="/**" access="hasRole('USER')"/>
         <sec:csrf disabled="true"/>
@@ -31,9 +30,8 @@
     </bean>
     <bean id="customTokenAuthenticationFilter"
           class="com.itechart.security.web.security.CustomTokenAuthenticationFilter">
-        <constructor-arg name="tokeLifetime" value="300000"/>
+        <constructor-arg name="tokeLifetime" value="3000000"/><!--50 minutes-->
         <constructor-arg name="defaultFilterProcessesUrl" value="/rest/**"/>
-        <!--5 minutes-->
         <property name="requiresAuthenticationRequestMatcher" ref="antPathRequestMatcher"/>
         <property name="authenticationManager" ref="authenticationManager"/>
         <property name="authenticationSuccessHandler" ref="authenticationSuccessHandler"/>

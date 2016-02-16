@@ -27,7 +27,7 @@ import java.io.UnsupportedEncodingException;
  */
 @Controller
 public class LoginController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
+    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
     @Qualifier("authenticationManager")
@@ -45,9 +45,9 @@ public class LoginController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         Token token;
         try {
-            token = tokenWorker.wrapToken(request, authentication);
+            token = tokenWorker.wrapToken(request, authentication, data.getPassword());
         } catch (UnsupportedEncodingException e) {
-            LOGGER.error("attempt login fails: ", e);
+            logger.error("attempt login fails: ", e);
             throw new AuthenticationException("Creating authentication token failed");
         }
         return new SessionInfoDto(authentication.getName(), token.getKey());
