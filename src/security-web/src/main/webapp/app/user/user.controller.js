@@ -19,8 +19,38 @@ angular.module("app").controller("UserController", ["UserService", "$routeParams
             };
             UserService.GetByUsername($routeParams.param, function (response) {
                 vm.user = response.data;
+                vm.user.groups = [
+                    {
+                        id: 1,
+                        name:"viewers",
+                        description: "viewers group"
+                    }
+                ];
             });
         }
+
+        vm.unselectGroup = function (group) {
+            var index = vm.user.groups.indexOf(group);
+            var b = vm.user.groups;
+            vm.user.groups.splice(index, 1);
+            vm.groups.push(group);
+        };
+
+        vm.selectGroup = function (group) {
+            var index = vm.groups.indexOf(group);
+            vm.groups.splice(index, 1);
+            vm.user.groups.push(group);
+        };
+
+        vm.groups = [
+            {
+                id: 2,
+                name: "managers",
+                description: "managers"
+            }
+        ];
+        vm.selectedGroup = vm.groups[0];
+
         function successCallback() {
             $location.path("users");
         }

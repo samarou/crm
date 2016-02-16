@@ -18,7 +18,26 @@
             <label for="email">Email</label>
             <input id="email" class="form-control" name="email" ng-model="vm.user.email">
         </div>
+        <div class="form-group">
+            <div class="form-group col-md-5">
+                <label>Groups</label>
+                <ul class="list-inline">
+                    <li class="col-md-9"><select class="form-control" ng-options="group as group.name for group in vm.groups" ng-model="vm.selectedGroup"></select></li>
+                    <li class="col-md-3"><button class="btn btn-success" ng-click="vm.selectGroup(vm.selectedGroup)">Add</button></li>
+                </ul>
+            </div>
+            <div class="form-group col-md-7">
+                <label for="groups">User Groups</label>
+                <ul id="groups" class="list-inline">
+                    <li class="list-group-item" ng-repeat="group in vm.user.groups">
+                        {{group.name}}
+                        <span class="glyphicon glyphicon-remove-sign pull-xs-right" ng-click="vm.unselectGroup(group)"></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </form>
+    <div class="clearfix"></div>
     <a class="btn btn-warning" onclick="window.history.back()">Back</a>
     <a class="btn btn-primary" ng-click="vm.action(vm.user)">{{vm.actionTitle}}</a>
 </div>
