@@ -1,10 +1,10 @@
 "use strict";
 
-angular.module("app").controller("UserController", ["$routeParams", "$location", "$q", "UserService", "GroupService", "RoleService",
-    function ($routeParams, $location, $q, UserService, GroupService, RoleService) {
+angular.module("app").controller("UserController", ["$routeParams", "$location", "$q", "UserService", "GroupService", "RoleService", "Collections",
+    function ($routeParams, $location, $q, UserService, GroupService, RoleService, Collections) {
         console.log("UserController: " + $routeParams.param);
         var vm = this;
-        var tasks = [];
+
         var loadGroupsPromise = GroupService.fetchAll();
         var loadRolesPromise = RoleService.fetchAll();
         loadGroupsPromise.then(function (response) {
@@ -35,12 +35,10 @@ angular.module("app").controller("UserController", ["$routeParams", "$location",
             vm.actionTitle = "Update";
             vm.action = function (user) { UserService.UpdateUser(user, successCallback); };
             UserService.GetById($routeParams.param, function (response) {
-                function comparator(f, w) { return f.id === w.id; }
-
                 vm.user = response.data;
-                $q.all(tasks).then(function () {
-                    vm.groups = difference(vm.groups, vm.user.groups, comparator);
-                    vm.roles = difference(vm.roles, vm.user.roles, comparator);
+                $q.all([loadGroupsPromise, loadRolesPromise]).then(function () {
+                    vm.groups = Collections.difference(vm.groups, vm.user.groups, Collections.Comparators.BY_ID);
+                    vm.roles = Collections.difference(vm.roles, vm.user.roles, Collections.Comparators.BY_ID);
                     vm.selectedGroup = vm.groups[0];
                     vm.selectedRole = vm.roles[0];
                 });
@@ -75,16 +73,6 @@ angular.module("app").controller("UserController", ["$routeParams", "$location",
             vm.user.roles.push(role);
             vm.selectedRole = vm.roles[0];
         };
-
-        function difference(from, what, comparer) {
-            if (!from) return what;
-            if (!what) return from;
-            return from.filter(function (f) {
-                return !what.some(function (w) {
-                    return comparer(f, w);
-                })
-            })
-        }
 
         function successCallback() {
             $location.path("users");

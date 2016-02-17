@@ -11,6 +11,7 @@ import java.util.Set;
 public class UserDto {
     private Long id;
     private String userName;
+    private String password;
     private String email;
     private String firstName;
     private String lastName;
@@ -36,6 +37,14 @@ public class UserDto {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getEmail() {

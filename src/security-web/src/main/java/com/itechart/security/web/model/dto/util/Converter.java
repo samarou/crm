@@ -22,6 +22,7 @@ public class Converter {
         UserDto dto = new UserDto();
         dto.setId(user.getId());
         dto.setUserName(user.getUserName());
+        dto.setPassword(user.getPassword());
         dto.setEmail(user.getEmail());
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
@@ -35,6 +36,7 @@ public class Converter {
         User user = new User();
         user.setId(dto.getId());
         user.setUserName(dto.getUserName());
+        user.setPassword(dto.getPassword());
         user.setEmail(dto.getEmail());
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());

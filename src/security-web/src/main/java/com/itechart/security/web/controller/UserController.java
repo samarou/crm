@@ -46,7 +46,6 @@ public class UserController {
     @RequestMapping(value = "/users", method = POST)
     public void create(@RequestBody UserDto dto) {
         User user = Converter.toUser(dto);
-        //todo: resolve problem with password(new user must have password)
         userService.createUser(user);
     }
 }
