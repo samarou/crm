@@ -23,27 +23,27 @@
 
 
         function GetAll(handleSuccess) {
-            return $http.get('rest/users').then(handleSuccess, handleError('Error getting all users'));
+            return $http.get('rest/user').then(handleSuccess, handleError('Error getting all users'));
         }
 
         function GetById(id, handleSuccess) {
-            return $http.get('rest/users/' + id).then(handleSuccess, handleError('Error getting user by id'));
+            return $http.get('rest/user/' + id).then(handleSuccess, handleError('Error getting user by id'));
         }
 
         function GetByUsername(name, handleSuccess) {
-            return $http.get('rest/users/' + name).then(handleSuccess, handleError('Error getting user by username'));
+            return $http.get('rest/user/' + name).then(handleSuccess, handleError('Error getting user by username'));
         }
 
         function CreateUser(user, handleSuccess) {
-            return $http.post('rest/users', user).then(handleSuccess, handleError('Error creating user'));
+            return $http.post('rest/user', user).then(handleSuccess, handleError('Error creating user'));
         }
 
         function UpdateUser(user, handleSuccess) {
-            return $http.put('rest/users', user).then(handleSuccess, handleError('Error updating user'));
+            return $http.put('rest/user', user).then(handleSuccess, handleError('Error updating user'));
         }
 
         function DeleteUser(id) {
-            return $http.delete('api/users' + id).then(handleSuccess, handleError('Error deleting user'));
+            return $http.delete('rest/user' + id).then(handleSuccess, handleError('Error deleting user'));
         }
 
         function handleSuccess(res) {
