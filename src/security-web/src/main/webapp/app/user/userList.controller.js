@@ -24,7 +24,6 @@ angular.module('app').controller('UserListController', ["$location", "UserServic
                 if(typeof(value) === "boolean") return;
                 filter[key] = !!value ? value : null;
             });
-            console.log(JSON.stringify(filter));
             UserService.find(filter, function (response) {
                 vm.userList = response.data;
             });

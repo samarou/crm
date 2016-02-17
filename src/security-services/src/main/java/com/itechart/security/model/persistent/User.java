@@ -15,7 +15,7 @@ import java.util.Set;
 @PrimaryKeyJoinColumn(name="id")
 public class User extends Principal implements SecurityUser {
 
-    @Column(name = "user_name", unique = true, nullable = false, length = 50)
+    @Column(name = "user_name", updatable = false, unique = true, nullable = false, length = 50)
     private String userName;
 
     @Column(name = "password", updatable = false, nullable = false, length = 60)

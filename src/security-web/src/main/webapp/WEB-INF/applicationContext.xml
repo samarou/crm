@@ -1,8 +1,10 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:sec="http://www.springframework.org/schema/security"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-		  http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+		  http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+		  http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <import resource="classpath*:securityServicesContext.xml"/>
     <import resource="classpath*:businessServicesContext.xml"/>
@@ -12,28 +14,33 @@
     <sec:http pattern="/rest/**" create-session="stateless" auto-config="false"
               entry-point-ref="unauthorizedEntryPoint">
         <sec:expression-handler ref="webSecurityExpressionHandler"/>
-        <sec:custom-filter ref="customTokenAuthenticationFilter" position="FORM_LOGIN_FILTER"/>
+        <sec:custom-filter ref="tokenAuthenticationFilter" position="FORM_LOGIN_FILTER"/>
         <sec:intercept-url pattern="/**" access="hasRole('USER')"/>
         <sec:csrf disabled="true"/>
     </sec:http>
 
     <sec:authentication-manager id="authenticationManager">
         <sec:authentication-provider ref="daoAuthenticationProvider"/>
+        <sec:authentication-provider ref="tokenAuthenticationProvider"/>
     </sec:authentication-manager>
 
     <bean id="unauthorizedEntryPoint" class="com.itechart.security.web.security.UnauthorizedEntryPoint"/>
-    <bean id="authenticationSuccessHandler" class="com.itechart.security.web.security.TokenSimpleUrlAuthenticationSuccessHandler"/>
-    <bean id="tokenService" class="com.itechart.security.web.security.TokenWorker"/>
 
-    <bean id="antPathRequestMatcher" class="org.springframework.security.web.util.matcher.AntPathRequestMatcher">
-        <constructor-arg name="pattern" value="/rest/**"/>
-    </bean>
-    <bean id="customTokenAuthenticationFilter"
-          class="com.itechart.security.web.security.CustomTokenAuthenticationFilter">
-        <constructor-arg name="tokeLifetime" value="3000000"/><!--50 minutes-->
-        <constructor-arg name="defaultFilterProcessesUrl" value="/rest/**"/>
-        <property name="requiresAuthenticationRequestMatcher" ref="antPathRequestMatcher"/>
+    <bean id="tokenAuthenticationFilter" class="com.itechart.security.web.security.token.TokenAuthenticationFilter">
         <property name="authenticationManager" ref="authenticationManager"/>
-        <property name="authenticationSuccessHandler" ref="authenticationSuccessHandler"/>
+        <property name="tokenService" ref="tokenService"/>
     </bean>
+
+    <bean id="tokenAuthenticationProvider" class="com.itechart.security.web.security.token.TokenAuthenticationProvider">
+        <property name="userDetailsService" ref="userDetailsService"/>
+        <property name="tokenService" ref="tokenService"/>
+        <property name="userCache" ref="userCache"/>
+    </bean>
+
+    <bean id="tokenService" class="com.itechart.security.web.security.token.TokenService">
+        <property name="tokenTimeToLive" value="${auth.token.timeToLive}"/>
+    </bean>
+
+    <context:property-placeholder location="classpath:datasource.properties,classpath:application.properties" order="-1"/>
+
 </beans>

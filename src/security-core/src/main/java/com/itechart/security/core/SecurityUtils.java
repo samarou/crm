@@ -37,13 +37,17 @@ public class SecurityUtils {
         return getPrincipalIds(getAuthentication());
     }
 
-    public static Long getUserId(Authentication authentication) {
+    public static UserDetails getUserDetails(Authentication authentication) {
         Assert.notNull(authentication, "authentication is null");
         Object principal = authentication.getPrincipal();
         if (!(principal instanceof UserDetails)) {
             throw new RuntimeException("Authenticated principal type is not " + UserDetails.class);
         }
-        return ((UserDetails) principal).getUserId();
+        return (UserDetails) principal;
+    }
+
+    public static Long getUserId(Authentication authentication) {
+        return getUserDetails(authentication).getUserId();
     }
 
     public static List<Long> getPrincipalIds(Authentication authentication) {

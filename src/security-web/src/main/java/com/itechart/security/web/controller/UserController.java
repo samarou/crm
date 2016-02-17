@@ -21,28 +21,28 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping("/users")
+    @RequestMapping("/user")
     public List<UserDto> findAll() {
         return toUserDtos(userService.findUsers(new UserFilter()));
     }
 
-    @RequestMapping("/users/{id}")
-    public UserDto findOne(@PathVariable Long id) {
+    @RequestMapping("/user/{id}")
+    public UserDto findById(@PathVariable Long id) {
         User user = userService.get(id);
         return toUserDto(user);
     }
 
-    @RequestMapping(value = "/users", method = PUT)
+    @RequestMapping(value = "/user", method = PUT)
     public void update(@RequestBody UserDto dto) {
         userService.updateUser(toUser(dto));
     }
 
-    @RequestMapping(value = "/users", method = POST)
+    @RequestMapping(value = "/user", method = POST)
     public void create(@RequestBody UserDto dto) {
         userService.createUser(toUser(dto));
     }
 
-    @RequestMapping("/users/find")
+    @RequestMapping("/user/find")
     public List<UserDto> find(@RequestParam(required = false) String text,
                               @RequestParam(required = false) Long groupId,
                               @RequestParam(required = false) Long roleId,

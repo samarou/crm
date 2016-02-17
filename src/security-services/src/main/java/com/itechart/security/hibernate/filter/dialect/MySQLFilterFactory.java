@@ -16,7 +16,6 @@ import java.util.Map;
  *
  * @author andrei.samarou
  */
-//todo do вынести реализацию
 public class MySQLFilterFactory extends AbstractFilterFactory {
 
     @Override

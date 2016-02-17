@@ -12,42 +12,42 @@
 
         var service = {};
 
-        service.getAll = fetchAll;
+        service.getAll = getAll;
         service.getById = getById;
         service.getByUsername = getByUsername;
-        service.create = create;
-        service.update = update;
-        service.remove = remove;
+        service.createUser = createUser;
+        service.updateUser = updateUser;
+        service.deleteUser = deleteUser;
         service.find = find;
 
         return service;
 
-        function fetchAll(handleSuccess) {
-            return $http.get('rest/users').then(handleSuccess, handleError('Error getting all users'));
+        function getAll(handleSuccess) {
+            return $http.get('rest/user').then(handleSuccess, handleError('Error getting all users'));
         }
 
         function getById(id, handleSuccess) {
-            return $http.get('rest/users/' + id).then(handleSuccess, handleError('Error getting user by id'));
+            return $http.get('rest/user/' + id).then(handleSuccess, handleError('Error getting user by id'));
         }
 
         function getByUsername(name, handleSuccess) {
-            return $http.get('rest/users/' + name).then(handleSuccess, handleError('Error getting user by username'));
+            return $http.get('rest/user/' + name).then(handleSuccess, handleError('Error getting user by username'));
         }
 
-        function create(user, handleSuccess) {
-            return $http.post('rest/users', user).then(handleSuccess, handleError('Error creating user'));
+        function createUser(user, handleSuccess) {
+            return $http.post('rest/user', user).then(handleSuccess, handleError('Error creating user'));
         }
 
-        function update(user, handleSuccess) {
-            return $http.put('rest/users', user).then(handleSuccess, handleError('Error updating user'));
+        function updateUser(user, handleSuccess) {
+            return $http.put('rest/user', user).then(handleSuccess, handleError('Error updating user'));
         }
 
-        function remove(id) {
-            return $http.delete('rest/users' + id).then(handleSuccess, handleError('Error deleting user'));
+        function deleteUser(id) {
+            return $http.delete('rest/user' + id).then(handleSuccess, handleError('Error deleting user'));
         }
 
-        function find(filter, successfullyHandler) {
-            return $http.get("rest/users/find", {params: filter}).then(successfullyHandler, handleError("Error during searching of users"))
+        function find(filter, successHandler){
+            return $http.get("rest/user/find", {params: filter}).then(successHandler, handleError("Error during search of users"))
         }
 
         function handleSuccess(res) {

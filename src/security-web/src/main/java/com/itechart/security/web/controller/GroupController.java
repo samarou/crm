@@ -16,7 +16,7 @@ public class GroupController {
     @Autowired
     private GroupService groupService;
 
-    @RequestMapping("/groups")
+    @RequestMapping("/group")
     public List<Group> fetchAll() {
         return groupService.fetchAll();
     }
