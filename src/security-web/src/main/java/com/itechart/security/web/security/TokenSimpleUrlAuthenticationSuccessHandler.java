@@ -9,12 +9,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * {@link SimpleUrlAuthenticationSuccessHandler}
- *
  * Handles successfully authentication.
  * Need to always return OK 200 status code as it need for REST.
  *
  * @author yauheni.putsykovich
+ * @see SimpleUrlAuthenticationSuccessHandler
  */
 public class TokenSimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     @Override

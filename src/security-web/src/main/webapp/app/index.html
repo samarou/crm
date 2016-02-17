@@ -5,6 +5,9 @@
     <title>Web App</title>
 </head>
 <body>
+<header class="col-md-10 col-md-offset-1">
+    <a type="submit" class="btn btn-success navbar-btn navbar-right" href="/">Sign in</a>
+</header>
 <div ng-app = "app">
     <div ng-view></div>
 </div>
@@ -16,6 +19,11 @@
 <script src="../app/app.config.js"></script>
 <script src="../app/login/login.controller.js"></script>
 <script src="../app/login/login.service.js"></script>
+<script src="../app/common/handler.service.js"></script>
+<script src="../app/common/collections.service.js"></script>
+<script src="../app/group/group.service.js"></script>
+<script src="../app/role/role.service.js"></script>
+<script src="../app/user/user.controller.js"></script>
 <script src="../app/user/userList.controller.js"></script>
 <script src="../app/user/user.service.js"></script>
 </html>

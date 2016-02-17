@@ -19,12 +19,11 @@ import java.text.MessageFormat;
 import static java.lang.System.currentTimeMillis;
 
 /**
- * {@link AbstractAuthenticationProcessingFilter}
- *
  * Custom token authentication filter to process request to rest api.
  * Executes extracting token from request and checks it.
  *
  * @author yauheni.putsykovich
+ * @see AbstractAuthenticationProcessingFilter
  */
 public class CustomTokenAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
     private static final Logger log = LoggerFactory.getLogger(CustomTokenAuthenticationFilter.class);
@@ -75,6 +74,6 @@ public class CustomTokenAuthenticationFilter extends AbstractAuthenticationProce
             throw new AuthenticationServiceException(MessageFormat.format("Error | {0}", logMessage));
         }
 
-        return new UsernamePasswordAuthenticationToken(token.getName(), null, token.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(token.getUsername(), token.getPassword(), token.getAuthorities());
     }
 }

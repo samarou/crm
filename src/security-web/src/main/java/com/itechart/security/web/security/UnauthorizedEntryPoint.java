@@ -9,9 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * {@link AuthenticationEntryPoint} that rejects all requests with an unauthorized error message.
+ * That rejects all requests with an unauthorized error message.
  *
  * @author andrei.samarou
+ * @see AuthenticationEntryPoint
  */
 public class UnauthorizedEntryPoint implements AuthenticationEntryPoint {
     @Override
