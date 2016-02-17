@@ -11,10 +11,10 @@
 		console.log("User List Controller");
 
 		var vm = this;
-		UserService.GetAll(function (response) {
+		UserService.getAll(function (response) {
 			vm.userList = response.data;
 		});
-		UserService.GetAll(function (data) {
+		UserService.getAll(function (data) {
 			vm.userList = data.data;
 		});
 	}

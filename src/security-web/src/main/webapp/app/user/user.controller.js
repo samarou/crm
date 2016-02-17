@@ -20,7 +20,7 @@ angular.module("app").controller("UserController", ["$routeParams", "$location",
         if (vm.isCreation) {
             vm.formTitle = "Creating a New User";
             vm.actionTitle = "Add";
-            vm.action = function (user) { UserService.CreateUser(user, successCallback); };
+            vm.action = function (user) { UserService.create(user, successCallback); };
             vm.user = {
                 "userName": null,
                 "email": null,
@@ -33,8 +33,8 @@ angular.module("app").controller("UserController", ["$routeParams", "$location",
         } else {
             vm.formTitle = "Editing User";
             vm.actionTitle = "Update";
-            vm.action = function (user) { UserService.UpdateUser(user, successCallback); };
-            UserService.GetById($routeParams.param, function (response) {
+            vm.action = function (user) { UserService.update(user, successCallback); };
+            UserService.getById($routeParams.param, function (response) {
                 vm.user = response.data;
                 $q.all([loadGroupsPromise, loadRolesPromise]).then(function () {
                     vm.groups = Collections.difference(vm.groups, vm.user.groups, Collections.Comparators.BY_ID);
@@ -46,14 +46,14 @@ angular.module("app").controller("UserController", ["$routeParams", "$location",
         }
 
         //todo: add directive to encapsulate this login
-        vm.unselectGroup = function (group) {
+        vm.deselectGroup = function (group) {
             var index = vm.user.groups.indexOf(group);
             vm.user.groups.splice(index, 1);
             vm.groups.push(group);
             vm.selectedGroup = group;
         };
 
-        vm.unselectRole = function (role) {
+        vm.deselectRole = function (role) {
             var index = vm.user.roles.indexOf(role);
             vm.user.roles.splice(index, 1);
             vm.roles.push(role);

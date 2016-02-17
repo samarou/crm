@@ -48,4 +48,9 @@ public class UserController {
         User user = Converter.toUser(dto);
         userService.createUser(user);
     }
+
+    @RequestMapping("/users/search")
+    public void f(){
+
+    }
 }

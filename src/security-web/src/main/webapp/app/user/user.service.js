@@ -12,38 +12,41 @@
 
         var service = {};
 
-        service.GetAll = GetAll;
-        service.GetById = GetById;
-        service.GetByUsername = GetByUsername;
-        service.CreateUser = CreateUser;
-        service.UpdateUser = UpdateUser;
-        service.DeleteUser = DeleteUser;
+        service.getAll = fetchAll;
+        service.getById = getById;
+        service.getByUsername = getByUsername;
+        service.create = create;
+        service.update = update;
+        service.remove = remove;
 
         return service;
 
-
-        function GetAll(handleSuccess) {
+        function fetchAll(handleSuccess) {
             return $http.get('rest/users').then(handleSuccess, handleError('Error getting all users'));
         }
 
-        function GetById(id, handleSuccess) {
+        function getById(id, handleSuccess) {
             return $http.get('rest/users/' + id).then(handleSuccess, handleError('Error getting user by id'));
         }
 
-        function GetByUsername(name, handleSuccess) {
+        function getByUsername(name, handleSuccess) {
             return $http.get('rest/users/' + name).then(handleSuccess, handleError('Error getting user by username'));
         }
 
-        function CreateUser(user, handleSuccess) {
+        function create(user, handleSuccess) {
             return $http.post('rest/users', user).then(handleSuccess, handleError('Error creating user'));
         }
 
-        function UpdateUser(user, handleSuccess) {
+        function update(user, handleSuccess) {
             return $http.put('rest/users', user).then(handleSuccess, handleError('Error updating user'));
         }
 
-        function DeleteUser(id) {
-            return $http.delete('api/users' + id).then(handleSuccess, handleError('Error deleting user'));
+        function remove(id) {
+            return $http.delete('rest/users' + id).then(handleSuccess, handleError('Error deleting user'));
+        }
+
+        function find(filter, successfullyHandler) {
+            return $http.get("rest/users", filter).then(successfullyHandler, handleError("Error during searching of users"))
         }
 
         function handleSuccess(res) {
