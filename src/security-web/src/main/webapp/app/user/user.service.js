@@ -18,6 +18,7 @@
         service.create = create;
         service.update = update;
         service.remove = remove;
+        service.find = find;
 
         return service;
 
@@ -46,7 +47,7 @@
         }
 
         function find(filter, successfullyHandler) {
-            return $http.get("rest/users", filter).then(successfullyHandler, handleError("Error during searching of users"))
+            return $http.get("rest/users/find", {params: filter}).then(successfullyHandler, handleError("Error during searching of users"))
         }
 
         function handleSuccess(res) {

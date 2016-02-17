@@ -9,13 +9,13 @@
             <label for="firstName">Last name</label>
             <input id="firstName" class="form-control" name="firstName" ng-model="vm.user.firstName">
         </div>
-        <div class="form-group">
+        <div class="form-group" ng-show="vm.isCreation">
             <label for="userName">User name</label>
             <input id="userName" class="form-control" name="userName" ng-model="vm.user.userName">
         </div>
-        <div class="form-group" ng-hide="vm.isCreation">
+        <div class="form-group" ng-show="vm.isCreation">
             <label for="password">Password</label>
-            <input type="password" id="password" class="form-control" name="password" ng-model="vm.user.password">
+            <input id="password" class="form-control" name="password" ng-model="vm.user.password">
         </div>
         <div class="form-group">
             <label for="email">Email</label>
@@ -35,7 +35,7 @@
                     <label for="groups" ng-hide="vm.user.groups.length === 0">User Groups</label>
                     <ul id="groups" class="list-inline">
                         <li class="list-group-item" ng-repeat="group in vm.user.groups">
-                            {{group.name}} <span class="glyphicon glyphicon-remove-sign pull-xs-right" ng-click="vm.unselectGroup(group)"></span>
+                            {{group.name}} <span class="glyphicon glyphicon-remove-sign pull-xs-right" ng-click="vm.deselectGroup(group)"></span>
                         </li>
                     </ul>
                 </div>
@@ -54,7 +54,7 @@
                     <label for="groups" ng-hide="vm.user.roles.length === 0">User Roles</label>
                     <ul id="roles" class="list-inline">
                         <li class="list-group-item" ng-repeat="role in vm.user.roles">
-                            {{role.name}} <span class="glyphicon glyphicon-remove-sign pull-xs-right" ng-click="vm.unselectRole(role)"></span>
+                            {{role.name}} <span class="glyphicon glyphicon-remove-sign pull-xs-right" ng-click="vm.deselectRole(role)"></span>
                         </li>
                     </ul>
                 </div>

@@ -1,4 +1,28 @@
 <div class="col-md-8 col-md-offset-2">
+    <div class="form-group-lg col-md-10">
+        <div class="col-md-7">
+            <span>&nbsp;</span>
+            <input class="form-control" ng-change="vm.find(vm.filter)" ng-model="vm.filter.text" placeholder="Find users by username, email...">
+        </div>
+        <div class="col-md-2">
+            <span class="text-info">Group</span>
+            <select class="form-control" ng-change="vm.find(vm.filter)" ng-model="vm.filter.group">
+                <option value="">Any</option>
+                <option ng-repeat="group in vm.groups" value="{{group.id}}">{{group.name}}</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <span class="text-info">Role</span>
+            <select class="form-control" ng-change="vm.find(vm.filter)" ng-model="vm.filter.role">
+                <option value="">Any</option>
+                <option ng-repeat="role in vm.roles" value="{{role.id}}">{{role.name}}</option>
+            </select>
+        </div>
+        <div class="col-md-1">
+            <label for="active" class="text-info">Active</label>
+            <input id="active" type="checkbox" class="form-control" ng-change="vm.find(vm.filter)" ng-model="vm.filter.active"  ng-checked="vm.filter.active">
+        </div>
+    </div>
     <table class="table">
         <caption>
             Users
@@ -6,23 +30,25 @@
                 <span class="glyphicon glyphicon-plus"></span>
             </a>
         </caption>
-        <thead><tr>
+        <thead>
+        <tr>
             <td>#</td>
             <td>First name</td>
             <td>Last name</td>
             <td>Username</td>
             <td>Email</td>
             <td></td>
-        </tr></thead>
+        </tr>
+        </thead>
         <tbody>
-            <tr ng-repeat="user in vm.userList">
-                <td>{{$index + 1}}</td>
-                <td>{{user.firstName}}</td>
-                <td>{{user.lastName}}</td>
-                <td>{{user.userName}}</td>
-                <td>{{user.email}}</td>
-                <td><a href="#/users/{{user.id}}" title="Edit user"><span class="glyphicon glyphicon-edit"></span></a></td>
-            </tr>
+        <tr ng-repeat="user in vm.userList">
+            <td>{{$index + 1}}</td>
+            <td>{{user.firstName}}</td>
+            <td>{{user.lastName}}</td>
+            <td>{{user.userName}}</td>
+            <td>{{user.email}}</td>
+            <td><a href="#/users/{{user.id}}" title="Edit user"><span class="glyphicon glyphicon-edit"></span></a></td>
+        </tr>
         </tbody>
     </table>
 </div>

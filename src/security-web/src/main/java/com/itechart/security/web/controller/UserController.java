@@ -4,16 +4,15 @@ import com.itechart.security.model.filter.UserFilter;
 import com.itechart.security.model.persistent.User;
 import com.itechart.security.service.UserService;
 import com.itechart.security.web.model.dto.UserDto;
-import com.itechart.security.web.model.dto.util.Converter;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 
+import static com.itechart.security.web.model.dto.util.Converter.toUser;
+import static com.itechart.security.web.model.dto.util.Converter.toUserDto;
+import static com.itechart.security.web.model.dto.util.Converter.toUserDtos;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
@@ -27,30 +26,35 @@ public class UserController {
 
     @RequestMapping("/users")
     public List<UserDto> findAll() {
-        List<User> users = userService.findUsers(new UserFilter());
-        return users != null ? Converter.toUserDtoList(users) : Collections.emptyList();
+        return toUserDtos(userService.findUsers(new UserFilter()));
     }
 
     @RequestMapping("/users/{id}")
     public UserDto findOne(@PathVariable Long id) {
         User user = userService.get(id);
-        return user != null ? Converter.toUserDto(user) : null;
+        return toUserDto(user);
     }
 
     @RequestMapping(value = "/users", method = PUT)
     public void update(@RequestBody UserDto dto) {
-        User user = Converter.toUser(dto);
-        userService.updateUser(user);
+        userService.updateUser(toUser(dto));
     }
 
     @RequestMapping(value = "/users", method = POST)
     public void create(@RequestBody UserDto dto) {
-        User user = Converter.toUser(dto);
-        userService.createUser(user);
+        userService.createUser(toUser(dto));
     }
 
-    @RequestMapping("/users/search")
-    public void f(){
-
+    @RequestMapping("/users/find")
+    public List<UserDto> find(@RequestParam(required = false) String text,
+                              @RequestParam(required = false) Long groupId,
+                              @RequestParam(required = false) Long roleId,
+                              @RequestParam(required = false) boolean active) {
+        UserFilter filter = new UserFilter();
+        filter.setText(text);
+        filter.setGroupId(groupId);
+        filter.setRoleId(roleId);
+        filter.setActive(active);
+        return toUserDtos(userService.findUsers(filter));
     }
 }

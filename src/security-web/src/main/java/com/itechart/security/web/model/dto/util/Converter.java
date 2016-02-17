@@ -13,12 +13,13 @@ import java.util.stream.Collectors;
  * @author yauheni.putsykovich
  */
 public class Converter {
-    public static List<UserDto> toUserDtoList(List<User> users) {
-        if (users.isEmpty()) return Collections.emptyList();
+    public static List<UserDto> toUserDtos(List<User> users) {
+        if (users == null || users.isEmpty()) return Collections.emptyList();
         return users.stream().map(Converter::toUserDto).collect(Collectors.toList());
     }
 
     public static UserDto toUserDto(User user) {
+        if(user == null) return null;
         UserDto dto = new UserDto();
         dto.setId(user.getId());
         dto.setUserName(user.getUserName());
@@ -33,6 +34,7 @@ public class Converter {
     }
 
     public static User toUser(UserDto dto) {
+        if(dto == null) return null;
         User user = new User();
         user.setId(dto.getId());
         user.setUserName(dto.getUserName());
