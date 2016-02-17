@@ -8,9 +8,15 @@ angular.module('app').controller('UserListController', ["$location", "UserServic
 
         vm.filter = {
             text: null,
-            group: null,
-            role: null,
+            groupId: null,
+            roleId: null,
             active: true
+        };
+
+        vm.paging = {
+            onchange: function (page, pageSize) {
+                console.log("page: " + page + ", pageSize: " + pageSize);
+            }
         };
 
         vm.find = function find(filter) {

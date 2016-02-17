@@ -6,14 +6,14 @@
         </div>
         <div class="col-md-2">
             <span class="text-info">Group</span>
-            <select class="form-control" ng-change="vm.find(vm.filter)" ng-model="vm.filter.group">
+            <select class="form-control" ng-change="vm.find(vm.filter)" ng-model="vm.filter.groupId">
                 <option value="">Any</option>
                 <option ng-repeat="group in vm.groups" value="{{group.id}}">{{group.name}}</option>
             </select>
         </div>
         <div class="col-md-2">
             <span class="text-info">Role</span>
-            <select class="form-control" ng-change="vm.find(vm.filter)" ng-model="vm.filter.role">
+            <select class="form-control" ng-change="vm.find(vm.filter)" ng-model="vm.filter.roleId">
                 <option value="">Any</option>
                 <option ng-repeat="role in vm.roles" value="{{role.id}}">{{role.name}}</option>
             </select>
@@ -51,4 +51,5 @@
         </tr>
         </tbody>
     </table>
+    <pagination paging="vm.paging"/>
 </div>

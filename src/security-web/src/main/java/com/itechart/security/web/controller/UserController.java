@@ -4,15 +4,12 @@ import com.itechart.security.model.filter.UserFilter;
 import com.itechart.security.model.persistent.User;
 import com.itechart.security.service.UserService;
 import com.itechart.security.web.model.dto.UserDto;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.itechart.security.web.model.dto.util.Converter.toUser;
-import static com.itechart.security.web.model.dto.util.Converter.toUserDto;
-import static com.itechart.security.web.model.dto.util.Converter.toUserDtos;
+import static com.itechart.security.web.model.dto.util.Converter.*;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
@@ -50,11 +47,6 @@ public class UserController {
                               @RequestParam(required = false) Long groupId,
                               @RequestParam(required = false) Long roleId,
                               @RequestParam(required = false) boolean active) {
-        UserFilter filter = new UserFilter();
-        filter.setText(text);
-        filter.setGroupId(groupId);
-        filter.setRoleId(roleId);
-        filter.setActive(active);
-        return toUserDtos(userService.findUsers(filter));
+        return toUserDtos(userService.findUsers(new UserFilter(roleId, groupId, active, text)));
     }
 }
