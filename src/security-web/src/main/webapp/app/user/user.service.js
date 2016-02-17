@@ -12,42 +12,38 @@
 
         var service = {};
 
-        service.getAll = fetchAll;
-        service.getById = getById;
-        service.getByUsername = getByUsername;
-        service.create = create;
-        service.update = update;
-        service.remove = remove;
-        service.find = find;
+        service.GetAll = GetAll;
+        service.GetById = GetById;
+        service.GetByUsername = GetByUsername;
+        service.CreateUser = CreateUser;
+        service.UpdateUser = UpdateUser;
+        service.DeleteUser = DeleteUser;
 
         return service;
 
-        function fetchAll(handleSuccess) {
+
+        function GetAll(handleSuccess) {
             return $http.get('rest/users').then(handleSuccess, handleError('Error getting all users'));
         }
 
-        function getById(id, handleSuccess) {
+        function GetById(id, handleSuccess) {
             return $http.get('rest/users/' + id).then(handleSuccess, handleError('Error getting user by id'));
         }
 
-        function getByUsername(name, handleSuccess) {
+        function GetByUsername(name, handleSuccess) {
             return $http.get('rest/users/' + name).then(handleSuccess, handleError('Error getting user by username'));
         }
 
-        function create(user, handleSuccess) {
+        function CreateUser(user, handleSuccess) {
             return $http.post('rest/users', user).then(handleSuccess, handleError('Error creating user'));
         }
 
-        function update(user, handleSuccess) {
+        function UpdateUser(user, handleSuccess) {
             return $http.put('rest/users', user).then(handleSuccess, handleError('Error updating user'));
         }
 
-        function remove(id) {
-            return $http.delete('rest/users' + id).then(handleSuccess, handleError('Error deleting user'));
-        }
-
-        function find(filter, successfullyHandler) {
-            return $http.get("rest/users/find", {params: filter}).then(successfullyHandler, handleError("Error during searching of users"))
+        function DeleteUser(id) {
+            return $http.delete('api/users' + id).then(handleSuccess, handleError('Error deleting user'));
         }
 
         function handleSuccess(res) {
