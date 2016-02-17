@@ -13,11 +13,12 @@ import java.util.List;
  */
 @RestController
 public class GroupController {
+
     @Autowired
     private GroupService groupService;
 
     @RequestMapping("/group")
-    public List<Group> fetchAll() {
-        return groupService.fetchAll();
+    public List<Group> getGroups() {
+        return groupService.getGroups();
     }
 }

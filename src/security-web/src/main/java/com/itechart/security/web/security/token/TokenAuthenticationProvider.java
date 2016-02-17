@@ -11,6 +11,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.Assert;
 
 /**
+ * Implementation of {@link AuthenticationProvider} that performs authentication
+ * through security tokens
+ *
  * @author andrei.samarou
  */
 public class TokenAuthenticationProvider implements AuthenticationProvider {

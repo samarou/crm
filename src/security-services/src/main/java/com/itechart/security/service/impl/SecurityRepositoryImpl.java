@@ -39,7 +39,7 @@ public class SecurityRepositoryImpl implements SecurityRepository {
     @Override
     @SuppressWarnings("unchecked")
     public List<SecurityRole> getRoles() {
-        return (List) roleService.fetchAll();
+        return (List) roleService.getRoles();
     }
 
     @Override

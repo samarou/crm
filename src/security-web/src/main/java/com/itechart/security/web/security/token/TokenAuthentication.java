@@ -10,6 +10,10 @@ import org.springframework.util.Assert;
 import java.util.Collection;
 
 /**
+ * Represents a token-based {@link Authentication}.
+ * Provides security token that contains user-specific information
+ * and can be used for user authentication
+ *
  * @author andrei.samarou
  */
 public final class TokenAuthentication implements Authentication, CredentialsContainer {

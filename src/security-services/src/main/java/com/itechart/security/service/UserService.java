@@ -11,6 +11,11 @@ import java.util.List;
  * @author andrei.samarou
  */
 public interface UserService {
+
+    User getUser(Long id);
+
+    List<User> getUsers();
+
     User findByName(String userName);
 
     List<User> findUsers(UserFilter filter);
@@ -21,5 +26,4 @@ public interface UserService {
 
     boolean changePassword(String userName, String oldPassword, String newPassword);
 
-    User get(Long id);
 }

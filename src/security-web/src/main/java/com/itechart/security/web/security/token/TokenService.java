@@ -16,8 +16,8 @@ import java.security.SecureRandom;
 import java.util.Base64;
 
 /**
- * Service performs generating of new security tokens
- * and validating and extracting data from user tokens
+ * Service performs generating of new security tokens,
+ * validating and extracting data from user security tokens
  *
  * @author andrei.samarou
  */
@@ -30,22 +30,13 @@ public class TokenService {
 
     private Long tokenTimeToLive;
 
-
-    public static void main(String[] args) throws NoSuchAlgorithmException {
-        TokenService tokenService = new TokenService();
-        Token token = tokenService.tokenHelper.allocateToken("");
-        token = null;
-    }
-
-
-
-
     public TokenService() throws NoSuchAlgorithmException {
         StringKeyGenerator keyGenerator = KeyGenerators.string();
         tokenHelper = new KeyBasedPersistenceTokenService();
         tokenHelper.setServerInteger(keyGenerator.hashCode());
         tokenHelper.setServerSecret(keyGenerator.generateKey());
         tokenHelper.setSecureRandom(SecureRandom.getInstance("SHA1PRNG"));
+        tokenHelper.setPseudoRandomNumberBytes(8);
     }
 
     public TokenData parseToken(String rawToken) throws InvalidTokenException {

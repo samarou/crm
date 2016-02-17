@@ -13,11 +13,12 @@ import java.util.List;
  */
 @RestController
 public class RoleController {
+
     @Autowired
     private RoleService roleService;
 
     @RequestMapping("/role")
-    public List<Role> fetchAll() {
-        return roleService.fetchAll();
+    public List<Role> getRoles() {
+        return roleService.getRoles();
     }
 }

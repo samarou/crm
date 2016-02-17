@@ -26,13 +26,6 @@ public class UserFilter extends PageableFilter {
     public UserFilter() {
     }
 
-    public UserFilter(Long roleId, Long groupId, boolean active, String text) {
-        this.roleId = roleId;
-        this.groupId = groupId;
-        this.active = active;
-        this.text = text;
-    }
-
     public Long getRoleId() {
         return roleId;
     }

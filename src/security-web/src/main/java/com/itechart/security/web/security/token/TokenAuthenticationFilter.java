@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Authentication filter processes requests to stateless services,
+ * Authentication filter that processes requests to stateless services,
  * extracts and validates authentication tokens, performs authentication
  * through {@link AuthenticationManager}.
  */

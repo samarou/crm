@@ -22,13 +22,20 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
-    public User get(Long id) {
+    @Transactional(readOnly = true)
+    public User getUser(Long id) {
         return userDao.get(id);
     }
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    @Override
+    @Transactional(readOnly = true)
+    public List<User> getUsers() {
+        return userDao.loadAll();
+    }
 
     @Override
     @Transactional(readOnly = true)

@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface RoleService {
 
-    List<Role> fetchAll();
+    List<Role> getRoles();
 
     Long createRole(Role role);
 

@@ -9,5 +9,6 @@ import java.util.List;
  * @author yauheni.putsykovich
  */
 public interface GroupService {
-    List<Group> fetchAll();
+
+    List<Group> getGroups();
 }

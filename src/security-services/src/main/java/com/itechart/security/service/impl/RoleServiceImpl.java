@@ -22,7 +22,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Role> fetchAll() {
+    public List<Role> getRoles() {
         return roleDao.loadAll();
     }
 

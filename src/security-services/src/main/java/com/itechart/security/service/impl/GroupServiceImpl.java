@@ -14,12 +14,13 @@ import java.util.List;
  */
 @Service
 public class GroupServiceImpl implements GroupService {
+
     @Autowired
     private GroupDao groupDao;
 
     @Override
     @Transactional(readOnly = true)
-    public List<Group> fetchAll() {
+    public List<Group> getGroups() {
         return groupDao.loadAll();
     }
 }
