@@ -4,7 +4,7 @@
 
 "use strict";
 
-angular.module("app").factory("Collections", [function () {
+angular.module("app").service("Collections", [function () {
     this.difference = function difference(from, what, comparator) {
         if (!from) return what;
         if (!what) return from;

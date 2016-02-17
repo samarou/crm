@@ -13,12 +13,6 @@ angular.module('app').controller('UserListController', ["$location", "UserServic
             active: true
         };
 
-        vm.paging = {
-            onchange: function (page, pageSize) {
-                console.log("page: " + page + ", pageSize: " + pageSize);
-            }
-        };
-
         vm.find = function find(filter) {
             angular.forEach(filter, function (value, key) {
                 if(typeof(value) === "boolean") return;
