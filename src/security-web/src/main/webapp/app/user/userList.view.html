@@ -42,7 +42,7 @@
         </thead>
         <tbody>
         <tr ng-repeat="user in vm.userList">
-            <td>{{$index + 1}}</td>
+            <td>{{vm.filter.from + ($index + 1)}}</td>
             <td>{{user.firstName}}</td>
             <td>{{user.lastName}}</td>
             <td>{{user.userName}}</td>
