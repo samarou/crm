@@ -1,12 +1,11 @@
 package com.itechart.security.dao.impl;
 
+import com.itechart.security.dao.BaseDao;
 import com.itechart.security.model.filter.PageableFilter;
 import com.itechart.security.model.filter.SortableFilter;
 import com.itechart.security.model.persistent.BaseEntity;
-import com.itechart.security.dao.BaseDao;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.internal.CriteriaImpl;
@@ -70,6 +69,14 @@ abstract class BaseHibernateDao<T extends BaseEntity> extends AbstractHibernateD
     }
 
     @Override
+    public Long count() {
+        return getHibernateTemplate().executeWithNativeSession(session -> {
+            Criteria criteria = session.createCriteria(getPersistentClass());
+            return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+        });
+    }
+
+    @Override
     public void deleteById(Long id) {
         T entity = get(id);
         if (entity != null) {
@@ -83,14 +90,6 @@ abstract class BaseHibernateDao<T extends BaseEntity> extends AbstractHibernateD
             Criteria criteria = session.createCriteria(getPersistentClass());
             criteria.add(Restrictions.in(getIdPropertyName(), ids));
             return criteria.list();
-        });
-    }
-
-    @Override
-    public Long count() {
-        return getHibernateTemplate().executeWithNativeSession(session -> {
-            Criteria criteria = session.createCriteria(getPersistentClass());
-            return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
         });
     }
 
@@ -111,13 +110,13 @@ abstract class BaseHibernateDao<T extends BaseEntity> extends AbstractHibernateD
             if (sortProperty == null) {
                 criteria.addOrder(Order.asc(getIdPropertyName()));
             }
-            PageableFilter paginalFilter = (PageableFilter) filter;
-            if (paginalFilter.getFrom() != null) {
-                criteria.setFirstResult(paginalFilter.getFrom());
-            }
-            if (paginalFilter.getCount() != null) {
-                criteria.setMaxResults(paginalFilter.getCount());
-            }
+//            PageableFilter paginalFilter = (PageableFilter) filter;
+//            if (paginalFilter.getFrom() != null) {
+//                criteria.setFirstResult(paginalFilter.getFrom());
+//            }
+//            if (paginalFilter.getCount() != null) {
+//                criteria.setMaxResults(paginalFilter.getCount());
+//            }
         }
         return criteria;
     }

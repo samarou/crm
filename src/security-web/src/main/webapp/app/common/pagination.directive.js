@@ -4,13 +4,13 @@
 angular.module("app").directive("pagination", [function () {
     return {
         template: "",
-        replace: "",
+        replace: true,
         scope: {
             paging: "="
         },
         link: function (scope, element, attributes) {
             scope.$watch("paging", function (paging) {
-                if (paging) {
+                if (!!paging) {
                     $(element).twbsPagination({
                         totalPages: paging.totalPages,
                         visiblePages: paging.visiblePages,
