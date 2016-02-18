@@ -14,8 +14,7 @@ angular.module("app").controller("GroupsController", ["GroupService", "Collectio
         };
         vm.update = function (group) {
             var originGroup = vm.groupList.find(function (g) { return g.id === group.id });
-            console.log("11111: " + JSON.stringify(group) + ", originGroup: " + JSON.stringify(originGroup));
             angular.copy(group, originGroup);
-            $("#modal-close-button").trigger("click");
+            $("#modal-close-button").trigger("click");//todo: need improve(find other solution)
         }
     }]);
