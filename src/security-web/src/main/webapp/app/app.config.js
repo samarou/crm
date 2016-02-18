@@ -1,14 +1,14 @@
 (function () {
     'use strict';
- 
+
     angular
         .module('app')
         .config(config);
- 
+
     config.$inject = ['$routeProvider', '$locationProvider'];
-    
+
     function config($routeProvider, $locationProvider) {
-    	console.log("Config");
+        console.log("Config");
         $routeProvider
 
             .when('/login', {
@@ -16,17 +16,22 @@
                 templateUrl: 'app/login/login.view.html',
                 controllerAs: 'vm'
             })
-            .when('/users', {
-                controller: 'UserListController',
-                templateUrl: 'app/user/userList.view.html',
+            .when('/user', {
+                controller: 'UsersController',
+                templateUrl: 'app/user/users.view.html',
                 controllerAs: 'vm'
             })
-            .when("/users/:param", {
+            .when("/user/:param", {
                 controller: "UserController",
                 templateUrl: "app/user/user.view.html",
                 controllerAs: "vm"
             })
- 
-            .otherwise({ redirectTo: '/login' });
+            .when("/group", {
+                controller: "GroupsController",
+                templateUrl: "app/group/groups.view.html",
+                controllerAs: "vm"
+            })
+
+            .otherwise({redirectTo: '/login'});
     }
 })();

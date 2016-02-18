@@ -14,7 +14,7 @@
                 function (response) {
                     var data = response.data;
                     $http.defaults.headers.common['X-Auth-Token'] = data.token;
-                    $location.path('/users');
+                    $location.path('/user');
                 },
                 function (error) {
                     console.log(error);

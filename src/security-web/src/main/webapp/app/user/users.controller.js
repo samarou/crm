@@ -1,7 +1,9 @@
 'use strict';
 
-angular.module('app').controller('UserListController', ["$location", "UserService", "GroupService", "RoleService",
+angular.module('app').controller('UsersController', ["$location", "UserService", "GroupService", "RoleService",
     function ($location, UserService, GroupService, RoleService) {
+        "use strict";
+
         var vm = this;
         var defaultPageSize = 5;
         vm.filter = {
