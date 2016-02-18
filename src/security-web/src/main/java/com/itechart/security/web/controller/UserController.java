@@ -42,7 +42,12 @@ public class UserController {
     }
 
     @RequestMapping("/user/find")
-    public List<UserDto> find(UserFilterDto dto) {
-        return convert(userService.findUsers(convert(dto)));
+    public List<UserDto> find(UserFilterDto filter) {
+        return convert(userService.findUsers(convert(filter)));
+    }
+
+    @RequestMapping("/user/count")
+    public Long count(){
+        return userService.count();
     }
 }

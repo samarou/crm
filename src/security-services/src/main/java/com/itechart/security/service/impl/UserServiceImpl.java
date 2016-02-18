@@ -66,4 +66,9 @@ public class UserServiceImpl implements UserService {
     public boolean changePassword(String userName, String oldPassword, String newPassword) {
         return userDao.changePassword(userName, passwordEncoder.encode(oldPassword), passwordEncoder.encode(newPassword));
     }
+
+    @Override
+    public Long count() {
+        return userDao.count();
+    }
 }

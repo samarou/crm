@@ -6,6 +6,8 @@ import com.itechart.security.model.persistent.BaseEntity;
 import com.itechart.security.dao.BaseDao;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.internal.CriteriaImpl;
 import org.hibernate.sql.JoinType;
@@ -81,6 +83,14 @@ abstract class BaseHibernateDao<T extends BaseEntity> extends AbstractHibernateD
             Criteria criteria = session.createCriteria(getPersistentClass());
             criteria.add(Restrictions.in(getIdPropertyName(), ids));
             return criteria.list();
+        });
+    }
+
+    @Override
+    public Long count() {
+        return getHibernateTemplate().executeWithNativeSession(session -> {
+            Criteria criteria = session.createCriteria(getPersistentClass());
+            return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
         });
     }
 

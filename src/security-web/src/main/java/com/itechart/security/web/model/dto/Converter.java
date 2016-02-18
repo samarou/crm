@@ -60,6 +60,8 @@ public class Converter {
         filter.setGroupId(dto.getGroupId());
         filter.setActive(dto.isActive());
         filter.setText(dto.getText());
+        filter.setFrom(dto.getFrom());
+        filter.setCount(dto.getCount());
         return filter;
     }
 }

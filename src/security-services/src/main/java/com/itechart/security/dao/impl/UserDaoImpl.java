@@ -3,13 +3,17 @@ package com.itechart.security.dao.impl;
 import com.itechart.security.dao.UserDao;
 import com.itechart.security.model.filter.UserFilter;
 import com.itechart.security.model.persistent.User;
-import org.hibernate.Criteria;
-import org.hibernate.Query;
+import org.hibernate.*;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.loader.plan.exec.process.spi.ScrollableResultSetProcessor;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -49,7 +53,9 @@ public class UserDaoImpl extends BaseHibernateDao<User> implements UserDao {
                 ));
             }
             appendSortableFilterConditions(criteria, filter);
-            return criteria.list();
+            List list = criteria.list();
+
+            return list;
         });
     }
 

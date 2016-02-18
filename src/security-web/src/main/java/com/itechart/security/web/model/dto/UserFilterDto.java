@@ -1,9 +1,11 @@
 package com.itechart.security.web.model.dto;
 
+import com.itechart.security.model.filter.PageableFilter;
+
 /**
  * @author andrei.samarou
  */
-public class UserFilterDto {
+public class UserFilterDto extends PageableFilterDto {
 
     private String text;
     private Long groupId;

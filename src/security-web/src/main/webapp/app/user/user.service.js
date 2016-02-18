@@ -19,6 +19,7 @@
         service.update = update;
         service.remove = remove;
         service.find = find;
+        service.count = count;
 
         return service;
 
@@ -46,8 +47,12 @@
             return $http.delete('rest/user' + id).then(handleSuccess, handleError('Error deleting user'));
         }
 
-        function find(filter, successfullyHandler) {
-            return $http.get("rest/user/find", {params: filter}).then(successfullyHandler, handleError("Error during searching of users"))
+        function find(filter, handleSuccess) {
+            return $http.get("rest/user/find", {params: filter}).then(handleSuccess, handleError("Error during searching of users"))
+        }
+
+        function count(handleSuccess) {
+            return $http.get("rest/user/count").then(handleSuccess, handleError("Error during getting count of users"));
         }
 
         function handleSuccess(res) {

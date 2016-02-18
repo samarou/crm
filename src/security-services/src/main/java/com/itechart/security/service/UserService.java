@@ -26,4 +26,6 @@ public interface UserService {
 
     boolean changePassword(String userName, String oldPassword, String newPassword);
 
+    Long count();
+
 }
