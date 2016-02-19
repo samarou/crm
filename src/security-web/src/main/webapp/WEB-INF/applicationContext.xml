@@ -31,6 +31,13 @@
         <property name="tokenService" ref="tokenService"/>
     </bean>
 
+    <bean id="daoAuthenticationProvider"
+          class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <property name="userDetailsService" ref="userDetailsService"/>
+        <property name="passwordEncoder" ref="passwordEncoder"/>
+        <property name="userCache" ref="userCache"/>
+    </bean>
+
     <bean id="tokenAuthenticationProvider" class="com.itechart.security.web.security.token.TokenAuthenticationProvider">
         <property name="userDetailsService" ref="userDetailsService"/>
         <property name="tokenService" ref="tokenService"/>
@@ -39,6 +46,20 @@
 
     <bean id="tokenService" class="com.itechart.security.web.security.token.TokenService">
         <property name="tokenTimeToLive" value="${auth.token.timeToLive}"/>
+    </bean>
+
+    <bean id="userCache" class="org.springframework.security.core.userdetails.cache.EhCacheBasedUserCache">
+        <property name="cache">
+            <bean class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+                <property name="cacheManager" ref="ehCacheManager"/>
+                <property name="cacheName" value="security.user"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="ehCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="cacheManagerName" value="appCacheManager"/>
+        <property name="acceptExisting" value="true"/>
     </bean>
 
     <context:property-placeholder location="classpath:datasource.properties,classpath:application.properties" order="-1"/>
