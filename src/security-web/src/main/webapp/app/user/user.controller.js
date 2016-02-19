@@ -1,12 +1,12 @@
-"use strict";
 
 angular.module("app").controller("UserController", ["$routeParams", "$location", "$q", "UserService", "GroupService", "RoleService", "Collections",
     function ($routeParams, $location, $q, UserService, GroupService, RoleService, Collections) {
-        console.log("UserController: " + $routeParams.param);
-        var vm = this;
+        "use strict";
 
+        var vm = this;
         var loadGroupsPromise = GroupService.fetchAll();
         var loadRolesPromise = RoleService.fetchAll();
+
         loadGroupsPromise.then(function (response) {
             vm.groups = response.data;
             vm.selectedGroup = vm.groups[0];
@@ -49,7 +49,7 @@ angular.module("app").controller("UserController", ["$routeParams", "$location",
             });
         }
 
-        //todo: add directive to encapsulate this login
+        //todo: add directive to encapsulate this logic
         vm.deselectGroup = function (group) {
             var index = vm.user.groups.indexOf(group);
             vm.user.groups.splice(index, 1);
