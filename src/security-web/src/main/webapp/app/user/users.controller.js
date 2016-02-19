@@ -5,7 +5,7 @@ angular.module('app').controller('UsersController', ["$location", "UserService",
         "use strict";
 
         var defaultPageSize = 3;
-        
+
         var vm = this;
         vm.filter = {
             from: 0,
