@@ -13,7 +13,7 @@ angular.module("app").directive("pagination", [function () {
                 if (!scope.paging) return;//paging is not available
 
                 if ($(element).data("twbs-pagination")) $(element).twbsPagination('destroy');//drop old pagination
-                
+
                 $(element).twbsPagination({
                     totalPages: paging.totalPages,
                     visiblePages: paging.visiblePages,

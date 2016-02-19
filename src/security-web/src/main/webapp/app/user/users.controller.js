@@ -4,7 +4,7 @@ angular.module('app').controller('UsersController', ["$location", "UserService",
     function ($location, UserService, GroupService, RoleService) {
         "use strict";
 
-        var defaultPageSize = 3;
+        var defaultPageSize = 5;
 
         var vm = this;
         vm.filter = {
@@ -16,6 +16,15 @@ angular.module('app').controller('UsersController', ["$location", "UserService",
             active: true
         };
 
+        vm.paging = {
+            totalPages: 1,
+            visiblePages: 1,
+            onPageClick: function (pageNumber) {
+                vm.filter.from = (pageNumber - 1) * vm.filter.count;
+                vm.find(vm.filter);
+            }
+        };
+
         vm.find = function find(filter) {
             //nulling, to prevent empty parameters in url
             angular.forEach(filter, function (value, key) {
@@ -25,19 +34,16 @@ angular.module('app').controller('UsersController', ["$location", "UserService",
             UserService.find(filter, function (response) {
                 vm.userList = response.data.data;
                 var quantity = response.data.totalCount;
-                var totalPages = Math.ceil(quantity / vm.filter.count);
-                vm.paging = {
-                    totalPages: totalPages,
-                    visiblePages: totalPages,
-                    onPageClick: function (pageNumber) {
-                        vm.filter.from = (pageNumber - 1) * vm.filter.count;
-                        vm.find(vm.filter);
-                    }
-                };
+                var totalPages = Math.ceil(quantity / vm.filter.count) || 1;
+                vm.paging.totalPages = totalPages;
+                vm.paging.visiblePages = totalPages;
             });
         };
-        vm.find(vm.filter);
 
-        GroupService.fetchAll().then(function (response) { vm.groups = response.data; });
-        RoleService.fetchAll().then(function (response) { vm.roles = response.data; });
+        GroupService.fetchAll().then(function (response) {
+            vm.groups = response.data;
+        });
+        RoleService.fetchAll().then(function (response) {
+            vm.roles = response.data;
+        });
     }]);
