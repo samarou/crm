@@ -40,10 +40,17 @@ angular.module('app').controller('UsersController', ["$location", "UserService",
             });
         };
 
-        GroupService.fetchAll().then(function (response) {
-            vm.groups = response.data;
-        });
-        RoleService.fetchAll().then(function (response) {
-            vm.roles = response.data;
-        });
+        (function () {
+            var intervalId = 0;
+            vm.keyDown = function () {
+                clearTimeout(intervalId);
+            };
+            vm.keyUp = function () {
+                clearTimeout(intervalId);
+                intervalId = setTimeout(function () { vm.find(vm.filter); }, 500);
+            };
+        })();
+
+        GroupService.fetchAll().then(function (response) { vm.groups = response.data; });
+        RoleService.fetchAll().then(function (response) { vm.roles = response.data; });
     }]);
