@@ -24,7 +24,10 @@ angular.module("app").controller("GroupsController", ["GroupService",
         };
 
         function add(group) {
-            vm.groupList.push(group);
+            GroupService.create(group, function (response) {
+                group.id = response.data;
+                vm.groupList.push(group);
+            });
             closeModalView();
         }
 
@@ -33,6 +36,9 @@ angular.module("app").controller("GroupsController", ["GroupService",
                 return g.id === group.id
             });
             angular.copy(group, originGroup);
+            GroupService.update(group, function () {
+                
+            });
             closeModalView();
         }
 

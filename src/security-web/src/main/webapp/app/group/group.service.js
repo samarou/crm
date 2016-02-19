@@ -10,5 +10,13 @@ angular.module("app").factory("GroupService", ["$http", "$q", "Handler", functio
         return deferred.promise;
     };
 
+    this.create = function (group, successHandler) {
+        $http.post("/rest/group", group).then(successHandler, Handler.handleError("Creating of group fails"));
+    };
+
+    this.update = function (group, successHandler) {
+        $http.put("/rest/group", group).then(successHandler, Handler.handleError("Update group failed"));
+    };
+
     return this;
 }]);

@@ -1,7 +1,9 @@
 package com.itechart.security.web.model.dto;
 
 import com.itechart.security.model.filter.UserFilter;
+import com.itechart.security.model.persistent.Group;
 import com.itechart.security.model.persistent.User;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -63,5 +65,32 @@ public class Converter {
         filter.setFrom(dto.getFrom());
         filter.setCount(dto.getCount());
         return filter;
+    }
+
+    public static GroupDto convert(Group group) {
+        GroupDto dto = new GroupDto();
+        dto.setId(group.getId());
+        dto.setName(group.getName());
+        dto.setDescription(group.getDescription());
+
+        return dto;
+    }
+
+    public static Group convert(GroupDto dto) {
+        Group group = new Group();
+        group.setId(dto.getId());
+        group.setName(dto.getName());
+        group.setDescription(dto.getDescription());
+
+        return group;
+    }
+
+    //todo: have the same erasure with convert(List<User> groups) because of erase
+    //maybe replace with Group... groups?
+    public static List<GroupDto> convertGroups(List<Group> groups) {
+        if (CollectionUtils.isEmpty(groups)) {
+            return Collections.EMPTY_LIST;
+        }
+        return groups.stream().map(Converter::convert).collect(Collectors.toList());
     }
 }

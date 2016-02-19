@@ -1,8 +1,8 @@
 package com.itechart.security.service;
 
 import com.itechart.security.model.persistent.Group;
-import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -11,4 +11,8 @@ import java.util.List;
 public interface GroupService {
 
     List<Group> getGroups();
+
+    Serializable create(Group group);
+
+    void update(Group convert);
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -22,5 +23,17 @@ public class GroupServiceImpl implements GroupService {
     @Transactional(readOnly = true)
     public List<Group> getGroups() {
         return groupDao.loadAll();
+    }
+
+    @Override
+    @Transactional
+    public Serializable create(Group group) {
+        return groupDao.save(group);
+    }
+
+    @Override
+    @Transactional
+    public void update(Group group) {
+        groupDao.update(group);
     }
 }

@@ -1,12 +1,19 @@
 package com.itechart.security.web.controller;
 
-import com.itechart.security.model.persistent.Group;
 import com.itechart.security.service.GroupService;
+import com.itechart.security.web.model.dto.GroupDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.Serializable;
 import java.util.List;
+
+import static com.itechart.security.web.model.dto.Converter.convert;
+import static com.itechart.security.web.model.dto.Converter.convertGroups;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 /**
  * @author yauheni.putsykovich
@@ -18,7 +25,17 @@ public class GroupController {
     private GroupService groupService;
 
     @RequestMapping("/group")
-    public List<Group> getGroups() {
-        return groupService.getGroups();
+    public List<GroupDto> getGroups() {
+        return convertGroups(groupService.getGroups());
+    }
+
+    @RequestMapping(value = "/group", method = POST)
+    public Serializable create(@RequestBody GroupDto group) {
+        return groupService.create(convert(group));
+    }
+
+    @RequestMapping(value = "/group", method = PUT)
+    public void update(@RequestBody GroupDto dto) {
+        groupService.update(convert(dto));
     }
 }
