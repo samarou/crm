@@ -14,5 +14,7 @@ public interface UserDao extends BaseDao<User> {
 
     List<User> findUsers(UserFilter filter);
 
+    int countUsers(UserFilter filter);
+
     boolean changePassword(String userName, String oldPassword, String newPassword);
 }

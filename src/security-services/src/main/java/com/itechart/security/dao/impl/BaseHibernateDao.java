@@ -5,11 +5,14 @@ import com.itechart.security.model.filter.PageableFilter;
 import com.itechart.security.model.filter.SortableFilter;
 import com.itechart.security.model.persistent.BaseEntity;
 import org.hibernate.Criteria;
+import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.internal.CriteriaImpl;
 import org.hibernate.sql.JoinType;
+import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
@@ -26,6 +29,8 @@ import java.util.List;
  */
 @Repository
 abstract class BaseHibernateDao<T extends BaseEntity> extends AbstractHibernateDao implements BaseDao<T> {
+
+    private static final int MAX_PAGE_SIZE = 100;
 
     private Class<T> persistentClass;
 
@@ -69,14 +74,6 @@ abstract class BaseHibernateDao<T extends BaseEntity> extends AbstractHibernateD
     }
 
     @Override
-    public Long count() {
-        return getHibernateTemplate().executeWithNativeSession(session -> {
-            Criteria criteria = session.createCriteria(getPersistentClass());
-            return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
-        });
-    }
-
-    @Override
     public void deleteById(Long id) {
         T entity = get(id);
         if (entity != null) {
@@ -93,6 +90,44 @@ abstract class BaseHibernateDao<T extends BaseEntity> extends AbstractHibernateD
         });
     }
 
+    @Override
+    public int count() {
+        return getHibernateTemplate().executeWithNativeSession(session -> {
+            Criteria criteria = session.createCriteria(getPersistentClass());
+            criteria.setProjection(Projections.rowCount());
+            return ((Number) criteria.uniqueResult()).intValue();
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    protected List<T> executePageableDistinctCriteria(Session session, Criteria criteria, PageableFilter filter) {
+        // cause Hibernate execute paging queries with distinct and outer join incorrectly
+        if (filter == null) {
+            return criteria.list();
+        }
+        appendPageableFilterConditions(criteria, filter);
+        if (filter.getFrom() == null && filter.getCount() == null) {
+            criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+            return criteria.list();
+        } else {
+            if (filter.getCount() > MAX_PAGE_SIZE) {
+                throw new DataRetrievalFailureException("Page size is too big. Max value: " + MAX_PAGE_SIZE);
+            }
+            criteria.setProjection(Projections.distinct(Projections.id()));
+            List<Serializable> ids = criteria.list();
+            if (!(criteria instanceof CriteriaImpl)) {
+                throw new IllegalArgumentException("Expected " + CriteriaImpl.class);
+            }
+            Criteria distinct = session.createCriteria(((CriteriaImpl) criteria).getEntityOrClassName());
+            distinct.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+            distinct.add(Property.forName(getIdPropertyName()).in(ids));
+            appendPageableFilterConditions(distinct, filter);
+            distinct.setFirstResult(0);
+            distinct.setMaxResults(0);
+            return distinct.list();
+        }
+    }
+
     protected Criteria appendSortableFilterConditions(Criteria criteria, SortableFilter filter) {
         String sortProperty = filter.getSortProperty();
         if (sortProperty != null) {
@@ -106,17 +141,19 @@ abstract class BaseHibernateDao<T extends BaseEntity> extends AbstractHibernateD
             }
             criteria.addOrder(filter.isSortAsc() ? Order.asc(property) : Order.desc(property));
         }
-        if (filter instanceof PageableFilter) {
-            if (sortProperty == null) {
-                criteria.addOrder(Order.asc(getIdPropertyName()));
-            }
-//            PageableFilter paginalFilter = (PageableFilter) filter;
-//            if (paginalFilter.getFrom() != null) {
-//                criteria.setFirstResult(paginalFilter.getFrom());
-//            }
-//            if (paginalFilter.getCount() != null) {
-//                criteria.setMaxResults(paginalFilter.getCount());
-//            }
+        return criteria;
+    }
+
+    protected Criteria appendPageableFilterConditions(Criteria criteria, PageableFilter filter) {
+        appendSortableFilterConditions(criteria, filter);
+        if (filter.getSortProperty() == null) {
+            criteria.addOrder(Order.asc(getIdPropertyName()));
+        }
+        if (filter.getFrom() != null) {
+            criteria.setFirstResult(filter.getFrom());
+        }
+        if (filter.getCount() != null) {
+            criteria.setMaxResults(filter.getCount());
         }
         return criteria;
     }

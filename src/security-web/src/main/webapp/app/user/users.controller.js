@@ -20,14 +20,21 @@ angular.module('app').controller('UsersController', ["$location", "UserService",
                 if (typeof(value) !== "string") return;
                 filter[key] = !!value ? value : null;
             });
-            UserService.find(filter, function (response) { vm.userList = response.data; });
+            UserService.find(filter, function (response) {
+                vm.userList = response.data.data;
+            });
         };
         vm.find(vm.filter);
 
-        GroupService.fetchAll().then(function (response) { vm.groups = response.data; });
-        RoleService.fetchAll().then(function (response) { vm.roles = response.data; });
-        UserService.count(function (response) {
-            var quantity = response.data;
+        GroupService.fetchAll().then(function (response) {
+            vm.groups = response.data;
+        });
+        RoleService.fetchAll().then(function (response) {
+            vm.roles = response.data;
+        });
+
+        UserService.find(vm.filter, function (response) {
+            var quantity = response.data.totalCount;
             var totalPages = Math.ceil(quantity / vm.filter.count);
             vm.paging = {
                 totalPages: totalPages,

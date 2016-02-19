@@ -5,16 +5,14 @@
         .module('app')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$location', '$http', 'LoginService'];
+    LoginController.$inject = ['$location', '$http', 'AuthService'];
 
-    function LoginController($location, $http, LoginService) {
+    function LoginController($location, $http, AuthService) {
         var vm = this;
         vm.login = function () {
-            LoginService.login(vm.username, vm.password).then(
+            AuthService.login(vm.username, vm.password).then(
                 function (response) {
-                    var data = response.data;
-                    $http.defaults.headers.common['X-Auth-Token'] = data.token;
-                    $location.path('/user');
+                    $location.path('/users');
                 },
                 function (error) {
                     console.log(error);

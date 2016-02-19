@@ -24,11 +24,11 @@ public interface BaseDao<T extends BaseEntity> {
 
     void delete(T object);
 
-    Long count();
-
     void deleteById(Long id);
 
     List<T> findByIds(List<? extends Serializable> ids);
+
+    int count();
 
     String getIdPropertyName();
 }

@@ -20,12 +20,11 @@ public interface UserService {
 
     List<User> findUsers(UserFilter filter);
 
+    int countUsers(UserFilter filter);
+
     Long createUser(User user);
 
     void updateUser(User user);
 
     boolean changePassword(String userName, String oldPassword, String newPassword);
-
-    Long count();
-
 }

@@ -20,7 +20,9 @@ angular.module("app").controller("UserController", ["$routeParams", "$location",
         if (vm.isCreation) {
             vm.formTitle = "Creating a New User";
             vm.actionTitle = "Add";
-            vm.action = function (user) { UserService.create(user, successCallback); };
+            vm.action = function (user) {
+                UserService.create(user, successCallback);
+            };
             vm.user = {
                 "userName": null,
                 "email": null,
@@ -33,7 +35,9 @@ angular.module("app").controller("UserController", ["$routeParams", "$location",
         } else {
             vm.formTitle = "Editing User";
             vm.actionTitle = "Update";
-            vm.action = function (user) { UserService.update(user, successCallback); };
+            vm.action = function (user) {
+                UserService.update(user, successCallback);
+            };
             UserService.getById($routeParams.param, function (response) {
                 vm.user = response.data;
                 $q.all([loadGroupsPromise, loadRolesPromise]).then(function () {

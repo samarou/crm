@@ -1,13 +1,13 @@
 (function () {
     'use strict';
-
+ 
     angular
         .module('app')
         .config(config);
 
-    config.$inject = ['$routeProvider', '$locationProvider'];
+    config.$inject = ['$routeProvider', '$httpProvider'];
 
-    function config($routeProvider, $locationProvider) {
+    function config($routeProvider, $httpProvider) {
         console.log("Config");
         $routeProvider
 
@@ -16,7 +16,7 @@
                 templateUrl: 'app/login/login.view.html',
                 controllerAs: 'vm'
             })
-            .when('/user', {
+            .when('/users', {
                 controller: 'UsersController',
                 templateUrl: 'app/user/users.view.html',
                 controllerAs: 'vm'
@@ -33,5 +33,7 @@
             })
 
             .otherwise({redirectTo: '/login'});
+
+        $httpProvider.interceptors.push('HttpInterceptor');
     }
 })();
