@@ -6,7 +6,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title" id="group-modal-view-label">Group</h4>
+                <h4 class="modal-title" id="group-modal-view-label">{{vm.viewTitle}}</h4>
             </div>
             <div class="modal-body">
                 <form class="form-group">
@@ -23,7 +23,7 @@
             </div>
             <div class="modal-footer">
                 <button id="modal-close-button" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" ng-click="vm.update(vm.group)">Save changes</button>
+                <button type="button" class="btn btn-primary" ng-click="vm.action(vm.group)">{{vm.actionTitle}}</button>
             </div>
         </div>
     </div>

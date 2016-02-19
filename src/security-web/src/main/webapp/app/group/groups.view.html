@@ -1,6 +1,9 @@
 <div class="col-md-offset-2 col-md-8">
     <table class="table">
-        <caption>Groups</caption>
+        <caption>
+            Groups
+            <span class="link glyphicon glyphicon-plus pull-right" title="New Group" data-toggle="modal" data-target="#group-modal-view" ng-click="vm.create()"></span>
+        </caption>
         <thead>
         <tr>
             <td>#</td>
@@ -16,7 +19,7 @@
             <td>{{group.name}}</td>
             <td>{{group.description}}</td>
             <td><a href="#"><span>{{$index}}</span></a></td>
-            <td><span class="link glyphicon glyphicon-edit" data-toggle="modal" data-target="#group-modal-view" ng-click="vm.setEditableGroup(group)"></span></td>
+            <td><span class="link glyphicon glyphicon-edit" title="Edit Group" data-toggle="modal" data-target="#group-modal-view" ng-click="vm.edit(group)"></span></td>
         </tr>
         </tbody>
     </table>

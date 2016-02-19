@@ -5,21 +5,26 @@
     <link rel="stylesheet" href="../stylesheets/style.css"/>
     <title>Web App</title>
 </head>
-<body>
-<div class="container-fluid" ng-app="app" ng-controller="AppController">
-    <div class="nav navbar">
-        <header class="col-md-10 col-md-offset-1">
-            <a type="submit" class="btn btn-success navbar-btn navbar-right" href="/">Sign in</a>
-        </header>
-    </div>
-    <div class="row">
-        <div class="col-md-9">
-            <div ng-view></div>
-        </div>
-        <div class="col-md-2">
-            <div ng-include="partials.menu"></div>
-        </div>
-        <div class="col-xs-1"><!--margin--></div>
+<body ng-app="app" ng-controller="AppController">
+<div class="container-fluid">
+    <header>
+        <nav class="navbar navbar-default">
+            <div class="col-md-10">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">Security</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#/">Home</a></li>
+                    <li><a href="#/user">Users</a></li>
+                    <li><a href="#/group">Groups</a></li>
+                    <li><a href="#/role">Roles</a></li>
+                </ul>
+            </div>
+            <div class="col-md-2"><a type="submit" class="btn btn-success navbar-btn pull-right" href="/">Sign in</a></div>
+        </nav>
+    </header>
+    <div class="col-md-9 col-md-offset-1">
+        <div ng-view></div>
     </div>
 </div>
 </body>
