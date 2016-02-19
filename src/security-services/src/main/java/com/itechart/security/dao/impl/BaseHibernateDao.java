@@ -14,11 +14,13 @@ import org.hibernate.internal.CriteriaImpl;
 import org.hibernate.sql.JoinType;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -115,6 +117,9 @@ abstract class BaseHibernateDao<T extends BaseEntity> extends AbstractHibernateD
             }
             criteria.setProjection(Projections.distinct(Projections.id()));
             List<Serializable> ids = criteria.list();
+            if (CollectionUtils.isEmpty(ids)) {
+                return Collections.emptyList();
+            }
             if (!(criteria instanceof CriteriaImpl)) {
                 throw new IllegalArgumentException("Expected " + CriteriaImpl.class);
             }
