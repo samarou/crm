@@ -5,7 +5,7 @@ package com.itechart.security.model.filter;
  *
  * @author andrei.samarou
  */
-public class UserFilter extends PageableFilter {
+public class UserFilter extends PagingFilter {
     /**
      * User role ID
      */
