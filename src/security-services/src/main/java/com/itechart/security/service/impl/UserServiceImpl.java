@@ -50,6 +50,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public int countUsers(UserFilter filter) {
+        return userDao.countUsers(filter);
+    }
+
+    @Override
     @Transactional
     public Long createUser(User user) {
         return (Long) userDao.save(user);
@@ -65,10 +71,5 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public boolean changePassword(String userName, String oldPassword, String newPassword) {
         return userDao.changePassword(userName, passwordEncoder.encode(oldPassword), passwordEncoder.encode(newPassword));
-    }
-
-    @Override
-    public Long count() {
-        return userDao.count();
     }
 }

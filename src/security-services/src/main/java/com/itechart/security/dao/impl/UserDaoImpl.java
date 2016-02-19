@@ -5,12 +5,13 @@ import com.itechart.security.model.filter.UserFilter;
 import com.itechart.security.model.persistent.User;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -27,42 +28,44 @@ public class UserDaoImpl extends BaseHibernateDao<User> implements UserDao {
     @Override
     @SuppressWarnings("unchecked")
     public List<User> findUsers(UserFilter filter) {
-        return getHibernateTemplate().execute(session -> {
-            Criteria criteria = session.createCriteria(User.class, "u");
-            criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-            if (filter.getRoleId() != null) {
-                criteria.createAlias("u.roles", "r");
-                criteria.add(Restrictions.eq("r.id", filter.getRoleId()));
-            }
-            if (filter.getGroupId() != null) {
-                criteria.createAlias("u.groups", "g");
-                criteria.add(Restrictions.eq("g.id", filter.getGroupId()));
-            }
-            if (filter.isActive()) {
-                criteria.add(Restrictions.eq("u.active", true));
-            }
-            if (StringUtils.hasText(filter.getText())) {
-                criteria.add(Restrictions.disjunction(
-                        Restrictions.ilike("u.userName", filter.getText(), MatchMode.ANYWHERE),
-                        Restrictions.ilike("u.firstName", filter.getText(), MatchMode.ANYWHERE),
-                        Restrictions.ilike("u.lastName", filter.getText(), MatchMode.ANYWHERE),
-                        Restrictions.ilike("u.email", filter.getText(), MatchMode.ANYWHERE)
-                ));
-            }
-            appendSortableFilterConditions(criteria, filter);
-            List list = criteria.list();
-
-            if (filter.getFrom() != null && filter.getCount() != null) {
-                int a = filter.getFrom();
-                int b = filter.getFrom() + filter.getCount();
-                int l = list.size();
-                if (l <= a) return Collections.EMPTY_LIST;
-                if (l > a && l < b) return list.subList(a, l);
-                return list.subList(a, b);
-            }
-
-            return list;
+        return getHibernateTemplate().executeWithNativeSession(session -> {
+            Criteria criteria = createFilterCriteria(filter, session);
+            return executePageableDistinctCriteria(session, criteria, filter);
         });
+    }
+
+    @Override
+    public int countUsers(UserFilter filter) {
+        return getHibernateTemplate().executeWithNativeSession(session -> {
+            Criteria criteria = createFilterCriteria(filter, session);
+            appendSortableFilterConditions(criteria, filter);
+            criteria.setProjection(Projections.rowCount());
+            return ((Number) criteria.uniqueResult()).intValue();
+        });
+    }
+
+    private Criteria createFilterCriteria(UserFilter filter, Session session) {
+        Criteria criteria = session.createCriteria(User.class, "u");
+        if (filter.getRoleId() != null) {
+            criteria.createAlias("u.roles", "r");
+            criteria.add(Restrictions.eq("r.id", filter.getRoleId()));
+        }
+        if (filter.getGroupId() != null) {
+            criteria.createAlias("u.groups", "g");
+            criteria.add(Restrictions.eq("g.id", filter.getGroupId()));
+        }
+        if (filter.isActive()) {
+            criteria.add(Restrictions.eq("u.active", true));
+        }
+        if (StringUtils.hasText(filter.getText())) {
+            criteria.add(Restrictions.disjunction(
+                    Restrictions.ilike("u.userName", filter.getText(), MatchMode.ANYWHERE),
+                    Restrictions.ilike("u.firstName", filter.getText(), MatchMode.ANYWHERE),
+                    Restrictions.ilike("u.lastName", filter.getText(), MatchMode.ANYWHERE),
+                    Restrictions.ilike("u.email", filter.getText(), MatchMode.ANYWHERE)
+            ));
+        }
+        return criteria;
     }
 
     @Override
