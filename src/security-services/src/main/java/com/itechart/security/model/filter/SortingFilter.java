@@ -5,7 +5,7 @@ package com.itechart.security.model.filter;
  *
  * @author andrei.samarou
  */
-public class SortableFilter {
+public class SortingFilter {
 
     private String sortProperty;
     private boolean sortAsc = true;

@@ -12,7 +12,7 @@
 
     <context:component-scan base-package="com.itechart.security.service;com.itechart.security.dao"/>
 
-    <cache:annotation-driven/>
+    <cache:annotation-driven cache-manager="securityCacheManager"/>
     <tx:annotation-driven transaction-manager="securityTransactionManager"/>
 
     <jndi:jndi-lookup id="securityDataSource" jndi-name="${security.datasource.jndi}"/>
@@ -45,13 +45,6 @@
     <bean id="securityRepository" class="com.itechart.security.service.impl.SecurityRepositoryImpl"/>
 
     <!-- Authentication / authorization -->
-
-    <bean id="daoAuthenticationProvider"
-          class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
-        <property name="userDetailsService" ref="userDetailsService"/>
-        <property name="passwordEncoder" ref="passwordEncoder"/>
-        <property name="userCache" ref="userCache"/>
-    </bean>
 
     <bean id="userDetailsService" class="com.itechart.security.core.userdetails.UserDetailsServiceImpl">
         <property name="securityRepository" ref="securityRepository"/>
@@ -91,11 +84,12 @@
 
     <!-- Cache configuration -->
 
-    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
-        <property name="cacheManager" ref="ehCacheManager"/>
+    <bean id="securityCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+        <property name="cacheManager" ref="securityEhCacheManager"/>
     </bean>
 
-    <bean id="ehCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+    <bean id="securityEhCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="cacheManagerName" value="securityCacheManager"/>
         <property name="acceptExisting" value="true"/>
     </bean>
 
@@ -108,24 +102,15 @@
     </bean>
 
     <bean id="roleHierarchyCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
-        <property name="cacheManager" ref="ehCacheManager"/>
+        <property name="cacheManager" ref="securityEhCacheManager"/>
         <property name="cacheName" value="security.roleHierarchy"/>
         <property name="blocking" value="true"/>
-    </bean>
-
-    <bean id="userCache" class="org.springframework.security.core.userdetails.cache.EhCacheBasedUserCache">
-        <property name="cache">
-            <bean class="org.springframework.cache.ehcache.EhCacheFactoryBean">
-                <property name="cacheManager" ref="ehCacheManager"/>
-                <property name="cacheName" value="security.user"/>
-            </bean>
-        </property>
     </bean>
 
     <bean id="aclCache" class="com.itechart.security.acl.EhCacheBasedAclCache">
         <property name="cache">
             <bean class="org.springframework.cache.ehcache.EhCacheFactoryBean">
-                <property name="cacheManager" ref="ehCacheManager"/>
+                <property name="cacheManager" ref="securityEhCacheManager"/>
                 <property name="cacheName" value="security.aclCache"/>
             </bean>
         </property>

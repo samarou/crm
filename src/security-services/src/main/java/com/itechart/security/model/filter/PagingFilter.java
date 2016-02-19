@@ -1,9 +1,12 @@
-package com.itechart.security.web.model.dto;
+package com.itechart.security.model.filter;
 
 /**
- * @author yauheni.putsykovich
+ * Filter supports pagination of lists
+ *
+ * @author andrei.samarou
  */
-public class PageableFilterDto {
+public class PagingFilter extends SortingFilter {
+
     private Integer from;
     private Integer count;
 

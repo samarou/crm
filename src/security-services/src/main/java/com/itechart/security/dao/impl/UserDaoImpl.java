@@ -30,7 +30,7 @@ public class UserDaoImpl extends BaseHibernateDao<User> implements UserDao {
     public List<User> findUsers(UserFilter filter) {
         return getHibernateTemplate().executeWithNativeSession(session -> {
             Criteria criteria = createFilterCriteria(filter, session);
-            return executePageableDistinctCriteria(session, criteria, filter);
+            return executePagingDistinctCriteria(session, criteria, filter);
         });
     }
 
@@ -38,7 +38,7 @@ public class UserDaoImpl extends BaseHibernateDao<User> implements UserDao {
     public int countUsers(UserFilter filter) {
         return getHibernateTemplate().executeWithNativeSession(session -> {
             Criteria criteria = createFilterCriteria(filter, session);
-            appendSortableFilterConditions(criteria, filter);
+            appendSortingFilterConditions(criteria, filter);
             criteria.setProjection(Projections.rowCount());
             return ((Number) criteria.uniqueResult()).intValue();
         });

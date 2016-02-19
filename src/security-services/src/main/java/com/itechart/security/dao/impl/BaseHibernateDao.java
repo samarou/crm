@@ -1,8 +1,8 @@
 package com.itechart.security.dao.impl;
 
 import com.itechart.security.dao.BaseDao;
-import com.itechart.security.model.filter.PageableFilter;
-import com.itechart.security.model.filter.SortableFilter;
+import com.itechart.security.model.filter.PagingFilter;
+import com.itechart.security.model.filter.SortingFilter;
 import com.itechart.security.model.persistent.BaseEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -14,11 +14,13 @@ import org.hibernate.internal.CriteriaImpl;
 import org.hibernate.sql.JoinType;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -100,12 +102,12 @@ abstract class BaseHibernateDao<T extends BaseEntity> extends AbstractHibernateD
     }
 
     @SuppressWarnings("unchecked")
-    protected List<T> executePageableDistinctCriteria(Session session, Criteria criteria, PageableFilter filter) {
+    protected List<T> executePagingDistinctCriteria(Session session, Criteria criteria, PagingFilter filter) {
         // cause Hibernate execute paging queries with distinct and outer join incorrectly
         if (filter == null) {
             return criteria.list();
         }
-        appendPageableFilterConditions(criteria, filter);
+        appendPagingFilterConditions(criteria, filter);
         if (filter.getFrom() == null && filter.getCount() == null) {
             criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
             return criteria.list();
@@ -115,20 +117,23 @@ abstract class BaseHibernateDao<T extends BaseEntity> extends AbstractHibernateD
             }
             criteria.setProjection(Projections.distinct(Projections.id()));
             List<Serializable> ids = criteria.list();
+            if (CollectionUtils.isEmpty(ids)) {
+                return Collections.emptyList();
+            }
             if (!(criteria instanceof CriteriaImpl)) {
                 throw new IllegalArgumentException("Expected " + CriteriaImpl.class);
             }
             Criteria distinct = session.createCriteria(((CriteriaImpl) criteria).getEntityOrClassName());
             distinct.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
             distinct.add(Property.forName(getIdPropertyName()).in(ids));
-            appendPageableFilterConditions(distinct, filter);
+            appendPagingFilterConditions(distinct, filter);
             distinct.setFirstResult(0);
             distinct.setMaxResults(0);
             return distinct.list();
         }
     }
 
-    protected Criteria appendSortableFilterConditions(Criteria criteria, SortableFilter filter) {
+    protected Criteria appendSortingFilterConditions(Criteria criteria, SortingFilter filter) {
         String sortProperty = filter.getSortProperty();
         if (sortProperty != null) {
             String[] propertyPath = sortProperty.split("\\.");
@@ -144,8 +149,8 @@ abstract class BaseHibernateDao<T extends BaseEntity> extends AbstractHibernateD
         return criteria;
     }
 
-    protected Criteria appendPageableFilterConditions(Criteria criteria, PageableFilter filter) {
-        appendSortableFilterConditions(criteria, filter);
+    protected Criteria appendPagingFilterConditions(Criteria criteria, PagingFilter filter) {
+        appendSortingFilterConditions(criteria, filter);
         if (filter.getSortProperty() == null) {
             criteria.addOrder(Order.asc(getIdPropertyName()));
         }
