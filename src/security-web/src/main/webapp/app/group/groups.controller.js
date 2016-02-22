@@ -8,6 +8,9 @@ angular.module("app").controller("GroupsController", ["GroupService",
         GroupService.fetchAll().then(function (response) {
             vm.groupList = response.data;
         });
+        vm.partials = {
+            groupModalView: "/app/group/group.modal.view.html"
+        };
         //vm.group - it's transfer object to pass data to modal and back
         vm.edit = function (group) {
             vm.group = {};

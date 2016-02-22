@@ -9,7 +9,7 @@ angular.module("app").factory("RoleService", ["$http", "$q", "Handler",
 
         function fetchAll() {
             var deferred = $q.defer();
-            $http.get("/rest/role").then(deferred.resolve, deferred.reject);
+            $http.get("/rest/roles").then(deferred.resolve, deferred.reject);
             deferred.promise.catch(Handler.handleError("Error during fetching roles"));
             return deferred.promise;
         }

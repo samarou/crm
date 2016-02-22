@@ -21,7 +21,7 @@
                 templateUrl: 'app/user/users.view.html',
                 controllerAs: 'vm'
             })
-            .when("/user/:param", {
+            .when("/users/:param", {
                 controller: "UserController",
                 templateUrl: "app/user/user.view.html",
                 controllerAs: "vm"
