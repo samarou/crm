@@ -23,7 +23,7 @@
         return service;
 
         function fetchAll(handleSuccess) {
-            return $http.get('rest/user').then(handleSuccess, handleError('Error getting all users'));
+            return $http.get('rest/users').then(handleSuccess, handleError('Error getting all users'));
         }
 
         function getById(id, handleSuccess) {

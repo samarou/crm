@@ -5,17 +5,23 @@
         .module('app')
         .service('AuthService', AuthService);
 
-    AuthService.$inject = ['$http'];
+    AuthService.$inject = ['$http', '$q'];
 
-    function AuthService($http) {
+    function AuthService($http, $q) {
 
         var service = this;
 
+        service.authenticated = false;
+
         function setAuthToken(token) {
-            service.authToken = token;
+            service.authenticated = !!token;
             $http.defaults.headers.common['X-Auth-Token'] = token;
             if (sessionStorage) {
-                sessionStorage.setItem("auth.token", token);
+                if (token) {
+                    sessionStorage.setItem("auth.token", token);
+                } else {
+                    sessionStorage.removeItem("auth.token");
+                }
             }
         }
 
@@ -26,6 +32,9 @@
             }).then(function (response) {
                 setAuthToken(response.data.token);
                 return response;
+            }, function (error) {
+                setAuthToken(null);
+                return $q.reject(error);
             });
         };
 
@@ -45,7 +54,7 @@
         };
 
         service.isAuthenticated = function () {
-            return !!service.authToken;
+            return service.authenticated;
         };
     }
 

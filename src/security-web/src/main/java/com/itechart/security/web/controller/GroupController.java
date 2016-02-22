@@ -24,17 +24,17 @@ public class GroupController {
     @Autowired
     private GroupService groupService;
 
-    @RequestMapping("/group")
+    @RequestMapping("/groups")
     public List<GroupDto> getGroups() {
         return convertGroups(groupService.getGroups());
     }
 
-    @RequestMapping(value = "/group", method = POST)
+    @RequestMapping(value = "/groups", method = POST)
     public Serializable create(@RequestBody GroupDto group) {
         return groupService.create(convert(group));
     }
 
-    @RequestMapping(value = "/group", method = PUT)
+    @RequestMapping(value = "/groups", method = PUT)
     public void update(@RequestBody GroupDto dto) {
         groupService.update(convert(dto));
     }

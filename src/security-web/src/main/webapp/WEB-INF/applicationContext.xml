@@ -9,15 +9,16 @@
     <import resource="classpath*:securityServicesContext.xml"/>
     <import resource="classpath*:businessServicesContext.xml"/>
 
-    <sec:http pattern="/rest/login" security="none"/>
-
-    <sec:http pattern="/rest/**" create-session="stateless" auto-config="false"
-              entry-point-ref="unauthorizedEntryPoint">
-        <sec:expression-handler ref="webSecurityExpressionHandler"/>
-        <sec:custom-filter ref="tokenAuthenticationFilter" position="FORM_LOGIN_FILTER"/>
-        <sec:intercept-url pattern="/**" access="hasRole('USER')"/>
-        <sec:csrf disabled="true"/>
-    </sec:http>
+    <sec:http pattern="/rest/**" security="none"/>
+    <!--<sec:http pattern="/rest/login" security="none"/>-->
+<!---->
+    <!--<sec:http pattern="/rest/**" create-session="stateless" auto-config="false"-->
+              <!--entry-point-ref="unauthorizedEntryPoint">-->
+        <!--<sec:expression-handler ref="webSecurityExpressionHandler"/>-->
+        <!--<sec:custom-filter ref="tokenAuthenticationFilter" position="FORM_LOGIN_FILTER"/>-->
+        <!--<sec:intercept-url pattern="/**" access="hasRole('USER')"/>-->
+        <!--<sec:csrf disabled="true"/>-->
+    <!--</sec:http>-->
 
     <sec:authentication-manager id="authenticationManager">
         <sec:authentication-provider ref="daoAuthenticationProvider"/>
