@@ -1,4 +1,3 @@
-
 angular.module("app").controller("UserController", ["$routeParams", "$location", "$q", "UserService", "GroupService", "RoleService", "Collections",
     function ($routeParams, $location, $q, UserService, GroupService, RoleService, Collections) {
         "use strict";
@@ -41,13 +40,27 @@ angular.module("app").controller("UserController", ["$routeParams", "$location",
             UserService.getById($routeParams.param, function (response) {
                 vm.user = response.data;
                 $q.all([loadGroupsPromise, loadRolesPromise]).then(function () {
-                    vm.groups = Collections.difference(vm.groups, vm.user.groups, Collections.Comparators.BY_ID);
-                    vm.roles = Collections.difference(vm.roles, vm.user.roles, Collections.Comparators.BY_ID);
                     vm.selectedGroup = vm.groups[0];
                     vm.selectedRole = vm.roles[0];
                 });
             });
         }
+
+        vm.userHas = function (item, collection) {
+            if (!collection || !item) return false;
+            return !!Collections.find(item, collection);
+        };
+
+        vm.check = function (item, collection) {
+            var index = Collections.indexOf(item, collection);
+            if (index !== -1) {
+                collection.splice(index, 1);
+                return false;
+            } else {
+                collection.push(item);
+                return true;
+            }
+        };
 
         //todo: add directive to encapsulate this logic
         vm.deselectGroup = function (group) {

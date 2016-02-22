@@ -1,5 +1,6 @@
 <div class="col-md-6 col-md-offset-3">
     <h2>{{vm.formTitle}}</h2>
+
     <form class="form">
         <div class="form-group">
             <label for="lastName">First name</label>
@@ -21,44 +22,23 @@
             <label for="email">Email</label>
             <input type="email" id="email" class="form-control" name="email" ng-model="vm.user.email">
         </div>
-        <!--add directive-->
-        <div class="form-group row">
-            <div class="row-height">
-                <div class="form-group col-md-5">
-                    <label>Groups</label>
-                    <ul class="list-inline">
-                        <li class="col-md-9"><select class="form-control" ng-options="group as group.name for group in vm.groups track by group.id" ng-model="vm.selectedGroup"></select></li>
-                        <li class="col-md-3"><button class="btn btn-success" ng-click="vm.selectGroup(vm.selectedGroup)" ng-disabled="vm.groups.length === 0">Add</button></li>
-                    </ul>
-                </div>
-                <div class="form-group col-md-7">
-                    <label for="groups" ng-hide="vm.user.groups.length === 0">User Groups</label>
-                    <ul id="groups" class="list-inline">
-                        <li class="list-group-item" ng-repeat="group in vm.user.groups">
-                            {{group.name}} <span class="link glyphicon glyphicon-remove-sign pull-xs-right" ng-click="vm.deselectGroup(group)"></span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+        <div class="form-group">
+            <label for="groups">Groups</label>
+            <ul id="groups" class="list-inline">
+                <li class="btn btn-default"
+                    ng-repeat="group in vm.groups"
+                    ng-class="{active: vm.userHas(group, vm.user.groups)}"
+                    ng-click="vm.check(group, vm.user.groups)"> {{group.name}}</li>
+            </ul>
         </div>
-        <div class="form-group row">
-            <div class="row-height">
-                <div class="form-group col-md-5">
-                    <label>Roles</label>
-                    <ul class="list-inline">
-                        <li class="col-md-9"><select class="form-control" ng-options="role as role.name for role in vm.roles track by role.id" ng-model="vm.selectedRole"></select></li>
-                        <li class="col-md-3"><button class="btn btn-success" ng-click="vm.selectRole(vm.selectedRole)" ng-disabled="vm.roles.length === 0">Add</button></li>
-                    </ul>
-                </div>
-                <div class="form-group col-md-7">
-                    <label for="groups" ng-hide="vm.user.roles.length === 0">User Roles</label>
-                    <ul id="roles" class="list-inline">
-                        <li class="list-group-item" ng-repeat="role in vm.user.roles">
-                            {{role.name}} <span class="link glyphicon glyphicon-remove-sign pull-xs-right" ng-click="vm.deselectRole(role)"></span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+        <div class="form-group">
+            <label for="roles">Roles</label>
+            <ul id="roles" class="list-inline">
+                <li class="btn btn-default"
+                    ng-repeat="role in vm.roles"
+                    ng-class="{active: vm.userHas(role, vm.user.roles)}"
+                    ng-click="vm.check(role, vm.user.roles)">{{role.name}}</li>
+            </ul>
         </div>
     </form>
     <div class="button-bar">
