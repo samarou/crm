@@ -35,25 +35,25 @@
     <tr>
         <td></td>
         <td>#</td>
-        <td ng-click="vm.sortBy(vm.sort.firstName)">
+        <td ng-click="vm.sortBy(vm.sort.firstName)" ng-class="{'table__head--active' : vm.sort.firstName.isUsage}">
             <span class="glyphicon active" ng-class="{'glyphicon-arrow-down' :  vm.sort.firstName.asc,
                                                'glyphicon-arrow-up'   : !vm.sort.firstName.asc}">
             </span>
             First name
         </td>
-        <td ng-click="vm.sortBy(vm.sort.lastName)">
+        <td ng-click="vm.sortBy(vm.sort.lastName)" ng-class="{'table__head--active' : vm.sort.lastName.isUsage}">
             <span class="glyphicon" ng-class="{'glyphicon-arrow-down' :  vm.sort.lastName.asc,
                                                'glyphicon-arrow-up'   : !vm.sort.lastName.asc}">
             </span>
             Last name
         </td>
-        <td ng-click="vm.sortBy(vm.sort.userName)">
+        <td ng-click="vm.sortBy(vm.sort.userName)" ng-class="{'table__head--active' : vm.sort.userName.isUsage}">
             <span class="glyphicon" ng-class="{'glyphicon-arrow-down' :  vm.sort.userName.asc,
                                                'glyphicon-arrow-up'   : !vm.sort.userName.asc}">
             </span>
             Username
         </td>
-        <td ng-click="vm.sortBy(vm.sort.email)">
+        <td ng-click="vm.sortBy(vm.sort.email)" ng-class="{'table__head--active' : vm.sort.email.isUsage}">
             <span class="glyphicon" ng-class="{'glyphicon-arrow-down' :  vm.sort.email.asc,
                                                'glyphicon-arrow-up'   : !vm.sort.email.asc}">
             </span>

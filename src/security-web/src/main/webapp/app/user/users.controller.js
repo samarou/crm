@@ -24,10 +24,10 @@ angular.module('app').controller('UsersController', ["$location", "UserService",
         };
 
         vm.sort = {
-            firstName: { name: "firstName", asc: true},
-            lastName: { name: "lastName", asc: true},
-            userName: { name: "userName", asc: true},
-            email: { name: "email", asc: true}
+            firstName: { name: "firstName", asc: true, isUsage: true},
+            lastName: { name: "lastName", asc: true, isUsage: true},
+            userName: { name: "userName", asc: true, isUsage: true},
+            email: { name: "email", asc: true, isUsage: true}
         };
 
         vm.find = function find(filter) {
@@ -55,7 +55,9 @@ angular.module('app').controller('UsersController', ["$location", "UserService",
                     return 1;
                 }
             });
+            angular.forEach(vm.sort, function (p) { console.log(JSON.stringify(p)); p.isUsage = false; });
             property.asc = !property.asc;
+            property.isUsage = true;
             console.log(JSON.stringify(property));
         };
 
