@@ -26,27 +26,27 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping("/user")
+    @RequestMapping("/users")
     public List<UserDto> findAll() {
         return convert(userService.getUsers());
     }
 
-    @RequestMapping("/user/{id}")
+    @RequestMapping("/users/{id}")
     public UserDto findById(@PathVariable Long id) {
         return convert(userService.getUser(id));
     }
 
-    @RequestMapping(value = "/user", method = PUT)
+    @RequestMapping(value = "/users", method = PUT)
     public void update(@RequestBody UserDto dto) {
         userService.updateUser(convert(dto));
     }
 
-    @RequestMapping(value = "/user", method = POST)
+    @RequestMapping(value = "/users", method = POST)
     public void create(@RequestBody UserDto dto) {
         userService.createUser(convert(dto));
     }
 
-    @RequestMapping("/user/find")
+    @RequestMapping("/users/find")
     public DataPageDto<UserDto> find(UserFilterDto filterDto) {
         UserFilter filter = convert(filterDto);
         DataPageDto<UserDto> dataPage = new DataPageDto<>();

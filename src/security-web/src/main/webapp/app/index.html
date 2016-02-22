@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="../stylesheets/style.css"/>
     <title>Web App</title>
 </head>
-<body ng-app="app" ng-controller="AppController">
+<body ng-app="app" ng-controller="AppController as vm">
 <div class="container-fluid">
     <header>
         <nav class="navbar navbar-default">
@@ -14,10 +14,10 @@
                     <a class="navbar-brand" href="#">Security</a>
                 </div>
                 <ul class="nav navbar-nav">
-                    <li ng-class="isActive('/login')"><a href="#/">Home</a></li>
-                    <li ng-class="isActive('/user')"><a href="#/users">Users</a></li>
-                    <li ng-class="isActive('/group')"><a href="#/groups">Groups</a></li>
-                    <li ng-class="isActive('/role')"><a href="#/roles">Roles</a></li>
+                    <li ng-class="vm.isActive('/login')"><a href="#/">Home</a></li>
+                    <li ng-class="vm.isActive('/users')"><a href="#/users">Users</a></li>
+                    <li ng-class="vm.isActive('/groups')"><a href="#/groups">Groups</a></li>
+                    <li ng-class="vm.isActive('/roles')"><a href="#/roles">Roles</a></li>
                 </ul>
             </div>
             <div class="col-md-2"><a type="submit" class="btn btn-success navbar-btn pull-right" href="/">Sign in</a></div>
