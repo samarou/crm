@@ -17,8 +17,8 @@ angular.module('app').controller('UsersController', ["$location", "UserService",
         };
 
         vm.paging = {
-            totalPages: 0,
-            visiblePages: 0,
+            totalPages: 1,
+            visiblePages: 5,
             onPageClick: function (pageNumber) {
                 vm.filter.from = (pageNumber - 1) * vm.filter.count;
                 vm.find(vm.filter);
@@ -39,7 +39,6 @@ angular.module('app').controller('UsersController', ["$location", "UserService",
                 vm.paging.visiblePages = totalPages;
             });
         };
-        vm.find(vm.filter);
 
         (function () {
             var intervalId = 0;

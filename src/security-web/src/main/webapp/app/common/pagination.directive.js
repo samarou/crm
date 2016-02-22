@@ -12,17 +12,20 @@ angular.module("app").directive("pagination", [function () {
             }, function (paging) {
                 if (!scope.paging) return;//paging is not available
 
-                if ($(element).data("twbs-pagination")) $(element).twbsPagination('destroy');//drop old pagination
-
-                if (paging.totalPages >= 1 && paging.visiblePages >= 1) {
-                    $(element).twbsPagination({
-                        totalPages: paging.totalPages,
-                        visiblePages: paging.visiblePages,
-                        onPageClick: function (event, page) {
-                            paging.onPageClick(page);
-                        }
-                    });
+                var isDestroyed = false;
+                if ($(element).data("twbs-pagination")) {
+                    $(element).twbsPagination('destroy');//drop old pagination
+                    isDestroyed = true;
                 }
+                
+                $(element).twbsPagination({
+                    totalPages: paging.totalPages,
+                    visiblePages: paging.visiblePages,
+                    onPageClick: function (event, page) {
+                        if (!isDestroyed) paging.onPageClick(page);
+                        else isDestroyed = false;
+                    }
+                });
             }, true);
         }
     }
