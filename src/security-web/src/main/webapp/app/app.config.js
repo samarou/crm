@@ -3,7 +3,8 @@
 
     angular
         .module('app')
-        .config(config);
+        .config(config)
+        .run(run);
 
     config.$inject = ['$routeProvider', '$httpProvider'];
 
@@ -40,4 +41,20 @@
 
         $httpProvider.interceptors.push('HttpInterceptor');
     }
+
+    run.$inject = ['$rootScope', '$location', 'AuthService'];
+
+    function run($rootScope, $location, AuthService) {
+        $rootScope.$on('$routeChangeStart', function (event, next) {
+            if (next.controller == 'LoginController') {
+                AuthService.logout();
+            } else if (!AuthService.isAuthenticated()) {
+                console.log("Try to restore token");
+                if (!AuthService.restore()) {
+                    $location.path('/login');
+                }
+            }
+        });
+    }
+
 })();
