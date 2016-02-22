@@ -3,19 +3,14 @@
 
     angular
         .module('app')
-        .config(config);
+        .config(config)
+        .run(run);
 
     config.$inject = ['$routeProvider', '$httpProvider'];
 
     function config($routeProvider, $httpProvider) {
         console.log("Config");
         $routeProvider
-            //todo: only stub, create separate controller if it need
-            .when('/', {
-                controller: 'LoginController',
-                templateUrl: 'app/login/login.view.html',
-                controllerAs: 'vm'
-            })
             .when('/login', {
                 controller: 'LoginController',
                 templateUrl: 'app/login/login.view.html',
@@ -46,4 +41,20 @@
 
         $httpProvider.interceptors.push('HttpInterceptor');
     }
+
+    run.$inject = ['$rootScope', '$location', 'AuthService'];
+
+    function run($rootScope, $location, AuthService) {
+        $rootScope.$on('$routeChangeStart', function (event, next) {
+            if (next.controller == 'LoginController') {
+                AuthService.logout();
+            } else if (!AuthService.isAuthenticated()) {
+                console.log("Try to restore token");
+                if (!AuthService.restore()) {
+                    $location.path('/login');
+                }
+            }
+        });
+    }
+
 })();
