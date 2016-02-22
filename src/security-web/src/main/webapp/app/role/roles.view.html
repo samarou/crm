@@ -1,0 +1,27 @@
+<div class="col-md-offset-2 col-md-8">
+    <table class="table">
+        <caption>
+            Groups
+            <span class="link glyphicon glyphicon-plus pull-right" title="New Group" data-toggle="modal" data-target="#role-modal-view" ng-click="vm.create()"></span>
+        </caption>
+        <thead>
+        <tr>
+            <td>#</td>
+            <td>Name</td>
+            <td>Description</td>
+            <td>Members</td>
+            <td></td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="role in vm.roleList">
+            <td>{{$index + 1}}</td>
+            <td>{{role.name}}</td>
+            <td>{{role.description}}</td>
+            <td><a href="#"><span>{{$index}}</span></a></td>
+            <td><span class="link glyphicon glyphicon-edit" title="Edit Group" data-toggle="modal" data-target="#role-modal-view" ng-click="vm.edit(role)"></span></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div ng-include="vm.partials.roleModalView"></div><!--from main controller-->

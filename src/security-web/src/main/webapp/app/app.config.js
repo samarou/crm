@@ -1,6 +1,6 @@
 (function () {
     'use strict';
- 
+
     angular
         .module('app')
         .config(config);
@@ -29,6 +29,11 @@
             .when("/groups", {
                 controller: "GroupsController",
                 templateUrl: "app/group/groups.view.html",
+                controllerAs: "vm"
+            })
+            .when("/roles", {
+                controller: "RolesController",
+                templateUrl: "app/role/roles.view.html",
                 controllerAs: "vm"
             })
 
