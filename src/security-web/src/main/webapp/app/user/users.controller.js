@@ -41,18 +41,17 @@ angular.module('app').controller('UsersController', ["$location", "UserService",
         };
         vm.find(vm.filter);
 
-        (function () {
-            var intervalId = 0;
-            vm.keyDown = function () {
-                clearTimeout(intervalId);
-            };
-            vm.keyUp = function () {
-                clearTimeout(intervalId);
-                intervalId = setTimeout(function () {
-                    vm.find(vm.filter);
-                }, 500);
-            };
-        })();
+        var keyTimer;
+
+        vm.keyDown = function () {
+            clearTimeout(keyTimer);
+        };
+        vm.keyUp = function () {
+            clearTimeout(keyTimer);
+            keyTimer = setTimeout(function () {
+                vm.find(vm.filter);
+            }, 500);
+        };
 
         GroupService.fetchAll().then(function (response) {
             vm.groups = response.data;

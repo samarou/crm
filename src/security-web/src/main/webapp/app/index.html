@@ -9,7 +9,7 @@
 <div class="container-fluid">
     <header>
         <nav class="navbar navbar-default">
-            <div class="col-md-10">
+            <div class="col-md-9">
                 <div class="navbar-header">
                     <a class="navbar-brand" href="#">Security</a>
                 </div>
@@ -20,7 +20,10 @@
                     <li ng-class="vm.isActive('/roles')"><a href="#/roles">Roles</a></li>
                 </ul>
             </div>
-            <div class="col-md-2"><a type="submit" class="btn btn-success navbar-btn pull-right" href="/">Sign in</a></div>
+            <div class="col-md-3" ng-show="vm.isLoggedUser()">
+                <a class="btn btn-info navbar-btn pull-right" href="#" ng-click="vm.logout();">Logout</a>
+                <span class="navbar-text pull-right" ng-cloak>User: {{vm.getUserName()}} </span>
+            </div>
         </nav>
     </header>
     <div class="col-md-9 col-md-offset-1">

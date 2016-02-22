@@ -8,19 +8,19 @@
     AuthService.$inject = ['$http', '$q'];
 
     function AuthService($http, $q) {
-
         var service = this;
 
-        service.authenticated = false;
+        service.authentication = null;
 
-        function setAuthToken(token) {
-            service.authenticated = !!token;
-            $http.defaults.headers.common['X-Auth-Token'] = token;
+        function setAuthentication(authData) {
+            service.authentication = authData;
+            $http.defaults.headers.common['X-Auth-Token'] =
+                authData ? authData.token : undefined;
             if (sessionStorage) {
-                if (token) {
-                    sessionStorage.setItem("auth.token", token);
+                if (authData) {
+                    sessionStorage.setItem("auth.data", JSON.stringify(authData));
                 } else {
-                    sessionStorage.removeItem("auth.token");
+                    sessionStorage.removeItem("auth.data");
                 }
             }
         }
@@ -30,31 +30,39 @@
                 username: username,
                 password: password
             }).then(function (response) {
-                setAuthToken(response.data.token);
+                setAuthentication(response.data);
                 return response;
             }, function (error) {
-                setAuthToken(null);
+                setAuthentication(null);
                 return $q.reject(error);
             });
         };
 
         service.logout = function () {
-            setAuthToken(null);
+            setAuthentication(null);
         };
 
         service.restore = function () {
             if (sessionStorage) {
-                var token = sessionStorage.getItem("auth.token");
-                if (token) {
-                    setAuthToken(token);
-                    return true;
+                var authData = sessionStorage.getItem("auth.data");
+                if (authData) {
+                    try {
+                        setAuthentication(JSON.parse(authData));
+                        return true;
+                    } catch (e) {
+                        console.log(e);
+                    }
                 }
             }
             return false;
         };
 
         service.isAuthenticated = function () {
-            return service.authenticated;
+            return !!service.authentication;
+        };
+
+        service.getAuthentication = function () {
+            return angular.copy(service.authentication);
         };
     }
 
