@@ -47,10 +47,16 @@ angular.module('app').controller('UsersController', ["$location", "UserService",
             };
             vm.keyUp = function () {
                 clearTimeout(intervalId);
-                intervalId = setTimeout(function () { vm.find(vm.filter); }, 500);
+                intervalId = setTimeout(function () {
+                    vm.find(vm.filter);
+                }, 500);
             };
         })();
 
-        GroupService.fetchAll().then(function (response) { vm.groups = response.data; });
-        RoleService.fetchAll().then(function (response) { vm.roles = response.data; });
+        GroupService.fetchAll().then(function (response) {
+            vm.groups = response.data;
+        });
+        RoleService.fetchAll().then(function (response) {
+            vm.roles = response.data;
+        });
     }]);

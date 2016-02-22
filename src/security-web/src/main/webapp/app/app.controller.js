@@ -1,8 +1,10 @@
 /**
  * @author yauheni.putsykovich
  */
-angular.module("app").controller("AppController", ["$scope", "AuthService", function ($scope, AuthService) {
+angular.module("app").controller("AppController", ["AuthService", function (AuthService) {
     "use strict";
+
+    var vm = this;
 
     console.log("AppController");
 
@@ -11,7 +13,7 @@ angular.module("app").controller("AppController", ["$scope", "AuthService", func
         AuthService.restore();
     }
 
-    $scope.partials = {
+    vm.partials = {
         menu: "app/partials/menu.partial.html",
         groupModalView: "/app/group/group.modal.view.html"
     };
