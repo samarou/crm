@@ -26,7 +26,7 @@
                 templateUrl: "app/user/user.view.html",
                 controllerAs: "vm"
             })
-            .when("/group", {
+            .when("/groups", {
                 controller: "GroupsController",
                 templateUrl: "app/group/groups.view.html",
                 controllerAs: "vm"
