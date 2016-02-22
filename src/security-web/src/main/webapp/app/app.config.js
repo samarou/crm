@@ -10,7 +10,12 @@
     function config($routeProvider, $httpProvider) {
         console.log("Config");
         $routeProvider
-
+            //todo: only stub, create separate controller if it need
+            .when('/', {
+                controller: 'LoginController',
+                templateUrl: 'app/login/login.view.html',
+                controllerAs: 'vm'
+            })
             .when('/login', {
                 controller: 'LoginController',
                 templateUrl: 'app/login/login.view.html',

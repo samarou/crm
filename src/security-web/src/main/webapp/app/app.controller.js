@@ -13,8 +13,4 @@ angular.module("app").controller("AppController", ["AuthService", "$location",
             console.log("Restore token");
             AuthService.restore();
         }
-
-        vm.isActive = function (path) {
-            return $location.path().substr(0, path.length) === path ? "active" : "";
-        }
     }]);

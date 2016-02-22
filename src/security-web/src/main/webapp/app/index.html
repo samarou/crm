@@ -13,14 +13,14 @@
                 <div class="navbar-header">
                     <a class="navbar-brand" href="#">Security</a>
                 </div>
-                <ul class="nav navbar-nav">
-                    <li ng-class="vm.isActive('/login')"><a href="#/">Home</a></li>
-                    <li ng-class="vm.isActive('/users')"><a href="#/users">Users</a></li>
-                    <li ng-class="vm.isActive('/groups')"><a href="#/groups">Groups</a></li>
-                    <li ng-class="vm.isActive('/roles')"><a href="#/roles">Roles</a></li>
+                <ul nav-menu="active" class="nav navbar-nav">
+                    <li><a href="#/">Home</a></li>
+                    <li><a href="#/users">Users</a></li>
+                    <li><a href="#/groups">Groups</a></li>
+                    <li><a href="#/roles">Roles</a></li>
                 </ul>
             </div>
-            <div class="col-md-2"><a type="submit" class="btn btn-success navbar-btn pull-right" href="/">Sign in</a></div>
+            <div class="col-md-2"><a type="submit" class="btn btn-success navbar-btn pull-right" href="#/login">Sign in</a></div>
         </nav>
     </header>
     <div class="col-md-9 col-md-offset-1">
@@ -42,6 +42,7 @@
 <script src="../app/common/handler.service.js"></script>
 <script src="../app/common/collections.service.js"></script>
 <script src="../app/common/pagination.directive.js"></script>
+<script src="../app/common/menu-nav.directive.js"></script>
 <script src="../app/common/httpInterceptor.service.js"></script>
 <script src="../app/group/group.service.js"></script>
 <script src="../app/group/groups.controller.js"></script>
