@@ -24,25 +24,47 @@
                ng-model="vm.filter.active" ng-checked="vm.filter.active">
     </div>
 </div>
-<table class="table">
+<table class="table table-hover">
     <caption>
         Users
         <a href="#/users/new" class="pull-right" title="New user">
             <span class="glyphicon glyphicon-plus"></span>
         </a>
     </caption>
-    <thead>
+    <thead class="table__head--filter">
     <tr>
+        <td></td>
         <td>#</td>
-        <td>First name</td>
-        <td>Last name</td>
-        <td>Username</td>
-        <td>Email</td>
+        <td ng-click="vm.sortBy(vm.sort.firstName)">
+            <span class="glyphicon active" ng-class="{'glyphicon-arrow-down' :  vm.sort.firstName.asc,
+                                               'glyphicon-arrow-up'   : !vm.sort.firstName.asc}">
+            </span>
+            First name
+        </td>
+        <td ng-click="vm.sortBy(vm.sort.lastName)">
+            <span class="glyphicon" ng-class="{'glyphicon-arrow-down' :  vm.sort.lastName.asc,
+                                               'glyphicon-arrow-up'   : !vm.sort.lastName.asc}">
+            </span>
+            Last name
+        </td>
+        <td ng-click="vm.sortBy(vm.sort.userName)">
+            <span class="glyphicon" ng-class="{'glyphicon-arrow-down' :  vm.sort.userName.asc,
+                                               'glyphicon-arrow-up'   : !vm.sort.userName.asc}">
+            </span>
+            Username
+        </td>
+        <td ng-click="vm.sortBy(vm.sort.email)">
+            <span class="glyphicon" ng-class="{'glyphicon-arrow-down' :  vm.sort.email.asc,
+                                               'glyphicon-arrow-up'   : !vm.sort.email.asc}">
+            </span>
+            Email
+        </td>
         <td></td>
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="user in vm.userList">
+    <tr class="cursor--pointer" ng-repeat="user in vm.userList" ng-click="user.checked = !user.checked">
+        <td><input type="checkbox" ng-model="user.checked" ng-click="user.checked = !user.checked"></td>
         <td>{{vm.filter.from + ($index + 1)}}</td>
         <td>{{user.firstName}}</td>
         <td>{{user.lastName}}</td>

@@ -23,6 +23,13 @@ angular.module('app').controller('UsersController', ["$location", "UserService",
             }
         };
 
+        vm.sort = {
+            firstName: { name: "firstName", asc: true},
+            lastName: { name: "lastName", asc: true},
+            userName: { name: "userName", asc: true},
+            email: { name: "email", asc: true}
+        };
+
         vm.find = function find(filter) {
             //nulling, to prevent empty parameters in url
             angular.forEach(filter, function (value, key) {
@@ -35,7 +42,21 @@ angular.module('app').controller('UsersController', ["$location", "UserService",
                 var totalPages = Math.ceil(quantity / vm.filter.count) || 1;
                 vm.paging.totalPages = totalPages;
                 vm.paging.visiblePages = totalPages;
+                vm.sortBy(vm.sort.firstName);
             });
+        };
+
+        vm.sortBy = function (property) {
+            vm.userList.sort(function (a, b) {
+                if (property.asc ? a[property.name] > b[property.name]
+                                 : a[property.name] < b[property.name]) {
+                    return -1;
+                } else {
+                    return 1;
+                }
+            });
+            property.asc = !property.asc;
+            console.log(JSON.stringify(property));
         };
 
         var keyTimer;

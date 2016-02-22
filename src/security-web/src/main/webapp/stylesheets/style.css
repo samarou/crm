@@ -1,3 +1,16 @@
 .cursor--pointer {
     cursor: pointer;
 }
+
+.table__head--filter tr td span {
+    margin-right: 15px;
+}
+
+.table__head--filter tr td:hover {
+    cursor: pointer;
+    background-color: #eeeeee;
+}
+
+.table__head--active {
+    background-color: #eeeeee;
+}
