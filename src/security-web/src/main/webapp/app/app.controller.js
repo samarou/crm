@@ -7,8 +7,6 @@ angular.module("app").controller("AppController", ["AuthService", "$location",
 
         var vm = this;
 
-        console.log("AppController");
-
         if (!AuthService.isAuthenticated()) {
             console.log("Restore token");
             AuthService.restore();
