@@ -14,9 +14,9 @@
                     <a class="navbar-brand" href="#">Security Management</a>
                 </div>
                 <ul class="nav navbar-nav">
-                    <li ng-class="vm.isActive('/user')"><a href="#/users">Users</a></li>
-                    <li ng-class="vm.isActive('/group')"><a href="#/groups">Groups</a></li>
-                    <li ng-class="vm.isActive('/role')"><a href="#/roles">Roles</a></li>
+                    <li ng-class="{'active' : vm.isActive('/user')}"><a href="#/users">Users</a></li>
+                    <li ng-class="{'active' : vm.isActive('/group')}"><a href="#/groups">Groups</a></li>
+                    <li ng-class="{'active' : vm.isActive('/role')}"><a href="#/roles">Roles</a></li>
                 </ul>
             </div>
             <div class="col-md-3" ng-show="vm.isLoggedUser()">
