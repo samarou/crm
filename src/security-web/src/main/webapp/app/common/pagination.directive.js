@@ -14,13 +14,15 @@ angular.module("app").directive("pagination", [function () {
 
                 if ($(element).data("twbs-pagination")) $(element).twbsPagination('destroy');//drop old pagination
 
-                $(element).twbsPagination({
-                    totalPages: paging.totalPages,
-                    visiblePages: paging.visiblePages,
-                    onPageClick: function (event, page) {
-                        paging.onPageClick(page);
-                    }
-                });
+                if (paging.totalPages >= 1 && paging.visiblePages >= 1) {
+                    $(element).twbsPagination({
+                        totalPages: paging.totalPages,
+                        visiblePages: paging.visiblePages,
+                        onPageClick: function (event, page) {
+                            paging.onPageClick(page);
+                        }
+                    });
+                }
             }, true);
         }
     }
