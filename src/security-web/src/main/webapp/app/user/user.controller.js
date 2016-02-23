@@ -17,10 +17,7 @@ angular.module("app").controller("UserController", ["$routeParams", "$location",
         if (vm.isCreation) {
             vm.formTitle = "Creating a New User";
             vm.actionTitle = "Add";
-            vm.action = function (user) {
-                initUserWithCheckedGroupsAndRoles(user);
-                UserService.create(user, successCallback);
-            };
+            vm.action = processUser;
             vm.user = {
                 "userName": null,
                 "email": null,
@@ -33,10 +30,7 @@ angular.module("app").controller("UserController", ["$routeParams", "$location",
         } else {
             vm.formTitle = "Editing User";
             vm.actionTitle = "Update";
-            vm.action = function (user) {
-                initUserWithCheckedGroupsAndRoles(user);
-                UserService.update(user, successCallback);
-            };
+            vm.action = processUser;
             UserService.getById($routeParams.param, function (response) {
                 vm.user = response.data;
                 $q.all([loadGroupsPromise, loadRolesPromise]).then(function () {
@@ -50,16 +44,14 @@ angular.module("app").controller("UserController", ["$routeParams", "$location",
             });
         }
 
-        function initUserWithCheckedGroupsAndRoles(user) {
+        function processUser(user) {
             user.groups = vm.groups.filter(function (group) {
                 return group.checked;
             });
             user.roles = vm.roles.filter(function (role) {
                 return role.checked;
             });
-        }
-
-        function successCallback() {
+            UserService.create(user);
             $location.path("users");
         }
     }]);

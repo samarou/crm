@@ -27,6 +27,4 @@ public interface UserService {
     void updateUser(User user);
 
     boolean changePassword(String userName, String oldPassword, String newPassword);
-
-    void delete(Long id);
 }

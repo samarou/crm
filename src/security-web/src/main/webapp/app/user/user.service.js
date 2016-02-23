@@ -38,8 +38,8 @@
             return $http.post('rest/users', user).then(handleSuccess, handleError('Error creating user'));
         }
 
-        function update(user, handleSuccess) {
-            return $http.put('rest/users', user).then(handleSuccess, handleError('Error updating user'));
+        function update(user) {
+            return $http.put('rest/users', user);
         }
 
         function remove(id) {

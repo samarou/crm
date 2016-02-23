@@ -93,6 +93,16 @@ angular.module('app').controller('UsersController', ["$location", "UserService",
             $location.path("/users/new");
         };
 
+        vm.setActiveState = function (newActiveState) {
+            vm.userList.forEach(function (user) {
+                if (user.checked) {
+                    user.active = newActiveState;
+                    UserService.update(user);
+                }
+            });
+            vm.find(vm.filter);
+        };
+
         var keyTimer;
 
         vm.keyDown = function () {
