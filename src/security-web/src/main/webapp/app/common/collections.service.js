@@ -44,7 +44,7 @@ angular.module("app").service("Collections", [function () {
         return foundItem;
     };
 
-    this.indexOf = function remove(item, collection, comparator) {
+    this.indexOf = function indexOf(item, collection, comparator) {
         comparator = comparator || Comparators.BY_ID;
         var index = -1;
         collection.find(function (collectionItem, collectionItemIndex) {

@@ -42,18 +42,49 @@ angular.module('app').controller('UsersController', ["$location", "UserService",
                 vm.userList = response.data.data;
                 var quantity = response.data.totalCount;
                 var totalPages = Math.ceil(quantity / vm.filter.count) || 1;
+                vm.paging.totalQuantity = quantity;
                 vm.paging.totalPages = totalPages;
                 vm.paging.visiblePages = totalPages;
+                vm.selectAll(vm.isSelectedAll);
             });
         };
 
         vm.sortBy = function (property) {
-            angular.forEach(vm.sortProperties, function (p) { p.isUsage = false; });
+            angular.forEach(vm.sortProperties, function (p) {
+                p.isUsage = false;
+            });
             property.isUsage = true;
             property.asc = !property.asc;
             vm.filter.sortAsc = property.asc;
             vm.filter.sortProperty = property.name;
             vm.find(vm.filter);
+        };
+
+        vm.isSelectedAll = false;
+        vm.totalSelected = 0;
+
+        vm.selectAll = function (checked) {
+            vm.userList.forEach(function (user) {
+                user.checked = checked;
+            });
+        };
+
+        vm.selectOneByClick = function (user) {
+            user.checked = !user.checked;
+            vm.selectOne(user);
+        };
+
+        vm.selectOne = function (user, $event) {
+            vm.totalSelected += user.checked ? 1 : -1;
+            if (user.checked && !vm.isSelectedAll) {
+                if (vm.totalSelected === vm.paging.totalQuantity) {
+                    vm.isSelectedAll = true;
+                    vm.selectAll(vm.isSelectedAll);
+                }
+            } else if (vm.isSelectedAll) {
+                vm.isSelectedAll = false;
+            }
+            if (!!$event) $event.stopPropagation();//to exclude raising event of clicking by row(it's parent element)
         };
 
         var keyTimer;
@@ -68,6 +99,10 @@ angular.module('app').controller('UsersController', ["$location", "UserService",
             }, 500);
         };
 
-        GroupService.fetchAll().then(function (response) { vm.groups = response.data; });
-        RoleService.fetchAll().then(function (response) { vm.roles = response.data; });
+        GroupService.fetchAll().then(function (response) {
+            vm.groups = response.data;
+        });
+        RoleService.fetchAll().then(function (response) {
+            vm.roles = response.data;
+        });
     }]);
