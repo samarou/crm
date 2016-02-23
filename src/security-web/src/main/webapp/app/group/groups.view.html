@@ -2,8 +2,8 @@
     <table class="table">
         <caption>
             Groups
-            <span class="link glyphicon glyphicon-plus pull-right cursor--pointer" title="New Group" data-toggle="modal"
-                  data-target="#group-modal-view" ng-click="vm.create()"></span>
+            <span class="link glyphicon glyphicon-plus pull-right cursor--pointer" title="New Group"
+                  ng-click="vm.create()"></span>
         </caption>
         <thead>
         <tr>
@@ -18,10 +18,9 @@
             <td>{{$index + 1}}</td>
             <td>{{group.name}}</td>
             <td>{{group.description}}</td>
-            <td><span class="link glyphicon glyphicon-edit cursor--pointer" title="Edit Group" data-toggle="modal"
-                      data-target="#group-modal-view" ng-click="vm.edit(group)"></span></td>
+            <td><span class="link glyphicon glyphicon-edit cursor--pointer" title="Edit Group"
+                      ng-click="vm.edit(group)"></span></td>
         </tr>
         </tbody>
     </table>
 </div>
-<div ng-include="vm.partials.groupModalView"></div>

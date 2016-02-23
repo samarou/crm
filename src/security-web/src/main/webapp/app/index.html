@@ -11,9 +11,9 @@
         <nav class="navbar navbar-default">
             <div class="col-md-9">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="#">Security Management</a>
+                    <span class="navbar-brand">Security Management</span>
                 </div>
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav" ng-show="vm.isLoggedUser()">
                     <li ng-class="{'active' : vm.isActive('/user')}"><a href="#/users">Users</a></li>
                     <li ng-class="{'active' : vm.isActive('/group')}"><a href="#/groups">Groups</a></li>
                     <li ng-class="{'active' : vm.isActive('/role')}"><a href="#/roles">Roles</a></li>
@@ -31,10 +31,9 @@
 </div>
 </body>
 <script src="../bower_components/jquery/dist/jquery.js"></script>
-<script src="../bower_components/bootstrap/js/modal.js"></script>
 <script src="../bower_components/angular/angular.js"></script>
 <script src="../bower_components/angular-route/angular-route.min.js"></script>
-<script src="../bower_components/jquery/dist/jquery.js"></script>
+<script src="../bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.min.js"></script>
 <script src="../bower_components/twbs-pagination/jquery.twbsPagination.js"></script>
 <script src="../app/app.module.js"></script>
 <script src="../app/app.config.js"></script>
@@ -45,6 +44,7 @@
 <script src="../app/common/collections.service.js"></script>
 <script src="../app/common/pagination.directive.js"></script>
 <script src="../app/common/httpInterceptor.service.js"></script>
+<script src="../app/common/modal.dialog.controller.js"></script>
 <script src="../app/group/group.service.js"></script>
 <script src="../app/group/groups.controller.js"></script>
 <script src="../app/role/role.service.js"></script>

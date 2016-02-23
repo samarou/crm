@@ -6,9 +6,9 @@
         .config(config)
         .run(run);
 
-    config.$inject = ['$routeProvider', '$httpProvider'];
+    config.$inject = ['$routeProvider', '$httpProvider', '$uibModalProvider'];
 
-    function config($routeProvider, $httpProvider) {
+    function config($routeProvider, $httpProvider, $uibModalProvider) {
         console.log("Config");
         $routeProvider
             .when('/login', {
@@ -40,6 +40,8 @@
             .otherwise({redirectTo: '/login'});
 
         $httpProvider.interceptors.push('HttpInterceptor');
+
+        $uibModalProvider.options = {backdrop: 'static', keyboard: false};
     }
 
     run.$inject = ['$rootScope', '$location', 'AuthService'];
