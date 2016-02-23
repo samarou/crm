@@ -26,29 +26,28 @@
 </div>
 <table class="table table-hover">
     <caption>
-        Users<span>({{vm.paging.totalQuantity > 0 ? vm.paging.totalQuantity : 0}})</span>
-        <a href="#/users/new" class="pull-right" title="New user">
-            <span class="glyphicon glyphicon-plus"></span>
-        </a>
+        Users
+        <div ng-click="vm.remove()"><span title="Remove User(s)" class="spacing--hor-small cursor--pointer glyphicon glyphicon-minus pull-right" ></span></div>
+        <div ng-click="vm.add()"><span title="Add New User" class="spacing--hor-small cursor--pointer glyphicon glyphicon-plus pull-right" ></span></div>
     </caption>
     <thead class="table__head--filters">
     <tr>
         <td><input type="checkbox" ng-model="vm.isSelectedAll" ng-click="vm.selectAll(vm.isSelectedAll)"></td>
         <td>#</td>
         <td ng-click="vm.sortBy(vm.sortProperties.firstName)" ng-class="{'table__head-filter--active' : vm.sortProperties.firstName.isUsage}">
-            <span class="glyphicon active" ng-class="{'glyphicon-arrow-down' : vm.sortProperties.firstName.asc, 'glyphicon-arrow-up' : !vm.sortProperties.firstName.asc}"></span>
+            <span ng-show="vm.sortProperties.firstName.isUsage" class="glyphicon spacing--hor-small" ng-class="{'glyphicon-sort-by-attributes' : vm.sortProperties.firstName.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.firstName.asc}"></span>
             First name
         </td>
         <td ng-click="vm.sortBy(vm.sortProperties.lastName)" ng-class="{'table__head-filter--active' : vm.sortProperties.lastName.isUsage}">
-            <span class="glyphicon" ng-class="{'glyphicon-arrow-down' :  vm.sortProperties.lastName.asc, 'glyphicon-arrow-up' : !vm.sortProperties.lastName.asc}"></span>
+            <span ng-show="vm.sortProperties.lastName.isUsage" class="glyphicon spacing--hor-small" ng-class="{'glyphicon-sort-by-attributes' :  vm.sortProperties.lastName.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.lastName.asc}"></span>
             Last name
         </td>
         <td ng-click="vm.sortBy(vm.sortProperties.userName)" ng-class="{'table__head-filter--active' : vm.sortProperties.userName.isUsage}">
-            <span class="glyphicon" ng-class="{'glyphicon-arrow-down' : vm.sortProperties.userName.asc, 'glyphicon-arrow-up' : !vm.sortProperties.userName.asc}"></span>
+            <span ng-show="vm.sortProperties.userName.isUsage" class="glyphicon spacing--hor-small" ng-class="{'glyphicon-sort-by-attributes' : vm.sortProperties.userName.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.userName.asc}"></span>
             Username
         </td>
         <td ng-click="vm.sortBy(vm.sortProperties.email)" ng-class="{'table__head-filter--active' : vm.sortProperties.email.isUsage}">
-            <span class="glyphicon" ng-class="{'glyphicon-arrow-down' : vm.sortProperties.email.asc, 'glyphicon-arrow-up' : !vm.sortProperties.email.asc}"></span>
+            <span ng-show="vm.sortProperties.userName.isUsage" class="glyphicon spacing--hor-small" ng-class="{'glyphicon-sort-by-attributes' : vm.sortProperties.email.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.email.asc}"></span>
             Email
         </td>
         <td></td>
@@ -66,6 +65,7 @@
     </tr>
     </tbody>
 </table>
+<span ng-hide="vm.paging.totalCount === 0">Total: {{vm.paging.totalCount}}</span>
 <div class="col-md-offset-4">
     <pagination paging="vm.paging"></pagination>
 </div>

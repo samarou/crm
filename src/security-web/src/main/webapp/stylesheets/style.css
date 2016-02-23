@@ -2,8 +2,8 @@
     cursor: pointer;
 }
 
-.table__head--filters tr td span {
-    margin-right: 15px;
+.spacing--hor-small{
+    margin: 0 15px;
 }
 
 .table__head--filters tr td:hover {
