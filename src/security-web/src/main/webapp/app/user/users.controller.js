@@ -50,8 +50,8 @@ angular.module('app').controller('UsersController', ["$location", "UserService",
         };
 
         vm.sortBy = function (property) {
-            angular.forEach(vm.sortProperties, function (p) {
-                p.isUsage = false;
+            angular.forEach(vm.sortProperties, function (sortProperty) {
+                sortProperty.isUsage = false;
             });
             property.isUsage = true;
             property.asc = !property.asc;
@@ -85,6 +85,10 @@ angular.module('app').controller('UsersController', ["$location", "UserService",
                 vm.isSelectedAll = false;
             }
             if (!!$event) $event.stopPropagation();//to exclude raising event of clicking by row(it's parent element)
+        };
+
+        vm.edit = function (id) {
+            $location.path("/users/" + id);
         };
 
         var keyTimer;
