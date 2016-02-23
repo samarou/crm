@@ -33,30 +33,22 @@
     </caption>
     <thead class="table__head--filter">
     <tr>
-        <td></td>
+        <td><input type="checkbox" ng-model="vm.isSelectAll" ng-click="vm.selectAll()"></td>
         <td>#</td>
-        <td ng-click="vm.sortBy(vm.sort.firstName)">
-            <span class="glyphicon active" ng-class="{'glyphicon-arrow-down' :  vm.sort.firstName.asc,
-                                               'glyphicon-arrow-up'   : !vm.sort.firstName.asc}">
-            </span>
+        <td ng-click="vm.sortBy(vm.sortProperties.firstName)" ng-class="{'table__head--active' : vm.sortProperties.firstName.isUsage}">
+            <span class="glyphicon active" ng-class="{'glyphicon-arrow-down' : vm.sortProperties.firstName.asc, 'glyphicon-arrow-up' : !vm.sortProperties.firstName.asc}"></span>
             First name
         </td>
-        <td ng-click="vm.sortBy(vm.sort.lastName)">
-            <span class="glyphicon" ng-class="{'glyphicon-arrow-down' :  vm.sort.lastName.asc,
-                                               'glyphicon-arrow-up'   : !vm.sort.lastName.asc}">
-            </span>
+        <td ng-click="vm.sortBy(vm.sortProperties.lastName)" ng-class="{'table__head--active' : vm.sortProperties.lastName.isUsage}">
+            <span class="glyphicon" ng-class="{'glyphicon-arrow-down' :  vm.sortProperties.lastName.asc, 'glyphicon-arrow-up' : !vm.sortProperties.lastName.asc}"></span>
             Last name
         </td>
-        <td ng-click="vm.sortBy(vm.sort.userName)">
-            <span class="glyphicon" ng-class="{'glyphicon-arrow-down' :  vm.sort.userName.asc,
-                                               'glyphicon-arrow-up'   : !vm.sort.userName.asc}">
-            </span>
+        <td ng-click="vm.sortBy(vm.sortProperties.userName)" ng-class="{'table__head--active' : vm.sortProperties.userName.isUsage}">
+            <span class="glyphicon" ng-class="{'glyphicon-arrow-down' : vm.sortProperties.userName.asc, 'glyphicon-arrow-up' : !vm.sortProperties.userName.asc}"></span>
             Username
         </td>
-        <td ng-click="vm.sortBy(vm.sort.email)">
-            <span class="glyphicon" ng-class="{'glyphicon-arrow-down' :  vm.sort.email.asc,
-                                               'glyphicon-arrow-up'   : !vm.sort.email.asc}">
-            </span>
+        <td ng-click="vm.sortBy(vm.sortProperties.email)" ng-class="{'table__head--active' : vm.sortProperties.email.isUsage}">
+            <span class="glyphicon" ng-class="{'glyphicon-arrow-down' : vm.sortProperties.email.asc, 'glyphicon-arrow-up' : !vm.sortProperties.email.asc}"></span>
             Email
         </td>
         <td></td>

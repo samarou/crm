@@ -64,6 +64,8 @@ public class Converter {
         filter.setText(dto.getText());
         filter.setFrom(dto.getFrom());
         filter.setCount(dto.getCount());
+        filter.setSortProperty(dto.getSortProperty());
+        filter.setSortAsc(dto.isSortAsc());
         return filter;
     }
 

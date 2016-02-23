@@ -3,7 +3,8 @@ package com.itechart.security.web.model.dto;
 /**
  * @author yauheni.putsykovich
  */
-public class PagingFilterDto {
+public class PagingFilterDto extends SortingFilterDto {
+
     private Integer from;
     private Integer count;
 

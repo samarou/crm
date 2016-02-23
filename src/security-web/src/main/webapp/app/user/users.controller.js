@@ -11,7 +11,9 @@ angular.module('app').controller('UsersController', ["$location", "UserService",
             text: null,
             groupId: null,
             roleId: null,
-            active: true
+            active: true,
+            sortProperty: null,
+            sortAsc: true
         };
 
         vm.paging = {
@@ -23,11 +25,11 @@ angular.module('app').controller('UsersController', ["$location", "UserService",
             }
         };
 
-        vm.sort = {
-            firstName: { name: "firstName", asc: true},
-            lastName: { name: "lastName", asc: true},
-            userName: { name: "userName", asc: true},
-            email: { name: "email", asc: true}
+        vm.sortProperties = {
+            firstName: {name: "firstName", asc: true, isUsage: true},
+            lastName: {name: "lastName", asc: true, isUsage: false},
+            userName: {name: "userName", asc: true, isUsage: false},
+            email: {name: "email", asc: true, isUsage: false}
         };
 
         vm.find = function find(filter) {
@@ -42,21 +44,16 @@ angular.module('app').controller('UsersController', ["$location", "UserService",
                 var totalPages = Math.ceil(quantity / vm.filter.count) || 1;
                 vm.paging.totalPages = totalPages;
                 vm.paging.visiblePages = totalPages;
-                vm.sortBy(vm.sort.firstName);
             });
         };
 
         vm.sortBy = function (property) {
-            vm.userList.sort(function (a, b) {
-                if (property.asc ? a[property.name] > b[property.name]
-                                 : a[property.name] < b[property.name]) {
-                    return -1;
-                } else {
-                    return 1;
-                }
-            });
+            angular.forEach(vm.sortProperties, function (p) { p.isUsage = false; });
+            property.isUsage = true;
             property.asc = !property.asc;
-            console.log(JSON.stringify(property));
+            vm.filter.sortAsc = property.asc;
+            vm.filter.sortProperty = property.name;
+            vm.find(vm.filter);
         };
 
         var keyTimer;
@@ -71,10 +68,6 @@ angular.module('app').controller('UsersController', ["$location", "UserService",
             }, 500);
         };
 
-        GroupService.fetchAll().then(function (response) {
-            vm.groups = response.data;
-        });
-        RoleService.fetchAll().then(function (response) {
-            vm.roles = response.data;
-        });
+        GroupService.fetchAll().then(function (response) { vm.groups = response.data; });
+        RoleService.fetchAll().then(function (response) { vm.roles = response.data; });
     }]);
