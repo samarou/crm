@@ -15,7 +15,7 @@ angular.module("app").factory("GroupService", ["$http", "$q", "Handler", functio
     };
 
     this.update = function (group) {
-        $http.put("/rest/groups", group).then(Handler.handleError("Update group failed"));
+        $http.put("/rest/groups", group).catch(Handler.handleError("Update group failed"));
     };
 
     return this;
