@@ -36,6 +36,7 @@ angular.module("app").service("Collections", [function () {
     };
 
     this.find = function find(item, collection, comparator) {
+        if (!collection || !item) return false;
         comparator = comparator || Comparators.BY_ID;
         var foundItem = collection.find(function (collectionItem) {
             return comparator(item, collectionItem);

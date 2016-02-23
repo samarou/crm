@@ -2,14 +2,16 @@
     <h2>{{vm.formTitle}}</h2>
 
     <form class="form">
-        <div class="form-group">
-            <label for="lastName">First name</label>
-            <input id="lastName" class="form-control" name="lastName" ng-model="vm.user.lastName">
-        </div>
-        <div class="form-group">
-            <label for="firstName">Last name</label>
-            <input id="firstName" class="form-control" name="firstName" ng-model="vm.user.firstName">
-        </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="lastName">First name</label>
+                    <input id="lastName" class="form-control" name="lastName" ng-model="vm.user.lastName">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="firstName">Last name</label>
+                    <input id="firstName" class="form-control" name="firstName" ng-model="vm.user.firstName">
+                </div>
+            </div>
         <div class="form-group" ng-show="vm.isCreation">
             <label for="userName">User name</label>
             <input id="userName" class="form-control" name="userName" ng-model="vm.user.userName">
@@ -18,27 +20,33 @@
             <label for="password">Password</label>
             <input id="password" class="form-control" name="password" ng-model="vm.user.password">
         </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" class="form-control" name="email" ng-model="vm.user.email">
+        <div class="row">
+            <div class="form-group col-md-10">
+                <label for="email">Email</label>
+                <input type="email" id="email" class="form-control" name="email" ng-model="vm.user.email">
+            </div>
+            <div class="form-group col-md-2">
+                <label for="active">Active</label>
+                <input id="active" type="checkbox" class="form-control" ng-model="vm.user.active" ng-checked="vm.user.active">
+            </div>
         </div>
-        <div class="form-group">
-            <label for="groups">Groups</label>
-            <ul id="groups" class="list-inline">
-                <li class="btn btn-default"
-                    ng-repeat="group in vm.groups"
-                    ng-class="{active: vm.userHas(group, vm.user.groups)}"
-                    ng-click="vm.check(group, vm.user.groups)"> {{group.name}}</li>
-            </ul>
-        </div>
-        <div class="form-group">
-            <label for="roles">Roles</label>
-            <ul id="roles" class="list-inline">
-                <li class="btn btn-default"
-                    ng-repeat="role in vm.roles"
-                    ng-class="{active: vm.userHas(role, vm.user.roles)}"
-                    ng-click="vm.check(role, vm.user.roles)">{{role.name}}</li>
-            </ul>
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="groups">Groups</label>
+                <ul id="groups" class="list-unstyled">
+                    <li ng-repeat="group in vm.groups">
+                        <input type="checkbox" ng-model="group.checked" ng-checked="group.checked">{{group.name}}
+                    </li>
+                </ul>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="roles">Roles</label>
+                <ul id="roles" class="list-unstyled">
+                    <li ng-repeat="role in vm.roles">
+                        <input type="checkbox" ng-model="role.checked" ng-checked="role.checked"}}>{{role.name}}
+                    </li>
+                </ul>
+            </div>
         </div>
     </form>
     <div class="button-bar">

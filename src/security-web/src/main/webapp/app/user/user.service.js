@@ -43,7 +43,7 @@
         }
 
         function remove(id) {
-            return $http.delete('rest/users' + id).then(handleSuccess, handleError('Error deleting user'));
+            return $http.delete('rest/users/' + id).then(handleSuccess, handleError('Error deleting user'));
         }
 
         function find(filter, handleSuccess) {

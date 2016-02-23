@@ -2,7 +2,7 @@
     <table class="table">
         <caption>
             Groups
-            <span class="link glyphicon glyphicon-plus pull-right cursor--pointer" title="New Role" data-toggle="modal"
+            <span class="link glyphicon glyphicon-plus pull-right hover--pointer" title="New Role" data-toggle="modal"
                   data-target="#role-modal-view" ng-click="vm.create()"></span>
         </caption>
         <thead>
@@ -18,7 +18,7 @@
             <td>{{$index + 1}}</td>
             <td>{{role.name}}</td>
             <td>{{role.description}}</td>
-            <td><span class="link glyphicon glyphicon-edit cursor--pointer" title="Edit Role" data-toggle="modal"
+            <td><span class="link glyphicon glyphicon-edit hover--pointer" title="Edit Role" data-toggle="modal"
                       data-target="#role-modal-view" ng-click="vm.edit(role)"></span></td>
         </tr>
         </tbody>

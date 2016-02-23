@@ -40,11 +40,12 @@ angular.module('app').controller('UsersController', ["$location", "UserService",
             });
             UserService.find(filter, function (response) {
                 vm.userList = response.data.data;
-                var quantity = response.data.totalCount;
-                var totalPages = Math.ceil(quantity / vm.filter.count) || 1;
-                vm.paging.totalQuantity = quantity;
+                var totalCount = response.data.totalCount;
+                var totalPages = Math.ceil(totalCount / vm.filter.count) || 1;
+                vm.paging.totalCount = totalCount;
                 vm.paging.totalPages = totalPages;
                 vm.paging.visiblePages = totalPages;
+                vm.isSelectedAll = false;
                 vm.selectAll(vm.isSelectedAll);
             });
         };
@@ -77,10 +78,7 @@ angular.module('app').controller('UsersController', ["$location", "UserService",
         vm.selectOne = function (user, $event) {
             vm.totalSelected += user.checked ? 1 : -1;
             if (user.checked && !vm.isSelectedAll) {
-                if (vm.totalSelected === vm.paging.totalQuantity) {
-                    vm.isSelectedAll = true;
-                    vm.selectAll(vm.isSelectedAll);
-                }
+                vm.isSelectedAll = vm.totalSelected === vm.userList.length;
             } else if (vm.isSelectedAll) {
                 vm.isSelectedAll = false;
             }
@@ -89,6 +87,10 @@ angular.module('app').controller('UsersController', ["$location", "UserService",
 
         vm.edit = function (id) {
             $location.path("/users/" + id);
+        };
+
+        vm.add = function () {
+            $location.path("/users/new");
         };
 
         var keyTimer;

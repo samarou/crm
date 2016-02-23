@@ -27,8 +27,8 @@
 <table class="table table-hover">
     <caption>
         Users
-        <div ng-click="vm.remove()"><span title="Remove User(s)" class="spacing--hor-small cursor--pointer glyphicon glyphicon-minus pull-right" ></span></div>
-        <div ng-click="vm.add()"><span title="Add New User" class="spacing--hor-small cursor--pointer glyphicon glyphicon-plus pull-right" ></span></div>
+        <div ng-click="vm.remove()"><span title="Remove User(s)" class="spacing--hor-small hover--pointer glyphicon glyphicon-minus pull-right" ></span></div>
+        <div ng-click="vm.add()"><span title="Add New User" class="spacing--hor-small hover--pointer glyphicon glyphicon-plus pull-right" ></span></div>
     </caption>
     <thead class="table__head--filters">
     <tr>
@@ -50,7 +50,7 @@
             <span ng-show="vm.sortProperties.userName.isUsage" class="glyphicon spacing--hor-small" ng-class="{'glyphicon-sort-by-attributes' : vm.sortProperties.email.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.email.asc}"></span>
             Email
         </td>
-        <td></td>
+        <td ng-hide="true"></td>
     </tr>
     </thead>
     <tbody>
