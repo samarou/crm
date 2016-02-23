@@ -34,8 +34,8 @@
             return $http.get('rest/users/' + name).then(handleSuccess, handleError('Error getting user by username'));
         }
 
-        function create(user, handleSuccess) {
-            return $http.post('rest/users', user).then(handleSuccess, handleError('Error creating user'));
+        function create(user) {
+            return $http.post('rest/users', user);
         }
 
         function update(user) {
