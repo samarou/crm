@@ -21,7 +21,7 @@
             </div>
             <div class="col-md-3" ng-show="vm.isLoggedUser()">
                 <a class="btn btn-info navbar-btn pull-right" href="#" ng-click="vm.logout();">Logout</a>
-                <span class="navbar-text pull-right" ng-cloak>User: {{vm.getUserName()}} </span>
+                <span class="navbar-text pull-right" ng-cloak>User: <strong>{{vm.getUserName()}}</strong> </span>
             </div>
         </nav>
     </header>

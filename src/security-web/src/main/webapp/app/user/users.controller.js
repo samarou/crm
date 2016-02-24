@@ -1,5 +1,5 @@
-angular.module('app').controller('UsersController', ["$location", "$q", "$uibModal", "UserService", "GroupService", "RoleService", "Collections",
-    function ($location, $q, $uibModal, UserService, GroupService, RoleService, Collections) {
+angular.module('app').controller('UsersController', ["$location", "$uibModal", "UserService", "GroupService", "RoleService", "Collections",
+    function ($location, $uibModal, UserService, GroupService, RoleService, Collections) {
         "use strict";
         var vm = this;
 
@@ -10,11 +10,11 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
             vm.roles = response.data;
         });
 
-        var defaultPageSize = 5;
+        var pageSize = 8;
 
         vm.filter = {
             from: 0,
-            count: defaultPageSize,//todo: extract to config
+            count: pageSize,//todo: extract to config
             text: null,
             groupId: null,
             roleId: null,
@@ -25,13 +25,13 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
 
         vm.paging = {
             totalCount: 0,
-            itemsPerPage: 5,
+            itemsPerPage: pageSize,
             currentPage: 1,
             visiblePages: 5
         };
 
         vm.paging.onPageChanged = function () {
-            vm.filter.from = (vm.paging.currentPage - 1) * vm.filter.count;
+            vm.filter.from = (vm.paging.currentPage - 1) * pageSize;
             vm.find(vm.filter);
         };
 
@@ -49,12 +49,12 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
                 filter[key] = !!value ? value : null;
             });
             UserService.find(filter, function (response) {
+                vm.userList = response.data.data;
                 var totalCount = response.data.totalCount;
                 var totalPages = Math.ceil(totalCount / vm.filter.count) || 1;
                 vm.paging.totalCount = totalCount;
                 vm.paging.visiblePages = totalPages;
                 vm.isSelectedAll = false;
-                vm.userList = response.data.data;
             });
         };
         vm.find(vm.filter);
@@ -70,31 +70,16 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
             vm.find(vm.filter);
         };
 
-        vm.isSelectedAll = false;
-        vm.totalSelected = 0;
-
         vm.selectAll = function (checked) {
             vm.userList.forEach(function (user) {
                 user.checked = checked;
-                console.log(user.userName + ", checked: " + user.checked);
             });
         };
 
-        vm.selectOneByClick = function (user) {
-            user.checked = !user.checked;
-            vm.selectOne(user);
-        };
-
-        vm.selectOne = function (user, $event) {
-            vm.totalSelected = vm.userList.reduce(function (n, user) {
-                return user.checked ? ++n : n;
-            }, 0);
-            if (user.checked && !vm.isSelectedAll) {
-                vm.isSelectedAll = vm.totalSelected === vm.userList.length;
-            } else if (vm.isSelectedAll) {
-                vm.isSelectedAll = false;
-            }
-            if (!!$event) $event.stopPropagation();//to exclude raising event of clicking by row(it's parent element)
+        vm.selectOne = function () {
+            vm.isSelectedAll = vm.userList.every(function (user) {
+                return user.checked;
+            });
         };
 
         vm.edit = function (user) {
@@ -114,7 +99,7 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
             checkGroupsAndRolesWhichUserHas(user);
             showDialog({
                 title: "Create User",
-                okTitle: "Update",
+                okTitle: "Add",
                 groups: vm.groups,
                 roles: vm.roles,
                 user: user
@@ -130,7 +115,7 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
                 angular.copy(user, originUser);
                 UserService.update(user);
             } else {
-                UserService.create(user).then(function (response) {
+                UserService.create(user, function (response) {
                     user.id = response.data;
                     vm.userList.push(user);
                 });
@@ -158,7 +143,7 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
             });
         }
 
-        function initUserWithCheckedGroupsAndRoles(user) {
+        function initUserWithCheckedGroupsAndRoles(user){
             user.groups = vm.groups.filter(function (group) {
                 return group.checked;
             });
@@ -168,19 +153,17 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
         }
 
         vm.activate = function (newState) {
-            var tasks = [];
             vm.userList.forEach(function (user) {
                 if (user.checked) {
+                    user.active = newState;
                     if (newState) {
-                        tasks.push(UserService.activate(user.id));
+                        UserService.activate(user.id);
                     } else {
-                        tasks.push(UserService.deactivate(user.id));
+                        UserService.deactivate(user.id);
                     }
                 }
             });
-            $q.all(tasks).then(function () {
-                vm.find(vm.filter);
-            });
+            vm.selectAll(false);
         };
 
         var keyTimer;

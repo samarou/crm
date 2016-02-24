@@ -26,11 +26,11 @@
 }
 
 .table_row--inactive {
-    background-color: #e3e3e3;
+    background-color: #fff6f4;
 }
 
 .table_row--inactive:hover {
-    background-color: #d3d3d3;
+    background-color: #f3eae9;
     cursor: pointer;
 }
 
@@ -65,3 +65,8 @@
     color: #777;
 }
 
+/* fix for bootstrap modal dialog (issue 9886) */
+body.modal-open {
+    overflow:inherit;
+    padding-right:inherit !important;
+}
