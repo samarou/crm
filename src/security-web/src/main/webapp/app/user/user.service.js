@@ -14,11 +14,12 @@
 
         service.getAll = fetchAll;
         service.getById = getById;
-        service.getByUsername = getByUsername;
         service.create = create;
         service.update = update;
         service.remove = remove;
         service.find = find;
+        service.activate = activate;
+        service.deactivate = deactivate;
 
         return service;
 
@@ -28,10 +29,6 @@
 
         function getById(id, handleSuccess) {
             return $http.get('rest/users/' + id).then(handleSuccess, handleError('Error getting user by id'));
-        }
-
-        function getByUsername(name, handleSuccess) {
-            return $http.get('rest/users/' + name).then(handleSuccess, handleError('Error getting user by username'));
         }
 
         function create(user) {
@@ -48,6 +45,14 @@
 
         function find(filter, handleSuccess) {
             return $http.get("rest/users/find", {params: filter}).then(handleSuccess, handleError("Error during searching of users"))
+        }
+
+        function activate(id) {
+            return $http.put("rest/users/activate/" + id);
+        }
+
+        function deactivate(id) {
+            return $http.put("rest/users/deactivate/" + id);
         }
 
         function handleSuccess(res) {

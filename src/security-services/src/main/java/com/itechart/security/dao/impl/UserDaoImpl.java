@@ -79,4 +79,15 @@ public class UserDaoImpl extends BaseHibernateDao<User> implements UserDao {
             return query.executeUpdate() > 0;
         });
     }
+
+    @Override
+    public boolean setUserActivity(Long userId, boolean active) {
+        return getHibernateTemplate().execute(session -> {
+            Query query = session.createQuery(
+                    "update User u set u.active = :active where u.id = :userId");
+            query.setLong("userId", userId);
+            query.setBoolean("active", active);
+            return query.executeUpdate() > 0;
+        });
+    }
 }
