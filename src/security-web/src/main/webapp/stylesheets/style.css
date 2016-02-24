@@ -2,7 +2,7 @@
     cursor: pointer;
 }
 
-.spacing--hor-small{
+.spacing--hor-small {
     margin: 0 15px;
 }
 
@@ -19,9 +19,17 @@
     cursor: pointer;
 }
 
+.table__row--active:hover {
+    background-color: #f3f3f3;
+}
+
 .table_row--inactive {
-    background-color: #dddddd;
+    background-color: #e3e3e3;
     cursor: pointer;
+}
+
+.table_row--inactive:hover {
+    background-color: #d3d3d3;
 }
 
 .text--unselectable {
