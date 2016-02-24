@@ -1,5 +1,5 @@
-angular.module('app').controller('UsersController', ["$location", "$uibModal", "UserService", "GroupService", "RoleService", "Collections",
-    function ($location, $uibModal, UserService, GroupService, RoleService, Collections) {
+angular.module('app').controller('UsersController', ["$location", "$q", "$uibModal", "UserService", "GroupService", "RoleService", "Collections",
+    function ($location, $q, $uibModal, UserService, GroupService, RoleService, Collections) {
         "use strict";
         var vm = this;
 
@@ -153,17 +153,19 @@ angular.module('app').controller('UsersController', ["$location", "$uibModal", "
         }
 
         vm.activate = function (newState) {
+            var tasks = [];
             vm.userList.forEach(function (user) {
                 if (user.checked) {
-                    user.active = newState;
                     if (newState) {
-                        UserService.activate(user.id);
+                        tasks.push(UserService.activate(user.id));
                     } else {
-                        UserService.deactivate(user.id);
+                        tasks.push(UserService.deactivate(user.id));
                     }
                 }
             });
-            vm.selectAll(false);
+            $q.all(tasks).then(function () {
+                vm.find(vm.filter);
+            });
         };
 
         var keyTimer;
