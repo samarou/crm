@@ -4,7 +4,6 @@ import com.itechart.security.dao.UserDao;
 import com.itechart.security.model.filter.UserFilter;
 import com.itechart.security.model.persistent.User;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
@@ -70,24 +69,25 @@ public class UserDaoImpl extends BaseHibernateDao<User> implements UserDao {
 
     @Override
     public boolean changePassword(String userName, String oldPassword, String newPassword) {
-        return getHibernateTemplate().execute(session -> {
-            Query query = session.createQuery("update User u set u.password = :newPassword " +
-                    "where u.userName = :userName and u.password = :oldPassword");
-            query.setString("userName", userName);
-            query.setString("oldPassword", oldPassword);
-            query.setString("newPassword", newPassword);
-            return query.executeUpdate() > 0;
-        });
+        // don't use hbm query for update, because hbm try to
+        // create temporary table for batch update of inheriting entities
+        User user = findByName(userName);
+        if (user == null || !user.getPassword().equals(oldPassword)) {
+            return false;
+        }
+        user.setPassword(newPassword);
+        update(user);
+        return true;
     }
 
     @Override
     public boolean setUserActivity(Long userId, boolean active) {
-        return getHibernateTemplate().execute(session -> {
-            Query query = session.createQuery(
-                    "update User u set u.active = :active where u.id = :userId");
-            query.setLong("userId", userId);
-            query.setBoolean("active", active);
-            return query.executeUpdate() > 0;
-        });
+        User user = get(userId);
+        if (user == null) {
+            return false;
+        }
+        user.setActive(active);
+        update(user);
+        return true;
     }
 }
