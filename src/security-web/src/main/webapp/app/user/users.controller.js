@@ -166,7 +166,11 @@ angular.module('app').controller('UsersController', ["$location", "$uibModal", "
             vm.userList.forEach(function (user) {
                 if (user.checked) {
                     user.active = newState;
-                    UserService.update(user);
+                    if (newState) {
+                        UserService.activate(user.id);
+                    } else {
+                        UserService.deactivate(user.id);
+                    }
                 }
             });
             vm.find(vm.filter);

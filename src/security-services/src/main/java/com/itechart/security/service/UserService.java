@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface UserService {
 
-    User getUser(Long id);
+    User getUser(Long userId);
 
     List<User> getUsers();
 
@@ -27,4 +27,8 @@ public interface UserService {
     void updateUser(User user);
 
     boolean changePassword(String userName, String oldPassword, String newPassword);
+
+    void activateUser(Long userId);
+
+    void deactivateUser(Long userId);
 }

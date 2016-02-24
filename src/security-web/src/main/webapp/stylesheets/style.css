@@ -51,3 +51,8 @@
 .navbar-default .navbar-brand:focus {
     color: #777;
 }
+
+.summary-text {
+    float: right !important;
+    color: #777;
+}

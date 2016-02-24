@@ -46,6 +46,16 @@ public class UserController {
         userService.createUser(convert(dto));
     }
 
+    @RequestMapping(value = "/users/activate/{id}", method = PUT)
+    public void activate(@PathVariable Long id) {
+        userService.activateUser(id);
+    }
+
+    @RequestMapping(value = "/users/deactivate/{id}", method = PUT)
+    public void deactivate(@PathVariable Long id) {
+        userService.deactivateUser(id);
+    }
+
     @RequestMapping("/users/find")
     public DataPageDto<UserDto> find(UserFilterDto filterDto) {
         UserFilter filter = convert(filterDto);

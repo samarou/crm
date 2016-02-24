@@ -27,8 +27,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public User getUser(Long id) {
-        return userDao.get(id);
+    public User getUser(Long userId) {
+        return userDao.get(userId);
     }
 
     @Override
@@ -71,5 +71,17 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public boolean changePassword(String userName, String oldPassword, String newPassword) {
         return userDao.changePassword(userName, passwordEncoder.encode(oldPassword), passwordEncoder.encode(newPassword));
+    }
+
+    @Override
+    @Transactional
+    public void activateUser(Long userId) {
+        userDao.setUserActivity(userId, true);
+    }
+
+    @Override
+    @Transactional
+    public void deactivateUser(Long userId) {
+        userDao.setUserActivity(userId, false);
     }
 }
