@@ -104,13 +104,15 @@ angular.module('app').controller('UsersController', ["$location", "$uibModal", "
         };
 
         vm.add = function () {
-            checkGroupsAndRolesWhichUserHas({});
+            var user = {};
+            user.active = true;
+            checkGroupsAndRolesWhichUserHas(user);
             showDialog({
                 title: "Create User",
                 okTitle: "Update",
                 groups: vm.groups,
                 roles: vm.roles,
-                user: {}
+                user: user
             });
         };
 
