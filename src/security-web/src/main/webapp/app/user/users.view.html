@@ -27,28 +27,28 @@
 <table class="table">
     <caption>
         Users
-        <div ng-click="vm.activate(false)"><span title="Deactivate User(s)" class="spacing--hor-small hover--pointer glyphicon glyphicon-thumbs-down pull-right" ></span></div>
-        <div ng-click="vm.activate(true)"><span title="Activate User(s)" class="spacing--hor-small hover--pointer glyphicon glyphicon-thumbs-up pull-right" ></span></div>
-        <div ng-click="vm.add()"><span title="Add New User" class="spacing--hor-small hover--pointer glyphicon glyphicon-plus pull-right" ></span></div>
+        <div ng-click="vm.activate(false)"><span title="Deactivate User(s)" class="block--spacing hover--pointer glyphicon glyphicon-thumbs-down pull-right" ></span></div>
+        <div ng-click="vm.activate(true)"><span title="Activate User(s)" class="block--spacing hover--pointer glyphicon glyphicon-thumbs-up pull-right" ></span></div>
+        <div ng-click="vm.add()"><span title="Add New User" class="block--spacing hover--pointer glyphicon glyphicon-plus pull-right" ></span></div>
     </caption>
     <thead class="table__head--filters">
     <tr>
         <td><input type="checkbox" ng-model="vm.isSelectedAll" ng-click="vm.selectAll(vm.isSelectedAll)"></td>
         <td>#</td>
         <td ng-click="vm.sortBy(vm.sortProperties.firstName)" ng-class="{'table__head-filter--active' : vm.sortProperties.firstName.isUsage}">
-            <span ng-show="vm.sortProperties.firstName.isUsage" class="glyphicon spacing--hor-small" ng-class="{'glyphicon-sort-by-attributes' : vm.sortProperties.firstName.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.firstName.asc}"></span>
+            <span ng-show="vm.sortProperties.firstName.isUsage" class="glyphicon block--spacing" ng-class="{'glyphicon-sort-by-attributes' : vm.sortProperties.firstName.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.firstName.asc}"></span>
             First name
         </td>
         <td ng-click="vm.sortBy(vm.sortProperties.lastName)" ng-class="{'table__head-filter--active' : vm.sortProperties.lastName.isUsage}">
-            <span ng-show="vm.sortProperties.lastName.isUsage" class="glyphicon spacing--hor-small" ng-class="{'glyphicon-sort-by-attributes' :  vm.sortProperties.lastName.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.lastName.asc}"></span>
+            <span ng-show="vm.sortProperties.lastName.isUsage" class="glyphicon block--spacing" ng-class="{'glyphicon-sort-by-attributes' :  vm.sortProperties.lastName.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.lastName.asc}"></span>
             Last name
         </td>
         <td ng-click="vm.sortBy(vm.sortProperties.userName)" ng-class="{'table__head-filter--active' : vm.sortProperties.userName.isUsage}">
-            <span ng-show="vm.sortProperties.userName.isUsage" class="glyphicon spacing--hor-small" ng-class="{'glyphicon-sort-by-attributes' : vm.sortProperties.userName.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.userName.asc}"></span>
+            <span ng-show="vm.sortProperties.userName.isUsage" class="glyphicon block--spacing" ng-class="{'glyphicon-sort-by-attributes' : vm.sortProperties.userName.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.userName.asc}"></span>
             Username
         </td>
         <td ng-click="vm.sortBy(vm.sortProperties.email)" ng-class="{'table__head-filter--active' : vm.sortProperties.email.isUsage}">
-            <span ng-show="vm.sortProperties.email.isUsage" class="glyphicon spacing--hor-small" ng-class="{'glyphicon-sort-by-attributes' : vm.sortProperties.email.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.email.asc}"></span>
+            <span ng-show="vm.sortProperties.email.isUsage" class="glyphicon block--spacing" ng-class="{'glyphicon-sort-by-attributes' : vm.sortProperties.email.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.email.asc}"></span>
             Email
         </td>
         <td ng-hide="true"></td>
@@ -66,7 +66,7 @@
     </tr>
     </tbody>
 </table>
-<span class="summary-text" ng-hide="vm.paging.totalCount === 0">Total: {{vm.paging.totalCount}}</span>
+<span class="text--summary" ng-hide="vm.paging.totalCount === 0">Total: {{vm.paging.totalCount}}</span>
 <div class="col-md-offset-4">
     <pagination paging="vm.paging"></pagination>
 </div>

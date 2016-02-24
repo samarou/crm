@@ -2,8 +2,16 @@
     cursor: pointer;
 }
 
-.spacing--hor-small {
-    margin: 0 15px;
+.block--spacing {
+    margin: 10px 15px;
+}
+
+.block--center {
+    margin: 0 auto;
+}
+
+.block--height {
+    min-height: 400px;
 }
 
 .table__head--filters tr td:hover {
@@ -47,12 +55,13 @@
                                   not supported by any browser */
 }
 
+.text--summary {
+    float: right;
+    color: #777;
+}
+
 .navbar-default .navbar-brand:hover,
 .navbar-default .navbar-brand:focus {
     color: #777;
 }
 
-.summary-text {
-    float: right !important;
-    color: #777;
-}
