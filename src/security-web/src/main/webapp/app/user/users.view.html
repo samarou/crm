@@ -35,20 +35,20 @@
     <tr>
         <td><input type="checkbox" ng-model="vm.isSelectedAll" ng-click="vm.selectAll(vm.isSelectedAll)"></td>
         <td>#</td>
-        <td ng-click="vm.sortBy(vm.sortProperties.firstName)" ng-class="{'table__head-filter--active' : vm.sortProperties.firstName.isUsage}">
-            <span ng-show="vm.sortProperties.firstName.isUsage" class="glyphicon spacing--hor-small" ng-class="{'glyphicon-sort-by-attributes' : vm.sortProperties.firstName.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.firstName.asc}"></span>
+        <td ng-click="vm.sortBy(vm.sortProperties.firstName)" ng-class="{'table__head-filter--active' : vm.sortProperties.firstName.enabled}">
+            <span ng-show="vm.sortProperties.firstName.enabled" class="glyphicon spacing--hor-small" ng-class="{'glyphicon-sort-by-attributes' : vm.sortProperties.firstName.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.firstName.asc}"></span>
             First name
         </td>
-        <td ng-click="vm.sortBy(vm.sortProperties.lastName)" ng-class="{'table__head-filter--active' : vm.sortProperties.lastName.isUsage}">
-            <span ng-show="vm.sortProperties.lastName.isUsage" class="glyphicon spacing--hor-small" ng-class="{'glyphicon-sort-by-attributes' :  vm.sortProperties.lastName.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.lastName.asc}"></span>
+        <td ng-click="vm.sortBy(vm.sortProperties.lastName)" ng-class="{'table__head-filter--active' : vm.sortProperties.lastName.enabled}">
+            <span ng-show="vm.sortProperties.lastName.enabled" class="glyphicon spacing--hor-small" ng-class="{'glyphicon-sort-by-attributes' :  vm.sortProperties.lastName.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.lastName.asc}"></span>
             Last name
         </td>
-        <td ng-click="vm.sortBy(vm.sortProperties.userName)" ng-class="{'table__head-filter--active' : vm.sortProperties.userName.isUsage}">
-            <span ng-show="vm.sortProperties.userName.isUsage" class="glyphicon spacing--hor-small" ng-class="{'glyphicon-sort-by-attributes' : vm.sortProperties.userName.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.userName.asc}"></span>
+        <td ng-click="vm.sortBy(vm.sortProperties.userName)" ng-class="{'table__head-filter--active' : vm.sortProperties.userName.enabled}">
+            <span ng-show="vm.sortProperties.userName.enabled" class="glyphicon spacing--hor-small" ng-class="{'glyphicon-sort-by-attributes' : vm.sortProperties.userName.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.userName.asc}"></span>
             Username
         </td>
-        <td ng-click="vm.sortBy(vm.sortProperties.email)" ng-class="{'table__head-filter--active' : vm.sortProperties.email.isUsage}">
-            <span ng-show="vm.sortProperties.email.isUsage" class="glyphicon spacing--hor-small" ng-class="{'glyphicon-sort-by-attributes' : vm.sortProperties.email.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.email.asc}"></span>
+        <td ng-click="vm.sortBy(vm.sortProperties.email)" ng-class="{'table__head-filter--active' : vm.sortProperties.email.enabled}">
+            <span ng-show="vm.sortProperties.email.enabled" class="glyphicon spacing--hor-small" ng-class="{'glyphicon-sort-by-attributes' : vm.sortProperties.email.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.email.asc}"></span>
             Email
         </td>
         <td ng-hide="true"></td>

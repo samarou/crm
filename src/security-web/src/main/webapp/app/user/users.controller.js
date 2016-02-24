@@ -33,10 +33,10 @@ angular.module('app').controller('UsersController', ["$location", "$uibModal", "
         };
 
         vm.sortProperties = {
-            firstName: {name: "firstName", asc: true, isUsage: true},
-            lastName: {name: "lastName", asc: true, isUsage: false},
-            userName: {name: "userName", asc: true, isUsage: false},
-            email: {name: "email", asc: true, isUsage: false}
+            firstName: {name: "firstName", asc: true, enabled: true},
+            lastName: {name: "lastName", asc: true, enabled: false},
+            userName: {name: "userName", asc: true, enabled: false},
+            email: {name: "email", asc: true, enabled: false}
         };
 
         vm.find = function find(filter) {
@@ -59,9 +59,9 @@ angular.module('app').controller('UsersController', ["$location", "$uibModal", "
 
         vm.sortBy = function (property) {
             angular.forEach(vm.sortProperties, function (sortProperty) {
-                sortProperty.isUsage = false;
+                sortProperty.enabled = false;
             });
-            property.isUsage = true;
+            property.enabled = true;
             property.asc = !property.asc;
             vm.filter.sortAsc = property.asc;
             vm.filter.sortProperty = property.name;
