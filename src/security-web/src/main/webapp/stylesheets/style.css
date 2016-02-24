@@ -7,11 +7,8 @@
     background-color: #eeeeee;
 }
 
-.block--spacing {
-    margin: 10px 15px;
-}
-
 .block--narrow {
+    margin: 10px 15px;
     width: 50px;
 }
 
@@ -19,19 +16,22 @@
     margin: 0 auto;
 }
 
-.table--fixed {
+.table--fixed__wrapper {
     min-height: 500px;
+}
+
+.table--fixed {
     table-layout: fixed;
     word-wrap: break-word;
 }
 
 .table_row--inactive {
     background-color: #e3e3e3;
-    cursor: pointer;
 }
 
 .table_row--inactive:hover {
     background-color: #d3d3d3;
+    cursor: pointer;
 }
 
 .list--scrollable {
