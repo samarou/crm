@@ -24,49 +24,54 @@
                ng-model="vm.filter.active" ng-checked="vm.filter.active">
     </div>
 </div>
-<table class="table">
-    <caption>
-        Users
-        <div ng-click="vm.activate(false)"><span title="Deactivate User(s)" class="block--spacing hover--pointer glyphicon glyphicon-thumbs-down pull-right" ></span></div>
-        <div ng-click="vm.activate(true)"><span title="Activate User(s)" class="block--spacing hover--pointer glyphicon glyphicon-thumbs-up pull-right" ></span></div>
-        <div ng-click="vm.add()"><span title="Add New User" class="block--spacing hover--pointer glyphicon glyphicon-plus pull-right" ></span></div>
-    </caption>
-    <thead class="table__head--filters">
-    <tr>
-        <td><input type="checkbox" ng-model="vm.isSelectedAll" ng-click="vm.selectAll(vm.isSelectedAll)"></td>
-        <td>#</td>
-        <td ng-click="vm.sortBy(vm.sortProperties.firstName)" ng-class="{'table__head-filter--active' : vm.sortProperties.firstName.isUsage}">
-            <span ng-show="vm.sortProperties.firstName.isUsage" class="glyphicon block--spacing" ng-class="{'glyphicon-sort-by-attributes' : vm.sortProperties.firstName.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.firstName.asc}"></span>
-            First name
-        </td>
-        <td ng-click="vm.sortBy(vm.sortProperties.lastName)" ng-class="{'table__head-filter--active' : vm.sortProperties.lastName.isUsage}">
-            <span ng-show="vm.sortProperties.lastName.isUsage" class="glyphicon block--spacing" ng-class="{'glyphicon-sort-by-attributes' :  vm.sortProperties.lastName.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.lastName.asc}"></span>
-            Last name
-        </td>
-        <td ng-click="vm.sortBy(vm.sortProperties.userName)" ng-class="{'table__head-filter--active' : vm.sortProperties.userName.isUsage}">
-            <span ng-show="vm.sortProperties.userName.isUsage" class="glyphicon block--spacing" ng-class="{'glyphicon-sort-by-attributes' : vm.sortProperties.userName.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.userName.asc}"></span>
-            Username
-        </td>
-        <td ng-click="vm.sortBy(vm.sortProperties.email)" ng-class="{'table__head-filter--active' : vm.sortProperties.email.isUsage}">
-            <span ng-show="vm.sortProperties.email.isUsage" class="glyphicon block--spacing" ng-class="{'glyphicon-sort-by-attributes' : vm.sortProperties.email.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.email.asc}"></span>
-            Email
-        </td>
-        <td ng-hide="true"></td>
-    </tr>
-    </thead>
-    <tbody>
-    <tr class="text--unselectable" ng-class="{'table__row--active' : user.active, 'table_row--inactive' : !user.active}" ng-repeat="user in vm.userList" ng-click="vm.selectOneByClick(user)" ng-dblclick="vm.edit(user)">
-        <td><input type="checkbox" ng-model="user.checked" ng-click="vm.selectOne(user, $event)"></td>
-        <td>{{vm.filter.from + ($index + 1)}}</td>
-        <td>{{user.firstName}}</td>
-        <td>{{user.lastName}}</td>
-        <td>{{user.userName}}</td>
-        <td>{{user.email}}</td>
-        <td><span title="Edit user" class="hover--pointer glyphicon glyphicon-edit" ng-click="vm.edit(user)"></span></td>
-    </tr>
-    </tbody>
-</table>
+<div class="block--height">
+    <table class="table">
+        <caption>
+            Users
+            <div ng-click="vm.activate(false)"><span title="Deactivate User(s)" class="block--spacing hover--pointer glyphicon glyphicon-thumbs-down pull-right" ></span></div>
+            <div ng-click="vm.activate(true)"><span title="Activate User(s)" class="block--spacing hover--pointer glyphicon glyphicon-thumbs-up pull-right" ></span></div>
+            <div ng-click="vm.add()"><span title="Add New User" class="block--spacing hover--pointer glyphicon glyphicon-plus pull-right" ></span></div>
+        </caption>
+        <thead class="table__head--filters">
+        <tr>
+            <td><input type="checkbox" ng-model="vm.isSelectedAll" ng-click="vm.selectAll(vm.isSelectedAll)"></td>
+            <td>#</td>
+            <td ng-click="vm.sortBy(vm.sortProperties.firstName)" ng-class="{'table__head-filter--active' : vm.sortProperties.firstName.isUsage}">
+                <span ng-show="vm.sortProperties.firstName.isUsage" class="glyphicon block--spacing" ng-class="{'glyphicon-sort-by-attributes' : vm.sortProperties.firstName.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.firstName.asc}"></span>
+                First name
+            </td>
+            <td ng-click="vm.sortBy(vm.sortProperties.lastName)" ng-class="{'table__head-filter--active' : vm.sortProperties.lastName.isUsage}">
+                <span ng-show="vm.sortProperties.lastName.isUsage" class="glyphicon block--spacing" ng-class="{'glyphicon-sort-by-attributes' :  vm.sortProperties.lastName.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.lastName.asc}"></span>
+                Last name
+            </td>
+            <td ng-click="vm.sortBy(vm.sortProperties.userName)" ng-class="{'table__head-filter--active' : vm.sortProperties.userName.isUsage}">
+                <span ng-show="vm.sortProperties.userName.isUsage" class="glyphicon block--spacing" ng-class="{'glyphicon-sort-by-attributes' : vm.sortProperties.userName.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.userName.asc}"></span>
+                Username
+            </td>
+            <td ng-click="vm.sortBy(vm.sortProperties.email)" ng-class="{'table__head-filter--active' : vm.sortProperties.email.isUsage}">
+                <span ng-show="vm.sortProperties.email.isUsage" class="glyphicon block--spacing" ng-class="{'glyphicon-sort-by-attributes' : vm.sortProperties.email.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.email.asc}"></span>
+                Email
+            </td>
+            <td ng-hide="true"></td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="text--unselectable" ng-class="{'table__row--active' : user.active, 'table_row--inactive' : !user.active}" ng-repeat="user in vm.userList" ng-click="vm.selectOneByClick(user)" ng-dblclick="vm.edit(user)">
+            <td><input type="checkbox" ng-model="user.checked" ng-click="vm.selectOne(user, $event)"></td>
+            <td>{{vm.filter.from + ($index + 1)}}</td>
+            <td>{{user.firstName}}</td>
+            <td>{{user.lastName}}</td>
+            <td>{{user.userName}}</td>
+            <td>{{user.email}}</td>
+            <td><span title="Edit user" class="hover--pointer glyphicon glyphicon-edit" ng-click="vm.edit(user)"></span></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 <span class="text--summary" ng-hide="vm.paging.totalCount === 0">Total: {{vm.paging.totalCount}}</span>
-<div class="col-md-offset-4">
-    <pagination paging="vm.paging"></pagination>
+<div class="col-md-4 col-md-offset-4">
+    <uib-pagination class="pagination-sm" ng-change="vm.paging.onPageChanged()" ng-model="vm.paging.currentPage"
+                    total-items="vm.paging.totalCount" items-per-page="vm.paging.itemsPerPage" max-size="vm.paging.visiblePages"
+                    boundary-link-numbers="true" rotate="false">
+    </uib-pagination>
 </div>

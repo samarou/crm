@@ -24,12 +24,15 @@ angular.module('app').controller('UsersController', ["$location", "$uibModal", "
         };
 
         vm.paging = {
-            totalPages: 1,
-            visiblePages: 5,
-            onPageClick: function (pageNumber) {
-                vm.filter.from = (pageNumber - 1) * vm.filter.count;
-                vm.find(vm.filter);
-            }
+            totalCount: 0,
+            itemsPerPage: 5,
+            currentPage: 1,
+            visiblePages: 5
+        };
+
+        vm.paging.onPageChanged = function () {
+            vm.filter.from = (vm.paging.currentPage - 1) * vm.filter.count;
+            vm.find(vm.filter);
         };
 
         vm.sortProperties = {
@@ -50,12 +53,12 @@ angular.module('app').controller('UsersController', ["$location", "$uibModal", "
                 var totalCount = response.data.totalCount;
                 var totalPages = Math.ceil(totalCount / vm.filter.count) || 1;
                 vm.paging.totalCount = totalCount;
-                vm.paging.totalPages = totalPages;
                 vm.paging.visiblePages = totalPages;
                 vm.isSelectedAll = false;
                 vm.selectAll(vm.isSelectedAll);
             });
         };
+        vm.find(vm.filter);
 
         vm.sortBy = function (property) {
             angular.forEach(vm.sortProperties, function (sortProperty) {
