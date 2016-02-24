@@ -65,3 +65,8 @@
     color: #777;
 }
 
+/* fix for bootstrap modal dialog (issue 9886) */
+body.modal-open {
+    overflow:inherit;
+    padding-right:inherit !important;
+}

@@ -55,7 +55,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr class="text--unselectable" ng-class="{'hover--highlight' : user.active, 'table_row--inactive' : !user.active}" ng-repeat="user in vm.userList" ng-click="vm.selectOneByClick(user)" ng-dblclick="vm.edit(user)">
+    <tr class="text--unselectable" ng-class="{'hover--highlight' : user.active, 'table_row--inactive' : !user.active}" ng-repeat="user in vm.userList" ng-dblclick="vm.edit(user)">
         <td><input type="checkbox" ng-model="user.checked" ng-click="vm.selectOne(user, $event)"></td>
         <td>{{vm.filter.from + ($index + 1)}}</td>
         <td>{{user.firstName}}</td>
