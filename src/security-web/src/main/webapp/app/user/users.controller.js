@@ -10,7 +10,7 @@ angular.module('app').controller('UsersController', ["$location", "$uibModal", "
             vm.roles = response.data;
         });
 
-        var defaultPageSize = 5;
+        var defaultPageSize = 10;
 
         vm.filter = {
             from: 0,

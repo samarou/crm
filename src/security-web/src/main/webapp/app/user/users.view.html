@@ -1,4 +1,4 @@
-<div class="form-group-lg">
+<div class="form-group">
     <div class="col-md-7">
         <span>&nbsp;</span>
         <input class="form-control" ng-model="vm.filter.text" ng-keyup="vm.keyUp()" ng-keydown="vm.keyDown()"
@@ -19,17 +19,17 @@
         </select>
     </div>
     <div class="col-md-1">
-        <label for="active" class="text-info">Active</label>
-        <input id="active" type="checkbox" class="form-control" ng-change="vm.find(vm.filter)"
+        <span class="text-info">Active</span>
+        <input type="checkbox" class="form-control" ng-change="vm.find(vm.filter)"
                ng-model="vm.filter.active" ng-checked="vm.filter.active">
     </div>
 </div>
 <table class="table table--fixed">
     <caption>
         Users
-        <div ng-click="vm.activate(false)"><span title="Deactivate User(s)" class="block--spacing hover--pointer glyphicon glyphicon-thumbs-down pull-right" ></span></div>
-        <div ng-click="vm.activate(true)"><span title="Activate User(s)" class="block--spacing hover--pointer glyphicon glyphicon-thumbs-up pull-right" ></span></div>
-        <div ng-click="vm.add()"><span title="Add New User" class="block--spacing hover--pointer glyphicon glyphicon-plus pull-right" ></span></div>
+        <span ng-click="vm.activate(false)" title="Deactivate User(s)" class="block--spacing hover--pointer glyphicon glyphicon-thumbs-down pull-right" ></span>
+        <span ng-click="vm.activate(true)" title="Activate User(s)" class="block--spacing hover--pointer glyphicon glyphicon-thumbs-up pull-right" ></span>
+        <span ng-click="vm.add()" title="Add New User" class="block--spacing hover--pointer glyphicon glyphicon-plus pull-right" ></span>
     </caption>
     <thead class="table__head--filters">
     <tr>

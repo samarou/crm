@@ -26,12 +26,12 @@
 }
 
 .table_row--inactive {
-    background-color: #e3e3e3;
+    background-color: #fff6f4;
     cursor: pointer;
 }
 
 .table_row--inactive:hover {
-    background-color: #d3d3d3;
+    background-color: #f3eae9;
 }
 
 .list--scrollable {
