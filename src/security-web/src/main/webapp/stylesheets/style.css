@@ -2,38 +2,46 @@
     cursor: pointer;
 }
 
-.spacing--hor-small {
-    margin: 0 15px;
-}
-
-.table__head--filters tr td:hover {
+.hover--highlight:hover {
     cursor: pointer;
     background-color: #eeeeee;
 }
 
-.table__head-filter--active {
-    background-color: #eeeeee;
+.block--narrow {
+    margin: 10px 15px;
+    width: 50px;
 }
 
-.table__row--active {
-    cursor: pointer;
+.block--center {
+    margin: 0 auto;
 }
 
-.table__row--active:hover {
-    background-color: #f3f3f3;
+.table--fixed__wrapper {
+    min-height: 500px;
+}
+
+.table--fixed {
+    table-layout: fixed;
+    word-wrap: break-word;
 }
 
 .table_row--inactive {
     background-color: #e3e3e3;
-    cursor: pointer;
 }
 
 .table_row--inactive:hover {
     background-color: #d3d3d3;
+    cursor: pointer;
 }
 
 .list--scrollable {
-    max-height: 100px;
+    font-size: 14px;
+    color: #555;
+    padding: 3px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    min-height: 118px;
+    max-height: 118px;
     overflow-y: auto;
 }
 
@@ -47,7 +55,13 @@
                                   not supported by any browser */
 }
 
+.text--summary {
+    float: right;
+    color: #777;
+}
+
 .navbar-default .navbar-brand:hover,
 .navbar-default .navbar-brand:focus {
     color: #777;
 }
+
