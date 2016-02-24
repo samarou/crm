@@ -86,7 +86,9 @@ angular.module('app').controller('UsersController', ["$location", "$uibModal", "
         };
 
         vm.selectOne = function (user, $event) {
-            vm.totalSelected += user.checked ? 1 : -1;
+            vm.totalSelected = vm.userList.reduce(function (n, user) {
+                return user.checked ? ++n : n;
+            }, 0);
             if (user.checked && !vm.isSelectedAll) {
                 vm.isSelectedAll = vm.totalSelected === vm.userList.length;
             } else if (vm.isSelectedAll) {
@@ -176,7 +178,7 @@ angular.module('app').controller('UsersController', ["$location", "$uibModal", "
                     }
                 }
             });
-            vm.find(vm.filter);
+            vm.selectAll(false);
         };
 
         var keyTimer;

@@ -2,33 +2,27 @@
     cursor: pointer;
 }
 
+.hover--highlight:hover {
+    cursor: pointer;
+    background-color: #eeeeee;
+}
+
 .block--spacing {
     margin: 10px 15px;
+}
+
+.block--narrow {
+    width: 50px;
 }
 
 .block--center {
     margin: 0 auto;
 }
 
-.block--height {
-    min-height: 400px;
-}
-
-.table__head--filters tr td:hover {
-    cursor: pointer;
-    background-color: #eeeeee;
-}
-
-.table__head-filter--active {
-    background-color: #eeeeee;
-}
-
-.table__row--active {
-    cursor: pointer;
-}
-
-.table__row--active:hover {
-    background-color: #f3f3f3;
+.table--fixed {
+    min-height: 500px;
+    table-layout: fixed;
+    word-wrap: break-word;
 }
 
 .table_row--inactive {
