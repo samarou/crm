@@ -76,12 +76,10 @@ angular.module('app').controller('UsersController', ["$location", "$uibModal", "
             });
         };
 
-        vm.selectOne = function (user) {
-            var selectedAll = true;
-            vm.userList.forEach(function (user) {
-                selectedAll = selectedAll && user.checked;
+        vm.selectOne = function () {
+            vm.isSelectedAll = vm.userList.every(function (user) {
+                return user.checked;
             });
-            vm.isSelectedAll = selectedAll;
         };
 
         vm.edit = function (user) {
