@@ -1,10 +1,17 @@
-angular.module('app').controller('UsersController', ["$location", "UserService", "GroupService", "RoleService",
-    function ($location, UserService, GroupService, RoleService) {
+angular.module('app').controller('UsersController', ["$location", "$uibModal", "UserService", "GroupService", "RoleService", "Collections",
+    function ($location, $uibModal, UserService, GroupService, RoleService, Collections) {
         "use strict";
+        var vm = this;
+
+        GroupService.fetchAll().then(function (response) {
+            vm.groups = response.data;
+        });
+        RoleService.fetchAll().then(function (response) {
+            vm.roles = response.data;
+        });
 
         var defaultPageSize = 5;
 
-        var vm = this;
         vm.filter = {
             from: 0,
             count: defaultPageSize,//todo: extract to config
@@ -85,13 +92,73 @@ angular.module('app').controller('UsersController', ["$location", "UserService",
             if (!!$event) $event.stopPropagation();//to exclude raising event of clicking by row(it's parent element)
         };
 
-        vm.edit = function (id) {
-            $location.path("/users/" + id);
+        vm.edit = function (user) {
+            checkGroupsAndRolesWhichUserHas(user);
+            showDialog({
+                title: "Editing User",
+                okTitle: "Update",
+                groups: vm.groups,
+                roles: vm.roles,
+                user: angular.copy(user)
+            });
         };
 
         vm.add = function () {
-            $location.path("/users/new");
+            checkGroupsAndRolesWhichUserHas({});
+            showDialog({
+                title: "Create User",
+                okTitle: "Update",
+                groups: vm.groups,
+                roles: vm.roles,
+                user: {}
+            });
         };
+
+        function update(user) {
+            initUserWithCheckedGroupsAndRoles(user);
+            if (user.id) {
+                var originUser = vm.userList.find(function (u) {
+                    return u.id === user.id
+                });
+                angular.copy(user, originUser);
+                UserService.update(user);
+            } else {
+                UserService.create(user, function (response) {
+                    user.id = response.data;
+                    vm.userList.push(user);
+                });
+            }
+        }
+
+        function showDialog(model) {
+            var modalInstance = $uibModal.open({
+                windowTemplateUrl: '/app/common/modal.dialog.template.html',
+                templateUrl: 'app/user/user.modal.view.html',
+                controller: 'ModalDialogController',
+                resolve: {model: model}
+            });
+            modalInstance.result.then(function (model) {
+                update(model.user);
+            });
+        }
+
+        function checkGroupsAndRolesWhichUserHas(user) {
+            vm.groups.forEach(function (group) {
+                group.checked = !!Collections.find(group, user.groups);
+            });
+            vm.roles.forEach(function (role) {
+                role.checked = !!Collections.find(role, user.roles);
+            });
+        }
+
+        function initUserWithCheckedGroupsAndRoles(user){
+            user.groups = vm.groups.filter(function (group) {
+                return group.checked;
+            });
+            user.roles = vm.roles.filter(function (role) {
+                return role.checked;
+            });
+        }
 
         vm.activate = function (newState) {
             vm.userList.forEach(function (user) {
@@ -114,11 +181,4 @@ angular.module('app').controller('UsersController', ["$location", "UserService",
                 vm.find(vm.filter);
             }, 500);
         };
-
-        GroupService.fetchAll().then(function (response) {
-            vm.groups = response.data;
-        });
-        RoleService.fetchAll().then(function (response) {
-            vm.roles = response.data;
-        });
     }]);

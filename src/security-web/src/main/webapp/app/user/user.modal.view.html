@@ -1,0 +1,51 @@
+<form class="form">
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label for="lastName">First name</label>
+            <input id="lastName" class="form-control" name="lastName" ng-model="user.lastName">
+        </div>
+        <div class="form-group col-md-6">
+            <label for="firstName">Last name</label>
+            <input id="firstName" class="form-control" name="firstName" ng-model="user.firstName">
+        </div>
+    </div>
+    <div class="row" ng-hide="!!user.id">
+        <div class="form-group col-md-6">
+            <label for="userName">User name</label>
+            <input id="userName" class="form-control" name="userName" ng-model="user.userName">
+        </div>
+        <div class="form-group col-md-6">
+            <label for="password">Password</label>
+            <input id="password" class="form-control" name="password" ng-model="user.password">
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-10">
+            <label for="email">Email</label>
+            <input type="email" id="email" class="form-control" name="email" ng-model="user.email">
+        </div>
+        <div class="form-group col-md-2">
+            <label for="active">Active</label>
+            <input id="active" type="checkbox" class="form-control" ng-model="user.active"
+                   ng-checked="user.active">
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label for="groups">Groups</label>
+            <ul id="groups" class="list-unstyled list--scrollable">
+                <li ng-repeat="group in groups">
+                    <input type="checkbox" ng-model="group.checked" ng-checked="group.checked">{{group.name}}
+                </li>
+            </ul>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="roles">Roles</label>
+            <ul id="roles" class="list-unstyled list--scrollable">
+                <li ng-repeat="role in roles">
+                    <input type="checkbox" ng-model="role.checked" ng-checked="role.checked" }}>{{role.name}}
+                </li>
+            </ul>
+        </div>
+    </div>
+</form>

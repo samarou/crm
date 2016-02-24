@@ -32,6 +32,11 @@
     background-color: #d3d3d3;
 }
 
+.list--scrollable {
+    max-height: 100px;
+    overflow-y: auto;
+}
+
 .text--unselectable {
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none;   /* Chrome/Safari/Opera */

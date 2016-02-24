@@ -55,14 +55,14 @@
     </tr>
     </thead>
     <tbody>
-    <tr class="text--unselectable" ng-class="{'table__row--active' : user.active, 'table_row--inactive' : !user.active}" ng-repeat="user in vm.userList" ng-click="vm.selectOneByClick(user)" ng-dblclick="vm.edit(user.id)">
+    <tr class="text--unselectable" ng-class="{'table__row--active' : user.active, 'table_row--inactive' : !user.active}" ng-repeat="user in vm.userList" ng-click="vm.selectOneByClick(user)" ng-dblclick="vm.edit(user)">
         <td><input type="checkbox" ng-model="user.checked" ng-click="vm.selectOne(user, $event)"></td>
         <td>{{vm.filter.from + ($index + 1)}}</td>
         <td>{{user.firstName}}</td>
         <td>{{user.lastName}}</td>
         <td>{{user.userName}}</td>
         <td>{{user.email}}</td>
-        <td><a href="#/users/{{user.id}}" title="Edit user"><span class="btn glyphicon glyphicon-edit"></span></a></td>
+        <td><span title="Edit user" class="btn glyphicon glyphicon-edit" ng-click="vm.edit(user)"></span></td>
     </tr>
     </tbody>
 </table>
