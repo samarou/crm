@@ -9,8 +9,8 @@
                   ng-model="role.description"></textarea>
     </div>
     <div class="form-group">
-        <label>Privileges</label>
-        <ul class="list-unstyled list--scrollable">
+        <label for="privileges">Privileges</label>
+        <ul id="privileges" class="list-unstyled list--scrollable">
             <li ng-repeat="privilege in privileges">
                 <div class="col-md-1"><input type="checkbox" ng-model="privilege.checked" ng-checked="privilege.checked"></div>
                 <div class="col-md-7">{{privilege.objectTypeName}}</div>

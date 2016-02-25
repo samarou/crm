@@ -1,8 +1,5 @@
 package com.itechart.security.web.model.dto;
 
-import com.itechart.security.model.persistent.Group;
-import com.itechart.security.model.persistent.Role;
-
 import java.util.Set;
 
 /**
@@ -16,8 +13,8 @@ public class UserDto {
     private String firstName;
     private String lastName;
     private boolean active;
-    private Set<Role> roles;
-    private Set<Group> groups;
+    private Set<RoleDto> roles;
+    private Set<GroupDto> groups;
 
     public Long getId() {
         return id;
@@ -75,19 +72,19 @@ public class UserDto {
         this.active = active;
     }
 
-    public Set<Role> getRoles() {
+    public Set<RoleDto> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(Set<RoleDto> roles) {
         this.roles = roles;
     }
 
-    public Set<Group> getGroups() {
+    public Set<GroupDto> getGroups() {
         return groups;
     }
 
-    public void setGroups(Set<Group> groups) {
+    public void setGroups(Set<GroupDto> groups) {
         this.groups = groups;
     }
 }

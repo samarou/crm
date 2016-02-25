@@ -44,13 +44,12 @@ angular.module("app").controller("RolesController", ["RoleService", "$uibModal",
                     return r.id === role.id
                 });
                 angular.copy(role, originGroup);
-                //RoleService.update(role);
+                RoleService.update(role);
             } else {
-                vm.roleList.push(role);
-                //RoleService.create(role).then(function (response) {
-                //    role.id = response.data;
-                //    vm.roleList.push(role);
-                //});
+                RoleService.create(role).then(function (response) {
+                    role.id = response.data;
+                    vm.roleList.push(role);
+                });
             }
         }
 
@@ -63,7 +62,7 @@ angular.module("app").controller("RolesController", ["RoleService", "$uibModal",
         function showDialog(model) {
             var modalInstance = $uibModal.open({
                 windowTemplateUrl: '/app/common/modal.dialog.template.html',
-                templateUrl: '/app/role/role.modal.view.html',
+                templateUrl: '/app/role/role.view.modal.html',
                 controller: 'ModalDialogController',
                 resolve: {model: model}
             });
