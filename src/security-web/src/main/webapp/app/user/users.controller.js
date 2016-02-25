@@ -10,7 +10,7 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
             vm.roles = response.data;
         });
 
-        var pageSize = 8;
+        var pageSize = 10;
 
         vm.filter = {
             from: 0,
@@ -76,11 +76,10 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
             });
         };
 
-        vm.selectOne = function ($event) {
+        vm.selectOne = function () {
             vm.isSelectedAll = vm.userList.every(function (user) {
                 return user.checked;
             });
-            $event.stopPropagation();
         };
 
         vm.edit = function (user) {
