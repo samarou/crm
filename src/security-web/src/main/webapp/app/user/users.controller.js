@@ -76,11 +76,10 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
             });
         };
 
-        vm.selectOne = function ($event) {
+        vm.selectOne = function () {
             vm.isSelectedAll = vm.userList.every(function (user) {
                 return user.checked;
             });
-            $event.stopPropagation();
         };
 
         vm.edit = function (user) {
@@ -144,7 +143,7 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
             });
         }
 
-        function initUserWithCheckedGroupsAndRoles(user){
+        function initUserWithCheckedGroupsAndRoles(user) {
             user.groups = vm.groups.filter(function (group) {
                 return group.checked;
             });
