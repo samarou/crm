@@ -1,51 +1,74 @@
 /**
  * @author yauheni.putsykovich
  */
-angular.module("app").controller("RolesController", ["RoleService",
-    function (RoleService) {
+angular.module("app").controller("RolesController", ["RoleService", "$uibModal", "PrivilegeService", "Collections",
+    function (RoleService, $uibModal, PrivilegeService, Collections) {
         "use strict";
+
         var vm = this;
+
         RoleService.fetchAll().then(function (response) {
             vm.roleList = response.data;
         });
-        vm.partials = {
-            roleModalView: "/app/role/role.modal.view.html"
-        };
-        //vm.role - it's transfer object to pass data to modal and back
+
+        PrivilegeService.fetchAll().then(function (response) {
+            vm.privileges = response.data;
+        });
+
         vm.edit = function (role) {
-            vm.role = {};
-            angular.copy(role, vm.role);
-            vm.viewTitle = "Editing Role";
-            vm.actionTitle = "Update";
-            vm.action = update;
-        };
-        vm.create = function () {
-            vm.role = {};
-            vm.viewTitle = "Create a New Role";
-            vm.actionTitle = "Add";
-            vm.action = add;
+            checkPrivilegesOfRole(role);
+            showDialog({
+                title: "Editing Role",
+                okTitle: "Update",
+                privileges: vm.privileges,
+                role: angular.copy(role)
+            });
         };
 
-        function add(role) {
-            RoleService.create(role, function (response) {
-                role.id = response.data;
-                vm.roleList.push(role);
+        vm.create = function () {
+            checkPrivilegesOfRole({});
+            showDialog({
+                title: "Create a New Role",
+                okTitle: "Add",
+                privileges: vm.privileges,
+                role: {}
             });
-            closeModalView();
-        }
+        };
 
         function update(role) {
-            var originRole = vm.roleList.find(function (r) {
-                return r.id === role.id
+            role.privileges = vm.privileges.filter(function (privilege) {
+                return privilege.checked;
             });
-            angular.copy(role, originRole);
-            RoleService.update(role, function () {
-                
-            });
-            closeModalView();
+            if (role.id) {
+                var originGroup = vm.roleList.find(function (r) {
+                    return r.id === role.id
+                });
+                angular.copy(role, originGroup);
+                //RoleService.update(role);
+            } else {
+                vm.roleList.push(role);
+                //RoleService.create(role).then(function (response) {
+                //    role.id = response.data;
+                //    vm.roleList.push(role);
+                //});
+            }
         }
 
-        function closeModalView() {
-            $("#modal-close-button").trigger("click");//todo: need improve(find other solution)
+        function checkPrivilegesOfRole(role) {
+            vm.privileges.forEach(function (privilege) {
+                privilege.checked = !!Collections.find(privilege, role.privileges);
+            });
+        }
+
+        function showDialog(model) {
+            var modalInstance = $uibModal.open({
+                windowTemplateUrl: '/app/common/modal.dialog.template.html',
+                templateUrl: '/app/role/role.modal.view.html',
+                controller: 'ModalDialogController',
+                resolve: {model: model}
+            });
+            modalInstance.result.then(function (model) {
+                update(model.role);
+            });
         }
     }]);

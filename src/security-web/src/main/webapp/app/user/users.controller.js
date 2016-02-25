@@ -144,7 +144,7 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
             });
         }
 
-        function initUserWithCheckedGroupsAndRoles(user){
+        function initUserWithCheckedGroupsAndRoles(user) {
             user.groups = vm.groups.filter(function (group) {
                 return group.checked;
             });

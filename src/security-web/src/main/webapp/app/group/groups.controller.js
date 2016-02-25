@@ -53,6 +53,5 @@ angular.module("app").controller("GroupsController", ['$scope', "$uibModal", "Gr
                 update(model.group);
             });
         }
-
     }
 ]);
