@@ -76,10 +76,11 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
             });
         };
 
-        vm.selectOne = function () {
+        vm.selectOne = function ($event) {
             vm.isSelectedAll = vm.userList.every(function (user) {
                 return user.checked;
             });
+            $event.stopPropagation();
         };
 
         vm.edit = function (user) {

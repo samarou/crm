@@ -1,36 +1,40 @@
-<div class="form-group-lg">
-    <div class="col-md-7">
-        <span>&nbsp;</span>
-        <input class="form-control" ng-model="vm.filter.text" ng-keyup="vm.keyUp()" ng-keydown="vm.keyDown()"
-               placeholder="Find users by username, email...">
-    </div>
-    <div class="col-md-2">
-        <span class="text-info">Group</span>
-        <select class="form-control" ng-change="vm.find(vm.filter)" ng-model="vm.filter.groupId">
-            <option value="">Any</option>
-            <option ng-repeat="group in vm.groups" value="{{group.id}}">{{group.name}}</option>
-        </select>
-    </div>
-    <div class="col-md-2">
-        <span class="text-info">Role</span>
-        <select class="form-control" ng-change="vm.find(vm.filter)" ng-model="vm.filter.roleId">
-            <option value="">Any</option>
-            <option ng-repeat="role in vm.roles" value="{{role.id}}">{{role.name}}</option>
-        </select>
-    </div>
-    <div class="col-md-1">
-        <span class="text-info">Active</span>
-        <input type="checkbox" class="form-control" ng-change="vm.find(vm.filter)"
-               ng-model="vm.filter.active" ng-checked="vm.filter.active">
+<div class="row">
+    <div class="form-group-lg">
+        <div class="col-md-7">
+            <span>&nbsp;</span>
+            <input class="form-control" ng-model="vm.filter.text" ng-keyup="vm.keyUp()" ng-keydown="vm.keyDown()"
+                   placeholder="Find users by username, email...">
+        </div>
+        <div class="col-md-2">
+            <span class="text-info">Group</span>
+            <select class="form-control" ng-change="vm.find(vm.filter)" ng-model="vm.filter.groupId">
+                <option value="">Any</option>
+                <option ng-repeat="group in vm.groups" value="{{group.id}}">{{group.name}}</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <span class="text-info">Role</span>
+            <select class="form-control" ng-change="vm.find(vm.filter)" ng-model="vm.filter.roleId">
+                <option value="">Any</option>
+                <option ng-repeat="role in vm.roles" value="{{role.id}}">{{role.name}}</option>
+            </select>
+        </div>
+        <div class="col-md-1">
+            <span class="text-info">Active</span>
+            <input type="checkbox" class="form-control" ng-change="vm.find(vm.filter)"
+                   ng-model="vm.filter.active" ng-checked="vm.filter.active">
+        </div>
     </div>
 </div>
 <div class="table--fixed__wrapper">
     <table class="table table--fixed text--unselectable">
         <caption>
             Users
-            <div ng-click="vm.activate(false)"><span title="Deactivate User(s)" class="block--narrow hover--pointer glyphicon glyphicon-thumbs-down pull-right" ></span></div>
-            <div ng-click="vm.activate(true)"><span title="Activate User(s)" class="block--narrow hover--pointer glyphicon glyphicon-thumbs-up pull-right" ></span></div>
-            <div ng-click="vm.add()"><span title="Add New User" class="block--narrow hover--pointer glyphicon glyphicon-plus pull-right" ></span></div>
+            <div class="list-inline pull-right">
+                <li><span ng-click="vm.add()" title="Add New User" class="hover--pointer glyphicon glyphicon-plus" ></span></li>
+                <li><span ng-click="vm.activate(true)" title="Activate User(s)" class="hover--pointer glyphicon glyphicon-thumbs-up" ></span></li>
+                <li><span ng-click="vm.activate(false)" title="Deactivate User(s)" class="hover--pointer glyphicon glyphicon-thumbs-down" ></span></li>
+            </div>
         </caption>
         <thead>
         <tr>
@@ -56,8 +60,8 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-class="{'hover--highlight' : user.active, 'table_row--inactive' : !user.active}" ng-repeat="user in vm.userList" ng-click="vm.selectOneByClick(user)" ng-dblclick="vm.edit(user)">
-            <td><input type="checkbox" ng-model="user.checked" ng-click="vm.selectOne(user, $event)"></td>
+        <tr ng-class="{'hover--highlight' : user.active, 'table_row--inactive' : !user.active}" ng-repeat="user in vm.userList" ng-dblclick="vm.edit(user)">
+            <td><input type="checkbox" ng-model="user.checked" ng-click="vm.selectOne($event)"></td>
             <td>{{vm.filter.from + ($index + 1)}}</td>
             <td>{{user.firstName}}</td>
             <td>{{user.lastName}}</td>
