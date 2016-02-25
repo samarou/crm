@@ -1,4 +1,4 @@
-<div class="form-group-lg">
+<div class="form-group">
     <div class="col-md-7">
         <span>&nbsp;</span>
         <input class="form-control" ng-model="vm.filter.text" ng-keyup="vm.keyUp()" ng-keydown="vm.keyDown()"
@@ -28,9 +28,9 @@
     <table class="table table--fixed text--unselectable">
         <caption>
             Users
-            <div ng-click="vm.activate(false)"><span title="Deactivate User(s)" class="block--narrow hover--pointer glyphicon glyphicon-thumbs-down pull-right" ></span></div>
-            <div ng-click="vm.activate(true)"><span title="Activate User(s)" class="block--narrow hover--pointer glyphicon glyphicon-thumbs-up pull-right" ></span></div>
-            <div ng-click="vm.add()"><span title="Add New User" class="block--narrow hover--pointer glyphicon glyphicon-plus pull-right" ></span></div>
+            <span ng-click="vm.activate(false)" title="Deactivate User(s)" class="block--narrow hover--pointer glyphicon glyphicon-thumbs-down pull-right"></span>
+            <span ng-click="vm.activate(true)" title="Activate User(s)" class="block--narrow hover--pointer glyphicon glyphicon-thumbs-up pull-right"></span>
+            <span ng-click="vm.add()" title="Add New User" class="block--narrow hover--pointer glyphicon glyphicon-plus pull-right"></span>
         </caption>
         <thead>
         <tr>
@@ -56,8 +56,8 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-class="{'hover--highlight' : user.active, 'table_row--inactive' : !user.active}" ng-repeat="user in vm.userList" ng-click="vm.selectOneByClick(user)" ng-dblclick="vm.edit(user)">
-            <td><input type="checkbox" ng-model="user.checked" ng-click="vm.selectOne(user, $event)"></td>
+        <tr ng-class="{'hover--highlight' : user.active, 'table_row--inactive' : !user.active}" ng-repeat="user in vm.userList" ng-dblclick="vm.edit(user)">
+            <td><input type="checkbox" ng-model="user.checked" ng-click="vm.selectOne()" ng-dblclick="$event.stopPropagation()"></td>
             <td>{{vm.filter.from + ($index + 1)}}</td>
             <td>{{user.firstName}}</td>
             <td>{{user.lastName}}</td>
@@ -69,7 +69,7 @@
     </table>
 </div>
 <span class="text--summary" ng-hide="vm.paging.totalCount === 0">Total: {{vm.paging.totalCount}}</span>
-<div class="col-md-2 col-md-offset-5">
+<div class="col-md-4 col-md-offset-5">
     <uib-pagination class="pagination-sm" ng-change="vm.paging.onPageChanged()" ng-model="vm.paging.currentPage"
                     total-items="vm.paging.totalCount" items-per-page="vm.paging.itemsPerPage" max-size="vm.paging.visiblePages"
                     boundary-link-numbers="true" rotate="false">
