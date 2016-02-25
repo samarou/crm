@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.itechart.security.web.model.dto.Converter.convert;
 import static com.itechart.security.web.model.dto.Converter.convertGroups;
@@ -25,8 +26,8 @@ public class GroupController {
     private GroupService groupService;
 
     @RequestMapping("/groups")
-    public List<GroupDto> getGroups() {
-        return convertGroups(groupService.getGroups());
+    public Set<GroupDto> getGroups() {
+        return convertGroups(new HashSet<>(groupService.getGroups()));
     }
 
     @RequestMapping(value = "/groups", method = POST)

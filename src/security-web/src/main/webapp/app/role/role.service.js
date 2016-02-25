@@ -6,12 +6,12 @@ angular.module("app").factory("RoleService", ["$http", function ($http) {
         return $http.get("/rest/roles");
     };
 
-    this.create = function (group) {
-        $http.post("/rest/roles", group);
+    this.create = function (role) {
+        return $http.post("/rest/roles", role);
     };
 
-    this.update = function (group) {
-        $http.put("/rest/roles", group);
+    this.update = function (role) {
+        return $http.put("/rest/roles", role);
     };
 
     return this;
