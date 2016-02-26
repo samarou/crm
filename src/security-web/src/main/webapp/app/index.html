@@ -9,20 +9,28 @@
 <div class="container-fluid">
     <header>
         <nav class="navbar navbar-default">
-            <div class="col-md-9">
+            <div class="container-fluid">
                 <div class="navbar-header">
-                    <span class="navbar-brand">Security Management</span>
+                    <a class="navbar-brand" href="#">Security Management</a>
                 </div>
-                <ul class="nav navbar-nav" ng-show="vm.isLoggedUser()">
-                    <li ng-class="{'active' : vm.isActive('/user')}"><a href="#/users">Users</a></li>
-                    <li ng-class="{'active' : vm.isActive('/group')}"><a href="#/groups">Groups</a></li>
-                    <li ng-class="{'active' : vm.isActive('/role')}"><a href="#/roles">Roles</a></li>
-                </ul>
-            </div>
-            <div class="col-md-3" ng-show="vm.isLoggedUser()">
-                <a class="btn btn-info navbar-btn pull-right" href="#" ng-click="vm.logout();">Logout</a>
-                <span class="navbar-text pull-right" ng-cloak>User: <strong>{{vm.getUserName()}}</strong> </span>
-            </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="#/customers">Customers</a></li>
+                        <li class="dropdown" ng-show="vm.isLoggedUser()">
+                            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administrating<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li ng-class="{'active' : vm.isActive('/user')}"><a href="#/users">Users</a></li>
+                                <li ng-class="{'active' : vm.isActive('/group')}"><a href="#/groups">Groups</a></li>
+                                <li ng-class="{'active' : vm.isActive('/role')}"><a href="#/roles">Roles</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="nav navbar-nav navbar-right" ng-show="vm.isLoggedUser()">
+                        <a class="btn btn-info navbar-btn pull-right" href="#" ng-click="vm.logout();">Logout</a>
+                        <span class="navbar-text pull-right" ng-cloak>User: <strong>{{vm.getUserName()}}</strong> </span>
+                    </div>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
         </nav>
     </header>
     <div class="col-md-9 col-md-offset-1">
@@ -31,6 +39,7 @@
 </div>
 </body>
 <script src="../bower_components/jquery/dist/jquery.js"></script>
+<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="../bower_components/angular/angular.js"></script>
 <script src="../bower_components/angular-route/angular-route.min.js"></script>
 <script src="../bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.min.js"></script>
