@@ -22,6 +22,7 @@ import java.util.Base64;
  * @author andrei.samarou
  */
 @Service
+//todo move to jwt
 public class TokenService {
 
     private static final Logger logger = LoggerFactory.getLogger(TokenService.class);
