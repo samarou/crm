@@ -2,12 +2,16 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:sec="http://www.springframework.org/schema/security"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jndi="http://www.springframework.org/schema/jee"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 		  http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
-		  http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+		  http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		  http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
 
     <import resource="classpath*:securityServicesContext.xml"/>
     <import resource="classpath*:businessServicesContext.xml"/>
+
+    <jndi:jndi-lookup id="mailSession" jndi-name="${mail.session.jndi}"/>
 
     <sec:http pattern="/rest/login" security="none"/>
 
@@ -26,16 +30,17 @@
 
     <bean id="unauthorizedEntryPoint" class="com.itechart.security.web.security.UnauthorizedEntryPoint"/>
 
-    <bean id="tokenAuthenticationFilter" class="com.itechart.security.web.security.token.TokenAuthenticationFilter">
-        <property name="authenticationManager" ref="authenticationManager"/>
-        <property name="tokenService" ref="tokenService"/>
-    </bean>
-
     <bean id="daoAuthenticationProvider"
           class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
         <property name="userDetailsService" ref="userDetailsService"/>
         <property name="passwordEncoder" ref="passwordEncoder"/>
         <property name="userCache" ref="userCache"/>
+    </bean>
+
+
+    <bean id="tokenAuthenticationFilter" class="com.itechart.security.web.security.token.TokenAuthenticationFilter">
+        <property name="authenticationManager" ref="authenticationManager"/>
+        <property name="tokenService" ref="tokenService"/>
     </bean>
 
     <bean id="tokenAuthenticationProvider" class="com.itechart.security.web.security.token.TokenAuthenticationProvider">
@@ -47,6 +52,41 @@
     <bean id="tokenService" class="com.itechart.security.web.security.token.TokenService">
         <property name="tokenTimeToLive" value="${auth.token.timeToLive}"/>
     </bean>
+
+
+    <bean id="notificationService" class="com.itechart.security.web.service.impl.NotificationServiceImpl">
+        <property name="mailService" ref="mailService"/>
+        <property name="notificationProvider" ref="notificationProvider"/>
+        <property name="taskExecutor" ref="mailTaskExecutor"/>
+    </bean>
+
+    <bean id="mailService" class="com.itechart.security.web.service.impl.MailServiceImpl">
+        <property name="mailSender" ref="mailSender"/>
+    </bean>
+
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="session" ref="mailSession"/>
+        <property name="defaultEncoding" value="${mail.encoding}"/>
+    </bean>
+
+    <bean id="mailTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="maxPoolSize" value="${mail.sender.threads.max_count}"/>
+    </bean>
+
+    <bean id="notificationProvider" class="com.itechart.security.web.service.impl.NotificationProvider">
+        <property name="freemarkerConfig" ref="freemarkerConfig"/>
+        <property name="subjectSource" ref="notificationSubjectSource"/>
+    </bean>
+
+    <bean id="notificationSubjectSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="${notification.template.dir}/subject"/>
+    </bean>
+
+    <bean id="freemarkerConfig" class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
+        <property name="defaultEncoding" value="${notification.template.encoding}"/>
+        <property name="templateLoaderPath" value="classpath:/${notification.template.dir}"/>
+    </bean>
+
 
     <bean id="userCache" class="org.springframework.security.core.userdetails.cache.EhCacheBasedUserCache">
         <property name="cache">
@@ -62,6 +102,7 @@
         <property name="acceptExisting" value="true"/>
     </bean>
 
-    <context:property-placeholder location="classpath:datasource.properties,classpath:application.properties" order="-1"/>
+    <context:property-placeholder location="classpath:datasource.properties,classpath:application.properties"
+                                  order="-1"/>
 
 </beans>
