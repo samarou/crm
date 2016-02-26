@@ -1,23 +1,22 @@
-/**
- * @author yauheni.putsykovich
- */
-
 angular.module("app").service("Collections", [function () {
     "use strict";
 
-    var Comparators = {
-        BY_ID: function comparator(a, b) {
-            return a.id === b.id;
-        },
-        COMPARE_TO: function (a, b) {
-            return a > b ? 1 : a === b ? 0 : -1;
+    var self = this;
+
+    self.byId = function (a, b) {
+        return a.id === b.id;
+    };
+    self.compareTo = function (a, b) {
+        return a > b ? 1 : a === b ? 0 : -1;
+    };
+    self.byProperty = function (propertyName) {
+        return function (a, b) {
+            return self.compareTo(a[propertyName], b[propertyName]);
         }
     };
 
-    this.Comparators = Comparators;
-
-    this.difference = function difference(from, what, comparator) {
-        comparator = comparator || Comparators.BY_ID;
+    self.difference = function difference(from, what, comparator) {
+        comparator = comparator || self.byId;
         if (!from) return what;
         if (!what) return from;
         return from.filter(function (f) {
@@ -27,17 +26,16 @@ angular.module("app").service("Collections", [function () {
         })
     };
 
-    /* property is object with name of property(name) and order of sorting(asc): {name: 'title', asc: true } */
-    this.sort = function sort(collection, property, comparator) {
-        comparator = comparator || Comparators.COMPARE_TO;
+    self.sort = function sort(collection, asc, comparator) {
+        comparator = comparator || self.compareTo;
         collection.sort(function (a, b) {
-            return (property.asc ? 1 : -1) * comparator(a, b);
+            return (asc ? 1 : -1) * comparator(a, b);
         });
     };
 
-    this.find = function find(item, collection, comparator) {
+    self.find = function find(item, collection, comparator) {
         if (!collection || !item) return false;
-        comparator = comparator || Comparators.BY_ID;
+        comparator = comparator || self.byId;
         var foundItem = collection.find(function (collectionItem) {
             return comparator(item, collectionItem);
         });
@@ -45,8 +43,8 @@ angular.module("app").service("Collections", [function () {
         return foundItem;
     };
 
-    this.indexOf = function indexOf(item, collection, comparator) {
-        comparator = comparator || Comparators.BY_ID;
+    self.indexOf = function indexOf(item, collection, comparator) {
+        comparator = comparator || self.byId;
         var index = -1;
         collection.find(function (collectionItem, collectionItemIndex) {
             if (comparator(item, collectionItem)) {
@@ -58,5 +56,5 @@ angular.module("app").service("Collections", [function () {
         return index;
     };
 
-    return this;
+    return self;
 }]);
