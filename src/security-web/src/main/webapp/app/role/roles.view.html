@@ -1,24 +1,43 @@
 <div class="col-md-offset-2 col-md-8">
-    <table class="table">
-        <caption>
-            Roles
-            <span class="glyphicon glyphicon-plus pull-right hover--pointer" title="New Role" ng-click="vm.create()"></span>
-        </caption>
-        <thead>
-        <tr>
-            <td>#</td>
-            <td>Name</td>
-            <td>Description</td>
-            <td></td>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="role in vm.roleList">
-            <td>{{$index + 1}}</td>
-            <td>{{role.name}}</td>
-            <td>{{role.description}}</td>
-            <td><span class="glyphicon glyphicon-edit hover--pointer" title="Edit Role" ng-click="vm.edit(role)"></span></td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="row">
+        <div class="form-group">
+            <div class="col-md-7">
+                <span>&nbsp;</span>
+                <input class="form-control" ng-model="vm.filter.text" ng-keyup="vm.typing.keyUp()" ng-keydown="vm.typing.keyDown()"
+                       placeholder="Search...">
+            </div>
+        </div>
+    </div>
+    <div class="table--fixed__wrapper">
+        <table class="table table--fixed  text--unselectable">
+            <caption>
+                Roles
+                <span class="glyphicon glyphicon-plus pull-right hover--pointer" title="New Role" ng-click="vm.create()"></span>
+            </caption>
+            <thead>
+            <tr>
+                <td class="block--narrow"><input type="checkbox" ng-model="vm.isSelectedAll" ng-click="vm.selectAll(vm.isSelectedAll)"></td>
+                <td class="block--narrow">#</td>
+                <td class="hover--highlight" ng-click="vm.sortBy(vm.sortProperties.name)">
+                    <div class="pull-left col-md-3"><span ng-show="vm.sortProperties.name.enabled" class="glyphicon" ng-class="{'glyphicon-sort-by-attributes' :  vm.sortProperties.name.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.name.asc}"></span></div>
+                    Name
+                </td>
+                <td class="hover--highlight" ng-click="vm.sortBy(vm.sortProperties.description)">
+                    <div class="pull-left col-md-3"><span ng-show="vm.sortProperties.description.enabled" class="glyphicon" ng-class="{'glyphicon-sort-by-attributes' :  vm.sortProperties.description.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.description.asc}"></span></div>
+                    Description
+                </td>
+                <td class="block--narrow"></td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="hover--highlight" ng-repeat="role in vm.roleList" ng-dblclick="vm.edit(role)">
+                <td><input type="checkbox" ng-model="role.checked" ng-click="vm.selectOne()" ng-dblclick="$event.stopPropagation()"></td>
+                <td>{{$index + 1}}</td>
+                <td>{{role.name}}</td>
+                <td>{{role.description}}</td>
+                <td><span class="glyphicon glyphicon-edit hover--pointer" title="Edit Role" ng-click="vm.edit(role)"></span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

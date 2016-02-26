@@ -1,19 +1,65 @@
 /**
  * @author yauheni.putsykovich
  */
-angular.module("app").controller("RolesController", ["RoleService", "$uibModal", "PrivilegeService", "Collections",
-    function (RoleService, $uibModal, PrivilegeService, Collections) {
+angular.module("app").controller("RolesController", ["$uibModal", "$timeout", "RoleService", "PrivilegeService", "Collections", "Util",
+    function ($uibModal, $timeout, RoleService, PrivilegeService, Collections, Util) {
         "use strict";
 
         var vm = this;
 
         RoleService.fetchAll().then(function (response) {
+            vm.originRoleList = response.data;
             vm.roleList = response.data;
         });
 
         PrivilegeService.fetchAll().then(function (response) {
             vm.privileges = response.data;
         });
+
+        vm.filter = {
+            text: null,
+            sortProperty: null,
+            sortAsc: true
+        };
+
+        vm.sortProperties = {
+            name: {name: "name", asc: true, enabled: true},
+            description: {name: "description", asc: true, enabled: false}
+        };
+
+        vm.sortBy = function (property) {
+            angular.forEach(vm.sortProperties, function (sortProperty) {
+                sortProperty.enabled = false;
+            });
+            property.enabled = true;
+            property.asc = !property.asc;
+            vm.filter.sortProperty = property.name;
+            vm.filter.sortAsc = property.asc;
+            vm.find();
+        };
+
+        vm.find = function () {
+            var subs = vm.filter.text || "";
+            subs = subs.toLowerCase();
+            vm.roleList = vm.originRoleList.filter(function (role) {
+                return (role.name.toLowerCase().indexOf(subs) !== -1) ||
+                       (role.description.toLowerCase().indexOf(subs) !== -1);
+            });
+            Collections.sort(vm.roleList, vm.filter.sortAsc, Collections.byProperty(vm.filter.sortProperty));
+        };
+        vm.typing = Util.createDelayTypingListener(vm.find, 500);
+
+        vm.selectAll = function (checked) {
+            vm.roleList.forEach(function (role) {
+                role.checked = checked;
+            });
+        };
+
+        vm.selectOne = function () {
+            vm.isSelectedAll = vm.roleList.every(function (role) {
+                return role.checked;
+            });
+        };
 
         vm.edit = function (role) {
             checkPrivilegesOfRole(role);
@@ -40,15 +86,16 @@ angular.module("app").controller("RolesController", ["RoleService", "$uibModal",
                 return privilege.checked;
             });
             if (role.id) {
-                var originGroup = vm.roleList.find(function (r) {
+                var originRole = vm.originRoleList.find(function (r) {
                     return r.id === role.id
                 });
-                angular.copy(role, originGroup);
-                RoleService.update(role);
+                angular.copy(role, originRole);
+                RoleService.update(role).then(vm.find);
             } else {
                 RoleService.create(role).then(function (response) {
                     role.id = response.data;
-                    vm.roleList.push(role);
+                    vm.originRoleList.push(role);
+                    vm.find();
                 });
             }
         }
@@ -62,7 +109,7 @@ angular.module("app").controller("RolesController", ["RoleService", "$uibModal",
         function showDialog(model) {
             var modalInstance = $uibModal.open({
                 windowTemplateUrl: '/app/common/modal.dialog.template.html',
-                templateUrl: '/app/role/role.view.modal.html',
+                templateUrl: '/app/role/role.modal.view.html',
                 controller: 'ModalDialogController',
                 resolve: {model: model}
             });

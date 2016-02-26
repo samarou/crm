@@ -1,5 +1,5 @@
-angular.module('app').controller('UsersController', ["$location", "$q", "$uibModal", "UserService", "GroupService", "RoleService", "Collections",
-    function ($location, $q, $uibModal, UserService, GroupService, RoleService, Collections) {
+angular.module('app').controller('UsersController', ["$location", "$q", "$uibModal", "UserService", "GroupService", "RoleService", "Collections", "Util",
+    function ($location, $q, $uibModal, UserService, GroupService, RoleService, Collections, Util) {
         "use strict";
         var vm = this;
 
@@ -32,7 +32,7 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
 
         vm.paging.onPageChanged = function () {
             vm.filter.from = (vm.paging.currentPage - 1) * pageSize;
-            vm.find(vm.filter);
+            vm.find();
         };
 
         vm.sortProperties = {
@@ -42,13 +42,13 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
             email: {name: "email", asc: true, enabled: false}
         };
 
-        vm.find = function find(filter) {
+        vm.find = function find() {
             //nulling, to prevent empty parameters in url
-            angular.forEach(filter, function (value, key) {
+            angular.forEach(vm.filter, function (value, key) {
                 if (typeof(value) !== "string") return;
-                filter[key] = !!value ? value : null;
+                vm.filter[key] = !!value ? value : null;
             });
-            UserService.find(filter, function (response) {
+            UserService.find(vm.filter, function (response) {
                 vm.userList = response.data.data;
                 var totalCount = response.data.totalCount;
                 var totalPages = Math.ceil(totalCount / vm.filter.count) || 1;
@@ -57,7 +57,8 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
                 vm.isSelectedAll = false;
             });
         };
-        vm.find(vm.filter);
+        vm.typing = Util.createDelayTypingListener(vm.find, 500);
+        vm.find();
 
         vm.sortBy = function (property) {
             angular.forEach(vm.sortProperties, function (sortProperty) {
@@ -67,7 +68,23 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
             property.asc = !property.asc;
             vm.filter.sortAsc = property.asc;
             vm.filter.sortProperty = property.name;
-            vm.find(vm.filter);
+            vm.find();
+        };
+
+        vm.activate = function (newState) {
+            var tasks = [];
+            vm.userList.forEach(function (user) {
+                if (user.checked) {
+                    if (newState) {
+                        tasks.push(UserService.activate(user.id));
+                    } else {
+                        tasks.push(UserService.deactivate(user.id));
+                    }
+                }
+            });
+            $q.all(tasks).then(function () {
+                vm.find(vm.filter);
+            });
         };
 
         vm.selectAll = function (checked) {
@@ -151,32 +168,4 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
                 return role.checked;
             });
         }
-
-        vm.activate = function (newState) {
-            var tasks = [];
-            vm.userList.forEach(function (user) {
-                if (user.checked) {
-                    if (newState) {
-                        tasks.push(UserService.activate(user.id));
-                    } else {
-                        tasks.push(UserService.deactivate(user.id));
-                    }
-                }
-            });
-            $q.all(tasks).then(function () {
-                vm.find(vm.filter);
-            });
-        };
-
-        var keyTimer;
-
-        vm.keyDown = function () {
-            clearTimeout(keyTimer);
-        };
-        vm.keyUp = function () {
-            clearTimeout(keyTimer);
-            keyTimer = setTimeout(function () {
-                vm.find(vm.filter);
-            }, 500);
-        };
     }]);
