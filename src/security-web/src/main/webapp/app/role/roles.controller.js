@@ -8,7 +8,6 @@ angular.module("app").controller("RolesController", ["$uibModal", "$timeout", "R
         var vm = this;
 
         RoleService.fetchAll().then(function (response) {
-            vm.originRoleList = response.data;
             vm.roleList = response.data;
         });
 
@@ -28,26 +27,11 @@ angular.module("app").controller("RolesController", ["$uibModal", "$timeout", "R
         };
 
         vm.sortBy = function (property) {
-            angular.forEach(vm.sortProperties, function (sortProperty) {
-                sortProperty.enabled = false;
-            });
             property.enabled = true;
             property.asc = !property.asc;
             vm.filter.sortProperty = property.name;
             vm.filter.sortAsc = property.asc;
-            vm.find();
         };
-
-        vm.find = function () {
-            var subs = vm.filter.text || "";
-            subs = subs.toLowerCase();
-            vm.roleList = vm.originRoleList.filter(function (role) {
-                return (role.name.toLowerCase().indexOf(subs) !== -1) ||
-                       (role.description.toLowerCase().indexOf(subs) !== -1);
-            });
-            Collections.sort(vm.roleList, vm.filter.sortAsc, Collections.byProperty(vm.filter.sortProperty));
-        };
-        vm.typing = Util.createDelayTypingListener(vm.find, 500);
 
         vm.selectAll = function (checked) {
             vm.roleList.forEach(function (role) {
@@ -86,16 +70,15 @@ angular.module("app").controller("RolesController", ["$uibModal", "$timeout", "R
                 return privilege.checked;
             });
             if (role.id) {
-                var originRole = vm.originRoleList.find(function (r) {
+                var originRole = vm.roleList.find(function (r) {
                     return r.id === role.id
                 });
                 angular.copy(role, originRole);
-                RoleService.update(role).then(vm.find);
+                RoleService.update(role);
             } else {
                 RoleService.create(role).then(function (response) {
                     role.id = response.data;
-                    vm.originRoleList.push(role);
-                    vm.find();
+                    vm.roleList.push(role);
                 });
             }
         }
