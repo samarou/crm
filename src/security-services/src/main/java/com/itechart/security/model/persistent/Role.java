@@ -1,6 +1,5 @@
 package com.itechart.security.model.persistent;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.itechart.security.core.model.SecurityRole;
 
 import javax.persistence.*;
@@ -29,14 +28,12 @@ public class Role extends BaseEntity implements SecurityRole {
     @JoinColumn(name = "parent_id")
     private Role parent;
 
-    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "role_privilege",
             joinColumns = {@JoinColumn(name = "role_id", nullable = false, updatable = false)},
             inverseJoinColumns = {@JoinColumn(name = "privilege_id", nullable = false, updatable = false)})
     private Set<Privilege> privileges;
 
-    @JsonIgnore
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
 

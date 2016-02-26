@@ -1,6 +1,5 @@
 package com.itechart.security.service;
 
-import com.itechart.security.model.persistent.Privilege;
 import com.itechart.security.model.persistent.Role;
 
 import java.util.List;
@@ -19,6 +18,4 @@ public interface RoleService {
     void updateRole(Role role);
 
     void deleteRole(Role role);
-
-    List<Privilege> getPrivilegesFor(Role role);
 }

@@ -4,10 +4,7 @@ import com.itechart.security.model.filter.UserFilter;
 import com.itechart.security.model.persistent.*;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -35,8 +32,8 @@ public class Converter {
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
         dto.setActive(user.isActive());
-        dto.setGroups(convertGroups(user.getGroups()));
-        dto.setRoles(convertRoles(user.getRoles()));
+        dto.setGroups(new HashSet<>(convertGroups(new ArrayList<>(user.getGroups()))));
+        dto.setRoles(new HashSet<>(convertRoles(new ArrayList<>(user.getRoles()))));
         return dto;
     }
 
@@ -52,8 +49,8 @@ public class Converter {
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
         user.setActive(dto.isActive());
-        user.setGroups(convertGroupsDtos(dto.getGroups()));
-        user.setRoles(convertRolesDto(dto.getRoles()));
+        user.setGroups(new HashSet<>(convertGroupsDtos(new ArrayList<>(dto.getGroups()))));
+        user.setRoles(new HashSet<>(convertRolesDto(new ArrayList<>(dto.getRoles()))));
         return user;
     }
 
@@ -72,18 +69,18 @@ public class Converter {
 
     //todo: have the same erasure with convert(List<User> groups) because of erase
     //maybe replace with Group... groups?
-    public static Set<GroupDto> convertGroups(Set<Group> groups) {
+    public static List<GroupDto> convertGroups(List<Group> groups) {
         if (CollectionUtils.isEmpty(groups)) {
-            return Collections.EMPTY_SET;
+            return Collections.EMPTY_LIST;
         }
-        return groups.stream().map(Converter::convert).collect(Collectors.toSet());
+        return groups.stream().map(Converter::convert).collect(Collectors.toList());
     }
 
-    public static Set<Group> convertGroupsDtos(Set<GroupDto> dtos) {
+    public static List<Group> convertGroupsDtos(List<GroupDto> dtos) {
         if (CollectionUtils.isEmpty(dtos)) {
-            return Collections.EMPTY_SET;
+            return Collections.EMPTY_LIST;
         }
-        return dtos.stream().map(Converter::convert).collect(Collectors.toSet());
+        return dtos.stream().map(Converter::convert).collect(Collectors.toList());
     }
 
     public static GroupDto convert(Group group) {
@@ -104,18 +101,18 @@ public class Converter {
         return group;
     }
 
-    public static Set<RoleDto> convertRoles(Set<Role> roles) {
+    public static List<RoleDto> convertRoles(List<Role> roles) {
         if (CollectionUtils.isEmpty(roles)) {
-            return Collections.EMPTY_SET;
+            return Collections.EMPTY_LIST;
         }
-        return roles.stream().map(Converter::convert).collect(Collectors.toSet());
+        return roles.stream().map(Converter::convert).collect(Collectors.toList());
     }
 
-    public static Set<Role> convertRolesDto(Set<RoleDto> dtos) {
+    public static List<Role> convertRolesDto(List<RoleDto> dtos) {
         if (CollectionUtils.isEmpty(dtos)) {
-            return Collections.EMPTY_SET;
+            return Collections.EMPTY_LIST;
         }
-        return dtos.stream().map(Converter::convert).collect(Collectors.toSet());
+        return dtos.stream().map(Converter::convert).collect(Collectors.toList());
     }
 
     public static RoleDto convert(Role role) {

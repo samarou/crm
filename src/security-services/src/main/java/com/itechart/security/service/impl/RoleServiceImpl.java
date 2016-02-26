@@ -1,7 +1,6 @@
 package com.itechart.security.service.impl;
 
 import com.itechart.security.dao.RoleDao;
-import com.itechart.security.model.persistent.Privilege;
 import com.itechart.security.model.persistent.Role;
 import com.itechart.security.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,10 +42,5 @@ public class RoleServiceImpl implements RoleService {
     @Transactional
     public void deleteRole(Role role) {
         roleDao.delete(role);
-    }
-
-    @Override
-    public List<Privilege> getPrivilegesFor(Role role) {
-        return roleDao.getPrivilegesFor(role);
     }
 }
