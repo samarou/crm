@@ -34,7 +34,7 @@ public class RoleController {
     }
 
     @RequestMapping(value = "/roles", method = POST)
-    public void create(@RequestBody RoleDto role) {
-        roleService.createRole(convert(role));
+    public Long create(@RequestBody RoleDto role) {
+        return roleService.createRole(convert(role));
     }
 }

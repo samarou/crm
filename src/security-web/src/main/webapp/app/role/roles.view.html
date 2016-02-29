@@ -29,7 +29,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr class="hover--highlight" ng-repeat="role in vm.roleList | orderBy:vm.filter.sortProperty:vm.filter.sortAsc | filter: vm.filter.text" ng-dblclick="vm.edit(role)">
+            <tr class="hover--highlight" ng-repeat="role in vm.roleList | filter: { name: vm.filter.text, description: vm.filter.text } | orderBy: vm.filter.sortProperty : !vm.filter.sortAsc" ng-dblclick="vm.edit(role)">
                 <td><input type="checkbox" ng-model="role.checked" ng-click="vm.selectOne()" ng-dblclick="$event.stopPropagation()"></td>
                 <td>{{$index + 1}}</td>
                 <td>{{role.name}}</td>
