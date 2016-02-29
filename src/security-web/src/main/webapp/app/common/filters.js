@@ -3,7 +3,7 @@
  */
 
 angular.module("app")
-    .filter("orderFilterPage", ["$filter", function ($filter) {
+    .filter("pagingFilter", ["$filter", function ($filter) {
         /**
          * Performs filtering of collection according setting.
          * Also performs cutting of collection of items according current page and page size.

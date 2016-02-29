@@ -14,7 +14,7 @@ angular.module("app").controller("RolesController", ["$uibModal", "$filter", "Ro
         vm.searchText = "";
         vm.pageRoles = [];
 
-        vm.orderFilterPageConfig = {
+        vm.pagingFilterConfig = {
             currentPage: 1,
             itemsPerPage: 10,
             visiblePages: 5,
@@ -30,7 +30,7 @@ angular.module("app").controller("RolesController", ["$uibModal", "$filter", "Ro
 
         RoleService.fetchAll().then(function (response) {
             vm.roleList = response.data;
-            vm.orderFilterPageConfig.totalItems = vm.roleList.length;
+            vm.pagingFilterConfig.totalItems = vm.roleList.length;
         });
 
         PrivilegeService.fetchAll().then(function (response) {
@@ -38,8 +38,8 @@ angular.module("app").controller("RolesController", ["$uibModal", "$filter", "Ro
         });
 
         vm.updateFilterObject = function () {
-            vm.orderFilterPageConfig.filterObject.name = vm.searchText;
-            vm.orderFilterPageConfig.filterObject.description = vm.searchText;
+            vm.pagingFilterConfig.filterObject.name = vm.searchText;
+            vm.pagingFilterConfig.filterObject.description = vm.searchText;
         };
 
         vm.sortBy = function (property) {
@@ -48,8 +48,8 @@ angular.module("app").controller("RolesController", ["$uibModal", "$filter", "Ro
             });
             property.enabled = true;
             property.asc = !property.asc;
-            vm.orderFilterPageConfig.sortProperty = property.name;
-            vm.orderFilterPageConfig.sortAsc = property.asc;
+            vm.pagingFilterConfig.sortProperty = property.name;
+            vm.pagingFilterConfig.sortAsc = property.asc;
         };
 
         vm.selectAll = function (checked) {
@@ -94,7 +94,7 @@ angular.module("app").controller("RolesController", ["$uibModal", "$filter", "Ro
             vm.roleList = vm.roleList.filter(function (role) {
                 return !role.checked;
             });
-            vm.orderFilterPageConfig.totalItems = vm.roleList.length;
+            vm.pagingFilterConfig.totalItems = vm.roleList.length;
             vm.isSelectedAll = false;
         };
 
@@ -112,7 +112,7 @@ angular.module("app").controller("RolesController", ["$uibModal", "$filter", "Ro
                 RoleService.create(role).then(function (response) {
                     role.id = response.data;
                     vm.roleList.push(role);
-                    vm.orderFilterPageConfig.totalItems = vm.roleList.length;
+                    vm.pagingFilterConfig.totalItems = vm.roleList.length;
                 });
             }
         }
