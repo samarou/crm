@@ -1,14 +1,21 @@
 /**
  * @author yauheni.putsykovich
  */
-angular.module("app").controller("RolesController", ["$uibModal", "$filter", "$timeout", "RoleService", "PrivilegeService", "Collections",
-    function ($uibModal, $filter, $timeout, RoleService, PrivilegeService, Collections) {
+angular.module("app").controller("RolesController", ["$uibModal", "$filter", "RoleService", "PrivilegeService", "Collections",
+    function ($uibModal, $filter, RoleService, PrivilegeService, Collections) {
         "use strict";
 
         var vm = this;
 
         RoleService.fetchAll().then(function (response) {
             vm.roleList = $filter("orderBy")(response.data, "-name");
+
+            vm.paging = {
+                totalItems: vm.roleList.length,
+                currentPage: 1,
+                itemsPerPage: 10,
+                visiblePages: 5
+            }
         });
 
         PrivilegeService.fetchAll().then(function (response) {
@@ -24,7 +31,7 @@ angular.module("app").controller("RolesController", ["$uibModal", "$filter", "$t
             text: "",
             sortProperty: vm.sortProperties.name.name,
             sortAsc: vm.sortProperties.name.asc
-        };  
+        };
 
         vm.sortBy = function (property) {
             angular.forEach(vm.sortProperties, function (sortProperty) {
@@ -83,6 +90,7 @@ angular.module("app").controller("RolesController", ["$uibModal", "$filter", "$t
                     role.id = response.data;
                     vm.roleList.push(role);
                     vm.roleList = $filter("orderBy")(vm.roleList, vm.filter.sortProperty, !vm.filter.sortAsc);
+                    vm.paging.totalItems = vm.roleList.length;
                 });
             }
         }

@@ -29,14 +29,24 @@
             </tr>
             </thead>
             <tbody>
-            <tr class="hover--highlight" ng-repeat="role in vm.roleList | filter: { name: vm.filter.text, description: vm.filter.text } | orderBy: vm.filter.sortProperty : !vm.filter.sortAsc" ng-dblclick="vm.edit(role)">
+            <tr class="hover--highlight"
+                ng-repeat="role in vm.roleList.slice( vm.paging.itemsPerPage * (vm.paging.currentPage - 1), vm.paging.itemsPerPage * vm.paging.currentPage)
+                            | filter: { name: vm.filter.text, description: vm.filter.text }
+                            | orderBy: vm.filter.sortProperty : !vm.filter.sortAsc"
+                ng-dblclick="vm.edit(role)">
                 <td><input type="checkbox" ng-model="role.checked" ng-click="vm.selectOne()" ng-dblclick="$event.stopPropagation()"></td>
-                <td>{{$index + 1}}</td>
+                <td>{{vm.paging.itemsPerPage * (vm.paging.currentPage - 1) + ($index + 1)}}</td>
                 <td>{{role.name}}</td>
                 <td>{{role.description}}</td>
                 <td><span class="glyphicon glyphicon-edit hover--pointer" title="Edit Role" ng-click="vm.edit(role)"></span></td>
             </tr>
             </tbody>
         </table>
+    </div>
+    <div class="col-md-6 col-md-offset-3">
+        <uib-pagination class="pagination-sm"
+                        ng-model="vm.paging.currentPage" total-items="vm.paging.totalItems"
+                        items-per-page="vm.paging.itemsPerPage" max-size="vm.paging.visiblePages"
+                        boundary-links="true" rotate="false"></uib-pagination>
     </div>
 </div>
