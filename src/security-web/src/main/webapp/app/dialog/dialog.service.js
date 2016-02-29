@@ -48,9 +48,7 @@ angular.module('app')
                     keyboard: true,
                     backdrop: false,
                     resolve: {
-                        model: function () {
-                            return angular.copy(model);
-                        }
+                        model: model
                     }
                 });
             }

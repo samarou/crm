@@ -1,8 +1,8 @@
 /**
  * @author yauheni.putsykovich
  */
-angular.module("app").controller("RolesController", ["$uibModal", "$filter", "RoleService", "PrivilegeService", "DialogService", "Collections",
-    function ($uibModal, $filter, RoleService, PrivilegeService, DialogService, Collections) {
+angular.module("app").controller("RolesController", ["$q", "$uibModal", "$filter", "RoleService", "PrivilegeService", "DialogService", "Collections",
+    function ($q, $uibModal, $filter, RoleService, PrivilegeService, DialogService, Collections) {
         "use strict";
 
         var vm = this;
@@ -27,11 +27,14 @@ angular.module("app").controller("RolesController", ["$uibModal", "$filter", "Ro
             sortAsc: vm.sortProperties.name.asc
         };
 
+        function fetchAllRoles() {
+            RoleService.fetchAll().then(function (response) {
+                vm.roleList = response.data;
+                vm.pagingFilterConfig.totalItems = vm.roleList.length;
+            });
+        }
 
-        RoleService.fetchAll().then(function (response) {
-            vm.roleList = response.data;
-            vm.pagingFilterConfig.totalItems = vm.roleList.length;
-        });
+        fetchAllRoles();
 
         PrivilegeService.fetchAll().then(function (response) {
             vm.privileges = response.data;
@@ -91,10 +94,13 @@ angular.module("app").controller("RolesController", ["$uibModal", "$filter", "Ro
         };
 
         vm.remove = function () {
-            vm.roleList = vm.roleList.filter(function (role) {
-                return !role.checked;
+            var tasks = [];
+            vm.pageRoles.forEach(function (role) {
+                if (role.checked) {
+                    tasks.push(RoleService.remove(role.id))
+                }
             });
-            vm.pagingFilterConfig.totalItems = vm.roleList.length;
+            $q.all(tasks).then(fetchAllRoles);
             vm.isSelectedAll = false;
         };
 

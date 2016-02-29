@@ -32,7 +32,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr class="hover--highlight"  ng-dblclick="vm.edit(role)" ng-repeat="role in (vm.pageRoles = (vm.roleList | orderFilterPage:vm.pagingFilterConfig))">
+            <tr class="hover--highlight"  ng-dblclick="vm.edit(role)" ng-repeat="role in (vm.pageRoles = (vm.roleList | pagingFilter:vm.pagingFilterConfig))">
                 <td><input type="checkbox" ng-model="role.checked" ng-click="vm.selectOne()" ng-dblclick="$event.stopPropagation()"></td>
                 <td>{{vm.pagingFilterConfig.itemsPerPage * (vm.pagingFilterConfig.currentPage - 1) + ($index + 1)}}</td>
                 <td>{{role.name}}</td>
