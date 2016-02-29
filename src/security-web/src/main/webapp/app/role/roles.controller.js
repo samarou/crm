@@ -1,8 +1,8 @@
 /**
  * @author yauheni.putsykovich
  */
-angular.module("app").controller("RolesController", ["$uibModal", "$filter", "RoleService", "PrivilegeService", "Collections",
-    function ($uibModal, $filter, RoleService, PrivilegeService, Collections) {
+angular.module("app").controller("RolesController", ["$uibModal", "$timeout", "RoleService", "PrivilegeService", "Collections", "Util",
+    function ($uibModal, $timeout, RoleService, PrivilegeService, Collections, Util) {
         "use strict";
 
         var vm = this;
@@ -24,7 +24,7 @@ angular.module("app").controller("RolesController", ["$uibModal", "$filter", "Ro
             text: "",
             sortProperty: vm.sortProperties.name.name,
             sortAsc: vm.sortProperties.name.asc
-        };
+        };  
 
         vm.sortBy = function (property) {
             angular.forEach(vm.sortProperties, function (sortProperty) {
@@ -80,7 +80,7 @@ angular.module("app").controller("RolesController", ["$uibModal", "$filter", "Ro
                 RoleService.update(role);
             } else {
                 RoleService.create(role).then(function (response) {
-                    role.id = response;
+                    role.id = response.data;
                     vm.roleList.push(role);
                 });
             }
