@@ -43,18 +43,5 @@ angular.module("app").service("Collections", [function () {
         return foundItem;
     };
 
-    self.indexOf = function indexOf(item, collection, comparator) {
-        comparator = comparator || self.byId;
-        var index = -1;
-        collection.find(function (collectionItem, collectionItemIndex) {
-            if (comparator(item, collectionItem)) {
-                index = collectionItemIndex;
-                return true;
-            }
-            return false;
-        });
-        return index;
-    };
-
     return self;
 }]);

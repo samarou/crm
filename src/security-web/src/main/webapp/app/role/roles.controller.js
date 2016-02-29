@@ -1,32 +1,36 @@
 /**
  * @author yauheni.putsykovich
  */
-angular.module("app").controller("RolesController", ["$uibModal", "$timeout", "RoleService", "PrivilegeService", "Collections", "Util",
-    function ($uibModal, $timeout, RoleService, PrivilegeService, Collections, Util) {
+angular.module("app").controller("RolesController", ["$uibModal", "$filter", "RoleService", "PrivilegeService", "Collections",
+    function ($uibModal, $filter, RoleService, PrivilegeService, Collections) {
         "use strict";
 
         var vm = this;
 
         RoleService.fetchAll().then(function (response) {
-            vm.roleList = response.data;
+            vm.roleList = $filter("orderBy")(response.data, "-name");
         });
 
         PrivilegeService.fetchAll().then(function (response) {
             vm.privileges = response.data;
         });
 
-        vm.filter = {
-            text: null,
-            sortProperty: null,
-            sortAsc: true
-        };
-
         vm.sortProperties = {
             name: {name: "name", asc: true, enabled: true},
             description: {name: "description", asc: true, enabled: false}
         };
 
+        vm.filter = {
+            text: "",
+            sortProperty: vm.sortProperties.name,
+            sortAsc: vm.sortProperties.asc
+        };
+
+
         vm.sortBy = function (property) {
+            angular.forEach(vm.sortProperties, function (sortProperty) {
+                sortProperty.enabled = false;
+            });
             property.enabled = true;
             property.asc = !property.asc;
             vm.filter.sortProperty = property.name;
@@ -77,7 +81,7 @@ angular.module("app").controller("RolesController", ["$uibModal", "$timeout", "R
                 RoleService.update(role);
             } else {
                 RoleService.create(role).then(function (response) {
-                    role.id = response.data;
+                    role.id = response;
                     vm.roleList.push(role);
                 });
             }
