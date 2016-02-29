@@ -2,6 +2,8 @@
 
 module.exports = function (grunt) {
 
+    var buildDirectory = grunt.option('buildDirectory');
+
     grunt.initConfig({
         'bower-install-simple': {
             options: {
@@ -18,8 +20,22 @@ module.exports = function (grunt) {
                     production: false
                 }
             }
+        },
+        ngtemplates: {
+            app: {
+                cwd: 'src/main/webapp',
+                src: ["app/dialog/**.html"],
+                dest: buildDirectory + "/app/app.templates.js"
+            },
+            options: {
+                htmlmin: {
+                    collapseBooleanAttributes:      true,
+                    collapseWhitespace:             true
+                }
+            }
         }
     });
     grunt.loadNpmTasks("grunt-bower-install-simple");
-    grunt.registerTask("default", [ "bower-install-simple" ]);
+    grunt.loadNpmTasks("grunt-angular-templates");
+    grunt.registerTask("default", ["bower-install-simple", "ngtemplates"]);
 };

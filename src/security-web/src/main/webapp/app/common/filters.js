@@ -2,7 +2,8 @@
  * @author yauheni.putsykovich
  */
 
-angular.module("app").filter("orderFilterPage", ["$filter", function ($filter) {
+angular.module("app")
+    .filter("pagingFilter", ["$filter", function ($filter) {
         /**
          * Performs filtering and cutting collection of items according filter configuration.
          *

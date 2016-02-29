@@ -32,9 +32,9 @@
             </tr>
             </thead>
             <tbody>
-            <tr class="hover--highlight"  ng-dblclick="vm.edit(role)" ng-repeat="role in (vm.pageRoles = (vm.roleList | orderFilterPage:vm.orderFilterPageConfig))">
+            <tr class="hover--highlight"  ng-dblclick="vm.edit(role)" ng-repeat="role in (vm.pageRoles = (vm.roleList | orderFilterPage:vm.pagingFilterConfig))">
                 <td><input type="checkbox" ng-model="role.checked" ng-click="vm.selectOne()" ng-dblclick="$event.stopPropagation()"></td>
-                <td>{{vm.orderFilterPageConfig.itemsPerPage * (vm.orderFilterPageConfig.currentPage - 1) + ($index + 1)}}</td>
+                <td>{{vm.pagingFilterConfig.itemsPerPage * (vm.pagingFilterConfig.currentPage - 1) + ($index + 1)}}</td>
                 <td>{{role.name}}</td>
                 <td>{{role.description}}</td>
                 <td><span class="glyphicon glyphicon-edit hover--pointer" title="Edit Role" ng-click="vm.edit(role)"></span></td>
@@ -43,8 +43,8 @@
         </table>
     </div>
     <div class="text--center">
-        <uib-pagination class="pagination-sm" ng-model="vm.orderFilterPageConfig.currentPage" ng-change="vm.isSelectedAll = false; vm.selectAll(vm.isSelectedAll)"
-                        total-items="vm.orderFilterPageConfig.totalItems" items-per-page="vm.orderFilterPageConfig.itemsPerPage" max-size="vm.orderFilterPageConfig.visiblePages"
+        <uib-pagination class="pagination-sm" ng-model="vm.pagingFilterConfig.currentPage" ng-change="vm.isSelectedAll = false; vm.selectAll(vm.isSelectedAll)"
+                        total-items="vm.pagingFilterConfig.totalItems" items-per-page="vm.pagingFilterConfig.itemsPerPage" max-size="vm.pagingFilterConfig.visiblePages"
                         boundary-links="true" rotate="false"></uib-pagination>
     </div>
 </div>

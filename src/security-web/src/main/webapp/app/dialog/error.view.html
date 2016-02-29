@@ -1,0 +1,8 @@
+<div class="modal-header dialog-header-error">
+    <button type="button" class="close" ng-click="vm.close()">&times;</button>
+    <h4 class="modal-title text-danger"><span class="glyphicon glyphicon-warning-sign"></span>Error</h4>
+</div>
+<div class="modal-body text-danger" ng-bind-html="vm.message"></div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="vm.close()">Close</button>
+</div>

@@ -7,12 +7,12 @@
                 <button type="button" class="close" aria-label="Close" ng-click="$parent.cancel()">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title" id="group-modal-view-label">{{$parent.title || "Dialog"}}</h4>
+                <h4 class="modal-title" id="group-modal-view-label">{{$parent.title}}</h4>
             </div>
             <div class="modal-body" uib-modal-transclude></div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" ng-click="$parent.cancel()">{{$parent.cancelTitle || "Close"}}</button>
-                <button type="button" class="btn btn-primary" ng-click="$parent.ok()">{{$parent.okTitle || "Ok"}}</button>
+                <button type="button" class="btn btn-default" ng-click="$parent.cancel()">{{$parent.cancelTitle}}</button>
+                <button type="button" class="btn btn-primary" ng-click="$parent.ok()">{{$parent.okTitle}}</button>
             </div>
         </div>
     </div>

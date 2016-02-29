@@ -1,8 +1,8 @@
 /**
  * @author yauheni.putsykovich
  */
-angular.module("app").controller("RolesController", ["$q", "$uibModal", "$filter", "RoleService", "PrivilegeService", "Collections",
-    function ($q, $uibModal, $filter, RoleService, PrivilegeService, Collections) {
+angular.module("app").controller("RolesController", ["$uibModal", "$filter", "RoleService", "PrivilegeService", "DialogService", "Collections",
+    function ($uibModal, $filter, RoleService, PrivilegeService, DialogService, Collections) {
         "use strict";
 
         var vm = this;
@@ -14,7 +14,7 @@ angular.module("app").controller("RolesController", ["$q", "$uibModal", "$filter
         vm.searchText = "";
         vm.pageRoles = [];
 
-        vm.orderFilterPageConfig = {
+        vm.pagingFilterConfig = {
             currentPage: 1,
             itemsPerPage: 10,
             visiblePages: 5,
@@ -27,22 +27,19 @@ angular.module("app").controller("RolesController", ["$q", "$uibModal", "$filter
             sortAsc: vm.sortProperties.name.asc
         };
 
-        function fetchAllRoles() {
-            RoleService.fetchAll().then(function (response) {
-                vm.roleList = response.data;
-                vm.orderFilterPageConfig.totalItems = vm.roleList.length;
-            });
-        }
+
+        RoleService.fetchAll().then(function (response) {
+            vm.roleList = response.data;
+            vm.pagingFilterConfig.totalItems = vm.roleList.length;
+        });
 
         PrivilegeService.fetchAll().then(function (response) {
             vm.privileges = response.data;
         });
 
-        fetchAllRoles();
-
         vm.updateFilterObject = function () {
-            vm.orderFilterPageConfig.filterObject.name = vm.searchText;
-            vm.orderFilterPageConfig.filterObject.description = vm.searchText;
+            vm.pagingFilterConfig.filterObject.name = vm.searchText;
+            vm.pagingFilterConfig.filterObject.description = vm.searchText;
         };
 
         vm.sortBy = function (property) {
@@ -51,8 +48,8 @@ angular.module("app").controller("RolesController", ["$q", "$uibModal", "$filter
             });
             property.enabled = true;
             property.asc = !property.asc;
-            vm.orderFilterPageConfig.sortProperty = property.name;
-            vm.orderFilterPageConfig.sortAsc = property.asc;
+            vm.pagingFilterConfig.sortProperty = property.name;
+            vm.pagingFilterConfig.sortAsc = property.asc;
         };
 
         vm.selectAll = function (checked) {
@@ -94,13 +91,10 @@ angular.module("app").controller("RolesController", ["$q", "$uibModal", "$filter
         };
 
         vm.remove = function () {
-            var tasks = [];
-            vm.pageRoles.forEach(function (role) {
-                if (role.checked) {
-                    tasks.push(RoleService.remove(role.id))
-                }
+            vm.roleList = vm.roleList.filter(function (role) {
+                return !role.checked;
             });
-            $q.all(tasks).then(fetchAllRoles);
+            vm.pagingFilterConfig.totalItems = vm.roleList.length;
             vm.isSelectedAll = false;
         };
 
@@ -118,7 +112,7 @@ angular.module("app").controller("RolesController", ["$q", "$uibModal", "$filter
                 RoleService.create(role).then(function (response) {
                     role.id = response.data;
                     vm.roleList.push(role);
-                    vm.orderFilterPageConfig.totalItems = vm.roleList.length;
+                    vm.pagingFilterConfig.totalItems = vm.roleList.length;
                 });
             }
         }
@@ -130,13 +124,8 @@ angular.module("app").controller("RolesController", ["$q", "$uibModal", "$filter
         }
 
         function showDialog(model) {
-            var modalInstance = $uibModal.open({
-                windowTemplateUrl: '/app/common/modal.dialog.template.html',
-                templateUrl: '/app/role/role.modal.view.html',
-                controller: 'ModalDialogController',
-                resolve: {model: model}
-            });
-            modalInstance.result.then(function (model) {
+            var dialog = DialogService.custom('app/role/role.modal.view.html', model);
+            dialog.result.then(function (model) {
                 update(model.role);
             });
         }
