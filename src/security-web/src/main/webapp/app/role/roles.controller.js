@@ -8,13 +8,14 @@ angular.module("app").controller("RolesController", ["$uibModal", "$filter", "Ro
         var vm = this;
 
         RoleService.fetchAll().then(function (response) {
-            vm.roleList = $filter("orderBy")(response.data, "-name");
+            vm.roleList = response.data;
 
             vm.paging = {
                 totalItems: vm.roleList.length,
                 currentPage: 1,
                 itemsPerPage: 10,
-                visiblePages: 5
+                visiblePages: 5,
+                outFilterResult: null
             }
         });
 
@@ -29,8 +30,17 @@ angular.module("app").controller("RolesController", ["$uibModal", "$filter", "Ro
 
         vm.filter = {
             text: "",
+            filterObject: {
+                name: "",
+                description: ""
+            },
             sortProperty: vm.sortProperties.name.name,
             sortAsc: vm.sortProperties.name.asc
+        };
+
+        vm.updateFilterObject = function () {
+            vm.filter.filterObject.name = vm.filter.text;
+            vm.filter.filterObject.description = vm.filter.text;
         };
 
         vm.sortBy = function (property) {
@@ -44,13 +54,19 @@ angular.module("app").controller("RolesController", ["$uibModal", "$filter", "Ro
         };
 
         vm.selectAll = function (checked) {
-            vm.roleList.forEach(function (role) {
-                role.checked = checked;
-            });
+            if (checked) {
+                vm.paging.outFilterResult.forEach(function (role) {
+                    role.checked = true;
+                });
+            } else {
+                vm.roleList.forEach(function (role) {
+                    role.checked = false;
+                });
+            }
         };
 
         vm.selectOne = function () {
-            vm.isSelectedAll = vm.roleList.every(function (role) {
+            vm.isSelectedAll = vm.paging.outFilterResult.every(function (role) {
                 return role.checked;
             });
         };
@@ -75,6 +91,13 @@ angular.module("app").controller("RolesController", ["$uibModal", "$filter", "Ro
             });
         };
 
+        vm.remove = function () {
+            vm.roleList = vm.roleList.filter(function (role) {
+                return !role.checked;
+            });
+            vm.paging.totalItems = vm.roleList.length;
+        };
+
         function update(role) {
             role.privileges = vm.privileges.filter(function (privilege) {
                 return privilege.checked;
@@ -89,7 +112,6 @@ angular.module("app").controller("RolesController", ["$uibModal", "$filter", "Ro
                 RoleService.create(role).then(function (response) {
                     role.id = response.data;
                     vm.roleList.push(role);
-                    vm.roleList = $filter("orderBy")(vm.roleList, vm.filter.sortProperty, !vm.filter.sortAsc);
                     vm.paging.totalItems = vm.roleList.length;
                 });
             }
