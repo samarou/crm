@@ -2,13 +2,12 @@
  * @author yauheni.putsykovich
  */
 
-angular.module("app")
-    .filter("orderFilterPage", ["$filter", function ($filter) {
+angular.module("app").filter("orderFilterPage", ["$filter", function ($filter) {
         /**
-         * Performs filtering of collection according setting.
-         * Also performs cutting of collection of items according current page and page size.
+         * Performs filtering and cutting collection of items according filter configuration.
+         *
          * @collection: source collection where need make filtering
-         * @config object which represents the current state of pagination. He should have following properties:
+         * @config object which contains setting for filtering, he should have following properties:
          *      {
          *          currentPage: #,
          *          itemsPerPage: #,
@@ -20,9 +19,8 @@ angular.module("app")
          *          }
          *          sortProperty: #,
          *          sortAsc: #,
-         *          outFilterResult: if 'outFilterResult' not undefined, then in it will be maintained returned value
          *      }
-         * @return: result of sorting
+         * @return: collection of filtered items
          */
         "use strict";
         return function (collection, config) {

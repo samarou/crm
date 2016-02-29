@@ -13,11 +13,12 @@
 }
 
 .block--center {
-    margin: 0 auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .table--fixed__wrapper {
-    min-height: 600px;
+    min-height: 500px;
     margin-top: 30px;
 }
 
@@ -26,11 +27,11 @@
     word-wrap: break-word;
 }
 
-.table_row--inactive {
+.table__row--inactive {
     background-color: #fff6f4;
 }
 
-.table_row--inactive:hover {
+.table__row--inactive:hover {
     background-color: #f3eae9;
     cursor: pointer;
 }
@@ -58,6 +59,10 @@
     -ms-user-select: none;       /* IE/Edge */
     user-select: none;           /* non-prefixed version, currently
                                   not supported by any browser */
+}
+
+.text--center {
+    text-align: center;
 }
 
 .text--summary {

@@ -23,12 +23,12 @@
 
         return service;
 
-        function fetchAll(handleSuccess) {
-            return $http.get('rest/users').then(handleSuccess, handleError('Error getting all users'));
+        function fetchAll() {
+            return $http.get('rest/users');
         }
 
-        function getById(id, handleSuccess) {
-            return $http.get('rest/users/' + id).then(handleSuccess, handleError('Error getting user by id'));
+        function getById(id) {
+            return $http.get('rest/users/' + id);
         }
 
         function create(user) {
@@ -40,11 +40,11 @@
         }
 
         function remove(id) {
-            return $http.delete('rest/users/' + id).then(handleSuccess, handleError('Error deleting user'));
+            return $http.delete('rest/users/' + id);
         }
 
-        function find(filter, handleSuccess) {
-            return $http.get("rest/users/find", {params: filter}).then(handleSuccess, handleError("Error during searching of users"))
+        function find(filter) {
+            return $http.get("rest/users/find", {params: filter});
         }
 
         function activate(id) {
@@ -53,19 +53,6 @@
 
         function deactivate(id) {
             return $http.put("rest/users/deactivate/" + id);
-        }
-
-        function handleSuccess(res) {
-            return res.data;
-        }
-
-        function handleError(error) {
-            return function () {
-                return {
-                    success: false,
-                    message: error
-                };
-            };
         }
     }
 })();

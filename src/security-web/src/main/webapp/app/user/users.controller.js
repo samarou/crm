@@ -48,7 +48,7 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
                 if (typeof(value) !== "string") return;
                 vm.filter[key] = !!value ? value : null;
             });
-            UserService.find(vm.filter, function (response) {
+            UserService.find(vm.filter).then(function (response) {
                 vm.userList = response.data.data;
                 var totalCount = response.data.totalCount;
                 var totalPages = Math.ceil(totalCount / vm.filter.count) || 1;
@@ -82,9 +82,7 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
                     }
                 }
             });
-            $q.all(tasks).then(function () {
-                vm.find(vm.filter);
-            });
+            $q.all(tasks).then(vm.find);
         };
 
         vm.selectAll = function (checked) {
@@ -132,7 +130,7 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
                 angular.copy(user, originUser);
                 UserService.update(user);
             } else {
-                UserService.create(user, function (response) {
+                UserService.create(user).then(function (response) {
                     user.id = response.data;
                     vm.userList.push(user);
                 });

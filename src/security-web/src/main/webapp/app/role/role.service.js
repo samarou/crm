@@ -14,5 +14,9 @@ angular.module("app").factory("RoleService", ["$http", function ($http) {
         return $http.put("/rest/roles", role);
     };
 
+    this.remove = function (id) {
+        return $http.delete("/rest/roles/" + id);
+    };
+
     return this;
 }]);
