@@ -128,6 +128,9 @@
                         <phase>process-resources</phase>
                         <configuration>
                             <executable>grunt</executable>
+                            <arguments>
+                                <argument>--buildDirectory="${project.build.directory}/${project.build.finalName}"</argument>
+                            </arguments>
                         </configuration>
                         <goals>
                             <goal>exec</goal>

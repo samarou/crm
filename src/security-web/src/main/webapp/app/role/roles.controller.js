@@ -1,8 +1,8 @@
 /**
  * @author yauheni.putsykovich
  */
-angular.module("app").controller("RolesController", ["$uibModal", "$filter", "RoleService", "PrivilegeService", "Collections",
-    function ($uibModal, $filter, RoleService, PrivilegeService, Collections) {
+angular.module("app").controller("RolesController", ["$uibModal", "$filter", "RoleService", "PrivilegeService", "DialogService", "Collections",
+    function ($uibModal, $filter, RoleService, PrivilegeService, DialogService, Collections) {
         "use strict";
 
         var vm = this;
@@ -124,13 +124,8 @@ angular.module("app").controller("RolesController", ["$uibModal", "$filter", "Ro
         }
 
         function showDialog(model) {
-            var modalInstance = $uibModal.open({
-                windowTemplateUrl: '/app/common/modal.dialog.template.html',
-                templateUrl: '/app/role/role.modal.view.html',
-                controller: 'ModalDialogController',
-                resolve: {model: model}
-            });
-            modalInstance.result.then(function (model) {
+            var dialog = DialogService.custom('app/role/role.modal.view.html', model);
+            dialog.result.then(function (model) {
                 update(model.role);
             });
         }

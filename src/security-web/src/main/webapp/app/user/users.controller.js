@@ -1,5 +1,5 @@
-angular.module('app').controller('UsersController', ["$location", "$q", "$uibModal", "UserService", "GroupService", "RoleService", "Collections", "Util",
-    function ($location, $q, $uibModal, UserService, GroupService, RoleService, Collections, Util) {
+angular.module('app').controller('UsersController', ["$location", "$q", "$uibModal", "UserService", "GroupService", "RoleService", "DialogService", "Collections", "Util",
+    function ($location, $q, $uibModal, UserService, GroupService, RoleService, DialogService, Collections, Util) {
         "use strict";
         var vm = this;
 
@@ -140,13 +140,8 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
         }
 
         function showDialog(model) {
-            var modalInstance = $uibModal.open({
-                windowTemplateUrl: '/app/common/modal.dialog.template.html',
-                templateUrl: 'app/user/user.modal.view.html',
-                controller: 'ModalDialogController',
-                resolve: {model: model}
-            });
-            modalInstance.result.then(function (model) {
+            var dialog = DialogService.custom('app/user/user.modal.view.html', model);
+            dialog.result.then(function (model) {
                 update(model.user);
             });
         }
