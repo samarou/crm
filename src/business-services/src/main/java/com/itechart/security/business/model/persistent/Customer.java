@@ -5,6 +5,8 @@ import com.itechart.security.business.model.enums.ObjectTypes;
 import javax.persistence.*;
 import java.util.Set;
 
+import static javax.persistence.FetchType.EAGER;
+
 /**
  * Customer
  *
@@ -30,8 +32,16 @@ public class Customer extends SecuredEntity {
     @Column(name = "address", length = 250)
     private String address;
 
-    @OneToMany(orphanRemoval = true, mappedBy = "customer")
+    @OneToMany(orphanRemoval = true, mappedBy = "customer",fetch = EAGER)
     private Set<Order> orders;
+
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
+    }
 
     @Override
     public Long getId() {

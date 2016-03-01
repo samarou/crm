@@ -1,3 +1,25 @@
 <div>
-    <h1>Customers</h1>
+    <table class="table table-hover">
+        <caption>Customers</caption>
+        <thead>
+        <tr>
+            <td></td>
+            <td>#</td>
+            <td>First Name</td>
+            <td>Last Name</td>
+            <td>Email</td>
+            <td>Address</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeate="c in vm.customers">
+            <td><input type="checkbox"></td>
+            <td>{{$index}}</td>
+            <td>{{c.firstName}}</td>
+            <td>{{c.lastName}}</td>
+            <td>{{c.Email}}</td>
+            <td>{{c.Address}}</td>
+        </tr>
+        </tbody>
+    </table>
 </div>

@@ -11,7 +11,7 @@
         var service = this;
 
         service.authentication = null;
-        
+
         function setAuthentication(authData) {
             service.authentication = authData;
             $http.defaults.headers.common['X-Auth-Token'] =

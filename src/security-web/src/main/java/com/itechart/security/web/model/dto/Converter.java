@@ -1,5 +1,7 @@
 package com.itechart.security.web.model.dto;
 
+import com.itechart.security.business.model.persistent.Customer;
+import com.itechart.security.business.model.persistent.Order;
 import com.itechart.security.model.filter.UserFilter;
 import com.itechart.security.model.persistent.*;
 import org.springframework.util.CollectionUtils;
@@ -193,5 +195,35 @@ public class Converter {
         objectType.setName(dto.getName());
         objectType.setDescription(dto.getDescription());
         return objectType;
+    }
+
+    public static List<CustomerDto> convertCustomers(List<Customer> customers) {
+        if(CollectionUtils.isEmpty(customers)) return Collections.EMPTY_LIST;
+        return customers.stream().map(Converter::convert).collect(Collectors.toList());
+    }
+
+    public static CustomerDto convert(Customer customer) {
+        CustomerDto dto = new CustomerDto();
+        dto.setId(customer.getId());
+        dto.setFirstName(customer.getFirstName());
+        dto.setLastName(customer.getLastName());
+        dto.setEmail(customer.getEmail());
+        dto.setAddress(customer.getAddress());
+        dto.setOrders(convertOrders(customer.getOrders()));
+        return dto;
+    }
+
+    private static Set<OrderDto> convertOrders(Set<Order> orders) {
+        if(CollectionUtils.isEmpty(orders)) return Collections.EMPTY_SET;
+        return orders.stream().map(Converter::convert).collect(Collectors.toSet());
+    }
+
+    private static OrderDto convert(Order order){
+        OrderDto dto = new OrderDto();
+        dto.setId(order.getId());
+        dto.setProduct(order.getProduct());
+        dto.setCount(order.getCount());
+        dto.setPrice(order.getPrice());
+        return dto;
     }
 }
