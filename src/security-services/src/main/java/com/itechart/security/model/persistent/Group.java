@@ -12,7 +12,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "`group`")
-@PrimaryKeyJoinColumn(name="id")
+@PrimaryKeyJoinColumn(name = "id")
 public class Group extends Principal implements SecurityGroup {
 
     @Column(name = "name", unique = true, nullable = false, length = 50)
