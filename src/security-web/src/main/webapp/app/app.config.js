@@ -31,7 +31,11 @@
                 templateUrl: "app/role/roles.view.html",
                 controllerAs: "vm"
             })
-
+            .when("/customers", {
+                controller: "CustomersController",
+                templateUrl: "app/customer/customers.view.html",
+                controllerAs: "vm"
+            })
             .otherwise({redirectTo: '/login'});
 
         $httpProvider.interceptors.push('HttpInterceptor');

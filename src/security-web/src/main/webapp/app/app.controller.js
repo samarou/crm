@@ -25,4 +25,7 @@ angular.module("app").controller("AppController", ["AuthService", "$location",
             $location.path("/login");
         };
 
+        vm.isAdmin = AuthService.isAdmin;
+        vm.isManager = AuthService.isManager;
+        vm.isSpecialist = AuthService.isSpecialist;
     }]);

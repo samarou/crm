@@ -1,8 +1,8 @@
 /**
  * @author yauheni.putsykovich
  */
-angular.module("app").controller("RolesController", ["$q", "$uibModal", "$filter", "RoleService", "PrivilegeService", "DialogService", "Collections",
-    function ($q, $uibModal, $filter, RoleService, PrivilegeService, DialogService, Collections) {
+angular.module("app").controller("RolesController", ["$q", "RoleService", "PrivilegeService", "DialogService", "Collections",
+    function ($q, RoleService, PrivilegeService, DialogService, Collections) {
         "use strict";
 
         var vm = this;
@@ -14,6 +14,7 @@ angular.module("app").controller("RolesController", ["$q", "$uibModal", "$filter
         vm.searchText = "";
         vm.pageRoles = [];
 
+        //todo: resolve problem with filtering
         vm.pagingFilterConfig = {
             currentPage: 1,
             itemsPerPage: 10,
@@ -39,11 +40,6 @@ angular.module("app").controller("RolesController", ["$q", "$uibModal", "$filter
         PrivilegeService.fetchAll().then(function (response) {
             vm.privileges = response.data;
         });
-
-        vm.updateFilterObject = function () {
-            vm.pagingFilterConfig.filterObject.name = vm.searchText;
-            vm.pagingFilterConfig.filterObject.description = vm.searchText;
-        };
 
         vm.sortBy = function (property) {
             angular.forEach(vm.sortProperties, function (sortProperty) {
@@ -94,6 +90,7 @@ angular.module("app").controller("RolesController", ["$q", "$uibModal", "$filter
         };
 
         vm.remove = function () {
+            //DialogService.
             var tasks = [];
             vm.pageRoles.forEach(function (role) {
                 if (role.checked) {

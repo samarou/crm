@@ -11,7 +11,7 @@
         var service = this;
 
         service.authentication = null;
-
+        
         function setAuthentication(authData) {
             service.authentication = authData;
             $http.defaults.headers.common['X-Auth-Token'] =
@@ -65,10 +65,15 @@
             return angular.copy(service.authentication);
         };
 
-        service.hasRole = function (role) {
-            return service.isAuthenticated && authentication.roles
-                && authentication.roles.indexOf(role) != -1;
-        };
-    }
+        function hasRole(role) {
+            return service.isAuthenticated()
+                && service.authentication
+                && service.authentication.roles
+                && service.authentication.roles.indexOf(role) != -1;
+        }
 
+        service.isAdmin = function () { return hasRole("ADMIN"); };
+        service.isManager = function () { return hasRole("MANAGER"); };
+        service.isSpecialist = function () { return hasRole("SPECIALIST"); };
+    }
 })();
