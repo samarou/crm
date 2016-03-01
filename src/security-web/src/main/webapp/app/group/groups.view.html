@@ -19,12 +19,11 @@
         <tr>
             <td class="block--narrow"><input type="checkbox" ng-model="vm.isSelectedAll" ng-click="vm.selectAll(vm.isSelectedAll)"></td>
             <td class="block--narrow">#</td>
-            <td class="hover--highlight" ng-click="vm.sortBy(vm.sortProperties.name)">
-                <div class="pull-left col-md-3"><span ng-show="vm.sortProperties.name.enabled" class="glyphicon" ng-class="{'glyphicon-sort-by-attributes' :  vm.sortProperties.name.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.name.asc}"></span></div>
+            <td class="hover--highlight" ng-click="vm.pagingFilterConfig.sortAsc = !vm.pagingFilterConfig.sortAsc">
+                <div class="pull-left col-md-3"><span class="glyphicon" ng-class="{'glyphicon-sort-by-attributes' :  vm.pagingFilterConfig.sortAsc, 'glyphicon-sort-by-attributes-alt' : !vm.pagingFilterConfig.sortAsc}"></span></div>
                 Name
             </td>
-            <td class="hover--highlight" ng-click="vm.sortBy(vm.sortProperties.description)">
-                <div class="pull-left col-md-3"><span ng-show="vm.sortProperties.description.enabled" class="glyphicon" ng-class="{'glyphicon-sort-by-attributes' :  vm.sortProperties.description.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.description.asc}"></span></div>
+            <td class="hover--highlight">
                 Description
             </td>
             <td class="block--narrow"></td>

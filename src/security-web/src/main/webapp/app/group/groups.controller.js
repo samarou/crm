@@ -7,10 +7,6 @@ angular.module("app").controller("GroupsController", ["$uibModal", "$q", "GroupS
 
         var vm = this;
 
-        vm.sortProperties = {
-            name: {name: "name", asc: true, enabled: true},
-            description: {name: "description", asc: true, enabled: false}
-        };
         vm.searchText = "";
         vm.pageGroups = [];
 
@@ -24,8 +20,8 @@ angular.module("app").controller("GroupsController", ["$uibModal", "$q", "GroupS
                 name: "",
                 description: ""
             },
-            sortProperty: vm.sortProperties.name.name,
-            sortAsc: vm.sortProperties.name.asc
+            sortProperty: "name",
+            sortAsc: true
         };
 
         function fetchAllGroups() {
@@ -36,16 +32,6 @@ angular.module("app").controller("GroupsController", ["$uibModal", "$q", "GroupS
         }
 
         fetchAllGroups();
-
-        vm.sortBy = function (property) {
-            angular.forEach(vm.sortProperties, function (sortProperty) {
-                sortProperty.enabled = false;
-            });
-            property.enabled = true;
-            property.asc = !property.asc;
-            vm.pagingFilterConfig.sortProperty = property.name;
-            vm.pagingFilterConfig.sortAsc = property.asc;
-        };
 
         vm.selectAll = function (checked) {
             if (checked) {
