@@ -18,7 +18,7 @@ public class Converter {
 
     public static List<UserDto> convert(List<User> users) {
         if (CollectionUtils.isEmpty(users)) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
         return users.stream().map(Converter::convert).collect(Collectors.toList());
     }
@@ -73,14 +73,14 @@ public class Converter {
     //maybe replace with Group... groups?
     public static List<GroupDto> convertGroups(List<Group> groups) {
         if (CollectionUtils.isEmpty(groups)) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
         return groups.stream().map(Converter::convert).collect(Collectors.toList());
     }
 
     public static List<Group> convertGroupsDtos(List<GroupDto> dtos) {
         if (CollectionUtils.isEmpty(dtos)) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
         return dtos.stream().map(Converter::convert).collect(Collectors.toList());
     }
@@ -105,14 +105,14 @@ public class Converter {
 
     public static List<RoleDto> convertRoles(List<Role> roles) {
         if (CollectionUtils.isEmpty(roles)) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
         return roles.stream().map(Converter::convert).collect(Collectors.toList());
     }
 
     public static List<Role> convertRolesDto(List<RoleDto> dtos) {
         if (CollectionUtils.isEmpty(dtos)) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
         return dtos.stream().map(Converter::convert).collect(Collectors.toList());
     }
@@ -141,7 +141,7 @@ public class Converter {
 
     public static Set<PrivilegeDto> convertPrivileges(Collection<Privilege> privileges) {
         if (CollectionUtils.isEmpty(privileges)) {
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         }
         return privileges.stream().map(p -> {
             PrivilegeDto dto = new PrivilegeDto();
@@ -154,7 +154,7 @@ public class Converter {
 
     public static Set<Privilege> convertPrivilegesDto(Collection<PrivilegeDto> dtos) {
         if (CollectionUtils.isEmpty(dtos)) {
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         }
         return dtos.stream().map(dto -> {
             Privilege privilege = new Privilege();
@@ -198,7 +198,7 @@ public class Converter {
     }
 
     public static List<CustomerDto> convertCustomers(List<Customer> customers) {
-        if(CollectionUtils.isEmpty(customers)) return Collections.EMPTY_LIST;
+        if(CollectionUtils.isEmpty(customers)) return Collections.emptyList();
         return customers.stream().map(Converter::convert).collect(Collectors.toList());
     }
 
@@ -213,12 +213,12 @@ public class Converter {
         return dto;
     }
 
-    private static Set<OrderDto> convertOrders(Set<Order> orders) {
-        if(CollectionUtils.isEmpty(orders)) return Collections.EMPTY_SET;
+    public static Set<OrderDto> convertOrders(Set<Order> orders) {
+        if(CollectionUtils.isEmpty(orders)) return Collections.emptySet();
         return orders.stream().map(Converter::convert).collect(Collectors.toSet());
     }
 
-    private static OrderDto convert(Order order){
+    public static OrderDto convert(Order order){
         OrderDto dto = new OrderDto();
         dto.setId(order.getId());
         dto.setProduct(order.getProduct());
