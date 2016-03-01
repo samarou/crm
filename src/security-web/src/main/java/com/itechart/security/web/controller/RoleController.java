@@ -3,6 +3,7 @@ package com.itechart.security.web.controller;
 import com.itechart.security.service.RoleService;
 import com.itechart.security.web.model.dto.RoleDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
  * @author yauheni.putsykovich
  */
 @RestController
+@PreAuthorize("hasRole('ADMIN')")
 public class RoleController {
 
     @Autowired
