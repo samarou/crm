@@ -64,6 +64,11 @@
         service.getAuthentication = function () {
             return angular.copy(service.authentication);
         };
+
+        service.hasRole = function (role) {
+            return service.isAuthenticated && authentication.roles
+                && authentication.roles.indexOf(role) != -1;
+        };
     }
 
 })();
