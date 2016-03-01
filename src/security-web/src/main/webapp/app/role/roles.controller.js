@@ -51,6 +51,11 @@ angular.module("app").controller("RolesController", ["$q", "RoleService", "Privi
             vm.pagingFilterConfig.sortAsc = property.asc;
         };
 
+        vm.updateFilterObject = function () {
+            vm.pagingFilterConfig.filterObject.name = vm.searchText;
+            vm.pagingFilterConfig.filterObject.description = vm.searchText;
+        };
+
         vm.selectAll = function (checked) {
             if (checked) {
                 vm.pageRoles.forEach(function (role) {

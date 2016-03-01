@@ -4,6 +4,7 @@ import com.itechart.security.service.GroupService;
 import com.itechart.security.web.model.dto.GroupDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,8 +14,7 @@ import java.util.List;
 
 import static com.itechart.security.web.model.dto.Converter.convert;
 import static com.itechart.security.web.model.dto.Converter.convertGroups;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
-import static org.springframework.web.bind.annotation.RequestMethod.PUT;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 /**
  * @author yauheni.putsykovich
@@ -40,4 +40,7 @@ public class GroupController {
     public void update(@RequestBody GroupDto dto) {
         groupService.update(convert(dto));
     }
+
+    @RequestMapping(value = "/groups/{id}", method = DELETE)
+    public void delete(@PathVariable Long id) { groupService.deleteById(id); }
 }

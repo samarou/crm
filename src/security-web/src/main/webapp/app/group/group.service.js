@@ -12,7 +12,11 @@ angular.module("app").factory("GroupService", ["$http", function ($http) {
     };
 
     this.update = function (group) {
-        $http.put("/rest/groups", group);
+        return $http.put("/rest/groups", group);
+    };
+
+    this.remove = function (id) {
+        return $http.delete("/rest/groups/" + id);
     };
 
     return this;

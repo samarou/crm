@@ -36,4 +36,10 @@ public class GroupServiceImpl implements GroupService {
     public void update(Group group) {
         groupDao.update(group);
     }
+
+    @Override
+    @Transactional
+    public void deleteById(Long id) {
+        groupDao.deleteById(id);
+    }
 }

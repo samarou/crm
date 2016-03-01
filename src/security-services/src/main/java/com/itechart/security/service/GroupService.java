@@ -15,4 +15,6 @@ public interface GroupService {
     Serializable create(Group group);
 
     void update(Group convert);
+
+    void deleteById(Long id);
 }
