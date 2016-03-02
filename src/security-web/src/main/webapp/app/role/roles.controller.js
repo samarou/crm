@@ -7,6 +7,7 @@ angular.module("app").controller("RolesController", ["$q", "RoleService", "Privi
 
         var vm = this;
 
+        vm.privilegesViews = "app/privilege/privileges.partial.view.html";
         vm.searchText = "";
         vm.pageRoles = [];
 
@@ -34,7 +35,25 @@ angular.module("app").controller("RolesController", ["$q", "RoleService", "Privi
         fetchAllRoles();
 
         PrivilegeService.fetchAll().then(function (response) {
+            var objectTypeList = Object.create(null);
             vm.privileges = response.data;
+            vm.privileges.forEach(function (privilege) {
+                if (!(privilege.objectTypeName in objectTypeList)) {
+                    objectTypeList[privilege.objectTypeName] = [];
+                }
+                objectTypeList[privilege.objectTypeName].push({
+                    privilege: privilege,
+                    name: privilege.actionName,
+                    id: privilege.action.id
+                });
+            });
+            vm.privilegeObjects = Collections.sort(Object.keys(objectTypeList))
+                .map(function (objectType) {
+                    return {
+                        objectTypeName: objectType,
+                        actions: Collections.sort(objectTypeList[objectType], true, Collections.byProperty("id"))
+                    };
+                });
         });
 
         vm.updateFilterObject = function () {
@@ -65,7 +84,7 @@ angular.module("app").controller("RolesController", ["$q", "RoleService", "Privi
             showDialog({
                 title: "Editing Role",
                 okTitle: "Update",
-                privileges: vm.privileges,
+                privilegeObjects: vm.privilegeObjects,
                 role: angular.copy(role)
             });
         };
@@ -75,7 +94,7 @@ angular.module("app").controller("RolesController", ["$q", "RoleService", "Privi
             showDialog({
                 title: "Create a New Role",
                 okTitle: "Add",
-                privileges: vm.privileges,
+                privilegeObjects: vm.privilegeObjects,
                 role: {}
             });
         };

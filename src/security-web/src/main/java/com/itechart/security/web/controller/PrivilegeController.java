@@ -7,7 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Set;
+import java.util.List;
 
 import static com.itechart.security.web.model.dto.Converter.convertPrivileges;
 
@@ -22,7 +22,7 @@ public class PrivilegeController {
     private PrivilegeService privilegeService;
 
     @RequestMapping("/privileges")
-    public Set<PrivilegeDto> getPrivileges() {
+    public List<PrivilegeDto> getPrivileges() {
         return convertPrivileges(privilegeService.getPrivileges());
     }
 }

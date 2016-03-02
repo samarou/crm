@@ -124,7 +124,7 @@ public class Converter {
         dto.setName(role.getName());
         dto.setDescription(role.getDescription());
         dto.setParent(convert(role.getParent()));
-        dto.setPrivileges(convertPrivileges(role.getPrivileges()));
+        dto.setPrivileges(new HashSet<>(convertPrivileges(role.getPrivileges())));
         return dto;
     }
 
@@ -139,9 +139,9 @@ public class Converter {
         return role;
     }
 
-    public static Set<PrivilegeDto> convertPrivileges(Collection<Privilege> privileges) {
+    public static List<PrivilegeDto> convertPrivileges(Collection<Privilege> privileges) {
         if (CollectionUtils.isEmpty(privileges)) {
-            return Collections.emptySet();
+            return Collections.emptyList();
         }
         return privileges.stream().map(p -> {
             PrivilegeDto dto = new PrivilegeDto();
@@ -149,7 +149,7 @@ public class Converter {
             dto.setAction(convert(p.getAction()));
             dto.setObjectType(convert(p.getObjectType()));
             return dto;
-        }).collect(Collectors.toSet());
+        }).collect(Collectors.toList());
     }
 
     public static Set<Privilege> convertPrivilegesDto(Collection<PrivilegeDto> dtos) {

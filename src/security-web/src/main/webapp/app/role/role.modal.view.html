@@ -1,4 +1,4 @@
-<form class="form-group">
+<form class="form">
     <div class="form-group">
         <label for="role-name">Name</label>
         <input id="role-name" class="form-control" name="role-name" ng-model="role.name">
@@ -9,13 +9,20 @@
                   ng-model="role.description"></textarea>
     </div>
     <div class="form-group">
-        <label for="privileges">Privileges</label>
-        <ul id="privileges" class="list-unstyled list--scrollable">
-            <li ng-repeat="privilege in privileges">
-                <div class="col-md-1"><input type="checkbox" ng-model="privilege.checked" ng-checked="privilege.checked"></div>
-                <div class="col-md-7">{{privilege.objectTypeName}}</div>
-                <div class="col-md-4">{{privilege.actionName}}</div>
-            </li>
-        </ul>
+        <input class="form-control" ng-model="vm.filterConfig.searchText" placeholder="Search privileges...">
+    </div>
+    <div class="form-group list--scrollable">
+        <div class="text--unselectable" ng-repeat="privilegeObject in privilegeObjects" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">
+            <div class="form-control hover--pointer">
+                <span class="pull-left text-success">{{privilegeObject.objectTypeName}}</span>
+                <span class="pull-right glyphicon" ng-class="{'glyphicon-collapse-down' : isCollapsed, 'glyphicon-collapse-up' : !isCollapsed}"></span>
+            </div>
+            <div class="form-group-sm" uib-collapse="isCollapsed">
+                <div class="form-control text--unselectable hover--highlight" ng-repeat="action in privilegeObject.actions" ng-click="action.privilege.checked = !action.privilege.checked; $event.stopPropagation()">
+                    <input id="anchor-{{action.name}}" type="checkbox" ng-model="action.privilege.checked" ng-checked="action.privilege.checked"/>
+                    <label for="anchor-{{action.name}}">{{action.name}}</label>
+                </div>
+            </div>
+        </div>
     </div>
 </form>

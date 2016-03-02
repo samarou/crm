@@ -27,10 +27,12 @@ angular.module("app").service("Collections", [function () {
     };
 
     self.sort = function sort(collection, asc, comparator) {
+        asc = asc || true;
         comparator = comparator || self.compareTo;
         collection.sort(function (a, b) {
             return (asc ? 1 : -1) * comparator(a, b);
         });
+        return collection;
     };
 
     self.find = function find(item, collection, comparator) {
