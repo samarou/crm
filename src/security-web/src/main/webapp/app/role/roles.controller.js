@@ -1,13 +1,12 @@
 /**
  * @author yauheni.putsykovich
  */
-angular.module("app").controller("RolesController", ["$q", "RoleService", "PrivilegeService", "DialogService", "Collections",
-    function ($q, RoleService, PrivilegeService, DialogService, Collections) {
+angular.module("app").controller("RolesController", ["$q", "RoleService", "PrivilegeService", "DialogService", "Collections", "Util",
+    function ($q, RoleService, PrivilegeService, DialogService, Collections, Util) {
         "use strict";
 
         var vm = this;
 
-        vm.privilegesViews = "app/privilege/privileges.partial.view.html";
         vm.searchText = "";
         vm.pageRoles = [];
 
@@ -17,6 +16,7 @@ angular.module("app").controller("RolesController", ["$q", "RoleService", "Privi
             itemsPerPage: 10,
             visiblePages: 5,
             totalItems: null,
+            privilegeSearchText: null,
             filterObject: {
                 name: "",
                 description: ""
@@ -24,6 +24,7 @@ angular.module("app").controller("RolesController", ["$q", "RoleService", "Privi
             sortProperty: "name",
             sortAsc: true
         };
+        vm.privilegeObjects = [];
 
         function fetchAllRoles() {
             RoleService.fetchAll().then(function (response) {
@@ -34,26 +35,26 @@ angular.module("app").controller("RolesController", ["$q", "RoleService", "Privi
 
         fetchAllRoles();
 
+
         PrivilegeService.fetchAll().then(function (response) {
             var objectTypeList = Object.create(null);
-            vm.privileges = response.data;
-            vm.privileges.forEach(function (privilege) {
+            var privileges = response.data;
+            privileges.forEach(function (privilege) {
                 if (!(privilege.objectTypeName in objectTypeList)) {
                     objectTypeList[privilege.objectTypeName] = [];
                 }
                 objectTypeList[privilege.objectTypeName].push({
-                    privilege: privilege,
+                    id: privilege.action.id,
                     name: privilege.actionName,
-                    id: privilege.action.id
+                    privilege: privilege
                 });
             });
-            vm.privilegeObjects = Collections.sort(Object.keys(objectTypeList))
-                .map(function (objectType) {
-                    return {
-                        objectTypeName: objectType,
-                        actions: Collections.sort(objectTypeList[objectType], true, Collections.byProperty("id"))
-                    };
-                });
+            vm.privilegeObjects = Collections.sort(Object.keys(objectTypeList)).map(function (objectType) {
+                return {
+                    objectTypeName: objectType,
+                    actions: Collections.sort(objectTypeList[objectType], true, Collections.byProperty("id"))
+                };
+            });
         });
 
         vm.updateFilterObject = function () {
@@ -131,8 +132,10 @@ angular.module("app").controller("RolesController", ["$q", "RoleService", "Privi
         }
 
         function checkPrivilegesOfRole(role) {
-            vm.privileges.forEach(function (privilege) {
-                privilege.checked = !!Collections.find(privilege, role.privileges);
+            vm.privilegeObjects.forEach(function (privilegeObject) {
+                privilegeObject.actions.forEach(function (action) {
+                    action.privilege.checked = !!Collections.find(action.privilege, role.privileges);
+                })
             });
         }
 

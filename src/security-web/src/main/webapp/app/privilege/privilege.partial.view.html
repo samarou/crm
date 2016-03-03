@@ -1,0 +1,26 @@
+<span>
+    <div class="form-group" ng-init="privilegeFilterSortProperty = 'objectTypeName'; privilegeFilterSortAsc = true">
+        <div class="col-md-9">
+            <input id="anchor-privileges" class="form-control" ng-model="privilegeFilterText" placeholder="Search privileges...">
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-default" ng-click="privilegeFilterSortAsc = !privilegeFilterSortAsc">
+                <span class="glyphicon" ng-class="{'glyphicon-sort-by-attributes' : privilegeFilterSortAsc, 'glyphicon-sort-by-attributes-alt' : !privilegeFilterSortAsc}"></span>Object type
+            </button>
+        </div>
+    </div>
+    <div class="form-group block--scrollable">
+        <div class="text--unselectable" ng-repeat="privilegeObject in privilegeObjects | filter:{objectTypeName: privilegeFilterText} | orderBy:privilegeFilterSortProperty:!privilegeFilterSortAsc" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">
+            <div class="form-control hover--pointer">
+                <span class="pull-left text-info">{{privilegeObject.objectTypeName}}</span>
+                <span class="pull-right glyphicon" ng-class="{'glyphicon-collapse-down' : isCollapsed, 'glyphicon-collapse-up' : !isCollapsed}"></span>
+            </div>
+            <div class="form-group-sm" uib-collapse="isCollapsed">
+                <div class="form-control text--unselectable hover--highlight" ng-repeat="action in privilegeObject.actions" ng-click="action.privilege.checked = !action.privilege.checked; $event.stopPropagation()">
+                    <input id="anchor-{{action.name}}" type="checkbox" ng-model="action.privilege.checked" ng-checked="action.privilege.checked"/>
+                    <label for="anchor-{{action.name}}">{{action.name}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>

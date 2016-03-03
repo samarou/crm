@@ -5,24 +5,7 @@
     </div>
     <div class="form-group">
         <label for="role-description">Description</label>
-        <textarea id="role-description" class="form-control" name="role-description"
-                  ng-model="role.description"></textarea>
+        <textarea id="role-description" class="form-control" name="role-description" ng-model="role.description"></textarea>
     </div>
-    <div class="form-group">
-        <input class="form-control" ng-model="vm.filterConfig.searchText" placeholder="Search privileges...">
-    </div>
-    <div class="form-group list--scrollable">
-        <div class="text--unselectable" ng-repeat="privilegeObject in privilegeObjects" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">
-            <div class="form-control hover--pointer">
-                <span class="pull-left text-success">{{privilegeObject.objectTypeName}}</span>
-                <span class="pull-right glyphicon" ng-class="{'glyphicon-collapse-down' : isCollapsed, 'glyphicon-collapse-up' : !isCollapsed}"></span>
-            </div>
-            <div class="form-group-sm" uib-collapse="isCollapsed">
-                <div class="form-control text--unselectable hover--highlight" ng-repeat="action in privilegeObject.actions" ng-click="action.privilege.checked = !action.privilege.checked; $event.stopPropagation()">
-                    <input id="anchor-{{action.name}}" type="checkbox" ng-model="action.privilege.checked" ng-checked="action.privilege.checked"/>
-                    <label for="anchor-{{action.name}}">{{action.name}}</label>
-                </div>
-            </div>
-        </div>
-    </div>
+    <privilege-search privilege-objects="privilegeObjects"></privilege-search>
 </form>

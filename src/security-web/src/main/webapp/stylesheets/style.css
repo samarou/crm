@@ -36,13 +36,28 @@
     cursor: pointer;
 }
 
-.list--scrollable {
+.block--scrollable {
     font-size: 14px;
     color: #555;
     padding: 3px 8px;
     min-height: 250px;
     max-height: 250px;
     overflow-y: auto;
+}
+
+.list--scrollable {
+    font-size: 14px;
+    color: #555;
+    padding: 3px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    min-height: 156px;
+    max-height: 156px;
+    overflow-y: auto;
+}
+
+.list--scrollable li {
+    line-height: 25px;
 }
 
 .text--unselectable {
