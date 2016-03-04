@@ -24,7 +24,7 @@ angular.module("app").controller("RolesController", ["$q", "RoleService", "Privi
             sortProperty: "name",
             sortAsc: true
         };
-        vm.privilegeObjects = [];
+        vm.objectTypes = [];
 
         function fetchAllRoles() {
             RoleService.fetchAll().then(function (response) {
@@ -49,10 +49,10 @@ angular.module("app").controller("RolesController", ["$q", "RoleService", "Privi
                     privilege: privilege
                 });
             });
-            vm.privilegeObjects = Collections.sort(Object.keys(objectTypeList)).map(function (objectType) {
+            vm.objectTypes = Collections.sort(Object.keys(objectTypeList)).map(function (objectTypeName) {
                 return {
-                    objectTypeName: objectType,
-                    actions: Collections.sort(objectTypeList[objectType], true, Collections.byProperty("id"))
+                    objectTypeName: objectTypeName,
+                    actions: Collections.sort(objectTypeList[objectTypeName], true, Collections.byProperty("id"))
                 };
             });
         });
@@ -85,7 +85,7 @@ angular.module("app").controller("RolesController", ["$q", "RoleService", "Privi
             showDialog({
                 title: "Editing Role",
                 okTitle: "Update",
-                privilegeObjects: vm.privilegeObjects,
+                objectTypes: vm.objectTypes,
                 role: angular.copy(role)
             });
         };
@@ -95,13 +95,12 @@ angular.module("app").controller("RolesController", ["$q", "RoleService", "Privi
             showDialog({
                 title: "Create a New Role",
                 okTitle: "Add",
-                privilegeObjects: vm.privilegeObjects,
+                objectTypes: vm.objectTypes,
                 role: {}
             });
         };
 
         vm.remove = function () {
-            //DialogService.
             var tasks = [];
             vm.pageRoles.forEach(function (role) {
                 if (role.checked) {
@@ -113,8 +112,13 @@ angular.module("app").controller("RolesController", ["$q", "RoleService", "Privi
         };
 
         function update(role) {
-            role.privileges = vm.privileges.filter(function (privilege) {
-                return privilege.checked;
+            role.privileges = [];
+            vm.objectTypes.forEach(function (objectType) {
+                objectType.actions.forEach(function (action) {
+                    if (action.privilege.checked) {
+                        role.privileges.push(action.privilege);
+                    }
+                });
             });
             if (role.id) {
                 var originRole = vm.roleList.find(function (r) {
@@ -132,7 +136,7 @@ angular.module("app").controller("RolesController", ["$q", "RoleService", "Privi
         }
 
         function checkPrivilegesOfRole(role) {
-            vm.privilegeObjects.forEach(function (privilegeObject) {
+            vm.objectTypes.forEach(function (privilegeObject) {
                 privilegeObject.actions.forEach(function (action) {
                     action.privilege.checked = !!Collections.find(action.privilege, role.privileges);
                 })
