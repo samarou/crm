@@ -1,10 +1,12 @@
 <div class="block--scrollable">
     <input id="anchor-privileges" class="form-control" ng-model="filterText" placeholder="Search privileges...">
-    <ul class="list--compact list-unstyled text--unselectable" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed" ng-repeat="objectType in objectTypes | filter:{objectTypeName: filterText}">
+    <ul ng-repeat="objectType in objectTypes | filter:{objectTypeName: filterText}"
+        ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed"
+        class="list--compact list-unstyled text--unselectable">
         <li class="list--compact__collapse">
             <span class="glyphicon" ng-class="{'glyphicon-collapse-down' : isCollapsed, 'glyphicon-collapse-up' : !isCollapsed}"></span>
             <span class="text-info"> {{objectType.objectTypeName}}</span>
-            <span class="pull-right" ng-repeat="action in objectType.actions | filter:{privilege:{checked: true}}">{{action.name}}&nbsp;</span>
+            [<span ng-repeat="action in objectType.actions | filter:{privilege:{checked: true}}">{{action.name}}{{$last ? '' : ', '}}</span>]
         </li>
         <li uib-collapse="isCollapsed">
             <ul class="list-unstyled">

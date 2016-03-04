@@ -9,8 +9,11 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class GroupDaoImpl extends BaseHibernateDao<Group> implements GroupDao {
+
     @Override
     public void deleteById(Long id) {
+        // used native sql to prevent from cascade delete from table "principals"
+        // this function is performed by trigger
         getHibernateTemplate().executeWithNativeSession(session ->
                 session.createSQLQuery("delete from `group` where id = :id")
                        .setLong("id", id)

@@ -2,7 +2,7 @@
  * @author yauheni.putsykovich
  */
 
-angular.module("app").directive("privilegeSearch", [function () {
+angular.module("app").directive("privileges", [function () {
     return {
         scope: {
             objectTypes: "="
