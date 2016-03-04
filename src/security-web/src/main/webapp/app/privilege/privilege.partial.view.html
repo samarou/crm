@@ -1,4 +1,4 @@
-<div>
+<div class="block--scrollable">
     <input id="anchor-privileges" class="form-control" ng-model="filterText" placeholder="Search privileges...">
     <ul class="list--compact list-unstyled text--unselectable" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed" ng-repeat="objectType in objectTypes | filter:{objectTypeName: filterText}">
         <li class="list--compact__collapse">

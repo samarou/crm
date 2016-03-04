@@ -209,7 +209,6 @@ public class Converter {
         dto.setLastName(customer.getLastName());
         dto.setEmail(customer.getEmail());
         dto.setAddress(customer.getAddress());
-        dto.setOrders(convertOrders(customer.getOrders()));
         return dto;
     }
 

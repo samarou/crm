@@ -1,5 +1,5 @@
-<div>
-    <table class="table table-hover">
+<div class="table--fixed__wrapper">
+    <table class="table table--fixed text--unselectable">
         <caption>Customers</caption>
         <thead>
         <tr>
@@ -12,13 +12,13 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeate="c in vm.customers">
+        <tr ng-repeat="c in vm.customersList">
             <td><input type="checkbox"></td>
             <td>{{$index}}</td>
             <td>{{c.firstName}}</td>
             <td>{{c.lastName}}</td>
-            <td>{{c.Email}}</td>
-            <td>{{c.Address}}</td>
+            <td>{{c.email}}</td>
+            <td>{{c.address}}</td>
         </tr>
         </tbody>
     </table>

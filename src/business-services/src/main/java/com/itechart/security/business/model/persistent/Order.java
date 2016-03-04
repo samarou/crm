@@ -11,7 +11,7 @@ import java.math.BigDecimal;
  * @author andrei.samarou
  */
 @Entity
-@Table(name = "order")
+@Table(name = "`order`")
 public class Order extends SecuredEntity {
 
     @Id
@@ -27,7 +27,7 @@ public class Order extends SecuredEntity {
     @Column(name = "price", nullable = false)
     private BigDecimal price;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 

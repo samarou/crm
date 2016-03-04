@@ -7,6 +7,7 @@ angular.module("app").directive("privilegeSearch", [function () {
         scope: {
             objectTypes: "="
         },
+        require: "objectTypes",
         restrict: "E",
         replace: true,
         templateUrl: "app/privilege/privilege.partial.view.html"

@@ -30,7 +30,7 @@ public class Customer extends SecuredEntity {
     @Column(name = "address", length = 250)
     private String address;
 
-    @OneToMany(orphanRemoval = true, mappedBy = "customer")
+    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "customer")
     private Set<Order> orders;
 
     public Set<Order> getOrders() {
