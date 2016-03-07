@@ -91,15 +91,15 @@ abstract class BaseHibernateDao<T extends BaseEntity> extends AbstractHibernateD
         if (CollectionUtils.isEmpty(ids)) {
             return Collections.emptyList();
         }
-        List<T> result = new ArrayList<>(ids.size());
-        BatchExecutor.execute(batch -> result.addAll(
-                (List<T>) getHibernateTemplate().executeWithNativeSession(session -> {
-                    Criteria criteria = session.createCriteria(getPersistentClass());
-                    criteria.add(Restrictions.in(getIdPropertyName(), batch));
-                    return criteria.list();
-                })
-        ), ids, BATCH_SIZE);
-        return result;
+        return getHibernateTemplate().executeWithNativeSession(session -> {
+            List<T> result = new ArrayList<>(ids.size());
+            BatchExecutor.execute(batch -> {
+                Criteria criteria = session.createCriteria(getPersistentClass());
+                criteria.add(Restrictions.in(getIdPropertyName(), batch));
+                result.addAll(criteria.list());
+            }, ids, BATCH_SIZE);
+            return result;
+        });
     }
 
     @Override
