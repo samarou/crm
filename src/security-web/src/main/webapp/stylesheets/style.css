@@ -8,7 +8,7 @@
 }
 
 .block--narrow {
-    margin: 10px 15px;
+    margin: 2px 15px;
     width: 50px;
 }
 
@@ -18,7 +18,7 @@
 }
 
 .table--fixed__wrapper {
-    min-height: 500px;
+    min-height: 250px;
     margin-top: 30px;
 }
 
@@ -34,6 +34,10 @@
 .table__row--inactive:hover {
     background-color: #bebebe;
     cursor: pointer;
+}
+
+.user-table--modal {
+    width: 850px;
 }
 
 .list--compact {
@@ -104,6 +108,14 @@
     color: #777;
 }
 
+.icon--user-group {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background: url(./icons/users-group.svg);
+
+}
+
 .navbar-default .navbar-brand:hover,
 .navbar-default .navbar-brand:focus {
     color: #777;
@@ -114,3 +126,6 @@ body.modal-open {
     overflow: inherit;
     padding-right: inherit !important;
 }
+
+
+

@@ -47,6 +47,7 @@ angular.module('app')
                     controllerAs: 'vm',
                     keyboard: true,
                     backdrop: false,
+                    size: model.size,//if undefined or null, then property will not used
                     resolve: {
                         model: model
                     }

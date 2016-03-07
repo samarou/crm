@@ -1,0 +1,45 @@
+<form class="form">
+    <uib-tabset active="active">
+        <uib-tab index="0" heading="Personal Info">
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label for="customer-first-name">First name</label>
+                    <input id="customer-first-name" class="form-control" ng-model="customer.firstName">
+                </div>
+                <div class="col-md-6 form-group">
+                    <label for="customer-last-name">Last name</label>
+                    <input id="customer-last-name" class="form-control" ng-model="customer.lastName">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label for="customer-email">Email</label>
+                    <input id="customer-email" class="form-control" ng-model="customer.email">
+                </div>
+                <div class="col-md-6 form-group">
+                    <label for="customer-address">Address</label>
+                    <input id="customer-address" class="form-control" ng-model="customer.address">
+                </div>
+            </div>
+        </uib-tab>
+        <uib-tab index="1" heading="Access">
+            <ul class="list-unstyled">
+                <li ng-repeat="x in [1,2,3,4,5,6,7,8]">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <span ng-class="{'glyphicon glyphicon-user': x % 2 === 0, 'icon--user-group': x % 2 !== 0}"></span>
+                            {{x % 2 === 0 ? 'User' : 'Group'}}
+                        </div>
+                        <div class="col-md-7 text--unselectable">
+                            <input id="customer-access-read-{{$index}}" type="checkbox"><label for="customer-access-read-{{$index}}" class="hover--pointer">READ</label>
+                            <input id="customer-access-write-{{$index}}" type="checkbox"><label for="customer-access-write-{{$index}}" class="hover--pointer">WRITE</label>
+                            <input id="customer-access-create-{{$index}}" type="checkbox"><label for="customer-access-create-{{$index}}" class="hover--pointer">CREATE</label>
+                            <input id="customer-access-delete-{{$index}}" type="checkbox"><label for="customer-access-delete-{{$index}}" class="hover--pointer">DELETE</label>
+                            <input id="customer-access-admin-{{$index}}" type="checkbox"><label for="customer-access-admin-{{$index}}" class="hover--pointer">ADMIN</label>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </uib-tab>
+    </uib-tabset>
+</form>
