@@ -4,6 +4,7 @@ import com.itechart.security.dao.BaseDao;
 import com.itechart.security.model.filter.PagingFilter;
 import com.itechart.security.model.filter.SortingFilter;
 import com.itechart.security.model.persistent.BaseEntity;
+import com.itechart.security.util.BatchExecutor;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
@@ -20,6 +21,7 @@ import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -32,6 +34,7 @@ import java.util.List;
 @Repository
 abstract class BaseHibernateDao<T extends BaseEntity> extends AbstractHibernateDao implements BaseDao<T> {
 
+    private static final int BATCH_SIZE = 100;
     private static final int MAX_PAGE_SIZE = 100;
 
     private Class<T> persistentClass;
@@ -85,10 +88,17 @@ abstract class BaseHibernateDao<T extends BaseEntity> extends AbstractHibernateD
 
     @SuppressWarnings("unchecked")
     public List<T> findByIds(List<? extends Serializable> ids) {
-        return (List<T>) getHibernateTemplate().executeWithNativeSession(session -> {
-            Criteria criteria = session.createCriteria(getPersistentClass());
-            criteria.add(Restrictions.in(getIdPropertyName(), ids));
-            return criteria.list();
+        if (CollectionUtils.isEmpty(ids)) {
+            return Collections.emptyList();
+        }
+        return getHibernateTemplate().executeWithNativeSession(session -> {
+            List<T> result = new ArrayList<>(ids.size());
+            BatchExecutor.execute(batch -> {
+                Criteria criteria = session.createCriteria(getPersistentClass());
+                criteria.add(Restrictions.in(getIdPropertyName(), batch));
+                result.addAll(criteria.list());
+            }, ids, BATCH_SIZE);
+            return result;
         });
     }
 

@@ -12,6 +12,13 @@ angular.module("app").controller("CustomersController", ["CustomerService", "Gro
             vm.customersList = response.data;
         });
 
+
+        vm.edit = function (customer) {
+            CustomerService.getRights(customer.id).then(function (response) {
+                console.log("response: ", response);
+            });
+        };
+
         vm.create = function () {
             var dialog = DialogService.custom("app/customer/customer.modal.view.html", {
                 customer: {}
