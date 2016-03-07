@@ -6,9 +6,7 @@ import com.itechart.security.core.model.acl.Permission;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * ACL entity.
@@ -137,6 +135,17 @@ public class Acl extends BaseEntity implements SecurityAcl {
     public Set<Permission> getPermissions(Long principalId) {
         AclEntry entry = findEntry(principalId);
         return entry != null ? entry.getPermissions() : null;
+    }
+
+    public Map<Long, Set<Permission>> getPermissions() {
+        if (entries == null) {
+            return Collections.emptyMap();
+        }
+        Map<Long, Set<Permission>> result = new HashMap<>(entries.size());
+        for (AclEntry entry : entries) {
+            result.put(entry.getPrincipalId(), entry.getPermissions());
+        }
+        return result;
     }
 
     public void denyAll(Long principalId) {
