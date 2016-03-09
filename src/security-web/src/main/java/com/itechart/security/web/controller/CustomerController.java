@@ -57,12 +57,19 @@ public class CustomerController {
             AccessToCustomerDto dto = new AccessToCustomerDto();
             dto.setId(principal.getId());
             dto.setName(principal.getName());
-            dto.setPermissions(allPermissions.get(principal.getId()));
+            allPermissions.get(principal.getId()).forEach(permission -> {
+                dto.setCanRead(permission == Permission.READ);
+                dto.setCanWrite(permission == Permission.WRITE);
+                dto.setCanCreate(permission == Permission.CREATE);
+                dto.setCanDelete(permission == Permission.DELETE);
+                dto.setCanAdmin(permission == Permission.ADMIN);
+            });
             if (principal instanceof User) {
                 dto.setSubObjectTypeName(SubObjectTypes.USER.getName());
             } else if (principal instanceof Group) {
                 dto.setSubObjectTypeName(SubObjectTypes.GROUP.getName());
             }
+
             return dto;
         }).collect(Collectors.toList());
 

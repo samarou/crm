@@ -1,0 +1,53 @@
+<div class="row">
+    <div class="form-group">
+        <div class="col-md-7">
+            <input class="form-control" ng-model="vm.filter.text" ng-keyup="vm.typing.keyUp()" ng-keydown="vm.typing.keyDown()" placeholder="Search object...">
+        </div>
+        <div class="col-md-5">
+            <span class="text-info">Object</span>
+            <ul class="list-inline list-unstyled">
+                <li><input id="sub-object-type-user" type="radio" name="subObjectType" value="user" ng-change="vm.find()" ng-model="subObjectType"><label for="sub-object-type-user" class="hover--pointer">User</label></li>
+                <li><input id="sub-object-type-group" type="radio" name="subObjectType" value="group" ng-change="vm.find()" ng-model="subObjectType"><label for="sub-object-type-group" class="hover--pointer">Group</label></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="table--fixed__wrapper">
+    <table class="table table--fixed text--unselectable">
+        <caption>Objects</caption>
+        <thead>
+        <tr>
+            <td class="block--narrow"><input type="checkbox" ng-model="vm.isSelectedAll" ng-click="vm.selectAll(vm.isSelectedAll)"></td>
+            <td class="block--narrow">#</td>
+            <td class="hover--highlight a" ng-click="vm.sortBy(vm.sortProperties.firstName)">
+                <div class="pull-left col-md-3"><span ng-show="vm.sortProperties.firstName.enabled" class="glyphicon" ng-class="{'glyphicon-sort-by-attributes' : vm.sortProperties.firstName.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.firstName.asc}"></span></div>
+                First name
+            </td>
+            <td class="hover--highlight" ng-click="vm.sortBy(vm.sortProperties.lastName)">
+                <div class="pull-left col-md-3"><span ng-show="vm.sortProperties.lastName.enabled" class="glyphicon" ng-class="{'glyphicon-sort-by-attributes' :  vm.sortProperties.lastName.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.lastName.asc}"></span></div>
+                Last name
+            </td>
+            <td class="hover--highlight" ng-click="vm.sortBy(vm.sortProperties.userName)">
+                <div class="pull-left col-md-3"><span ng-show="vm.sortProperties.userName.enabled" class="glyphicon" ng-class="{'glyphicon-sort-by-attributes' : vm.sortProperties.userName.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.userName.asc}"></span></div>
+                Username
+            </td>
+            <td class="hover--highlight" ng-click="vm.sortBy(vm.sortProperties.email)">
+                <div class="pull-left col-md-3"><span ng-show="vm.sortProperties.email.enabled" class="glyphicon" ng-class="{'glyphicon-sort-by-attributes' : vm.sortProperties.email.asc, 'glyphicon-sort-by-attributes-alt' : !vm.sortProperties.email.asc}"></span></div>
+                Email
+            </td>
+            <td class="block--narrow"></td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-class="{'hover--highlight' : user.active, 'table__row--inactive' : !user.active}" ng-repeat="user in vm.userList" ng-dblclick="vm.edit(user)">
+            <td><input type="checkbox" ng-model="user.checked" ng-click="vm.selectOne()" ng-dblclick="$event.stopPropagation()"></td>
+            <td>{{vm.filter.from + ($index + 1)}}</td>
+            <td>{{user.firstName}}</td>
+            <td>{{user.lastName}}</td>
+            <td>{{user.userName}}</td>
+            <td>{{user.email}}</td>
+            <td><span title="Edit user" class="hover--pointer glyphicon glyphicon-edit" ng-click="vm.edit(user)"></span></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
