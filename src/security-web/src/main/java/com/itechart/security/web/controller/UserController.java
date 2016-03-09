@@ -4,9 +4,7 @@ import com.itechart.security.model.filter.UserFilter;
 import com.itechart.security.model.persistent.Role;
 import com.itechart.security.model.persistent.User;
 import com.itechart.security.service.UserService;
-import com.itechart.security.web.model.dto.DataPageDto;
-import com.itechart.security.web.model.dto.UserDto;
-import com.itechart.security.web.model.dto.UserFilterDto;
+import com.itechart.security.web.model.dto.*;
 import com.itechart.security.web.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,6 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.itechart.security.web.model.dto.Converter.convert;
+import static com.itechart.security.web.model.dto.Converter.convertToPublic;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
@@ -36,22 +35,28 @@ public class UserController {
     private NotificationService notificationService;
 
     @RequestMapping("/users")
-    public List<UserDto> findAll() {
+    public List<SecuredUserDto> findAll() {
         return convert(userService.getUsers());
     }
 
+    @PreAuthorize("hasRole('USER')")
+    @RequestMapping("/users/public")
+    public List<PublicUserDto> getPublicUsers() {
+        return Converter.convertToPublic(userService.getUsers());
+    }
+
     @RequestMapping("/users/{id}")
-    public UserDto findById(@PathVariable Long id) {
+    public SecuredUserDto findById(@PathVariable Long id) {
         return convert(userService.getUser(id));
     }
 
     @RequestMapping(value = "/users", method = PUT)
-    public void update(@RequestBody UserDto dto) {
+    public void update(@RequestBody SecuredUserDto dto) {
         userService.updateUser(convert(dto));
     }
 
     @RequestMapping(value = "/users", method = POST)
-    public void create(@RequestBody UserDto dto) {
+    public void create(@RequestBody SecuredUserDto dto) {
         User user = convert(dto);
         userService.createUser(user);
         List<String> roleNames = null;
@@ -85,10 +90,20 @@ public class UserController {
     }
 
     @RequestMapping("/users/find")
-    public DataPageDto<UserDto> find(UserFilterDto filterDto) {
+    public DataPageDto<SecuredUserDto> find(SecuredUserFilterDto filterDto) {
         UserFilter filter = convert(filterDto);
-        DataPageDto<UserDto> dataPage = new DataPageDto<>();
+        DataPageDto<SecuredUserDto> dataPage = new DataPageDto<>();
         dataPage.setData(convert(userService.findUsers(filter)));
+        dataPage.setTotalCount(userService.countUsers(filter));
+        return dataPage;
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @RequestMapping("/users/public/find")
+    public DataPageDto<PublicUserDto> findPublicUsers(PublicUserFilterDto filterDto){
+        UserFilter filter = convert(filterDto);
+        DataPageDto<PublicUserDto> dataPage = new DataPageDto<>();
+        dataPage.setData(convertToPublic(userService.findUsers(filter)));
         dataPage.setTotalCount(userService.countUsers(filter));
         return dataPage;
     }

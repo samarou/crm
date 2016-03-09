@@ -16,18 +16,18 @@ import java.util.stream.Collectors;
  */
 public class Converter {
 
-    public static List<UserDto> convert(List<User> users) {
+    public static List<SecuredUserDto> convert(List<User> users) {
         if (CollectionUtils.isEmpty(users)) {
             return Collections.emptyList();
         }
         return users.stream().map(Converter::convert).collect(Collectors.toList());
     }
 
-    public static UserDto convert(User user) {
+    public static SecuredUserDto convert(User user) {
         if (user == null) {
             return null;
         }
-        UserDto dto = new UserDto();
+        SecuredUserDto dto = new SecuredUserDto();
         dto.setId(user.getId());
         dto.setUserName(user.getUserName());
         dto.setEmail(user.getEmail());
@@ -39,7 +39,7 @@ public class Converter {
         return dto;
     }
 
-    public static User convert(UserDto dto) {
+    public static User convert(SecuredUserDto dto) {
         if (dto == null) {
             return null;
         }
@@ -56,16 +56,41 @@ public class Converter {
         return user;
     }
 
-    public static UserFilter convert(UserFilterDto dto) {
+    public static List<PublicUserDto> convertToPublic(List<User> users) {
+        if (CollectionUtils.isEmpty(users)) {
+            return Collections.emptyList();
+        }
+        return users.stream().map(Converter::convertToPublic).collect(Collectors.toList());
+    }
+
+    private static PublicUserDto convertToPublic(User user) {
+        if (user == null) {
+            return null;
+        }
+        PublicUserDto dto = new PublicUserDto();
+        dto.setId(user.getId());
+        dto.setUserName(user.getUserName());
+        dto.setEmail(user.getEmail());
+        dto.setFirstName(user.getFirstName());
+        dto.setLastName(user.getLastName());
+        dto.setActive(user.isActive());
+        return dto;
+    }
+
+
+    public static UserFilter convert(PublicUserFilterDto dto) {
         UserFilter filter = new UserFilter();
-        filter.setRoleId(dto.getRoleId());
-        filter.setGroupId(dto.getGroupId());
-        filter.setActive(dto.isActive());
         filter.setText(dto.getText());
         filter.setFrom(dto.getFrom());
         filter.setCount(dto.getCount());
         filter.setSortProperty(dto.getSortProperty());
         filter.setSortAsc(dto.isSortAsc());
+        if (dto instanceof SecuredUserFilterDto) {
+            SecuredUserFilterDto securedDto = (SecuredUserFilterDto) dto;
+            filter.setRoleId(securedDto.getRoleId());
+            filter.setGroupId(securedDto.getGroupId());
+            filter.setActive(securedDto.isActive());
+        }
         return filter;
     }
 

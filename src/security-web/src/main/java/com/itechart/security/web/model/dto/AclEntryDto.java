@@ -3,10 +3,10 @@ package com.itechart.security.web.model.dto;
 /**
  * @author yauheni.putsykovich
  */
-public class AccessToCustomerDto {
+public class AclEntryDto {
     private Long id;
     private String name;
-    private String subObjectTypeName;
+    private String principalTypeName;
     private boolean canRead;
     private boolean canWrite;
     private boolean canCreate;
@@ -29,12 +29,12 @@ public class AccessToCustomerDto {
         this.name = name;
     }
 
-    public String getSubObjectTypeName() {
-        return subObjectTypeName;
+    public String getPrincipalTypeName() {
+        return principalTypeName;
     }
 
-    public void setSubObjectTypeName(String subObjectTypeName) {
-        this.subObjectTypeName = subObjectTypeName;
+    public void setPrincipalTypeName(String principalTypeName) {
+        this.principalTypeName = principalTypeName;
     }
 
     public boolean isCanRead() {

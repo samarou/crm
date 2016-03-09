@@ -2,13 +2,13 @@
  * @author yauheni.putsykovich
  */
 
-angular.module("app").controller("CustomersController", ["$q", "CustomerService", "GroupService", "UserService", "DialogService",
-    function ($q, CustomerService, GroupService, UserService, DialogService) {
+angular.module("app").controller("CustomersController", ["CustomerService", "GroupService", "UserService", "UserBundle", "Util", "DialogService",
+    function (CustomerService, GroupService, UserService, UserBundle, Util, DialogService) {
         var vm = this;
 
         vm.customersList = [];
 
-        CustomerService.fetchAll().then(function (response) {
+        CustomerService.getAll().then(function (response) {
             vm.customersList = response.data;
         });
 
@@ -21,7 +21,7 @@ angular.module("app").controller("CustomersController", ["$q", "CustomerService"
         };
 
         vm.edit = function (customer) {
-            CustomerService.getRights(customer.id).then(function (response) {
+            CustomerService.getPermissions(customer.id).then(function (response) {
                 openCustomerDialog({
                     customer: customer,
                     rights: response.data,
@@ -30,10 +30,12 @@ angular.module("app").controller("CustomersController", ["$q", "CustomerService"
             });
         };
 
+        vm.userBundle = UserBundle.publicMode();
+
         function openCustomerDialog(model) {
             model.actions = {
-                addObjectRightsForUser: addObjectRightsForUser,
-                addObjectRightsForGroup: addObjectRightsForGroup
+                addPermissionsForUser: addPermissionsForUser,
+                addPermissionsForGroup: addPermissionsForGroup
             };
             DialogService.custom("app/customer/customer.modal.view.html", model).result.then(updateCustomer);
         }
@@ -42,18 +44,32 @@ angular.module("app").controller("CustomersController", ["$q", "CustomerService"
             console.log("model: ", model);
         }
 
-        function addObjectRightsForUser() {
-            DialogService.custom("app/customer/permissions-for-user.modal.view.html", {
+        function addPermissionsForUser(customer) {
+            vm.userBundle.find();
+            DialogService.custom("app/customer/public-users.modal.view.html", {
                 title: "Add Permissions for User",
-                user: [],
+                bundle: vm.userBundle,
                 size: "user-table--modal"
             }).result.then(function (model) {
-                    console.log("object rights: ", model);
+                    var aclEntries = model.bundle.userList
+                        .filter(function (user) { return user.checked; })
+                        .map(function (user) { return user.id; });
+                    CustomerService.addPermission(customer.id, aclEntries).then(CustomerService.getPermissions(customer.id));
                 });
         }
 
-        function addObjectRightsForGroup() {
-            DialogService.custom("app/customer/permissions-for-group.modal.view.html", {
+        /*
+         name: user.userName,
+         principalTypeName: "user",
+         canRead: false,
+         canWrite: false,
+         canCreate: false,
+         canDelete: false,
+         canAdmin: false
+         */
+
+        function addPermissionsForGroup() {
+            DialogService.custom("app/customer/public-groups.modal.view.html", {
                 title: "Add Permissions for Group",
                 groups: []
             }).result.then(function (model) {

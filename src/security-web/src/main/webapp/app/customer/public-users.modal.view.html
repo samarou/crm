@@ -22,18 +22,16 @@
                 <div class="pull-left col-md-3"><span ng-show="bundle.sortProperties.email.enabled" class="glyphicon" ng-class="{'glyphicon-sort-by-attributes' : bundle.sortProperties.email.asc, 'glyphicon-sort-by-attributes-alt' : !bundle.sortProperties.email.asc}"></span></div>
                 Email
             </td>
-            <td class="block--narrow"></td>
         </tr>
         </thead>
         <tbody>
-        <tr ng-class="{'hover--highlight' : user.active, 'table__row--inactive' : !user.active}" ng-repeat="user in bundle.userList" ng-dblclick="bundle.edit(user)">
+        <tr ng-repeat="user in bundle.userList" ng-class="{'hover--highlight' : user.active, 'table__row--inactive' : !user.active}">
             <td><input type="checkbox" ng-model="user.checked" ng-click="bundle.selectOne()" ng-dblclick="$event.stopPropagation()"></td>
             <td>{{bundle.filter.from + ($index + 1)}}</td>
             <td>{{user.firstName}}</td>
             <td>{{user.lastName}}</td>
             <td>{{user.userName}}</td>
             <td>{{user.email}}</td>
-            <td><span title="Edit user" class="hover--pointer glyphicon glyphicon-edit" ng-click="bundle.edit(user)"></span></td>
         </tr>
         </tbody>
     </table>

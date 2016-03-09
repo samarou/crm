@@ -8,24 +8,25 @@ import com.itechart.security.model.persistent.Principal;
 import com.itechart.security.model.persistent.User;
 import com.itechart.security.model.persistent.acl.Acl;
 import com.itechart.security.service.AclService;
+import com.itechart.security.service.ObjectTypeService;
 import com.itechart.security.service.PrincipalService;
-import com.itechart.security.web.model.SubObjectTypes;
-import com.itechart.security.web.model.dto.AccessToCustomerDto;
+import com.itechart.security.web.model.PrincipalTypes;
+import com.itechart.security.web.model.dto.AclEntryDto;
 import com.itechart.security.web.model.dto.CustomerDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.itechart.security.business.model.enums.ObjectTypes.CUSTOMER;
 import static com.itechart.security.web.model.dto.Converter.convertCustomers;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 /**
  * @author yauheni.putsykovich
@@ -43,18 +44,21 @@ public class CustomerController {
     @Autowired
     private AclService aclService;
 
+    @Autowired
+    private ObjectTypeService objectTypeService;
+
     @RequestMapping("/customers")
     public List<CustomerDto> getCustomers() {
         return convertCustomers(customerService.getCustomers());
     }
 
-    @RequestMapping("/customer/{id}/rights")
-    public List<AccessToCustomerDto> getRights(@PathVariable Long id){
-        Acl acl = aclService.getAcl(new ObjectIdentityImpl(id, CUSTOMER.getName()));
+    @RequestMapping("/customer/{id}/permissions")
+    public List<AclEntryDto> getPermissions(@PathVariable Long id) {
+        Acl acl = aclService.getAcl(new ObjectIdentityImpl(id, CUSTOMER.getObjectTyte()));
         Map<Long, Set<Permission>> allPermissions = acl.getPermissions();
         List<Principal> principals = principalService.getByIds(new ArrayList<>(allPermissions.keySet()));
-        List<AccessToCustomerDto> rights = principals.stream().map(principal -> {
-            AccessToCustomerDto dto = new AccessToCustomerDto();
+        return principals.stream().map(principal -> {
+            AclEntryDto dto = new AclEntryDto();
             dto.setId(principal.getId());
             dto.setName(principal.getName());
             allPermissions.get(principal.getId()).forEach(permission -> {
@@ -65,14 +69,26 @@ public class CustomerController {
                 dto.setCanAdmin(permission == Permission.ADMIN);
             });
             if (principal instanceof User) {
-                dto.setSubObjectTypeName(SubObjectTypes.USER.getName());
+                dto.setPrincipalTypeName(PrincipalTypes.USER.getObjectType());
             } else if (principal instanceof Group) {
-                dto.setSubObjectTypeName(SubObjectTypes.GROUP.getName());
+                dto.setPrincipalTypeName(PrincipalTypes.GROUP.getObjectType());
             }
 
             return dto;
         }).collect(Collectors.toList());
+    }
 
-        return rights;
+    @RequestMapping(value = "/customer/{id}/permissions", method = POST)
+    public void addPermissions(@PathVariable Long id, @RequestBody List<Long> principal) {
+        principal.forEach(principalId -> {
+            Acl acl = aclService.getAcl(new ObjectIdentityImpl(id, CUSTOMER.getObjectTyte()));
+            acl.addPermissions(principalId, Collections.<Permission>emptySet());
+            aclService.updateAcl(acl);
+        });
+    }
+
+    @RequestMapping(value = "/customer/{id}/permissions", method = PUT)
+    public void updatePermissions(@PathVariable Long id, @RequestBody List<AclEntryDto> aclEntries){
+        
     }
 }

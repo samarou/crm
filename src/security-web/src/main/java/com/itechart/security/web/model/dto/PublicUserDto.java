@@ -1,11 +1,9 @@
 package com.itechart.security.web.model.dto;
 
-import java.util.Set;
-
 /**
- * @author andrei.samarou
+ * @author yauheni.putsykovich
  */
-public class UserDto {
+public class PublicUserDto {
     private Long id;
     private String userName;
     private String password;
@@ -13,8 +11,6 @@ public class UserDto {
     private String firstName;
     private String lastName;
     private boolean active;
-    private Set<RoleDto> roles;
-    private Set<GroupDto> groups;
 
     public Long getId() {
         return id;
@@ -70,21 +66,5 @@ public class UserDto {
 
     public void setActive(boolean active) {
         this.active = active;
-    }
-
-    public Set<RoleDto> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<RoleDto> roles) {
-        this.roles = roles;
-    }
-
-    public Set<GroupDto> getGroups() {
-        return groups;
-    }
-
-    public void setGroups(Set<GroupDto> groups) {
-        this.groups = groups;
     }
 }

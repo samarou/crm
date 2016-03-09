@@ -3,17 +3,17 @@ package com.itechart.security.web.model;
 /**
  * @author yauheni.putsykovich
  */
-public enum SubObjectTypes {
+public enum PrincipalTypes {
     USER("user"),
     GROUP("group");
 
     private String name;
 
-    SubObjectTypes(String name) {
+    PrincipalTypes(String name) {
         this.name = name;
     }
 
-    public String getName() {
+    public String getObjectType() {
         return name;
     }
 }

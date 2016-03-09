@@ -27,8 +27,8 @@
                 <caption>
                     Permissions
                     <ul class="list-inline pull-right">
-                        <li><span ng-click="actions.addObjectRightsForUser()" class="hover--pointer icon--small icon--user-add"></span></li>
-                        <li><span ng-click="actions.addObjectRightsForGroup()" class="hover--pointer icon--small icon--user-group-add"></span></li>
+                        <li><span ng-click="actions.addPermissionsForUser(customer)" class="hover--pointer icon--small icon--user-add"></span></li>
+                        <li><span ng-click="actions.addPermissionsForGroup(customer)" class="hover--pointer icon--small icon--user-group-add"></span></li>
                     </ul>
                 </caption>
                 <thead>
@@ -44,7 +44,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="r in rights">
-                    <td><span title="r.subObjectTypeName" ng-class="{'glyphicon glyphicon-user': r.subObjectTypeName === 'user', 'icon--user-group': r.subObjectTypeName === 'group'}"></span></td>
+                    <td><span title="r.principalTypeName" ng-class="{'glyphicon glyphicon-user': r.principalTypeName === 'user', 'icon--user-group': r.principalTypeName === 'group'}"></span></td>
                     <td>{{r.name}}</td>
                     <td><input type="checkbox" ng-model="r.canRead"></td>
                     <td><input type="checkbox" ng-model="r.canWrite"></td>
