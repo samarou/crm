@@ -198,7 +198,9 @@ public class Converter {
     }
 
     public static List<CustomerDto> convertCustomers(List<Customer> customers) {
-        if(CollectionUtils.isEmpty(customers)) return Collections.emptyList();
+        if (CollectionUtils.isEmpty(customers)) {
+            return Collections.emptyList();
+        }
         return customers.stream().map(Converter::convert).collect(Collectors.toList());
     }
 
@@ -213,7 +215,9 @@ public class Converter {
     }
 
     public static Set<OrderDto> convertOrders(Set<Order> orders) {
-        if(CollectionUtils.isEmpty(orders)) return Collections.emptySet();
+        if (CollectionUtils.isEmpty(orders)) {
+            return Collections.emptySet();
+        }
         return orders.stream().map(Converter::convert).collect(Collectors.toSet());
     }
 
