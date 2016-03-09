@@ -7,15 +7,15 @@
                     <div class="col-md-1"><span class="glyphicon" ng-class="{'glyphicon-collapse-down' : isCollapsed, 'glyphicon-collapse-up' : !isCollapsed}"></span></div>
                     <div class="col-md-1"><input type="checkbox" ng-model="objectType.isSelectAll" ng-click="selectAll(objectType, objectType.isSelectAll); $event.stopPropagation()"></div>
                     <div class="col-md-3"><span class="text-info"> {{objectType.objectTypeName}}</span></div>
-                    <div class="col-md-7 text-left"><span ng-repeat="action in objectType.actions | filter:{privilege:{checked: true}}">{{action.name}}&nbsp;</span></div>
+                    <div class="col-md-7 text-left">[<span ng-repeat="action in objectType.actions | filter:{privilege:{checked: true}}">{{action.name}}{{$last ? '' : ', '}}</span>]</div>
                 </div>
             </li>
             <li uib-collapse="isCollapsed">
                 <ul class="list-unstyled">
                     <li ng-repeat="action in objectType.actions" ng-click="action.privilege.checked = !action.privilege.checked; $event.stopPropagation();">
                         <div class="row">
-                            <div class="col-md-1 col-md-offset-1"><input type="checkbox" ng-model="action.privilege.checked" ng-click="selectOne(objectType); $event.stopPropagation();"></div>
-                            <div class="col-md-10">{{action.name}}</div>
+                            <div class="col-md-1 col-md-offset-2"><input type="checkbox" ng-model="action.privilege.checked" ng-click="selectOne(objectType); $event.stopPropagation();"></div>
+                            <div class="col-md-9">{{action.name}}</div>
                         </div>
                     </li>
                 </ul>
