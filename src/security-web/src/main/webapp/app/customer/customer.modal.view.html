@@ -23,23 +23,36 @@
             </div>
         </uib-tab>
         <uib-tab index="1" heading="Access">
-            <ul class="list-unstyled">
-                <li ng-repeat="x in [1,2,3,4,5,6,7,8]">
-                    <div class="row">
-                        <div class="col-md-5">
-                            <span ng-class="{'glyphicon glyphicon-user': x % 2 === 0, 'icon--user-group': x % 2 !== 0}"></span>
-                            {{x % 2 === 0 ? 'User' : 'Group'}}
-                        </div>
-                        <div class="col-md-7 text--unselectable">
-                            <input id="customer-access-read-{{$index}}" type="checkbox"><label for="customer-access-read-{{$index}}" class="hover--pointer">READ</label>
-                            <input id="customer-access-write-{{$index}}" type="checkbox"><label for="customer-access-write-{{$index}}" class="hover--pointer">WRITE</label>
-                            <input id="customer-access-create-{{$index}}" type="checkbox"><label for="customer-access-create-{{$index}}" class="hover--pointer">CREATE</label>
-                            <input id="customer-access-delete-{{$index}}" type="checkbox"><label for="customer-access-delete-{{$index}}" class="hover--pointer">DELETE</label>
-                            <input id="customer-access-admin-{{$index}}" type="checkbox"><label for="customer-access-admin-{{$index}}" class="hover--pointer">ADMIN</label>
-                        </div>
-                    </div>
-                </li>
-            </ul>
+            <table class="table">
+                <caption>
+                    Object rights
+                    <ul class="list-inline pull-right">
+                        <li><span ng-click="actions.addObjectRights()" class="hover--pointer glyphicon glyphicon-plus"></span></li>
+                    </ul>
+                </caption>
+                <thead>
+                <tr>
+                    <td>Type</td>
+                    <td>Name</td>
+                    <td>Read</td>
+                    <td>Write</td>
+                    <td>Create</td>
+                    <td>Delete</td>
+                    <td>Admin</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="r in rights">
+                    <td><span title="r.subObjectTypeName" ng-class="{'glyphicon glyphicon-user': r.subObjectTypeName === 'user', 'icon--user-group': r.subObjectTypeName === 'group'}"></span></td>
+                    <td>{{r.name}}</td>
+                    <td><input type="checkbox" ng-model="r.canRead"></td>
+                    <td><input type="checkbox" ng-model="r.canWrite"></td>
+                    <td><input type="checkbox" ng-model="r.canCreate"></td>
+                    <td><input type="checkbox" ng-model="r.canDelete"></td>
+                    <td><input type="checkbox" ng-model="r.canAdmin"></td>
+                </tr>
+                </tbody>
+            </table>
         </uib-tab>
     </uib-tabset>
 </form>

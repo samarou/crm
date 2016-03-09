@@ -1,15 +1,14 @@
 package com.itechart.security.dao.impl;
 
+import com.itechart.security.dao.AclDao;
 import com.itechart.security.model.persistent.acl.Acl;
 import com.itechart.security.model.persistent.acl.AclObjectKey;
-import com.itechart.security.dao.AclDao;
 import com.itechart.security.util.BatchExecutor;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,12 +50,5 @@ public class AclDaoImpl extends BaseHibernateDao<Acl> implements AclDao {
                             .list()), keys, BATCH_SIZE);
             return result;
         });
-    }
-
-    @Override
-    public List<Acl> findByIds(List<? extends Serializable> ids) {
-        List<Acl> result = new ArrayList<>(ids.size());
-        BatchExecutor.execute(batch -> result.addAll(super.findByIds(batch)), ids, BATCH_SIZE);
-        return result;
     }
 }
