@@ -1,0 +1,47 @@
+<input class="form-control" ng-model="bundle.filter.text" ng-keyup="bundle.typing.keyUp()" ng-keydown="bundle.typing.keyDown()" placeholder="Search by first name, last name, username, email...">
+<div class="table--fixed__wrapper">
+    <table class="table table--fixed text--unselectable">
+        <caption>Users</caption>
+        <thead>
+        <tr>
+            <td class="block--narrow"><input type="checkbox" ng-model="bundle.isSelectedAll" ng-click="bundle.selectAll(bundle.isSelectedAll)"></td>
+            <td class="block--narrow">#</td>
+            <td class="hover--highlight a" ng-click="bundle.sortBy(bundle.sortProperties.firstName)">
+                <div class="pull-left col-md-3"><span ng-show="bundle.sortProperties.firstName.enabled" class="glyphicon" ng-class="{'glyphicon-sort-by-attributes' : bundle.sortProperties.firstName.asc, 'glyphicon-sort-by-attributes-alt' : !bundle.sortProperties.firstName.asc}"></span></div>
+                First name
+            </td>
+            <td class="hover--highlight" ng-click="bundle.sortBy(bundle.sortProperties.lastName)">
+                <div class="pull-left col-md-3"><span ng-show="bundle.sortProperties.lastName.enabled" class="glyphicon" ng-class="{'glyphicon-sort-by-attributes' :  bundle.sortProperties.lastName.asc, 'glyphicon-sort-by-attributes-alt' : !bundle.sortProperties.lastName.asc}"></span></div>
+                Last name
+            </td>
+            <td class="hover--highlight" ng-click="bundle.sortBy(bundle.sortProperties.userName)">
+                <div class="pull-left col-md-3"><span ng-show="bundle.sortProperties.userName.enabled" class="glyphicon" ng-class="{'glyphicon-sort-by-attributes' : bundle.sortProperties.userName.asc, 'glyphicon-sort-by-attributes-alt' : !bundle.sortProperties.userName.asc}"></span></div>
+                Username
+            </td>
+            <td class="hover--highlight" ng-click="bundle.sortBy(bundle.sortProperties.email)">
+                <div class="pull-left col-md-3"><span ng-show="bundle.sortProperties.email.enabled" class="glyphicon" ng-class="{'glyphicon-sort-by-attributes' : bundle.sortProperties.email.asc, 'glyphicon-sort-by-attributes-alt' : !bundle.sortProperties.email.asc}"></span></div>
+                Email
+            </td>
+            <td class="block--narrow"></td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-class="{'hover--highlight' : user.active, 'table__row--inactive' : !user.active}" ng-repeat="user in bundle.userList" ng-dblclick="bundle.edit(user)">
+            <td><input type="checkbox" ng-model="user.checked" ng-click="bundle.selectOne()" ng-dblclick="$event.stopPropagation()"></td>
+            <td>{{bundle.filter.from + ($index + 1)}}</td>
+            <td>{{user.firstName}}</td>
+            <td>{{user.lastName}}</td>
+            <td>{{user.userName}}</td>
+            <td>{{user.email}}</td>
+            <td><span title="Edit user" class="hover--pointer glyphicon glyphicon-edit" ng-click="bundle.edit(user)"></span></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<span class="text--summary" ng-hide="bundle.paging.totalCount === 0">Total: {{bundle.paging.totalCount}}</span>
+<div class="text--center">
+    <uib-pagination class="pagination-sm block--center" ng-change="bundle.paging.onPageChanged()" ng-model="bundle.paging.currentPage"
+                    total-items="bundle.paging.totalCount" items-per-page="bundle.paging.itemsPerPage" max-size="bundle.paging.visiblePages"
+                    boundary-link-numbers="true" rotate="false">
+    </uib-pagination>
+</div>

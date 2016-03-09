@@ -32,7 +32,8 @@ angular.module("app").controller("CustomersController", ["$q", "CustomerService"
 
         function openCustomerDialog(model) {
             model.actions = {
-                addObjectRights: openObjectRightsModal
+                addObjectRightsForUser: addObjectRightsForUser,
+                addObjectRightsForGroup: addObjectRightsForGroup
             };
             DialogService.custom("app/customer/customer.modal.view.html", model).result.then(updateCustomer);
         }
@@ -41,20 +42,22 @@ angular.module("app").controller("CustomersController", ["$q", "CustomerService"
             console.log("model: ", model);
         }
 
-        function openObjectRightsModal() {
-            var users, groups;
-            var tasks = [
-                //UserService.getAll().then(function (response) { users = response.data; }),
-                //GroupService.fetchAll().then(function (response) { groups = response.data; })
-            ];
-            $q.all(tasks).then(function () {
-                DialogService.custom("app/user/users.view.html", {
-                    user: [],
-                    group: [],
-                    size: "user-table--modal"
-                }).result.then(function (model) {
-                        console.log("object rights: ", model);
-                    });
-            });
+        function addObjectRightsForUser() {
+            DialogService.custom("app/customer/permissions-for-user.modal.view.html", {
+                title: "Add Permissions for User",
+                user: [],
+                size: "user-table--modal"
+            }).result.then(function (model) {
+                    console.log("object rights: ", model);
+                });
+        }
+
+        function addObjectRightsForGroup() {
+            DialogService.custom("app/customer/permissions-for-group.modal.view.html", {
+                title: "Add Permissions for Group",
+                groups: []
+            }).result.then(function (model) {
+                    console.log("object rights: ", model);
+                });
         }
     }]);
