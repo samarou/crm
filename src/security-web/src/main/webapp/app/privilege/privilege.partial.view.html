@@ -1,18 +1,25 @@
-<div class="block--scrollable">
+<span>
     <input id="anchor-privileges" class="form-control" ng-model="filterText" placeholder="Search privileges...">
-    <ul class="list--compact list-unstyled text--unselectable" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed" ng-repeat="objectType in objectTypes | filter:{objectTypeName: filterText}">
-        <li class="list--compact__collapse">
-            <span class="glyphicon" ng-class="{'glyphicon-collapse-down' : isCollapsed, 'glyphicon-collapse-up' : !isCollapsed}"></span>
-            <span class="text-info"> {{objectType.objectTypeName}}</span>
-            <span class="pull-right" ng-repeat="action in objectType.actions | filter:{privilege:{checked: true}}">{{action.name}}&nbsp;</span>
-        </li>
-        <li uib-collapse="isCollapsed">
-            <ul class="list-unstyled">
-                <li ng-repeat="action in objectType.actions" ng-click="action.privilege.checked = !action.privilege.checked; $event.stopPropagation();">
-                    <input type="checkbox" ng-model="action.privilege.checked" ng-click="$event.stopPropagation();">
-                    {{action.name}}
-                </li>
-            </ul>
-        </li>
-    </ul>
-</div>
+    <div class="block--scrollable">
+        <ul class="list--compact list-unstyled text--unselectable" ng-init="isCollapsed = true; selectOne(objectType)" ng-click="isCollapsed = !isCollapsed" ng-repeat="objectType in objectTypes | filter:{objectTypeName: filterText}">
+            <li class="list--compact__collapse">
+                <div class="row">
+                    <div class="col-md-1"><span class="glyphicon" ng-class="{'glyphicon-collapse-down' : isCollapsed, 'glyphicon-collapse-up' : !isCollapsed}"></span></div>
+                    <div class="col-md-1"><input type="checkbox" ng-model="objectType.isSelectAll" ng-click="selectAll(objectType, objectType.isSelectAll); $event.stopPropagation()"></div>
+                    <div class="col-md-3"><span class="text-info"> {{objectType.objectTypeName}}</span></div>
+                    <div class="col-md-7 text-left"><span ng-repeat="action in objectType.actions | filter:{privilege:{checked: true}}">{{action.name}}&nbsp;</span></div>
+                </div>
+            </li>
+            <li uib-collapse="isCollapsed">
+                <ul class="list-unstyled">
+                    <li ng-repeat="action in objectType.actions" ng-click="action.privilege.checked = !action.privilege.checked; $event.stopPropagation();">
+                        <div class="row">
+                            <div class="col-md-1 col-md-offset-1"><input type="checkbox" ng-model="action.privilege.checked" ng-click="selectOne(objectType); $event.stopPropagation();"></div>
+                            <div class="col-md-10">{{action.name}}</div>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</span>

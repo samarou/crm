@@ -51,7 +51,6 @@
 
 .list--compact li ul li {
     background-color: #f6f6f6;
-    padding-left: 15px;
 }
 
 .list--compact li ul li:hover {
@@ -60,8 +59,6 @@
 }
 
 .list--compact li ul {
-    margin-left: 50px;
-    margin-bottom: 10px;
     margin-top: 0;
     padding-top: 0;
 }
@@ -69,7 +66,7 @@
 .block--scrollable {
     font-size: 14px;
     color: #555;
-    padding: 3px 8px;
+    padding: 3px 15px;
     min-height: 250px;
     max-height: 250px;
     overflow-y: auto;
