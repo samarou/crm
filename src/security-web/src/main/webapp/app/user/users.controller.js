@@ -1,5 +1,5 @@
-angular.module('app').controller('UsersController', ["$location", "$q", "$uibModal", "UserService", "GroupService", "RoleService", "DialogService", "Collections", "Util",
-    function ($location, $q, $uibModal, UserService, GroupService, RoleService, DialogService, Collections, Util) {
+angular.module('app').controller('UsersController', ["$location", "$q", "$uibModal", "UserService", "UserBundle", "GroupService", "RoleService", "DialogService", "Collections",
+    function ($location, $q, $uibModal, UserService, UserBundle, GroupService, RoleService, DialogService, Collections) {
         "use strict";
         var vm = this;
 
@@ -10,70 +10,12 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
             vm.roles = response.data;
         });
 
-        var pageSize = 10;
-
-        vm.filter = {
-            from: 0,
-            count: pageSize,//todo: extract to config
-            text: null,
-            groupId: null,
-            roleId: null,
-            active: true,
-            sortProperty: null,
-            sortAsc: true
-        };
-
-        vm.paging = {
-            totalCount: 0,
-            itemsPerPage: pageSize,
-            currentPage: 1,
-            visiblePages: 5
-        };
-
-        vm.paging.onPageChanged = function () {
-            vm.filter.from = (vm.paging.currentPage - 1) * pageSize;
-            vm.find();
-        };
-
-        vm.sortProperties = {
-            firstName: {name: "firstName", asc: true, enabled: true},
-            lastName: {name: "lastName", asc: true, enabled: false},
-            userName: {name: "userName", asc: true, enabled: false},
-            email: {name: "email", asc: true, enabled: false}
-        };
-
-        vm.find = function find() {
-            //nulling, to prevent empty parameters in url
-            angular.forEach(vm.filter, function (value, key) {
-                if (typeof(value) !== "string") return;
-                vm.filter[key] = !!value ? value : null;
-            });
-            UserService.find(vm.filter).then(function (response) {
-                vm.userList = response.data.data;
-                var totalCount = response.data.totalCount;
-                var totalPages = Math.ceil(totalCount / vm.filter.count) || 1;
-                vm.paging.totalCount = totalCount;
-                vm.paging.visiblePages = totalPages;
-                vm.isSelectedAll = false;
-            });
-        };
-        vm.typing = Util.createDelayTypingListener(vm.find, 500);
-        vm.find();
-
-        vm.sortBy = function (property) {
-            angular.forEach(vm.sortProperties, function (sortProperty) {
-                sortProperty.enabled = false;
-            });
-            property.enabled = true;
-            property.asc = !property.asc;
-            vm.filter.sortAsc = property.asc;
-            vm.filter.sortProperty = property.name;
-            vm.find();
-        };
+        vm.bundle = UserBundle.securedMode();
+        vm.bundle.find();
 
         vm.activate = function (newState) {
             var tasks = [];
-            vm.userList.forEach(function (user) {
+            vm.bundle.userList.forEach(function (user) {
                 if (user.checked) {
                     if (newState) {
                         tasks.push(UserService.activate(user.id));
@@ -82,19 +24,7 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
                     }
                 }
             });
-            $q.all(tasks).then(vm.find);
-        };
-
-        vm.selectAll = function (checked) {
-            vm.userList.forEach(function (user) {
-                user.checked = checked;
-            });
-        };
-
-        vm.selectOne = function () {
-            vm.isSelectedAll = vm.userList.every(function (user) {
-                return user.checked;
-            });
+            $q.all(tasks).then(vm.bundle.find);
         };
 
         vm.edit = function (user) {
@@ -124,7 +54,7 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
         function update(user) {
             initUserWithCheckedGroupsAndRoles(user);
             if (user.id) {
-                var originUser = vm.userList.find(function (u) {
+                var originUser = vm.bundle.userList.find(function (u) {
                     return u.id === user.id
                 });
                 angular.copy(user, originUser);
@@ -132,7 +62,7 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
             } else {
                 UserService.create(user).then(function (response) {
                     user.id = response.data;
-                    vm.userList.push(user);
+                    vm.bundle.userList.push(user);
                 });
             }
         }

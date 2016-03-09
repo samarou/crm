@@ -12,16 +12,22 @@
 
         var service = {};
 
+        service.getPublicUsers = getPublicUsers;
         service.getAll = fetchAll;
         service.getById = getById;
         service.create = create;
         service.update = update;
         service.remove = remove;
         service.find = find;
+        service.findPublicUsers = findPublicUsers;
         service.activate = activate;
         service.deactivate = deactivate;
 
         return service;
+
+        function getPublicUsers(){
+            return $http.get("rest/users/public");
+        }
 
         function fetchAll() {
             return $http.get('rest/users');
@@ -45,6 +51,10 @@
 
         function find(filter) {
             return $http.get("rest/users/find", {params: filter});
+        }
+
+        function findPublicUsers(filter){
+            return $http.get("rest/users/public/find", {params: filter});
         }
 
         function activate(id) {
