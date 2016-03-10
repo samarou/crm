@@ -1,7 +1,6 @@
 package com.itechart.security.business.dao;
 
 import com.itechart.security.business.model.persistent.Customer;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -11,4 +10,6 @@ import java.util.List;
 public interface CustomerDao {
 
     List<Customer> loadAll();
+
+    void update(Customer customer);
 }

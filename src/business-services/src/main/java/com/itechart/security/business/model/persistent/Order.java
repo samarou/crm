@@ -74,6 +74,6 @@ public class Order extends SecuredEntity {
 
     @Override
     public String getObjectType() {
-        return ObjectTypes.ORDER.getObjectTyte();
+        return ObjectTypes.ORDER.getName();
     }
 }

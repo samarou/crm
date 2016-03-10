@@ -1,5 +1,7 @@
 package com.itechart.security.web.controller;
 
+import com.itechart.security.business.model.enums.ObjectTypes;
+import com.itechart.security.business.model.persistent.Customer;
 import com.itechart.security.business.service.CustomerService;
 import com.itechart.security.core.model.acl.ObjectIdentityImpl;
 import com.itechart.security.core.model.acl.Permission;
@@ -23,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.itechart.security.business.model.enums.ObjectTypes.CUSTOMER;
 import static com.itechart.security.web.model.dto.Converter.convertCustomers;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
@@ -52,9 +53,14 @@ public class CustomerController {
         return convertCustomers(customerService.getCustomers());
     }
 
+    @RequestMapping(value = "/customer", method = PUT)
+    public void update(Customer customer) {
+
+    }
+
     @RequestMapping("/customer/{id}/permissions")
     public List<AclEntryDto> getPermissions(@PathVariable Long id) {
-        Acl acl = aclService.getAcl(new ObjectIdentityImpl(id, CUSTOMER.getObjectTyte()));
+        Acl acl = aclService.getAcl(new ObjectIdentityImpl(id, ObjectTypes.CUSTOMER.getName()));
         Map<Long, Set<Permission>> allPermissions = acl.getPermissions();
         List<Principal> principals = principalService.getByIds(new ArrayList<>(allPermissions.keySet()));
         return principals.stream().map(principal -> {
@@ -81,14 +87,14 @@ public class CustomerController {
     @RequestMapping(value = "/customer/{id}/permissions", method = POST)
     public void addPermissions(@PathVariable Long id, @RequestBody List<Long> principal) {
         principal.forEach(principalId -> {
-            Acl acl = aclService.getAcl(new ObjectIdentityImpl(id, CUSTOMER.getObjectTyte()));
-            acl.addPermissions(principalId, Collections.<Permission>emptySet());
+            Acl acl = aclService.getAcl(new ObjectIdentityImpl(id, ObjectTypes.CUSTOMER.getName()));
+            acl.addPermissions(principalId, Collections.emptySet());
             aclService.updateAcl(acl);
         });
     }
 
-    @RequestMapping(value = "/customer/{id}/permissions", method = PUT)
-    public void updatePermissions(@PathVariable Long id, @RequestBody List<AclEntryDto> aclEntries){
-        
+    @RequestMapping(value = "/customer/permissions", method = PUT)
+    public void updatePermissions(){
+
     }
 }

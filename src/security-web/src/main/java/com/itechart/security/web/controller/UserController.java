@@ -102,6 +102,7 @@ public class UserController {
     @RequestMapping("/users/public/find")
     public DataPageDto<PublicUserDto> findPublicUsers(PublicUserFilterDto filterDto){
         UserFilter filter = convert(filterDto);
+        filter.setActive(true);
         DataPageDto<PublicUserDto> dataPage = new DataPageDto<>();
         dataPage.setData(convertToPublic(userService.findUsers(filter)));
         dataPage.setTotalCount(userService.countUsers(filter));

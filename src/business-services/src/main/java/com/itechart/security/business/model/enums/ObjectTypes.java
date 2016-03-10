@@ -16,14 +16,14 @@ public enum ObjectTypes {
         this.name = name;
     }
 
-    public String getObjectTyte() {
+    public String getName() {
         return name;
     }
 
     public static ObjectTypes findByName(String objectTypeName) {
         if (objectTypeName != null) {
             for (ObjectTypes objectType : ObjectTypes.values()) {
-                if (objectType.getObjectTyte().equals(objectTypeName)) {
+                if (objectType.getName().equals(objectTypeName)) {
                     return objectType;
                 }
             }

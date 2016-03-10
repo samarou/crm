@@ -73,10 +73,21 @@ public class Converter {
         dto.setEmail(user.getEmail());
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
-        dto.setActive(user.isActive());
         return dto;
     }
 
+    public static UserFilter convert(SecuredUserFilterDto dto) {
+        UserFilter filter = new UserFilter();
+        filter.setText(dto.getText());
+        filter.setFrom(dto.getFrom());
+        filter.setCount(dto.getCount());
+        filter.setSortProperty(dto.getSortProperty());
+        filter.setSortAsc(dto.isSortAsc());
+        filter.setRoleId(dto.getRoleId());
+        filter.setGroupId(dto.getGroupId());
+        filter.setActive(dto.isActive());
+        return filter;
+    }
 
     public static UserFilter convert(PublicUserFilterDto dto) {
         UserFilter filter = new UserFilter();
@@ -85,12 +96,6 @@ public class Converter {
         filter.setCount(dto.getCount());
         filter.setSortProperty(dto.getSortProperty());
         filter.setSortAsc(dto.isSortAsc());
-        if (dto instanceof SecuredUserFilterDto) {
-            SecuredUserFilterDto securedDto = (SecuredUserFilterDto) dto;
-            filter.setRoleId(securedDto.getRoleId());
-            filter.setGroupId(securedDto.getGroupId());
-            filter.setActive(securedDto.isActive());
-        }
         return filter;
     }
 

@@ -41,7 +41,12 @@ angular.module("app").controller("CustomersController", ["CustomerService", "Gro
         }
 
         function updateCustomer(model) {
-            console.log("model: ", model);
+            CustomerService.update({
+                customer: model.customer,
+                rights: model.rights
+            }).then(function (response) {
+                console.log("ok, ", response);
+            });
         }
 
         function addPermissionsForUser(customer) {
@@ -51,10 +56,10 @@ angular.module("app").controller("CustomersController", ["CustomerService", "Gro
                 bundle: vm.userBundle,
                 size: "user-table--modal"
             }).result.then(function (model) {
-                    var aclEntries = model.bundle.userList
+                    var principals = model.bundle.userList
                         .filter(function (user) { return user.checked; })
                         .map(function (user) { return user.id; });
-                    CustomerService.addPermission(customer.id, aclEntries).then(CustomerService.getPermissions(customer.id));
+                    CustomerService.addPermission(customer.id, principals).then(CustomerService.getPermissions(customer.id));
                 });
         }
 

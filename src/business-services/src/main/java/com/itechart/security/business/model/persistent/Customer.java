@@ -84,6 +84,6 @@ public class Customer extends SecuredEntity {
 
     @Override
     public String getObjectType() {
-        return ObjectTypes.CUSTOMER.getObjectTyte();
+        return ObjectTypes.CUSTOMER.getName();
     }
 }

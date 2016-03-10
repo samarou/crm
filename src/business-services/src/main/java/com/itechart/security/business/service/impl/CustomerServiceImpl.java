@@ -31,4 +31,9 @@ public class CustomerServiceImpl implements CustomerService {
     public List<Customer> getCustomers() {
         return customerDao.loadAll();
     }
+
+    @Override
+    public void update(Customer customer) {
+        customerDao.update(customer);
+    }
 }
