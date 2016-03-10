@@ -32,7 +32,7 @@ public class Acl extends BaseEntity implements SecurityAcl {
     @Column(name = "owner_id", updatable = false)
     private Long ownerId;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "acl")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "acl", cascade = CascadeType.ALL)
     private Set<AclEntry> entries;
 
     @Column(name = "inheriting")
