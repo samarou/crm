@@ -1,7 +1,5 @@
 package com.itechart.security.web.model.dto;
 
-import java.util.Set;
-
 /**
  * @author yauheni.putsykovich
  */
@@ -11,7 +9,6 @@ public class CustomerDto {
     private String lastName;
     private String email;
     private String address;
-    private Set<OrderDto> orders;
 
     public Long getId() {
         return id;
@@ -51,13 +48,5 @@ public class CustomerDto {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public Set<OrderDto> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(Set<OrderDto> orders) {
-        this.orders = orders;
     }
 }

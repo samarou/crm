@@ -2,11 +2,12 @@
  * @author yauheni.putsykovich
  */
 
-angular.module("app").controller("CustomersController", ["CustomerService", "GroupService", "UserService", "UserBundle", "Util", "DialogService",
-    function (CustomerService, GroupService, UserService, UserBundle, Util, DialogService) {
+angular.module("app").controller("CustomersController", ["CustomerService", "GroupService", "UserService", "UserBundle", "Util", "Collections", "DialogService",
+    function (CustomerService, GroupService, UserService, UserBundle, Util, Collections, DialogService) {
         var vm = this;
 
         vm.customersList = [];
+        vm.permissions = [];
 
         CustomerService.getAll().then(function (response) {
             vm.customersList = response.data;
@@ -22,9 +23,10 @@ angular.module("app").controller("CustomersController", ["CustomerService", "Gro
 
         vm.edit = function (customer) {
             CustomerService.getPermissions(customer.id).then(function (response) {
+                vm.permissions = response.data;
                 openCustomerDialog({
                     customer: customer,
-                    rights: response.data,
+                    permissions: vm.permissions,
                     title: "Editing Customer"
                 });
             });
@@ -41,12 +43,8 @@ angular.module("app").controller("CustomersController", ["CustomerService", "Gro
         }
 
         function updateCustomer(model) {
-            CustomerService.update({
-                customer: model.customer,
-                rights: model.rights
-            }).then(function (response) {
-                console.log("ok, ", response);
-            });
+            CustomerService.update(model.customer);
+            CustomerService.updatePermissions(model.customer.id, model.permissions);
         }
 
         function addPermissionsForUser(customer) {
@@ -56,22 +54,12 @@ angular.module("app").controller("CustomersController", ["CustomerService", "Gro
                 bundle: vm.userBundle,
                 size: "user-table--modal"
             }).result.then(function (model) {
-                    var principals = model.bundle.userList
-                        .filter(function (user) { return user.checked; })
-                        .map(function (user) { return user.id; });
-                    CustomerService.addPermission(customer.id, principals).then(CustomerService.getPermissions(customer.id));
+                    model.bundle.userList.forEach(function (user) {
+                        var alreadyPresent = !!Collections.find(user, vm.permissions);
+                        if (!alreadyPresent && user.checked) addDefaultPermissions(user.id, user.userName, "user");
+                    });
                 });
         }
-
-        /*
-         name: user.userName,
-         principalTypeName: "user",
-         canRead: false,
-         canWrite: false,
-         canCreate: false,
-         canDelete: false,
-         canAdmin: false
-         */
 
         function addPermissionsForGroup() {
             DialogService.custom("app/customer/public-groups.modal.view.html", {
@@ -80,5 +68,19 @@ angular.module("app").controller("CustomersController", ["CustomerService", "Gro
             }).result.then(function (model) {
                     console.log("object rights: ", model);
                 });
+        }
+
+        function addDefaultPermissions(id, name, type) {
+            var defaultPermission = {
+                id: id,
+                name: name,
+                principalTypeName: type,
+                canRead: false,
+                canWrite: false,
+                canCreate: false,
+                canDelete: false,
+                canAdmin: false
+            };
+            vm.permissions.push(defaultPermission);
         }
     }]);

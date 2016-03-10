@@ -244,6 +244,16 @@ public class Converter {
         return dto;
     }
 
+    public static Customer covert(CustomerDto dto) {
+        Customer customer = new Customer();
+        customer.setId(dto.getId());
+        customer.setFirstName(dto.getFirstName());
+        customer.setLastName(dto.getLastName());
+        customer.setEmail(dto.getEmail());
+        customer.setAddress(dto.getAddress());
+        return customer;
+    }
+
     public static Set<OrderDto> convertOrders(Set<Order> orders) {
         if (CollectionUtils.isEmpty(orders)) {
             return Collections.emptySet();

@@ -8,18 +8,18 @@ angular.module("app").service("CustomerService", ["$http", function ($http) {
     };
 
     this.create = function (customer) {
-        return $http.post("/rest/customer", customer);
+        return $http.post("/rest/customers", customer);
     };
 
     this.update = function (data) {
-        return $http.put("/rest/customer", data);
+        return $http.put("/rest/customers", data);
     };
 
     this.getPermissions = function (id) {
-        return $http.get("/rest/customer/" + id + "/permissions");
+        return $http.get("/rest/customers/" + id + "/permissions");
     };
 
-    this.addPermission = function (id, acl) {
-        return $http.post("/rest/customer/" + id + "/permissions", acl);
+    this.updatePermissions = function (id, permissions) {
+        return $http.put("/rest/customers/" + id + "/permissions", permissions);
     };
 }]);

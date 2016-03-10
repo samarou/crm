@@ -43,14 +43,14 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="r in rights">
-                    <td><span title="r.principalTypeName" ng-class="{'glyphicon glyphicon-user': r.principalTypeName === 'user', 'icon--user-group': r.principalTypeName === 'group'}"></span></td>
-                    <td>{{r.name}}</td>
-                    <td><input type="checkbox" ng-model="r.canRead"></td>
-                    <td><input type="checkbox" ng-model="r.canWrite"></td>
-                    <td><input type="checkbox" ng-model="r.canCreate"></td>
-                    <td><input type="checkbox" ng-model="r.canDelete"></td>
-                    <td><input type="checkbox" ng-model="r.canAdmin"></td>
+                <tr ng-repeat="p in permissions">
+                    <td><span title="p.principalTypeName" ng-class="{'glyphicon glyphicon-user': p.principalTypeName === 'user', 'icon--user-group': p.principalTypeName === 'group'}"></span></td>
+                    <td>{{p.name}}</td>
+                    <td><input type="checkbox" ng-model="p.canRead"></td>
+                    <td><input type="checkbox" ng-model="p.canWrite"></td>
+                    <td><input type="checkbox" ng-model="p.canCreate"></td>
+                    <td><input type="checkbox" ng-model="p.canDelete"></td>
+                    <td><input type="checkbox" ng-model="p.canAdmin"></td>
                 </tr>
                 </tbody>
             </table>

@@ -33,7 +33,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void update(Customer customer) {
+    @Transactional
+    public void updateCustomer(Customer customer) {
         customerDao.update(customer);
     }
 }
