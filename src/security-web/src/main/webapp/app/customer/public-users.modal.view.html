@@ -25,7 +25,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="user in bundle.userList">
+        <tr class="hover--highlight" ng-repeat="user in bundle.userList">
             <td><input type="checkbox" ng-model="user.checked" ng-click="bundle.selectOne()" ng-dblclick="$event.stopPropagation()"></td>
             <td>{{bundle.filter.from + ($index + 1)}}</td>
             <td>{{user.firstName}}</td>
@@ -38,8 +38,8 @@
 </div>
 <span class="text--summary" ng-hide="bundle.paging.totalCount === 0">Total: {{bundle.paging.totalCount}}</span>
 <div class="text--center">
-    <uib-pagination class="pagination-sm block--center" ng-change="bundle.paging.onPageChanged()" ng-model="bundle.paging.currentPage"
+    <uib-pagination class="pagination-sm" ng-change="bundle.paging.onPageChanged()" ng-model="bundle.paging.currentPage"
                     total-items="bundle.paging.totalCount" items-per-page="bundle.paging.itemsPerPage" max-size="bundle.paging.visiblePages"
-                    boundary-link-numbers="true" rotate="false">
+                    boundary-link="true" rotate="false">
     </uib-pagination>
 </div>

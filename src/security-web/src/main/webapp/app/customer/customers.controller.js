@@ -2,8 +2,8 @@
  * @author yauheni.putsykovich
  */
 
-angular.module("app").controller("CustomersController", ["$q", "CustomerService", "GroupService", "UserService", "UserBundle", "Util", "Collections", "DialogService",
-    function ($q, CustomerService, GroupService, UserService, UserBundle, Util, Collections, DialogService) {
+angular.module("app").controller("CustomersController", ["$q", "CustomerService", "GroupService", "GroupBundle", "UserService", "UserBundle", "Util", "Collections", "DialogService",
+    function ($q, CustomerService, GroupService, GroupBundle, UserService, UserBundle, Util, Collections, DialogService) {
         var vm = this;
 
         var customerBundle = {
@@ -17,6 +17,8 @@ angular.module("app").controller("CustomersController", ["$q", "CustomerService"
         };
 
         vm.customersList = [];
+        vm.userBundle = UserBundle.publicMode();
+        vm.groupBundle = GroupBundle.publicMode();
 
         CustomerService.getAll().then(function (response) {
             vm.customersList = response.data;
@@ -35,8 +37,6 @@ angular.module("app").controller("CustomersController", ["$q", "CustomerService"
                 openCustomerDialog({title: "Editing Customer"});
             });
         };
-
-        vm.userBundle = UserBundle.publicMode();
 
         function openCustomerDialog(model) {
             model.bundle = customerBundle;
@@ -65,25 +65,30 @@ angular.module("app").controller("CustomersController", ["$q", "CustomerService"
             DialogService.custom("app/customer/public-users.modal.view.html", {
                 title: "Add Permissions for User",
                 bundle: vm.userBundle,
-                size: "user-table--modal"
+                size: "modal--user-table"
             }).result.then(function (model) {
                     model.bundle.userList.forEach(function (user) {
                         var alreadyPresent = !!Collections.find(user, customerBundle.permissions);
-                        if (!alreadyPresent && user.checked) addDefaultPermissions(user.id, user.userName, "user");
+                        if (!alreadyPresent && user.checked) addDefaultPermission(user.id, user.userName, "user");
                     });
                 });
         }
 
         function addPermissionsForGroup() {
+            vm.groupBundle.find();
             DialogService.custom("app/customer/public-groups.modal.view.html", {
                 title: "Add Permissions for Group",
-                groups: []
+                bundle: vm.groupBundle,
+                size: "modal--group-table"
             }).result.then(function (model) {
-                    console.log("object rights: ", model);
+                    model.bundle.groupList.forEach(function (group) {
+                        var alreadyPresent = !!Collections.find(group, customerBundle.permissions);
+                        if (!alreadyPresent && group.checked) addDefaultPermission(group.id, group.name, "group");
+                    });
                 });
         }
 
-        function addDefaultPermissions(id, name, type) {
+        function addDefaultPermission(id, name, type) {
             var defaultPermission = {
                 id: id,
                 name: name,

@@ -36,8 +36,12 @@
     cursor: pointer;
 }
 
-.user-table--modal {
+.modal--user-table {
     width: 850px;
+}
+
+.modal--group-table {
+    width: 650px;
 }
 
 .list--compact {

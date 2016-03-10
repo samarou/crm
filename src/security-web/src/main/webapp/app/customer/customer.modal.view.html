@@ -47,7 +47,7 @@
                 <tbody>
                 <tr ng-repeat="p in bundle.permissions">
                     <td><input type="checkbox" ng-model="p.checked"></td>
-                    <td><span title="{{p.principalTypeName}}" class="hover--pointer" ng-class="{'glyphicon glyphicon-user': p.principalTypeName === 'user', 'icon--user-group': p.principalTypeName === 'group'}"></span></td>
+                    <td><span title="{{p.principalTypeName}}" class="icon--small hover--pointer" ng-class="{'icon--user': p.principalTypeName === 'user', 'icon--user-group': p.principalTypeName === 'group'}"></span></td>
                     <td>{{p.name}}</td>
                     <td><input type="checkbox" ng-model="p.canRead"></td>
                     <td><input type="checkbox" ng-model="p.canWrite"></td>
