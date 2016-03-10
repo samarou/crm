@@ -96,6 +96,7 @@ abstract class BaseHibernateDao<T extends BaseEntity> extends AbstractHibernateD
             BatchExecutor.execute(batch -> {
                 Criteria criteria = session.createCriteria(getPersistentClass());
                 criteria.add(Restrictions.in(getIdPropertyName(), batch));
+                criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
                 result.addAll(criteria.list());
             }, ids, BATCH_SIZE);
             return result;
