@@ -3,7 +3,7 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
         "use strict";
         var vm = this;
 
-        GroupService.fetchAll().then(function (response) {
+        GroupService.getAll().then(function (response) {
             vm.groups = response.data;
         });
         RoleService.fetchAll().then(function (response) {
