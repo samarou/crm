@@ -133,6 +133,22 @@ public class Converter {
         return group;
     }
 
+    public static List<PublicGroupDto> convertToPublicGroups(List<Group> groups) {
+        if (CollectionUtils.isEmpty(groups)) {
+            return Collections.emptyList();
+        }
+        return groups.stream().map(Converter::convertToPublicGroup).collect(Collectors.toList());
+    }
+
+    public static PublicGroupDto convertToPublicGroup(Group group) {
+        PublicGroupDto dto = new PublicGroupDto();
+        dto.setId(group.getId());
+        dto.setName(group.getName());
+        dto.setDescription(group.getDescription());
+
+        return dto;
+    }
+
     public static List<RoleDto> convertRoles(List<Role> roles) {
         if (CollectionUtils.isEmpty(roles)) {
             return Collections.emptyList();

@@ -3,8 +3,12 @@
  */
 angular.module("app").factory("GroupService", ["$http", function ($http) {
     "use strict";
-    this.fetchAll = function fetchAll() {
+    this.getAll = function () {
         return $http.get("/rest/groups");
+    };
+
+    this.getPublicGroups = function () {
+        return $http.get("/rest/groups/public");
     };
 
     this.create = function (group) {

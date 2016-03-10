@@ -2,7 +2,7 @@
     <div class="form-group">
         <div class="col-md-7">
             <span>&nbsp;</span>
-            <input class="form-control" ng-model="vm.pagingFilterConfig.filterObject.$" placeholder="Search...">
+            <input class="form-control" ng-model="vm.bundle.pagingFilterConfig.filterObject.$" placeholder="Search...">
         </div>
     </div>
 </div>
@@ -17,10 +17,10 @@
         </caption>
         <thead>
         <tr>
-            <td class="block--narrow"><input type="checkbox" ng-model="vm.isSelectedAll" ng-click="vm.selectAll(vm.isSelectedAll)"></td>
+            <td class="block--narrow"><input type="checkbox" ng-model="vm.bundle.isSelectedAll" ng-click="vm.bundle.selectAll(vm.bundle.isSelectedAll)"></td>
             <td class="block--narrow">#</td>
-            <td class="hover--highlight" ng-click="vm.pagingFilterConfig.sortAsc = !vm.pagingFilterConfig.sortAsc">
-                <div class="pull-left col-md-3"><span class="glyphicon" ng-class="{'glyphicon-sort-by-attributes' :  vm.pagingFilterConfig.sortAsc, 'glyphicon-sort-by-attributes-alt' : !vm.pagingFilterConfig.sortAsc}"></span></div>
+            <td class="hover--highlight" ng-click="vm.bundle.pagingFilterConfig.sortAsc = !vm.bundle.pagingFilterConfig.sortAsc">
+                <div class="pull-left col-md-3"><span class="glyphicon" ng-class="{'glyphicon-sort-by-attributes' :  vm.bundle.pagingFilterConfig.sortAsc, 'glyphicon-sort-by-attributes-alt' : !vm.bundle.pagingFilterConfig.sortAsc}"></span></div>
                 Name
             </td>
             <td class="hover--highlight">
@@ -30,9 +30,9 @@
         </tr>
         </thead>
         <tbody>
-        <tr class="hover--highlight"  ng-dblclick="vm.edit(group)" ng-repeat="group in (vm.pageGroups = (vm.groupList | pagingFilter:vm.pagingFilterConfig))">
-            <td><input type="checkbox" ng-model="group.checked" ng-click="vm.selectOne()" ng-dblclick="$event.stopPropagation()"></td>
-            <td>{{vm.pagingFilterConfig.itemsPerPage * (vm.pagingFilterConfig.currentPage - 1) + ($index + 1)}}</td>
+        <tr class="hover--highlight"  ng-dblclick="vm.edit(group)" ng-repeat="group in (vm.bundle.pageGroups = (vm.bundle.groupList | pagingFilter:vm.bundle.pagingFilterConfig))">
+            <td><input type="checkbox" ng-model="group.checked" ng-click="vm.bundle.selectOne()" ng-dblclick="$event.stopPropagation()"></td>
+            <td>{{vm.bundle.pagingFilterConfig.itemsPerPage * (vm.bundle.pagingFilterConfig.currentPage - 1) + ($index + 1)}}</td>
             <td>{{group.name}}</td>
             <td>{{group.description}}</td>
             <td><span class="glyphicon glyphicon-edit hover--pointer" title="Edit Group" ng-click="vm.edit(group)"></span></td>
@@ -41,7 +41,7 @@
     </table>
 </div>
 <div class="text--center">
-    <uib-pagination class="pagination-sm" ng-model="vm.pagingFilterConfig.currentPage" ng-change="vm.isSelectedAll = false; vm.selectAll(vm.isSelectedAll)"
-                    total-items="vm.pagingFilterConfig.totalItems" items-per-page="vm.pagingFilterConfig.itemsPerPage" max-size="vm.pagingFilterConfig.visiblePages"
+    <uib-pagination class="pagination-sm" ng-model="vm.bundle.pagingFilterConfig.currentPage" ng-change="vm.bundle.isSelectedAll = false; vm.bundle.selectAll(vm.bundle.isSelectedAll)"
+                    total-items="vm.bundle.pagingFilterConfig.totalCount" items-per-page="vm.bundle.pagingFilterConfig.itemsPerPage" max-size="vm.bundle.pagingFilterConfig.visiblePages"
                     boundary-links="true" rotate="false"></uib-pagination>
 </div>
