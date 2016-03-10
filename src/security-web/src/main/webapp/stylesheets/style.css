@@ -111,16 +111,20 @@
     height: 32px;
 }
 
-.icon--user-group {
-    background: url("./icons/group.svg");
-}
-
 .icon--user {
     background: url("./icons/user.svg");
 }
 
+.icon--remove {
+    background: url("./icons/remove.svg");
+}
+
 .icon--user-add {
     background: url("./icons/user-add.svg");
+}
+
+.icon--user-group {
+    background: url("./icons/group.svg");
 }
 
 .icon--user-group-add {

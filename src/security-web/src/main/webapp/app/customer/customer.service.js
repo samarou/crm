@@ -22,4 +22,8 @@ angular.module("app").service("CustomerService", ["$http", function ($http) {
     this.updatePermissions = function (id, permissions) {
         return $http.put("/rest/customers/" + id + "/permissions", permissions);
     };
+
+    this.removePermissions = function (id, permissionId) {
+        return $http.delete("/rest/customers/" + id + "/permissions/" + permissionId)
+    }
 }]);

@@ -15,10 +15,7 @@ import com.itechart.security.web.model.dto.AclEntryDto;
 import com.itechart.security.web.model.dto.CustomerDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -102,5 +99,12 @@ public class CustomerController {
             acl.addPermissions(principalId, Collections.emptySet());
             aclService.updateAcl(acl);
         });
+    }
+
+    @RequestMapping(value = "/customers/{customerId}/permissions/{principalId}", method = RequestMethod.DELETE)
+    public void deletePermission(@PathVariable Long customerId, @PathVariable Long principalId) {
+        Acl acl = aclService.getAcl(new ObjectIdentityImpl(customerId, ObjectTypes.CUSTOMER.getName()));
+        acl.removePrincipal(principalId);
+        aclService.updateAcl(acl);
     }
 }

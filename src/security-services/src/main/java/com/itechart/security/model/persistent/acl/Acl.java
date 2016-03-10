@@ -8,6 +8,9 @@ import org.springframework.util.Assert;
 import javax.persistence.*;
 import java.util.*;
 
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.FetchType.EAGER;
+
 /**
  * ACL entity.
  * Represents a single domain object instance with some additional information
@@ -32,7 +35,7 @@ public class Acl extends BaseEntity implements SecurityAcl {
     @Column(name = "owner_id", updatable = false)
     private Long ownerId;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "acl", cascade = CascadeType.ALL)
+    @OneToMany(fetch = EAGER, mappedBy = "acl", cascade = ALL, orphanRemoval = true)
     private Set<AclEntry> entries;
 
     @Column(name = "inheriting")
@@ -120,6 +123,11 @@ public class Acl extends BaseEntity implements SecurityAcl {
         } else {
             entry.setPermissions(permissions);
         }
+    }
+
+    public void removePrincipal(Long id) {
+        AclEntry entry = findEntry(id);
+        if (entry != null) entries.remove(entry);
     }
 
     public boolean removePermission(Long principalId, Permission permission) {

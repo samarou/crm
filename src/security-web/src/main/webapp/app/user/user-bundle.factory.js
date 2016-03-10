@@ -4,7 +4,7 @@
 angular.module("app").factory("UserBundle", ["UserService", "Collections", "Util", function (UserService, Collections, Util) {
     var bundle = {};
 
-    var pageSize = 2;
+    var pageSize = 10;
 
     bundle.userList = [];
 

@@ -4,21 +4,21 @@
             <div class="row">
                 <div class="col-md-6 form-group">
                     <label for="customer-first-name">First name</label>
-                    <input id="customer-first-name" class="form-control" ng-model="customer.firstName">
+                    <input id="customer-first-name" class="form-control" ng-model="bundle.customer.firstName">
                 </div>
                 <div class="col-md-6 form-group">
                     <label for="customer-last-name">Last name</label>
-                    <input id="customer-last-name" class="form-control" ng-model="customer.lastName">
+                    <input id="customer-last-name" class="form-control" ng-model="bundle.customer.lastName">
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 form-group">
                     <label for="customer-email">Email</label>
-                    <input id="customer-email" class="form-control" ng-model="customer.email">
+                    <input id="customer-email" class="form-control" ng-model="bundle.customer.email">
                 </div>
                 <div class="col-md-6 form-group">
                     <label for="customer-address">Address</label>
-                    <input id="customer-address" class="form-control" ng-model="customer.address">
+                    <input id="customer-address" class="form-control" ng-model="bundle.customer.address">
                 </div>
             </div>
         </uib-tab>
@@ -27,13 +27,15 @@
                 <caption>
                     Permissions
                     <ul class="list-inline pull-right">
-                        <li><span ng-click="actions.addPermissionsForUser(customer)" class="hover--pointer icon--small icon--user-add"></span></li>
-                        <li><span ng-click="actions.addPermissionsForGroup(customer)" class="hover--pointer icon--small icon--user-group-add"></span></li>
+                        <li><span ng-click="bundle.actions.addPermissionsForUser(bundle.customer)" class="hover--pointer icon--small icon--user-add"></span></li>
+                        <li><span ng-click="bundle.actions.addPermissionsForGroup(bundle.customer)" class="hover--pointer icon--small icon--user-group-add"></span></li>
+                        <li><span ng-click="bundle.actions.removePermissions(bundle.customer)" class="hover--pointer icon--small icon--remove"></span></li>
                     </ul>
                 </caption>
                 <thead>
                 <tr>
-                    <td>Type</td>
+                    <td></td>
+                    <td></td>
                     <td>Name</td>
                     <td>Read</td>
                     <td>Write</td>
@@ -43,8 +45,9 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="p in permissions">
-                    <td><span title="p.principalTypeName" ng-class="{'glyphicon glyphicon-user': p.principalTypeName === 'user', 'icon--user-group': p.principalTypeName === 'group'}"></span></td>
+                <tr ng-repeat="p in bundle.permissions">
+                    <td><input type="checkbox" ng-model="p.checked"></td>
+                    <td><span title="{{p.principalTypeName}}" class="hover--pointer" ng-class="{'glyphicon glyphicon-user': p.principalTypeName === 'user', 'icon--user-group': p.principalTypeName === 'group'}"></span></td>
                     <td>{{p.name}}</td>
                     <td><input type="checkbox" ng-model="p.canRead"></td>
                     <td><input type="checkbox" ng-model="p.canWrite"></td>
