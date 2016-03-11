@@ -8,8 +8,6 @@
     UserService.$inject = ['$http'];
 
     function UserService($http) {
-        console.log('UserService');
-
         var service = {};
 
         service.getPublicUsers = getPublicUsers;

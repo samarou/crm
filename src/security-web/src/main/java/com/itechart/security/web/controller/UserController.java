@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.itechart.security.web.model.dto.Converter.convert;
-import static com.itechart.security.web.model.dto.Converter.convertToPublic;
+import static com.itechart.security.web.model.dto.Converter.convertToPublicUsers;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
@@ -42,7 +42,7 @@ public class UserController {
     @PreAuthorize("hasRole('USER')")
     @RequestMapping("/users/public")
     public List<PublicUserDto> getPublicUsers() {
-        return Converter.convertToPublic(userService.getUsers());
+        return Converter.convertToPublicUsers(userService.getUsers());
     }
 
     @RequestMapping("/users/{id}")
@@ -56,9 +56,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users", method = POST)
-    public void create(@RequestBody SecuredUserDto dto) {
+    public Long create(@RequestBody SecuredUserDto dto) {
         User user = convert(dto);
-        userService.createUser(user);
+        Long userId = userService.createUser(user);
         List<String> roleNames = null;
         if (user.getRoles() != null) {
             roleNames = user.getRoles().stream()
@@ -67,6 +67,7 @@ public class UserController {
         }
         notificationService.sendUserCreatedNotification(
                 user.getEmail(), user.getUserName(), roleNames);
+        return userId;
     }
 
     @RequestMapping(value = "/users/activate/{id}", method = PUT)
@@ -104,7 +105,7 @@ public class UserController {
         UserFilter filter = convert(filterDto);
         filter.setActive(true);
         DataPageDto<PublicUserDto> dataPage = new DataPageDto<>();
-        dataPage.setData(convertToPublic(userService.findUsers(filter)));
+        dataPage.setData(convertToPublicUsers(userService.findUsers(filter)));
         dataPage.setTotalCount(userService.countUsers(filter));
         return dataPage;
     }

@@ -1,5 +1,6 @@
 package com.itechart.security.web.controller;
 
+import com.itechart.security.business.filter.CustomerFilter;
 import com.itechart.security.business.model.enums.ObjectTypes;
 import com.itechart.security.business.service.CustomerService;
 import com.itechart.security.core.model.acl.ObjectIdentityImpl;
@@ -12,8 +13,7 @@ import com.itechart.security.model.persistent.acl.Acl;
 import com.itechart.security.service.AclService;
 import com.itechart.security.service.PrincipalService;
 import com.itechart.security.web.model.PrincipalTypes;
-import com.itechart.security.web.model.dto.AclEntryDto;
-import com.itechart.security.web.model.dto.CustomerDto;
+import com.itechart.security.web.model.dto.*;
 import com.itechart.security.web.security.token.TokenAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -92,7 +92,6 @@ public class CustomerController {
             } else if (principal instanceof Group) {
                 dto.setPrincipalTypeName(PrincipalTypes.GROUP.getObjectType());
             }
-
             return dto;
         }).collect(Collectors.toList());
     }
@@ -119,6 +118,15 @@ public class CustomerController {
         Acl acl = getAcl(customerId);
         acl.removePrincipal(principalId);
         aclService.updateAcl(acl);
+    }
+
+    @RequestMapping("/customers/find")
+    public DataPageDto<CustomerDto> find(CustomerFilterDto filterDto){
+        CustomerFilter filter = Converter.convert(filterDto);
+        DataPageDto<CustomerDto> dataPage = new DataPageDto<>();
+        dataPage.setData(convertCustomers(customerService.findCustomers(filter)));
+        dataPage.setTotalCount(customerService.countCustomers(filter));
+        return dataPage;
     }
 
     private Acl getAcl(Long customerId){

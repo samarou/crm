@@ -25,7 +25,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr class="hover--highlight" ng-repeat="user in bundle.userList">
+        <tr class="hover--highlight" ng-repeat="user in bundle.itemsList">
             <td><input type="checkbox" ng-model="user.checked" ng-click="bundle.selectOne()" ng-dblclick="$event.stopPropagation()"></td>
             <td>{{bundle.filter.from + ($index + 1)}}</td>
             <td>{{user.firstName}}</td>

@@ -60,7 +60,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-class="{'hover--highlight' : user.active, 'table__row--inactive' : !user.active}" ng-repeat="user in vm.bundle.userList" ng-dblclick="vm.edit(user)">
+        <tr ng-class="{'hover--highlight' : user.active, 'table__row--inactive' : !user.active}" ng-repeat="user in vm.bundle.itemsList" ng-dblclick="vm.edit(user)">
             <td><input type="checkbox" ng-model="user.checked" ng-click="vm.bundle.selectOne()" ng-dblclick="$event.stopPropagation()"></td>
             <td>{{vm.bundle.filter.from + ($index + 1)}}</td>
             <td>{{user.firstName}}</td>
