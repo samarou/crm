@@ -20,10 +20,6 @@ angular.module("app").controller("CustomersController", ["$q", "CustomerService"
         vm.userBundle = UserBundle.publicMode();
         vm.groupBundle = GroupBundle.publicMode();
 
-        CustomerService.getAll().then(function (response) {
-            vm.customersList = response.data;
-        });
-
         vm.create = function () {
             customerBundle.customer = {};
             customerBundle.permissions = [];
@@ -38,14 +34,37 @@ angular.module("app").controller("CustomersController", ["$q", "CustomerService"
             });
         };
 
+        vm.remove = function () {
+            var tasks = [];
+            vm.customersList.forEach(function (customer) {
+                if (customer.checked) tasks.push(CustomerService.remove(customer.id));
+            });
+            $q.all(tasks).then(loadCustomers)
+        };
+
+        function loadCustomers() {
+            CustomerService.getAll().then(function (response) {
+                vm.customersList = response.data;
+            });
+        }
+        loadCustomers();
+
         function openCustomerDialog(model) {
             model.bundle = customerBundle;
             DialogService.custom("app/customer/customer.modal.view.html", model).result.then(updateCustomer);
         }
 
         function updateCustomer(model) {
-            CustomerService.update(model.bundle.customer);
-            CustomerService.updatePermissions(model.bundle.customer.id, model.bundle.permissions);
+            var customer = model.bundle.customer;
+            if (!!customer.id) {
+                CustomerService.update(customer);
+                CustomerService.updatePermissions(customer.id, model.bundle.permissions);
+            } else {
+                CustomerService.create(customer).then(function (response) {
+                    var customerId = response.data;
+                    CustomerService.updatePermissions(customerId, model.bundle.permissions).then(loadCustomers);
+                });
+            }
         }
 
         function removePermissions(customer) {

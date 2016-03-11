@@ -9,7 +9,11 @@ import java.util.List;
  */
 public interface CustomerService {
 
+    Long saveCustomer(Customer customer);
+
     List<Customer> getCustomers();
 
     void updateCustomer(Customer customer);
+
+    void deleteById(Long id);
 }

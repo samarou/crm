@@ -20,7 +20,7 @@
         </thead>
         <tbody>
         <tr ng-repeat="c in vm.customersList">
-            <td><input type="checkbox"></td>
+            <td><input type="checkbox" ng-model="c.checked"></td>
             <td>{{$index}}</td>
             <td>{{c.firstName}}</td>
             <td>{{c.lastName}}</td>

@@ -20,6 +20,12 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerDao customerDao;
 
     @Override
+    @Transactional
+    public Long saveCustomer(Customer customer) {
+        return customerDao.save(customer);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     //@PreAuthorize("hasPrivilege('sample.Customer', 'READ') or hasRole('ROOT')")
     //@PreAuthorize("@mySecurityService.hasPermission('special')")
@@ -36,5 +42,11 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     public void updateCustomer(Customer customer) {
         customerDao.update(customer);
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(Long id) {
+        customerDao.deleteById(id);
     }
 }

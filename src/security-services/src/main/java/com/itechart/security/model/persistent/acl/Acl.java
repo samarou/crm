@@ -125,8 +125,8 @@ public class Acl extends BaseEntity implements SecurityAcl {
         }
     }
 
-    public void removePrincipal(Long id) {
-        AclEntry entry = findEntry(id);
+    public void removePrincipal(Long principalId) {
+        AclEntry entry = findEntry(principalId);
         if (entry != null) entries.remove(entry);
     }
 

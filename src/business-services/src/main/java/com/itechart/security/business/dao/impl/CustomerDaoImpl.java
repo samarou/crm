@@ -13,6 +13,11 @@ import java.util.List;
 public class CustomerDaoImpl extends AbstractHibernateDao implements CustomerDao {
 
     @Override
+    public Long save(Customer customer) {
+        return (Long) getHibernateTemplate().save(customer);
+    }
+
+    @Override
     //@AclFilter
     //@AclFilter(@AclFilterRule(type = Customer.class, permissions = {Permission.WRITE}, inherit = true))
 //    @AclFilter(@AclFilterRule(type = Customer.class, permissions = {Permission.WRITE}))
@@ -23,5 +28,11 @@ public class CustomerDaoImpl extends AbstractHibernateDao implements CustomerDao
     @Override
     public void update(Customer customer) {
         getHibernateTemplate().update(customer);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        Customer customer = getHibernateTemplate().get(Customer.class, id);
+        if(customer != null) getHibernateTemplate().delete(customer);
     }
 }

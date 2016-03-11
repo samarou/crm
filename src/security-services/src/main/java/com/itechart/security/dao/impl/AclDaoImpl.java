@@ -25,7 +25,7 @@ public class AclDaoImpl extends BaseHibernateDao<Acl> implements AclDao {
     public List<Long> findChildrenIds(Long parentId) {
         return getHibernateTemplate().execute(session ->
                 session.createCriteria(Acl.class)
-                        .add(Restrictions.eq("parent.id", parentId))
+                        .add(Restrictions.eq("parentId", parentId))
                         .setProjection(Projections.property("id"))
                         .list());
     }

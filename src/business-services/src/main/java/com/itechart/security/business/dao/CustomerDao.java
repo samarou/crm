@@ -9,7 +9,11 @@ import java.util.List;
  */
 public interface CustomerDao {
 
+    Long save(Customer customer);
+
     List<Customer> loadAll();
 
     void update(Customer customer);
+
+    void deleteById(Long id);
 }
