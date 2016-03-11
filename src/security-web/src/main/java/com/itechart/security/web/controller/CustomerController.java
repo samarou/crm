@@ -1,9 +1,11 @@
 package com.itechart.security.web.controller;
 
+import com.itechart.security.business.filter.CustomerFilter;
 import com.itechart.security.business.model.enums.ObjectTypes;
 import com.itechart.security.business.service.CustomerService;
 import com.itechart.security.core.model.acl.ObjectIdentityImpl;
 import com.itechart.security.core.model.acl.Permission;
+import com.itechart.security.core.userdetails.UserDetailsImpl;
 import com.itechart.security.model.persistent.Group;
 import com.itechart.security.model.persistent.Principal;
 import com.itechart.security.model.persistent.User;
@@ -11,10 +13,11 @@ import com.itechart.security.model.persistent.acl.Acl;
 import com.itechart.security.service.AclService;
 import com.itechart.security.service.PrincipalService;
 import com.itechart.security.web.model.PrincipalTypes;
-import com.itechart.security.web.model.dto.AclEntryDto;
-import com.itechart.security.web.model.dto.CustomerDto;
+import com.itechart.security.web.model.dto.*;
+import com.itechart.security.web.security.token.TokenAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -52,9 +55,25 @@ public class CustomerController {
         customerService.updateCustomer(covert(dto));
     }
 
-    @RequestMapping("/customers/{id}/permissions")
-    public List<AclEntryDto> getPermissions(@PathVariable Long id) {
-        Acl acl = aclService.getAcl(new ObjectIdentityImpl(id, ObjectTypes.CUSTOMER.getName()));
+    @RequestMapping(value = "/customers", method = POST)
+    public Long create(@RequestBody CustomerDto dto) {
+        Long customerId = customerService.saveCustomer(covert(dto));
+        TokenAuthentication token = (TokenAuthentication) SecurityContextHolder.getContext().getAuthentication();
+        Long userId = ((UserDetailsImpl) token.getPrincipal()).getUserId();
+        aclService.createAcl(new ObjectIdentityImpl(customerId, ObjectTypes.CUSTOMER.getName()), null, userId);
+        return customerId;
+    }
+
+    @RequestMapping(value = "/customers/{customerId}", method = RequestMethod.DELETE)
+    public void delete(@PathVariable Long customerId) {
+        Acl acl = getAcl(customerId);
+        aclService.deleteAcl(acl);
+        customerService.deleteById(customerId);
+    }
+
+    @RequestMapping("/customers/{customerId}/permissions")
+    public List<AclEntryDto> getPermissions(@PathVariable Long customerId) {
+        Acl acl = getAcl(customerId);
         Map<Long, Set<Permission>> allPermissions = acl.getPermissions();
         List<Principal> principals = principalService.getByIds(new ArrayList<>(allPermissions.keySet()));
         return principals.stream().map(principal -> {
@@ -73,15 +92,17 @@ public class CustomerController {
             } else if (principal instanceof Group) {
                 dto.setPrincipalTypeName(PrincipalTypes.GROUP.getObjectType());
             }
-
             return dto;
         }).collect(Collectors.toList());
     }
 
-    @RequestMapping(value = "/customers/{id}/permissions", method = PUT)
-    public void updatePermissions(@PathVariable Long id, @RequestBody List<AclEntryDto> permissions) {
-        Acl acl = aclService.getAcl(new ObjectIdentityImpl(id, ObjectTypes.CUSTOMER.getName()));
+    @RequestMapping(value = "/customers/{customerId}/permissions", method = PUT)
+    public void createOrUpdatePermissions(@PathVariable Long customerId, @RequestBody List<AclEntryDto> permissions) {
+        Acl acl = getAcl(customerId);
         permissions.forEach(permission -> {
+            boolean isItNewPrincipal = acl.getPermissions(permission.getId()) == null;
+            if (isItNewPrincipal) acl.addPermissions(permission.getId(), Collections.emptySet());
+
             acl.denyAll(permission.getId());
             if (permission.isCanRead()) acl.addPermission(permission.getId(), READ);
             if (permission.isCanWrite()) acl.addPermission(permission.getId(), WRITE);
@@ -92,19 +113,23 @@ public class CustomerController {
         aclService.updateAcl(acl);
     }
 
-    @RequestMapping(value = "/customers/{id}/permissions", method = POST)
-    public void addPermissions(@PathVariable Long id, @RequestBody List<Long> principal) {
-        principal.forEach(principalId -> {
-            Acl acl = aclService.getAcl(new ObjectIdentityImpl(id, ObjectTypes.CUSTOMER.getName()));
-            acl.addPermissions(principalId, Collections.emptySet());
-            aclService.updateAcl(acl);
-        });
-    }
-
     @RequestMapping(value = "/customers/{customerId}/permissions/{principalId}", method = RequestMethod.DELETE)
     public void deletePermission(@PathVariable Long customerId, @PathVariable Long principalId) {
-        Acl acl = aclService.getAcl(new ObjectIdentityImpl(customerId, ObjectTypes.CUSTOMER.getName()));
+        Acl acl = getAcl(customerId);
         acl.removePrincipal(principalId);
         aclService.updateAcl(acl);
+    }
+
+    @RequestMapping("/customers/find")
+    public DataPageDto<CustomerDto> find(CustomerFilterDto filterDto){
+        CustomerFilter filter = Converter.convert(filterDto);
+        DataPageDto<CustomerDto> dataPage = new DataPageDto<>();
+        dataPage.setData(convertCustomers(customerService.findCustomers(filter)));
+        dataPage.setTotalCount(customerService.countCustomers(filter));
+        return dataPage;
+    }
+
+    private Acl getAcl(Long customerId){
+        return aclService.getAcl(new ObjectIdentityImpl(customerId, ObjectTypes.CUSTOMER.getName()));
     }
 }

@@ -3,19 +3,10 @@ package com.itechart.security.web.model.dto;
 /**
  * @author andrei.samarou
  */
-public class SecuredUserFilterDto extends PagingFilterDto {
-    private String text;
+public class SecuredUserFilterDto extends TextFilterDto {
     private Long groupId;
     private Long roleId;
     private boolean active;
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
 
     public Long getGroupId() {
         return groupId;
