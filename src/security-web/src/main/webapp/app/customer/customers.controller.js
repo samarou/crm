@@ -17,7 +17,6 @@ angular.module("app").controller("CustomersController", ["$q", "CustomerService"
             }
         };
 
-        vm.customersList = [];
         vm.groupBundle = GroupBundle.publicMode();
         vm.userBundle = SearchBundle.userPublicMode();
         vm.searchCustomerBundle = SearchBundle.customerMode();
@@ -39,7 +38,7 @@ angular.module("app").controller("CustomersController", ["$q", "CustomerService"
 
         vm.remove = function () {
             var tasks = [];
-            vm.customersList.forEach(function (customer) {
+            vm.searchCustomerBundle.itemsList.forEach(function (customer) {
                 if (customer.checked) tasks.push(CustomerService.remove(customer.id));
             });
             $q.all(tasks).then(vm.searchCustomerBundle.find)

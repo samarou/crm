@@ -10,8 +10,8 @@
         </caption>
         <thead>
         <tr>
-            <td></td>
-            <td>#</td>
+            <td class="block--narrow"></td>
+            <td class="block--narrow">#</td>
             <td class="hover--highlight a" ng-click="vm.searchCustomerBundle.sortBy(vm.searchCustomerBundle.sortProperties.firstName)">
                 <div class="pull-left col-md-3"><span ng-show="vm.searchCustomerBundle.sortProperties.firstName.enabled" class="glyphicon" ng-class="{'glyphicon-sort-by-attributes' : vm.searchCustomerBundle.sortProperties.firstName.asc, 'glyphicon-sort-by-attributes-alt' : !vm.searchCustomerBundle.sortProperties.firstName.asc}"></span></div>
                 First name
@@ -28,19 +28,26 @@
                 <div class="pull-left col-md-3"><span ng-show="vm.searchCustomerBundle.sortProperties.address.enabled" class="glyphicon" ng-class="{'glyphicon-sort-by-attributes' : vm.searchCustomerBundle.sortProperties.address.asc, 'glyphicon-sort-by-attributes-alt' : !vm.searchCustomerBundle.sortProperties.address.asc}"></span></div>
                 Address
             </td>
-            <td></td>
+            <td class="block--narrow"></td>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="c in vm.searchCustomerBundle.itemsList">
-            <td><input type="checkbox" ng-model="c.checked"></td>
-            <td>{{$index}}</td>
-            <td>{{c.firstName}}</td>
-            <td>{{c.lastName}}</td>
-            <td>{{c.email}}</td>
-            <td>{{c.address}}</td>
+        <tr class="hover--highlight" ng-dblclick="vm.edit(customer)" ng-repeat="customer in vm.searchCustomerBundle.itemsList">
+            <td><input type="checkbox" ng-model="customer.checked"></td>
+            <td>{{vm.searchCustomerBundle.filter.from + ($index + 1)}}</td>
+            <td>{{customer.firstName}}</td>
+            <td>{{customer.lastName}}</td>
+            <td>{{customer.email}}</td>
+            <td>{{customer.address}}</td>
             <td><span class="hover--pointer glyphicon glyphicon-edit" ng-click="vm.edit(c)"></span></td>
         </tr>
         </tbody>
     </table>
+</div>
+<span class="text--summary" ng-hide="vm.bundle.paging.totalCount === 0">Total: {{vm.searchCustomerBundle.paging.totalCount}}</span>
+<div class="text--center">
+    <uib-pagination class="pagination-sm" ng-change="vm.searchCustomerBundle.paging.onPageChanged()" ng-model="vm.searchCustomerBundle.paging.currentPage"
+                    total-items="vm.searchCustomerBundle.paging.totalCount" items-per-page="vm.searchCustomerBundle.paging.itemsPerPage" max-size="vm.searchCustomerBundle.paging.visiblePages"
+                    boundary-link-numbers="true" rotate="false">
+    </uib-pagination>
 </div>

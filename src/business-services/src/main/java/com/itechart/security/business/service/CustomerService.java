@@ -19,4 +19,6 @@ public interface CustomerService {
     void updateCustomer(Customer customer);
 
     void deleteById(Long id);
+
+    int countCustomers(CustomerFilter filter);
 }

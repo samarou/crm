@@ -1,5 +1,6 @@
 package com.itechart.security.web.controller;
 
+import com.itechart.security.business.filter.CustomerFilter;
 import com.itechart.security.business.model.enums.ObjectTypes;
 import com.itechart.security.business.service.CustomerService;
 import com.itechart.security.core.model.acl.ObjectIdentityImpl;
@@ -58,8 +59,10 @@ public class CustomerController {
 
     @RequestMapping("/customers/find")
     public DataPageDto find(CustomerFilterDto filterDto) {
+        CustomerFilter filter = convert(filterDto);
         DataPageDto<CustomerDto> page = new DataPageDto<>();
-        page.setData(convertCustomers(customerService.findCustomers(convert(filterDto))));
+        page.setData(convertCustomers(customerService.findCustomers(filter)));
+        page.setTotalCount(customerService.countCustomers(filter));
         return page;
     }
 

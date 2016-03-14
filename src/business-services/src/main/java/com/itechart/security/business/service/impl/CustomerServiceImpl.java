@@ -55,4 +55,9 @@ public class CustomerServiceImpl implements CustomerService {
     public void deleteById(Long id) {
         customerDao.deleteById(id);
     }
+
+    @Override
+    public int countCustomers(CustomerFilter filter) {
+        return customerDao.countCustomers(filter);
+    }
 }

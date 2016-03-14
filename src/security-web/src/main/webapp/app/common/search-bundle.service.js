@@ -6,7 +6,7 @@ angular.module("app").service("SearchBundle", ["UserService", "CustomerService",
         function createCommonBundle(){
             var bundle = {};
 
-            var pageSize = 10;
+            var pageSize = 2;
 
             bundle.isSelectAll = false;
             bundle.itemsList = [];
@@ -57,7 +57,6 @@ angular.module("app").service("SearchBundle", ["UserService", "CustomerService",
             bundle.typing = Util.createDelayTypingListener(bundle.find, 500);
 
             bundle.sortBy = function (property) {
-                console.log("property: ", property);
                 angular.forEach(bundle.sortProperties, function (sortProperty) {
                     sortProperty.enabled = false;
                 });
