@@ -3,9 +3,11 @@ package com.itechart.security.web.controller;
 import com.itechart.security.business.filter.CustomerFilter;
 import com.itechart.security.business.model.enums.ObjectTypes;
 import com.itechart.security.business.service.CustomerService;
+import com.itechart.security.core.SecurityUtils;
+import com.itechart.security.core.acl.AclPermissionEvaluator;
+import com.itechart.security.core.model.acl.ObjectIdentity;
 import com.itechart.security.core.model.acl.ObjectIdentityImpl;
 import com.itechart.security.core.model.acl.Permission;
-import com.itechart.security.core.userdetails.UserDetailsImpl;
 import com.itechart.security.model.persistent.Group;
 import com.itechart.security.model.persistent.Principal;
 import com.itechart.security.model.persistent.User;
@@ -17,10 +19,8 @@ import com.itechart.security.web.model.dto.AclEntryDto;
 import com.itechart.security.web.model.dto.CustomerDto;
 import com.itechart.security.web.model.dto.CustomerFilterDto;
 import com.itechart.security.web.model.dto.DataPageDto;
-import com.itechart.security.web.security.token.TokenAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -47,6 +47,14 @@ public class CustomerController {
     @Autowired
     private AclService aclService;
 
+    @Autowired
+    private AclPermissionEvaluator aclPermissionEvaluator;
+
+    @RequestMapping("/customers/{customerId}/permissions/delete")
+    public boolean allowDeleting(@PathVariable Long customerId) {
+        return aclPermissionEvaluator.hasPermission(SecurityUtils.getAuthentication(), getIdentity(customerId), DELETE);
+    }
+
     @RequestMapping("/customers")
     public List<CustomerDto> getCustomers() {
         return convertCustomers(customerService.getCustomers());
@@ -69,8 +77,7 @@ public class CustomerController {
     @RequestMapping(value = "/customers", method = POST)
     public Long create(@RequestBody CustomerDto dto) {
         Long customerId = customerService.saveCustomer(covert(dto));
-        TokenAuthentication token = (TokenAuthentication) SecurityContextHolder.getContext().getAuthentication();
-        Long userId = ((UserDetailsImpl) token.getPrincipal()).getUserId();
+        Long userId = SecurityUtils.getAuthenticatedUserId();
         aclService.createAcl(new ObjectIdentityImpl(customerId, ObjectTypes.CUSTOMER.getName()), null, userId);
         return customerId;
     }
@@ -133,6 +140,10 @@ public class CustomerController {
     }
 
     private Acl getAcl(Long customerId) {
-        return aclService.getAcl(new ObjectIdentityImpl(customerId, ObjectTypes.CUSTOMER.getName()));
+        return aclService.getAcl(getIdentity(customerId));
+    }
+
+    private ObjectIdentity getIdentity(Long customerId) {
+        return new ObjectIdentityImpl(customerId, ObjectTypes.CUSTOMER.getName());
     }
 }
