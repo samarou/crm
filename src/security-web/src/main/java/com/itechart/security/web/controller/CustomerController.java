@@ -13,7 +13,10 @@ import com.itechart.security.model.persistent.acl.Acl;
 import com.itechart.security.service.AclService;
 import com.itechart.security.service.PrincipalService;
 import com.itechart.security.web.model.PrincipalTypes;
-import com.itechart.security.web.model.dto.*;
+import com.itechart.security.web.model.dto.AclEntryDto;
+import com.itechart.security.web.model.dto.CustomerDto;
+import com.itechart.security.web.model.dto.CustomerFilterDto;
+import com.itechart.security.web.model.dto.DataPageDto;
 import com.itechart.security.web.security.token.TokenAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,8 +27,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.itechart.security.core.model.acl.Permission.*;
-import static com.itechart.security.web.model.dto.Converter.convertCustomers;
-import static com.itechart.security.web.model.dto.Converter.covert;
+import static com.itechart.security.web.model.dto.Converter.*;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
@@ -53,6 +55,15 @@ public class CustomerController {
     @RequestMapping(value = "/customers", method = PUT)
     public void update(@RequestBody CustomerDto dto) {
         customerService.updateCustomer(covert(dto));
+    }
+
+    @RequestMapping("/customers/find")
+    public DataPageDto find(CustomerFilterDto filterDto) {
+        CustomerFilter filter = convert(filterDto);
+        DataPageDto<CustomerDto> page = new DataPageDto<>();
+        page.setData(convertCustomers(customerService.findCustomers(filter)));
+        page.setTotalCount(customerService.countCustomers(filter));
+        return page;
     }
 
     @RequestMapping(value = "/customers", method = POST)
@@ -92,6 +103,7 @@ public class CustomerController {
             } else if (principal instanceof Group) {
                 dto.setPrincipalTypeName(PrincipalTypes.GROUP.getObjectType());
             }
+
             return dto;
         }).collect(Collectors.toList());
     }
@@ -120,16 +132,7 @@ public class CustomerController {
         aclService.updateAcl(acl);
     }
 
-    @RequestMapping("/customers/find")
-    public DataPageDto<CustomerDto> find(CustomerFilterDto filterDto){
-        CustomerFilter filter = Converter.convert(filterDto);
-        DataPageDto<CustomerDto> dataPage = new DataPageDto<>();
-        dataPage.setData(convertCustomers(customerService.findCustomers(filter)));
-        dataPage.setTotalCount(customerService.countCustomers(filter));
-        return dataPage;
-    }
-
-    private Acl getAcl(Long customerId){
+    private Acl getAcl(Long customerId) {
         return aclService.getAcl(new ObjectIdentityImpl(customerId, ObjectTypes.CUSTOMER.getName()));
     }
 }

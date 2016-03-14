@@ -17,12 +17,10 @@ angular.module("app").controller("CustomersController", ["$q", "CustomerService"
             }
         };
 
-        CustomerService.getAll();
-
-        vm.customersList = [];
-        vm.searchCustomerBundle = SearchBundle.customerMode();
-        vm.userBundle = SearchBundle.userPublicMode();
         vm.groupBundle = GroupBundle.publicMode();
+        vm.userBundle = SearchBundle.userPublicMode();
+        vm.searchCustomerBundle = SearchBundle.customerMode();
+        vm.searchCustomerBundle.find();
 
         vm.create = function () {
             editCustomerBundle.customer = {};
@@ -32,7 +30,7 @@ angular.module("app").controller("CustomersController", ["$q", "CustomerService"
 
         vm.edit = function (customer) {
             CustomerService.getPermissions(customer.id).then(function (response) {
-                editCustomerBundle.customer = customer;
+                editCustomerBundle.customer = angular.copy(customer);
                 editCustomerBundle.permissions = response.data;
                 openCustomerDialog({title: "Editing Customer"});
             });
@@ -40,10 +38,10 @@ angular.module("app").controller("CustomersController", ["$q", "CustomerService"
 
         vm.remove = function () {
             var tasks = [];
-            vm.customersList.forEach(function (customer) {
+            vm.searchCustomerBundle.itemsList.forEach(function (customer) {
                 if (customer.checked) tasks.push(CustomerService.remove(customer.id));
             });
-            $q.all(tasks).then(vm.searchCustomerBundle.performSeach)
+            $q.all(tasks).then(vm.searchCustomerBundle.find)
         };
 
         function openCustomerDialog(model) {
@@ -54,12 +52,12 @@ angular.module("app").controller("CustomersController", ["$q", "CustomerService"
         function updateCustomer(model) {
             var customer = model.bundle.customer;
             if (!!customer.id) {
-                CustomerService.update(customer);
+                CustomerService.update(customer).then(vm.searchCustomerBundle.find);
                 CustomerService.updatePermissions(customer.id, model.bundle.permissions);
             } else {
                 CustomerService.create(customer).then(function (response) {
                     var customerId = response.data;
-                    CustomerService.updatePermissions(customerId, model.bundle.permissions).then(vm.searchCustomerBundle.performSeach);
+                    CustomerService.updatePermissions(customerId, model.bundle.permissions).then(vm.searchCustomerBundle.find);
                 });
             }
         }

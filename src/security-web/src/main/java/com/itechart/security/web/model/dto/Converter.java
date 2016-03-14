@@ -61,10 +61,10 @@ public class Converter {
         if (CollectionUtils.isEmpty(users)) {
             return Collections.emptyList();
         }
-        return users.stream().map(Converter::convertToPublicUsers).collect(Collectors.toList());
+        return users.stream().map(Converter::convertToPublicUser).collect(Collectors.toList());
     }
 
-    private static PublicUserDto convertToPublicUsers(User user) {
+    private static PublicUserDto convertToPublicUser(User user) {
         if (user == null) {
             return null;
         }
@@ -100,7 +100,7 @@ public class Converter {
         return filter;
     }
 
-    public static CustomerFilter convert(CustomerFilterDto dto) {
+    public static CustomerFilter convert(CustomerFilterDto dto){
         CustomerFilter filter = new CustomerFilter();
         filter.setText(dto.getText());
         filter.setFrom(dto.getFrom());

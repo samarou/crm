@@ -42,7 +42,7 @@ public class UserController {
     @PreAuthorize("hasRole('USER')")
     @RequestMapping("/users/public")
     public List<PublicUserDto> getPublicUsers() {
-        return Converter.convertToPublicUsers(userService.getUsers());
+        return convertToPublicUsers(userService.getUsers());
     }
 
     @RequestMapping("/users/{id}")

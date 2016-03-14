@@ -17,7 +17,7 @@ import java.util.List;
  * @author andrei.samarou
  */
 @Repository
-public class CustomerDaoImpl extends BaseHibernateDao<Customer> implements CustomerDao {
+public class CustomerDaoImpl extends AbstractHibernateDao<Customer> implements CustomerDao {
 
     @Override
     public Long save(Customer customer) {
@@ -27,7 +27,7 @@ public class CustomerDaoImpl extends BaseHibernateDao<Customer> implements Custo
     @Override
     //@AclFilter
     //@AclFilter(@AclFilterRule(type = Customer.class, permissions = {Permission.WRITE}, inherit = true))
-    //@AclFilter(@AclFilterRule(type = Customer.class, permissions = {Permission.WRITE}))
+//    @AclFilter(@AclFilterRule(type = Customer.class, permissions = {Permission.WRITE}))
     public List<Customer> loadAll() {
         return getHibernateTemplate().loadAll(Customer.class);
     }
@@ -38,33 +38,36 @@ public class CustomerDaoImpl extends BaseHibernateDao<Customer> implements Custo
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public List<Customer> findCustomers(CustomerFilter filter) {
-        return getHibernateTemplate().execute(session -> {
-            Criteria criteria = createFilterCriteria(filter, session);
-            return executePagingDistinctCriteria(session, criteria, filter);
+    public void deleteById(Long id) {
+        Customer customer = getHibernateTemplate().get(Customer.class, id);
+        if (customer != null) getHibernateTemplate().delete(customer);
+    }
+
+    @Override
+    public int countCustomers(CustomerFilter filter){
+        return getHibernateTemplate().executeWithNativeSession(session -> {
+            Criteria criteria = createFilterCriteria(session, filter);
+            criteria.setProjection(Projections.rowCount());
+            return  ((Number)criteria.uniqueResult()).intValue();
         });
     }
 
     @Override
-    public int countCustomers(CustomerFilter filter) {
-        return getHibernateTemplate().execute(session -> {
-            Criteria criteria = createFilterCriteria(filter, session);
-            appendSortingFilterConditions(criteria, filter);
-            criteria.setProjection(Projections.rowCount());
-//            return ((Number) criteria.uniqueResult()).intValue();
-            return 0;
+    public List<Customer> findCustomers(CustomerFilter filter) {
+        return getHibernateTemplate().executeWithNativeSession(session -> {
+            Criteria criteria = createFilterCriteria(session, filter);
+            return executePagingDistinctCriteria(session, criteria, filter);
         });
     }
 
-    private Criteria createFilterCriteria(CustomerFilter filter, Session session) {
-        Criteria criteria = session.createCriteria(Customer.class, "c");
+    private Criteria createFilterCriteria(Session session, CustomerFilter filter) {
+        Criteria criteria = session.createCriteria(Customer.class, "u");
         if (StringUtils.hasText(filter.getText())) {
             criteria.add(Restrictions.disjunction(
-                    Restrictions.ilike("c.firstName", filter.getText(), MatchMode.ANYWHERE),
-                    Restrictions.ilike("c.lastName", filter.getText(), MatchMode.ANYWHERE),
-                    Restrictions.ilike("c.email", filter.getText(), MatchMode.ANYWHERE),
-                    Restrictions.ilike("c.address", filter.getText(), MatchMode.ANYWHERE)
+                    Restrictions.ilike("u.address", filter.getText(), MatchMode.ANYWHERE),
+                    Restrictions.ilike("u.firstName", filter.getText(), MatchMode.ANYWHERE),
+                    Restrictions.ilike("u.lastName", filter.getText(), MatchMode.ANYWHERE),
+                    Restrictions.ilike("u.email", filter.getText(), MatchMode.ANYWHERE)
             ));
         }
         return criteria;
