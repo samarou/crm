@@ -1,6 +1,7 @@
 package com.itechart.security.business.dao.impl;
 
 import com.itechart.security.business.dao.CustomerDao;
+import com.itechart.security.business.filter.CustomerFilter;
 import com.itechart.security.business.model.persistent.Customer;
 import org.springframework.stereotype.Repository;
 
@@ -34,5 +35,10 @@ public class CustomerDaoImpl extends AbstractHibernateDao implements CustomerDao
     public void deleteById(Long id) {
         Customer customer = getHibernateTemplate().get(Customer.class, id);
         if(customer != null) getHibernateTemplate().delete(customer);
+    }
+
+    @Override
+    public List<Customer> findCustomers(CustomerFilter filter) {
+        return loadAll();
     }
 }

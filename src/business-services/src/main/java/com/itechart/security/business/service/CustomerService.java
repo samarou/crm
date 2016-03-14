@@ -1,5 +1,6 @@
 package com.itechart.security.business.service;
 
+import com.itechart.security.business.filter.CustomerFilter;
 import com.itechart.security.business.model.persistent.Customer;
 
 import java.util.List;
@@ -8,6 +9,8 @@ import java.util.List;
  * @author andrei.samarou
  */
 public interface CustomerService {
+
+    List<Customer> findCustomers(CustomerFilter filter);
 
     Long saveCustomer(Customer customer);
 

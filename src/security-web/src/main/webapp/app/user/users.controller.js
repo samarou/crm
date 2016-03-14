@@ -1,21 +1,21 @@
-angular.module('app').controller('UsersController', ["$location", "$q", "$uibModal", "UserService", "UserBundle", "GroupService", "RoleService", "DialogService", "Collections",
-    function ($location, $q, $uibModal, UserService, UserBundle, GroupService, RoleService, DialogService, Collections) {
+angular.module('app').controller('UsersController', ["$location", "$q", "$uibModal", "UserService", "SearchBundle", "GroupService", "RoleService", "DialogService", "Collections",
+    function ($location, $q, $uibModal, UserService, SearchBundle, GroupService, RoleService, DialogService, Collections) {
         "use strict";
         var vm = this;
 
-        GroupService.fetchAll().then(function (response) {
+        GroupService.getAll().then(function (response) {
             vm.groups = response.data;
         });
         RoleService.fetchAll().then(function (response) {
             vm.roles = response.data;
         });
 
-        vm.bundle = UserBundle.securedMode();
+        vm.bundle = SearchBundle.userSecuredMode();
         vm.bundle.find();
 
         vm.activate = function (newState) {
             var tasks = [];
-            vm.bundle.userList.forEach(function (user) {
+            vm.bundle.itemsList.forEach(function (user) {
                 if (user.checked) {
                     if (newState) {
                         tasks.push(UserService.activate(user.id));
@@ -54,7 +54,7 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
         function update(user) {
             initUserWithCheckedGroupsAndRoles(user);
             if (user.id) {
-                var originUser = vm.bundle.userList.find(function (u) {
+                var originUser = vm.bundle.itemsList.find(function (u) {
                     return u.id === user.id
                 });
                 angular.copy(user, originUser);
@@ -62,7 +62,9 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
             } else {
                 UserService.create(user).then(function (response) {
                     user.id = response.data;
-                    vm.bundle.userList.push(user);
+                    console.log("user.id: ", user.id);
+                    console.log("response: ", response);
+                    vm.bundle.itemsList.push(user);
                 });
             }
         }

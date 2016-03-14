@@ -2,11 +2,12 @@
  * @author yauheni.putsykovich
  */
 
-angular.module("app").controller("CustomersController", ["$q", "CustomerService", "GroupService", "GroupBundle", "UserService", "UserBundle", "Util", "Collections", "DialogService",
-    function ($q, CustomerService, GroupService, GroupBundle, UserService, UserBundle, Util, Collections, DialogService) {
+angular.module("app").controller("CustomersController", ["$q", "CustomerService", "GroupService", "GroupBundle", "UserService", "SearchBundle", "Util", "Collections", "DialogService",
+    function ($q, CustomerService, GroupService, GroupBundle, UserService, SearchBundle, Util, Collections, DialogService) {
+        "use strict";
         var vm = this;
 
-        var customerBundle = {
+        var editCustomerBundle = {
             customer: null,
             permissions: null,
             actions: {
@@ -17,19 +18,21 @@ angular.module("app").controller("CustomersController", ["$q", "CustomerService"
         };
 
         vm.customersList = [];
-        vm.userBundle = UserBundle.publicMode();
         vm.groupBundle = GroupBundle.publicMode();
+        vm.userBundle = SearchBundle.userPublicMode();
+        vm.searchCustomerBundle = SearchBundle.customerMode();
+        vm.searchCustomerBundle.find();
 
         vm.create = function () {
-            customerBundle.customer = {};
-            customerBundle.permissions = [];
+            editCustomerBundle.customer = {};
+            editCustomerBundle.permissions = [];
             openCustomerDialog({title: "Create Customer"});
         };
 
         vm.edit = function (customer) {
             CustomerService.getPermissions(customer.id).then(function (response) {
-                customerBundle.customer = customer;
-                customerBundle.permissions = response.data;
+                editCustomerBundle.customer = customer;
+                editCustomerBundle.permissions = response.data;
                 openCustomerDialog({title: "Editing Customer"});
             });
         };
@@ -39,18 +42,11 @@ angular.module("app").controller("CustomersController", ["$q", "CustomerService"
             vm.customersList.forEach(function (customer) {
                 if (customer.checked) tasks.push(CustomerService.remove(customer.id));
             });
-            $q.all(tasks).then(loadCustomers)
+            $q.all(tasks).then(vm.searchCustomerBundle.find)
         };
 
-        function loadCustomers() {
-            CustomerService.getAll().then(function (response) {
-                vm.customersList = response.data;
-            });
-        }
-        loadCustomers();
-
         function openCustomerDialog(model) {
-            model.bundle = customerBundle;
+            model.bundle = editCustomerBundle;
             DialogService.custom("app/customer/customer.modal.view.html", model).result.then(updateCustomer);
         }
 
@@ -62,19 +58,19 @@ angular.module("app").controller("CustomersController", ["$q", "CustomerService"
             } else {
                 CustomerService.create(customer).then(function (response) {
                     var customerId = response.data;
-                    CustomerService.updatePermissions(customerId, model.bundle.permissions).then(loadCustomers);
+                    CustomerService.updatePermissions(customerId, model.bundle.permissions).then(vm.searchCustomerBundle.find);
                 });
             }
         }
 
         function removePermissions(customer) {
             var tasks = [];
-            customerBundle.permissions.forEach(function (p) {
+            editCustomerBundle.permissions.forEach(function (p) {
                 if (p.checked) tasks.push(CustomerService.removePermissions(customer.id, p.id));
             });
             $q.all(tasks).then(function () {
                 CustomerService.getPermissions(customer.id).then(function (response) {
-                    customerBundle.permissions = response.data;
+                    editCustomerBundle.permissions = response.data;
                 })
             });
         }
@@ -84,10 +80,11 @@ angular.module("app").controller("CustomersController", ["$q", "CustomerService"
             DialogService.custom("app/customer/public-users.modal.view.html", {
                 title: "Add Permissions for User",
                 bundle: vm.userBundle,
-                size: "modal--user-table"
+                size: "modal--user-table",
+                cancelTitle: "Back"
             }).result.then(function (model) {
-                    model.bundle.userList.forEach(function (user) {
-                        var alreadyPresent = !!Collections.find(user, customerBundle.permissions);
+                    model.bundle.itemsList.forEach(function (user) {
+                        var alreadyPresent = !!Collections.find(user, editCustomerBundle.permissions);
                         if (!alreadyPresent && user.checked) addDefaultPermission(user.id, user.userName, "user");
                     });
                 });
@@ -98,10 +95,11 @@ angular.module("app").controller("CustomersController", ["$q", "CustomerService"
             DialogService.custom("app/customer/public-groups.modal.view.html", {
                 title: "Add Permissions for Group",
                 bundle: vm.groupBundle,
-                size: "modal--group-table"
+                size: "modal--group-table",
+                cancelTitle: "Back"
             }).result.then(function (model) {
                     model.bundle.groupList.forEach(function (group) {
-                        var alreadyPresent = !!Collections.find(group, customerBundle.permissions);
+                        var alreadyPresent = !!Collections.find(group, editCustomerBundle.permissions);
                         if (!alreadyPresent && group.checked) addDefaultPermission(group.id, group.name, "group");
                     });
                 });
@@ -118,6 +116,6 @@ angular.module("app").controller("CustomersController", ["$q", "CustomerService"
                 canDelete: false,
                 canAdmin: false
             };
-            customerBundle.permissions.push(defaultPermission);
+            editCustomerBundle.permissions.push(defaultPermission);
         }
     }]);

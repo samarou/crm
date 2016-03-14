@@ -1,5 +1,6 @@
 package com.itechart.security.web.model.dto;
 
+import com.itechart.security.business.filter.CustomerFilter;
 import com.itechart.security.business.model.persistent.Customer;
 import com.itechart.security.business.model.persistent.Order;
 import com.itechart.security.model.filter.UserFilter;
@@ -91,6 +92,16 @@ public class Converter {
 
     public static UserFilter convert(PublicUserFilterDto dto) {
         UserFilter filter = new UserFilter();
+        filter.setText(dto.getText());
+        filter.setFrom(dto.getFrom());
+        filter.setCount(dto.getCount());
+        filter.setSortProperty(dto.getSortProperty());
+        filter.setSortAsc(dto.isSortAsc());
+        return filter;
+    }
+
+    public static CustomerFilter convert(CustomerFilterDto dto){
+        CustomerFilter filter = new CustomerFilter();
         filter.setText(dto.getText());
         filter.setFrom(dto.getFrom());
         filter.setCount(dto.getCount());

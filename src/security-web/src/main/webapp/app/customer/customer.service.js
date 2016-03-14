@@ -19,6 +19,10 @@ angular.module("app").service("CustomerService", ["$http", function ($http) {
         return $http.delete("/rest/customers/" + id);
     };
 
+    this.find = function (filter) {
+        return $http.get("/rest/customers/find", {params: filter});
+    };
+
     this.getPermissions = function (id) {
         return $http.get("/rest/customers/" + id + "/permissions");
     };

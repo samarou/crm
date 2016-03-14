@@ -14,6 +14,8 @@ import com.itechart.security.service.PrincipalService;
 import com.itechart.security.web.model.PrincipalTypes;
 import com.itechart.security.web.model.dto.AclEntryDto;
 import com.itechart.security.web.model.dto.CustomerDto;
+import com.itechart.security.web.model.dto.CustomerFilterDto;
+import com.itechart.security.web.model.dto.DataPageDto;
 import com.itechart.security.web.security.token.TokenAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,8 +26,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.itechart.security.core.model.acl.Permission.*;
-import static com.itechart.security.web.model.dto.Converter.convertCustomers;
-import static com.itechart.security.web.model.dto.Converter.covert;
+import static com.itechart.security.web.model.dto.Converter.*;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
@@ -53,6 +54,13 @@ public class CustomerController {
     @RequestMapping(value = "/customers", method = PUT)
     public void update(@RequestBody CustomerDto dto) {
         customerService.updateCustomer(covert(dto));
+    }
+
+    @RequestMapping("/customers/find")
+    public DataPageDto find(CustomerFilterDto filterDto) {
+        DataPageDto<CustomerDto> page = new DataPageDto<>();
+        page.setData(convertCustomers(customerService.findCustomers(convert(filterDto))));
+        return page;
     }
 
     @RequestMapping(value = "/customers", method = POST)
@@ -121,7 +129,7 @@ public class CustomerController {
         aclService.updateAcl(acl);
     }
 
-    private Acl getAcl(Long customerId){
+    private Acl getAcl(Long customerId) {
         return aclService.getAcl(new ObjectIdentityImpl(customerId, ObjectTypes.CUSTOMER.getName()));
     }
 }
