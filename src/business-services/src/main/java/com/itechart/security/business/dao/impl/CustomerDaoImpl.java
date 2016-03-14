@@ -3,6 +3,9 @@ package com.itechart.security.business.dao.impl;
 import com.itechart.security.business.dao.CustomerDao;
 import com.itechart.security.business.filter.CustomerFilter;
 import com.itechart.security.business.model.persistent.Customer;
+import com.itechart.security.core.annotation.AclFilter;
+import com.itechart.security.core.annotation.AclFilterRule;
+import com.itechart.security.core.model.acl.Permission;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
@@ -25,9 +28,7 @@ public class CustomerDaoImpl extends AbstractHibernateDao<Customer> implements C
     }
 
     @Override
-    //@AclFilter
-    //@AclFilter(@AclFilterRule(type = Customer.class, permissions = {Permission.WRITE}, inherit = true))
-//    @AclFilter(@AclFilterRule(type = Customer.class, permissions = {Permission.WRITE}))
+    @AclFilter(@AclFilterRule(type = Customer.class, permissions = {Permission.READ}))
     public List<Customer> loadAll() {
         return getHibernateTemplate().loadAll(Customer.class);
     }
@@ -38,21 +39,24 @@ public class CustomerDaoImpl extends AbstractHibernateDao<Customer> implements C
     }
 
     @Override
+    @AclFilter(@AclFilterRule(type = Customer.class, permissions = {Permission.DELETE}))
     public void deleteById(Long id) {
         Customer customer = getHibernateTemplate().get(Customer.class, id);
         if (customer != null) getHibernateTemplate().delete(customer);
     }
 
     @Override
+    @AclFilter(@AclFilterRule(type = Customer.class, permissions = {Permission.READ}))
     public int countCustomers(CustomerFilter filter){
         return getHibernateTemplate().executeWithNativeSession(session -> {
             Criteria criteria = createFilterCriteria(session, filter);
             criteria.setProjection(Projections.rowCount());
-            return  ((Number)criteria.uniqueResult()).intValue();
+            return ((Number) criteria.uniqueResult()).intValue();
         });
     }
 
     @Override
+    @AclFilter(@AclFilterRule(type = Customer.class, permissions = {Permission.READ}))
     public List<Customer> findCustomers(CustomerFilter filter) {
         return getHibernateTemplate().executeWithNativeSession(session -> {
             Criteria criteria = createFilterCriteria(session, filter);

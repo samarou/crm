@@ -69,7 +69,7 @@
             return service.isAuthenticated()
                 && service.authentication
                 && service.authentication.roles
-                && service.authentication.roles.indexOf(role) != -1;
+                && service.authentication.roles.indexOf(role) !== -1;
         }
 
         service.isAdmin = function () { return hasRole("ADMIN"); };

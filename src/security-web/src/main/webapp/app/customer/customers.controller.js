@@ -2,10 +2,12 @@
  * @author yauheni.putsykovich
  */
 
-angular.module("app").controller("CustomersController", ["$q", "CustomerService", "GroupService", "GroupBundle", "UserService", "SearchBundle", "Util", "Collections", "DialogService",
-    function ($q, CustomerService, GroupService, GroupBundle, UserService, SearchBundle, Util, Collections, DialogService) {
+angular.module("app").controller("CustomersController", ["$q", "AuthService", "CustomerService", "GroupService", "GroupBundle", "UserService", "SearchBundle", "Util", "Collections", "DialogService",
+    function ($q, AuthService, CustomerService, GroupService, GroupBundle, UserService, SearchBundle, Util, Collections, DialogService) {
         "use strict";
         var vm = this;
+
+        vm.isManager = AuthService.isManager();
 
         var editCustomerBundle = {
             customer: null,
@@ -38,8 +40,22 @@ angular.module("app").controller("CustomersController", ["$q", "CustomerService"
 
         vm.remove = function () {
             var tasks = [];
-            vm.searchCustomerBundle.itemsList.forEach(function (customer) {
-                if (customer.checked) tasks.push(CustomerService.remove(customer.id));
+            var checkedCustomers = vm.searchCustomerBundle.itemsList.filter(function (customer) { return customer.checked; });
+            var allCustomerCanBeDeleted = true;
+            checkedCustomers.forEach(function (customer) {
+                var task = CustomerService.isAllowedDeleting(customer.id).then(function (response) {
+                    if (!response.data) allCustomerCanBeDeleted = false;
+                });
+                tasks.push(task);
+            });
+            $q.all(tasks).then(function () {
+                if(allCustomerCanBeDeleted){
+                    tasks = [];
+                    checkedCustomers.forEach(function (customer) {
+                        console.log("remove customer: ", customer);
+                        //if (customer.checked) tasks.push(CustomerService.remove(customer.id));
+                    });
+                }
             });
             $q.all(tasks).then(vm.searchCustomerBundle.find)
         };

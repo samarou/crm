@@ -6,7 +6,7 @@ angular.module("app").service("SearchBundle", ["UserService", "CustomerService",
         function createCommonBundle(){
             var bundle = {};
 
-            var pageSize = 2;
+            var pageSize = 5;
 
             bundle.isSelectAll = false;
             bundle.itemsList = [];

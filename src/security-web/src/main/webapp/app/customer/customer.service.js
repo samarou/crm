@@ -33,5 +33,9 @@ angular.module("app").service("CustomerService", ["$http", function ($http) {
 
     this.removePermissions = function (id, permissionId) {
         return $http.delete("/rest/customers/" + id + "/permissions/" + permissionId)
+    };
+
+    this.isAllowedDeleting = function (customerId) {
+        return $http.get("/rest/customers/" + customerId + "/permissions/delete");
     }
 }]);

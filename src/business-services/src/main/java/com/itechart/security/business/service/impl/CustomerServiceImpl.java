@@ -5,7 +5,6 @@ import com.itechart.security.business.filter.CustomerFilter;
 import com.itechart.security.business.model.persistent.Customer;
 import com.itechart.security.business.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +20,7 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerDao customerDao;
 
     @Override
+    @Transactional
     public List<Customer> findCustomers(CustomerFilter filter) {
         return customerDao.findCustomers(filter);
     }
@@ -39,7 +39,6 @@ public class CustomerServiceImpl implements CustomerService {
     //@PreFilter("filterObject.property == authentication.name")
     //@PostFilter ("filterObject.owner == authentication.name")
     //@PostFilter("hasPermission(filterObject, 'READ')")
-    @PreAuthorize("hasRole('USER')")
     public List<Customer> getCustomers() {
         return customerDao.loadAll();
     }
@@ -57,6 +56,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional
     public int countCustomers(CustomerFilter filter) {
         return customerDao.countCustomers(filter);
     }
