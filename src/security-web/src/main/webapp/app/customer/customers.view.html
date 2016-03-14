@@ -33,13 +33,13 @@
         </thead>
         <tbody>
         <tr class="hover--highlight" ng-dblclick="vm.edit(customer)" ng-repeat="customer in vm.searchCustomerBundle.itemsList">
-            <td><input type="checkbox" ng-model="customer.checked"></td>
+            <td><input type="checkbox" ng-model="customer.checked" ng-click="vm.searchCustomerBundle.selectOne()" ng-dblclick="$event.stopPropagation()"></td>
             <td>{{vm.searchCustomerBundle.filter.from + ($index + 1)}}</td>
             <td>{{customer.firstName}}</td>
             <td>{{customer.lastName}}</td>
             <td>{{customer.email}}</td>
             <td>{{customer.address}}</td>
-            <td><span class="hover--pointer glyphicon glyphicon-edit" ng-click="vm.edit(c)"></span></td>
+            <td><span class="hover--pointer glyphicon glyphicon-edit" ng-click="vm.edit(customer)"></span></td>
         </tr>
         </tbody>
     </table>
