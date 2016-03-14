@@ -21,6 +21,11 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerDao customerDao;
 
     @Override
+    public List<Customer> findCustomers(CustomerFilter filter) {
+        return customerDao.findCustomers(filter);
+    }
+
+    @Override
     @Transactional
     public Long saveCustomer(Customer customer) {
         return customerDao.save(customer);
@@ -49,11 +54,6 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     public void deleteById(Long id) {
         customerDao.deleteById(id);
-    }
-
-    @Override
-    public List<Customer> findCustomers(CustomerFilter filter) {
-        return customerDao.findCustomers(filter);
     }
 
     @Override

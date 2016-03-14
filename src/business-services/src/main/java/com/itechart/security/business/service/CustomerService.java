@@ -10,6 +10,8 @@ import java.util.List;
  */
 public interface CustomerService {
 
+    List<Customer> findCustomers(CustomerFilter filter);
+
     Long saveCustomer(Customer customer);
 
     List<Customer> getCustomers();
@@ -17,8 +19,6 @@ public interface CustomerService {
     void updateCustomer(Customer customer);
 
     void deleteById(Long id);
-
-    List<Customer> findCustomers(CustomerFilter filter);
 
     int countCustomers(CustomerFilter filter);
 }

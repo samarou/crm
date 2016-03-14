@@ -18,7 +18,7 @@ public interface CustomerDao {
 
     void deleteById(Long id);
 
-    List<Customer> findCustomers(CustomerFilter filter);
+    List findCustomers(CustomerFilter filter);
 
     int countCustomers(CustomerFilter filter);
 }
