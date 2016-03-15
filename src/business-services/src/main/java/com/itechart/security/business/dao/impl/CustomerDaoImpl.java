@@ -34,6 +34,7 @@ public class CustomerDaoImpl extends AbstractHibernateDao<Customer> implements C
     }
 
     @Override
+    @AclFilter(@AclFilterRule(type = Customer.class, permissions = {Permission.WRITE}))
     public void update(Customer customer) {
         getHibernateTemplate().update(customer);
     }

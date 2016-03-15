@@ -7,8 +7,6 @@ angular.module("app").controller("CustomersController", ["$q", "AuthService", "C
         "use strict";
         var vm = this;
 
-        vm.isManager = AuthService.isManager();
-
         var editCustomerBundle = {
             customer: null,
             permissions: null,
@@ -19,6 +17,15 @@ angular.module("app").controller("CustomersController", ["$q", "AuthService", "C
             }
         };
 
+        var permissions = {
+            read: "read",
+            write: "write",
+            create: "create",
+            delete: "delete",
+            admin: "admin"
+        };
+
+        vm.isManager = AuthService.isManager();
         vm.groupBundle = GroupBundle.publicMode();
         vm.userBundle = SearchBundle.userPublicMode();
         vm.searchCustomerBundle = SearchBundle.customerMode();
@@ -31,33 +38,43 @@ angular.module("app").controller("CustomersController", ["$q", "AuthService", "C
         };
 
         vm.edit = function (customer) {
-            CustomerService.getPermissions(customer.id).then(function (response) {
-                editCustomerBundle.customer = angular.copy(customer);
-                editCustomerBundle.permissions = response.data;
-                openCustomerDialog({title: "Editing Customer"});
+            CustomerService.isAllowed(customer.id, permissions.read).then(function (response) {
+                if (!!response.data) {
+                    CustomerService.getPermissions(customer.id).then(function (response) {
+                        editCustomerBundle.customer = angular.copy(customer);
+                        editCustomerBundle.permissions = response.data;
+                        openCustomerDialog({title: "Editing Customer"});
+                    });
+                } else {
+                    DialogService.notify("You haven't permissions to edit that customer!");
+                }
             });
         };
 
         vm.remove = function () {
+            var checkedCustomers = vm.searchCustomerBundle.itemsList.filter(function (customer) {
+                return customer.checked;
+            });
             var tasks = [];
-            var checkedCustomers = vm.searchCustomerBundle.itemsList.filter(function (customer) { return customer.checked; });
-            var allCustomerCanBeDeleted = true;
+            var allCustomersCanBeDeleted = true;
             checkedCustomers.forEach(function (customer) {
-                var task = CustomerService.isAllowedDeleting(customer.id).then(function (response) {
-                    if (!response.data) allCustomerCanBeDeleted = false;
+                var task = CustomerService.isAllowed(customer.id, permissions.delete).then(function (response) {
+                    if (!response.data) allCustomersCanBeDeleted = false;
                 });
                 tasks.push(task);
             });
             $q.all(tasks).then(function () {
-                if(allCustomerCanBeDeleted){
+                if (allCustomersCanBeDeleted) {
                     tasks = [];
                     checkedCustomers.forEach(function (customer) {
                         console.log("remove customer: ", customer);
                         //if (customer.checked) tasks.push(CustomerService.remove(customer.id));
                     });
+                } else {
+                    DialogService.notify("You don't have permissions to do it.");
                 }
             });
-            $q.all(tasks).then(vm.searchCustomerBundle.find)
+            if (allCustomersCanBeDeleted) $q.all(tasks).then(vm.searchCustomerBundle.find)
         };
 
         function openCustomerDialog(model) {

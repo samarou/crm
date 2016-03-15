@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
  * @author yauheni.putsykovich
  */
 public class Converter {
-
     public static List<SecuredUserDto> convert(List<User> users) {
         if (CollectionUtils.isEmpty(users)) {
             return Collections.emptyList();
@@ -100,7 +99,7 @@ public class Converter {
         return filter;
     }
 
-    public static CustomerFilter convert(CustomerFilterDto dto){
+    public static CustomerFilter convert(CustomerFilterDto dto) {
         CustomerFilter filter = new CustomerFilter();
         filter.setText(dto.getText());
         filter.setFrom(dto.getFrom());

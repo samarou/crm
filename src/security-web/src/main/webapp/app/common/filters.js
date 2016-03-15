@@ -32,5 +32,13 @@ angular.module("app")
             var end = config.itemsPerPage * config.currentPage;
             return filterResult.slice(start, end);
         }
+    }])
+    /*
+    * Mark the html in 'val' as safe using the $sce.trustAsHtml function
+    * */
+    .filter("html", ["$sce", function ($sce) {
+        return function (val) {
+            return $sce.trustAsHtml(val);
+        };
     }]);
     

@@ -50,9 +50,10 @@ public class CustomerController {
     @Autowired
     private AclPermissionEvaluator aclPermissionEvaluator;
 
-    @RequestMapping("/customers/{customerId}/permissions/delete")
-    public boolean allowDeleting(@PathVariable Long customerId) {
-        return aclPermissionEvaluator.hasPermission(SecurityUtils.getAuthentication(), getIdentity(customerId), DELETE);
+    @RequestMapping("/customers/{customerId}/permissions/{value}")
+    public boolean isAllowed(@PathVariable Long customerId, @PathVariable String value) {
+        Permission permission = Permission.valueOf(value.toUpperCase());
+        return aclPermissionEvaluator.hasPermission(SecurityUtils.getAuthentication(), createIdentity(customerId), permission);
     }
 
     @RequestMapping("/customers")
@@ -140,10 +141,10 @@ public class CustomerController {
     }
 
     private Acl getAcl(Long customerId) {
-        return aclService.getAcl(getIdentity(customerId));
+        return aclService.getAcl(createIdentity(customerId));
     }
 
-    private ObjectIdentity getIdentity(Long customerId) {
+    private ObjectIdentity createIdentity(Long customerId) {
         return new ObjectIdentityImpl(customerId, ObjectTypes.CUSTOMER.getName());
     }
 }
