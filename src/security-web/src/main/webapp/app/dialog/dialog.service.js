@@ -89,7 +89,14 @@ angular.module('app')
             $scope.okTitle = model.okTitle || 'OK';
             $scope.cancelTitle = model.cancelTitle || 'Cancel';
             $scope.ok = function () {
-                $uibModalInstance.close($scope);
+                var as = model.bundle.actions;
+                var hasNotClickOkListener = !as || !as.clickOkListener;
+                if (hasNotClickOkListener) {
+                    $uibModalInstance.close($scope);
+                } else {
+                    var okListenerTrue = !!as.clickOkListener && as.clickOkListener(model);
+                    if (okListenerTrue) $uibModalInstance.close($scope);
+                }
             };
             $scope.cancel = function () {
                 $uibModalInstance.dismiss();

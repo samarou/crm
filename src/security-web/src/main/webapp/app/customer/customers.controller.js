@@ -10,10 +10,12 @@ angular.module("app").controller("CustomersController", ["$q", "AuthService", "C
         var editCustomerBundle = {
             customer: null,
             permissions: null,
+            canEdit: false,
             actions: {
                 addPermissionsForUser: addPermissionsForUser,
                 addPermissionsForGroup: addPermissionsForGroup,
-                removePermissions: removePermissions
+                removePermissions: removePermissions,
+                clickOkListener: clickOkListener
             }
         };
 
@@ -39,24 +41,27 @@ angular.module("app").controller("CustomersController", ["$q", "AuthService", "C
 
         vm.edit = function (customer) {
             CustomerService.isAllowed(customer.id, permissions.read).then(function (response) {
-                if (!!response.data) {
+                if (!response.data) {
+                    DialogService.notify("You haven't permissions to edit that customer!");
+                    return;
+                }
+                CustomerService.isAllowed(customer.id, permissions.write).then(function (response) {
+                    editCustomerBundle.canEdit = !!response.data;
                     CustomerService.getPermissions(customer.id).then(function (response) {
                         editCustomerBundle.customer = angular.copy(customer);
                         editCustomerBundle.permissions = response.data;
                         openCustomerDialog({title: "Editing Customer"});
                     });
-                } else {
-                    DialogService.notify("You haven't permissions to edit that customer!");
-                }
+                });
             });
         };
 
         vm.remove = function () {
+            var tasks = [];
+            var allCustomersCanBeDeleted = true;
             var checkedCustomers = vm.searchCustomerBundle.itemsList.filter(function (customer) {
                 return customer.checked;
             });
-            var tasks = [];
-            var allCustomersCanBeDeleted = true;
             checkedCustomers.forEach(function (customer) {
                 var task = CustomerService.isAllowed(customer.id, permissions.delete).then(function (response) {
                     if (!response.data) allCustomersCanBeDeleted = false;
@@ -64,17 +69,17 @@ angular.module("app").controller("CustomersController", ["$q", "AuthService", "C
                 tasks.push(task);
             });
             $q.all(tasks).then(function () {
-                if (allCustomersCanBeDeleted) {
-                    tasks = [];
-                    checkedCustomers.forEach(function (customer) {
-                        console.log("remove customer: ", customer);
-                        //if (customer.checked) tasks.push(CustomerService.remove(customer.id));
-                    });
-                } else {
+                if (!allCustomersCanBeDeleted) {
                     DialogService.notify("You don't have permissions to do it.");
+                    return;
                 }
+
+                tasks = [];
+                checkedCustomers.forEach(function (customer) {
+                    if (customer.checked) tasks.push(CustomerService.remove(customer.id));
+                });
+                if (allCustomersCanBeDeleted) $q.all(tasks).then(vm.searchCustomerBundle.find)
             });
-            if (allCustomersCanBeDeleted) $q.all(tasks).then(vm.searchCustomerBundle.find)
         };
 
         function openCustomerDialog(model) {
@@ -107,6 +112,14 @@ angular.module("app").controller("CustomersController", ["$q", "AuthService", "C
             });
         }
 
+        function clickOkListener(model) {
+            if (!model.bundle.canEdit) {
+                DialogService.notify("You don't have permissions to do it.");
+                return false;
+            }
+            return true;
+        }
+
         function addPermissionsForUser(customer) {
             vm.userBundle.find();
             DialogService.custom("app/customer/public-users.modal.view.html", {
@@ -116,8 +129,8 @@ angular.module("app").controller("CustomersController", ["$q", "AuthService", "C
                 cancelTitle: "Back"
             }).result.then(function (model) {
                     model.bundle.itemsList.forEach(function (user) {
-                        var alreadyPresent = !!Collections.find(user, editCustomerBundle.permissions);
-                        if (!alreadyPresent && user.checked) addDefaultPermission(user.id, user.userName, "user");
+                        var stillNotPresent = !Collections.find(user, editCustomerBundle.permissions);
+                        if (stillNotPresent && user.checked) addDefaultPermission(user.id, user.userName, "user");
                     });
                 });
         }

@@ -34,13 +34,11 @@ public class CustomerDaoImpl extends AbstractHibernateDao<Customer> implements C
     }
 
     @Override
-    @AclFilter(@AclFilterRule(type = Customer.class, permissions = {Permission.WRITE}))
     public void update(Customer customer) {
         getHibernateTemplate().update(customer);
     }
 
     @Override
-    @AclFilter(@AclFilterRule(type = Customer.class, permissions = {Permission.DELETE}))
     public void deleteById(Long id) {
         Customer customer = getHibernateTemplate().get(Customer.class, id);
         if (customer != null) getHibernateTemplate().delete(customer);

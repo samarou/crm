@@ -27,9 +27,9 @@
                 <caption>
                     Permissions
                     <ul class="list-inline pull-right">
-                        <li><span ng-click="bundle.actions.addPermissionsForUser(bundle.customer)" class="hover--pointer icon--small icon--user-add"></span></li>
-                        <li><span ng-click="bundle.actions.addPermissionsForGroup(bundle.customer)" class="hover--pointer icon--small icon--user-group-add"></span></li>
-                        <li><span ng-click="bundle.actions.removePermissions(bundle.customer)" class="hover--pointer icon--small icon--remove"></span></li>
+                        <li ng-show="bundle.canEdit"><span ng-click="bundle.actions.addPermissionsForUser(bundle.customer)" class="hover--pointer icon--small icon--user-add"></span></li>
+                        <li ng-show="bundle.canEdit"><span ng-click="bundle.actions.addPermissionsForGroup(bundle.customer)" class="hover--pointer icon--small icon--user-group-add"></span></li>
+                        <li ng-show="bundle.canEdit"><span ng-click="bundle.actions.removePermissions(bundle.customer)" class="hover--pointer icon--small icon--remove"></span></li>
                     </ul>
                 </caption>
                 <thead>

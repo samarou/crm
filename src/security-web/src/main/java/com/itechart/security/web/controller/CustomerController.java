@@ -20,6 +20,7 @@ import com.itechart.security.web.model.dto.CustomerDto;
 import com.itechart.security.web.model.dto.CustomerFilterDto;
 import com.itechart.security.web.model.dto.DataPageDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,7 +51,7 @@ public class CustomerController {
     @Autowired
     private AclPermissionEvaluator aclPermissionEvaluator;
 
-    @RequestMapping("/customers/{customerId}/permissions/{value}")
+    @RequestMapping("/customers/{customerId}/actions")
     public boolean isAllowed(@PathVariable Long customerId, @PathVariable String value) {
         Permission permission = Permission.valueOf(value.toUpperCase());
         return aclPermissionEvaluator.hasPermission(SecurityUtils.getAuthentication(), createIdentity(customerId), permission);
@@ -61,6 +62,7 @@ public class CustomerController {
         return convertCustomers(customerService.getCustomers());
     }
 
+    @PreAuthorize("hasPermission(#dto.getId(), 'sample.Customer', 'WRITE')")
     @RequestMapping(value = "/customers", method = PUT)
     public void update(@RequestBody CustomerDto dto) {
         customerService.updateCustomer(covert(dto));
@@ -84,6 +86,7 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/customers/{customerId}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasPermission(#customerId, 'sample.Customer', 'DELETE')")
     public void delete(@PathVariable Long customerId) {
         Acl acl = getAcl(customerId);
         aclService.deleteAcl(acl);
