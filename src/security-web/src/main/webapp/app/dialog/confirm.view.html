@@ -2,7 +2,7 @@
     <button type="button" class="close" ng-click="vm.no()">&times;</button>
     <h4 class="modal-title"><span class="glyphicon glyphicon-question-sign"></span>Confirmation</h4>
 </div>
-<div class="modal-body" ng-bind-html="vm.message"></div>
+<div class="modal-body" ng-bind-html="vm.message | html"></div>
 <div class="modal-footer">
     <button type="button" class="btn btn-default" ng-click="vm.yes()">Yes</button>
     <button type="button" class="btn btn-primary" ng-click="vm.no()">No</button>

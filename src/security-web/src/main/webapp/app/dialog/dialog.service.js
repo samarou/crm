@@ -7,7 +7,9 @@ angular.module('app')
                     controller: 'NotifyDialogController',
                     controllerAs: 'vm',
                     resolve: {
-                        message: message
+                        message: function () {
+                            return message
+                        }
                     }
                 });
             },
@@ -17,7 +19,9 @@ angular.module('app')
                     controller: 'ErrorDialogController',
                     controllerAs: 'vm',
                     resolve: {
-                        message: message
+                        message: function () {
+                            return message
+                        }
                     }
                 });
             },
@@ -27,7 +31,9 @@ angular.module('app')
                     controller: 'ConfirmDialogController',
                     controllerAs: 'vm',
                     resolve: {
-                        message: message
+                        message: function () {
+                            return message
+                        }
                     }
                 });
             },
@@ -55,25 +61,25 @@ angular.module('app')
             }
         };
     }])
-    .controller('ErrorDialogController', ['$modalInstance', 'message', function ($modalInstance, message) {
+    .controller('ErrorDialogController', ['$uibModalInstance', 'message', function ($uibModalInstance, message) {
         this.message = message || 'An unknown error has occurred.';
         this.close = function () {
-            $modalInstance.close();
+            $uibModalInstance.close();
         };
     }])
-    .controller('NotifyDialogController', ['$modalInstance', 'message', function ($modalInstance, message) {
+    .controller('NotifyDialogController', ['$uibModalInstance', 'message', function ($uibModalInstance, message) {
         this.message = message || 'Unknown application notification.';
         this.close = function () {
-            $modalInstance.close();
+            $uibModalInstance.close();
         };
     }])
-    .controller('ConfirmDialogController', ['$modalInstance', 'message', function ($modalInstance, message) {
+    .controller('ConfirmDialogController', ['$uibModalInstance', 'message', function ($uibModalInstance, message) {
         this.message = message || 'Are you sure?';
         $scope.no = function () {
-            $modalInstance.dismiss(false);
+            $uibModalInstance.dismiss(false);
         };
         $scope.yes = function () {
-            $modalInstance.close(true);
+            $uibModalInstance.close(true);
         };
     }])
     .controller("CustomDialogController", ['$scope', '$uibModalInstance', 'model',

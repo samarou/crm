@@ -2,7 +2,7 @@
     <button type="button" class="close" ng-click="vm.close()" class="pull-right">&times;</button>
     <h4 class="modal-title text-info"><span class="glyphicon glyphicon-info-sign"></span>Notification</h4>
 </div>
-<div class="modal-body text-info" ng-bind-html="vm.message"></div>
+<div class="modal-body text-info" ng-bind-html="vm.message | html"></div>
 <div class="modal-footer">
     <button type="button" class="btn btn-primary" ng-click="vm.close()">Close</button>
 </div>
