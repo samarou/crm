@@ -16,6 +16,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  * Authentication filter that processes requests to stateless services,
@@ -51,14 +53,24 @@ public class TokenAuthenticationFilter extends GenericFilterBean {
         }
         TokenData tokenData = tokenService.parseToken(token);
         String remoteAddr = request.getRemoteAddr();
-        if (remoteAddr != null && !remoteAddr.equals(tokenData.getRemoteAddr())) {
-            logger.warn("IP address from token ({0}) differs from client IP ({1})", tokenData.getRemoteAddr(), remoteAddr);
+        if (remoteAddr != null && !isEqualRemoteAddresses(remoteAddr, tokenData.getRemoteAddr())) {
+            logger.warn("IP address from token ({}) differs from client IP ({})", tokenData.getRemoteAddr(), remoteAddr);
             throw new InvalidTokenException("Invalid authentication token attributes");
         }
         Authentication authentication = new TokenAuthentication(token);
         authentication = authenticationManager.authenticate(authentication);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return authentication;
+    }
+
+    private boolean isEqualRemoteAddresses(String remoteAddr1, String remoteAddr2) {
+        try {
+            // convert addresses to InetAddress in order to remove IPv6 zone indices
+            return InetAddress.getByName(remoteAddr1).equals(InetAddress.getByName(remoteAddr2));
+        } catch (UnknownHostException e) {
+            logger.warn("Can't parse user remote address", e);
+            return true;
+        }
     }
 
     public void setAuthenticationManager(AuthenticationManager authenticationManager) {
