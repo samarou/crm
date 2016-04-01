@@ -51,6 +51,7 @@ angular.module("app").factory("GroupBundle", ["GroupService", function (GroupSer
 
     return {
         publicMode: function () {
+            bundle.performSearch = GroupService.getPublicGroups;
             return bundle;
         },
         securedMode: function () {

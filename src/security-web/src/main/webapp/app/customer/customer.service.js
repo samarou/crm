@@ -36,6 +36,6 @@ angular.module("app").service("CustomerService", ["$http", function ($http) {
     };
 
     this.isAllowed = function (customerId, permission) {
-        return $http.get("/rest/customers/" + customerId + "/permissions/" + permission);
+        return $http.get("/rest/customers/" + customerId + "/actions/" + permission);
     };
 }]);

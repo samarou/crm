@@ -20,7 +20,6 @@ import com.itechart.security.web.model.dto.CustomerDto;
 import com.itechart.security.web.model.dto.CustomerFilterDto;
 import com.itechart.security.web.model.dto.DataPageDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.method.P;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,7 +50,7 @@ public class CustomerController {
     @Autowired
     private AclPermissionEvaluator aclPermissionEvaluator;
 
-    @RequestMapping("/customers/{customerId}/actions")
+    @RequestMapping("/customers/{customerId}/actions/{value}")
     public boolean isAllowed(@PathVariable Long customerId, @PathVariable String value) {
         Permission permission = Permission.valueOf(value.toUpperCase());
         return aclPermissionEvaluator.hasPermission(SecurityUtils.getAuthentication(), createIdentity(customerId), permission);
