@@ -26,7 +26,7 @@
         }
 
         service.login = function (username, password) {
-            return $http.post('/rest/login', {
+            return $http.post('rest/login', {
                 username: username,
                 password: password
             }).then(function (response) {
