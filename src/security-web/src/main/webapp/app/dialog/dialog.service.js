@@ -88,8 +88,10 @@ angular.module('app')
             $scope.title = model.title || 'Dialog';
             $scope.okTitle = model.okTitle || 'OK';
             $scope.cancelTitle = model.cancelTitle || 'Cancel';
+            //TODO There shouldn't be customer logic!
             $scope.ok = function () {
-                var as = model.bundle.actions;
+                var as;
+                if (model.bundle) as = model.bundle.actions;
                 var hasNotClickOkListener = !as || !as.clickOkListener;
                 if (hasNotClickOkListener) {
                     $uibModalInstance.close($scope);
