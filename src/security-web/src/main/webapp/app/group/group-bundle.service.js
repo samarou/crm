@@ -17,8 +17,7 @@ angular.module("app").service("GroupBundle", ["GroupService", function (GroupSer
             visiblePages: 5,
             totalCount: null,
             filterObject: {
-                name: "",
-                description: ""
+                name: ""
             },
             sortProperty: "name",
             sortAsc: true
