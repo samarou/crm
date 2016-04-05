@@ -32,6 +32,7 @@ angular.module('app').controller('UsersController', ["$location", "$q", "$uibMod
             showDialog({
                 title: "Editing User",
                 okTitle: "Update",
+                cancelTitle: "Cancel",
                 groups: vm.groups,
                 roles: vm.roles,
                 user: angular.copy(user)

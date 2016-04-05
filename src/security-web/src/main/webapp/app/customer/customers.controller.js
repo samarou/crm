@@ -56,7 +56,12 @@ angular.module("app").controller("CustomersController", ["$q", "AuthService", "C
             });
         };
 
-        vm.remove = function () {
+	    vm.openConfirmDialog = function() {
+		    DialogService.confirm("Do you want to delete this customers?").result.then(vm.remove);
+	    };
+
+
+	    vm.remove = function () {
             var tasks = [];
             var allCustomersCanBeDeleted = true;
             var checkedCustomers = vm.searchCustomerBundle.itemsList.filter(function (customer) {
