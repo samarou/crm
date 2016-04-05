@@ -86,19 +86,10 @@ angular.module('app')
         function ($scope, $uibModalInstance, model) {
             angular.extend($scope, model);
             $scope.title = model.title || 'Dialog';
-            $scope.okTitle = model.okTitle || 'OK';
-            $scope.cancelTitle = model.cancelTitle || 'Cancel';
-            //TODO There shouldn't be customer logic!
-	        $scope.ok = function () {
-		        var as;
-		        if (model.bundle) as = model.bundle.actions;
-		        var hasNotClickOkListener = !as || !as.clickOkListener;
-		        if (hasNotClickOkListener) {
+            $scope.okTitle = model.okTitle;
+            $scope.cancelTitle = model.cancelTitle;
+	        $scope.ok = function () {		      
 			        $uibModalInstance.close($scope);
-		        } else {
-			        var okListenerTrue = !!as.clickOkListener && as.clickOkListener(model);
-			        if (okListenerTrue) $uibModalInstance.close($scope);
-		        }
 	        };
             $scope.cancel = function () {
                 $uibModalInstance.dismiss();

@@ -4,21 +4,21 @@
             <div class="row">
                 <div class="col-md-6 form-group">
                     <label for="customer-first-name">First name</label>
-                    <input id="customer-first-name" class="form-control" ng-model="bundle.customer.firstName">
+                    <input  ng-disabled="!bundle.canEdit" id="customer-first-name" class="form-control" ng-model="bundle.customer.firstName">
                 </div>
                 <div class="col-md-6 form-group">
                     <label for="customer-last-name">Last name</label>
-                    <input id="customer-last-name" class="form-control" ng-model="bundle.customer.lastName">
+                    <input ng-disabled="!bundle.canEdit" id="customer-last-name" class="form-control" ng-model="bundle.customer.lastName">
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 form-group">
                     <label for="customer-email">Email</label>
-                    <input id="customer-email" class="form-control" ng-model="bundle.customer.email">
+                    <input ng-disabled="!bundle.canEdit" id="customer-email" class="form-control" ng-model="bundle.customer.email">
                 </div>
                 <div class="col-md-6 form-group">
                     <label for="customer-address">Address</label>
-                    <input id="customer-address" class="form-control" ng-model="bundle.customer.address">
+                    <input ng-disabled="!bundle.canEdit" id="customer-address" class="form-control" ng-model="bundle.customer.address">
                 </div>
             </div>
         </uib-tab>
@@ -46,14 +46,14 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="p in bundle.permissions">
-                    <td><input type="checkbox" ng-model="p.checked"></td>
+                    <td><input ng-show="bundle.canEdit" type="checkbox" ng-model="p.checked"></td>
                     <td><span title="{{p.principalTypeName}}" class="icon--small hover--pointer" ng-class="{'icon--user': p.principalTypeName === 'user', 'icon--user-group': p.principalTypeName === 'group'}"></span></td>
                     <td>{{p.name}}</td>
-                    <td><input type="checkbox" ng-model="p.canRead"></td>
-                    <td><input type="checkbox" ng-model="p.canWrite"></td>
-                    <td><input type="checkbox" ng-model="p.canCreate"></td>
-                    <td><input type="checkbox" ng-model="p.canDelete"></td>
-                    <td><input type="checkbox" ng-model="p.canAdmin"></td>
+                    <td><input ng-disabled="!bundle.canEdit" type="checkbox" ng-model="p.canRead"></td>
+                    <td><input ng-disabled="!bundle.canEdit" type="checkbox" ng-model="p.canWrite"></td>
+                    <td><input ng-disabled="!bundle.canEdit" type="checkbox" ng-model="p.canCreate"></td>
+                    <td><input ng-disabled="!bundle.canEdit" type="checkbox" ng-model="p.canDelete"></td>
+                    <td><input ng-disabled="!bundle.canEdit" type="checkbox" ng-model="p.canAdmin"></td>
                 </tr>
                 </tbody>
             </table>
