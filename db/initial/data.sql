@@ -85,7 +85,10 @@ INSERT INTO `order` (`id`, `product`, `count`, `price`, `customer_id`) VALUES
 
 INSERT INTO `acl_object_identity` (`id`, `object_type_id`, `object_id`, `parent_id`, `owner_id`, `inheriting`) VALUES 
 (1, 1, 1, null, 2, true),
-(2, 1, 2, null, 2, true);
+(2, 1, 2, null, 2, true),
+(3, 1, 3, null, 2, true),
+(4, 1, 4, null, 2, true),
+(5, 1, 5, null, 2, true);
 
 
 INSERT INTO `acl_entry` (`id`, `object_identity_id`, `principal_id`, `permission_mask`) VALUES
