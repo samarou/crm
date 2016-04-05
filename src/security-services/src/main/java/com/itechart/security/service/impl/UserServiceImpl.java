@@ -58,6 +58,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public Long createUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return (Long) userDao.save(user);
     }
 
