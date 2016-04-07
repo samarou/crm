@@ -66,9 +66,9 @@ CREATE TABLE `role` (
 
 
 CREATE TABLE `principal` (
-	`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Identifier'
+	`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Common identifier for user and group tables'
 ) ENGINE=InnoDB
-  COMMENT = 'Parent class for security principals';
+  COMMENT = 'Table with common keys for user and group tables';
 
 
 CREATE TABLE `group` (
