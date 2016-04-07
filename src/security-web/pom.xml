@@ -13,7 +13,6 @@
     <name>Security Web Application</name>
     <description>Web application for managing of the security data</description>
     <dependencies>
-
         <dependency>
             <groupId>com.itechart.security</groupId>
             <artifactId>security-services</artifactId>
@@ -102,4 +101,9 @@
         </dependency>
 
     </dependencies>
+    <build>
+        <finalName>${finalName}</finalName>
+    </build>
+
+
 </project>
