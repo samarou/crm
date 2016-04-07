@@ -27,102 +27,102 @@ DROP TRIGGER IF EXISTS `trg_group_adr`;
 
 CREATE TABLE `action` (
 	`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Identifier',
-	`name` VARCHAR(20) NOT NULL COMMENT 'Name of action',
-	`description` VARCHAR(250) COMMENT 'Description of action',
+	`name` VARCHAR(20) NOT NULL COMMENT 'Action name',
+	`description` VARCHAR(250) COMMENT 'Action description',
 	UNIQUE KEY `uk_action_name`(`name`)
 ) ENGINE=InnoDB
-	COMMENT = 'Action allowed on business objects';
+	COMMENT = 'Actions allowed on business objects';
 
 
 CREATE TABLE `object_type` (
 	`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Identifier',
-	`name` VARCHAR(100) NOT NULL COMMENT 'Name of object type',
-	`description` VARCHAR(250) COMMENT 'Description of object type',
+	`name` VARCHAR(100) NOT NULL COMMENT 'Object type name',
+	`description` VARCHAR(250) COMMENT 'Object type description',
 	UNIQUE KEY `uk_object_type_name`(`name`)
 ) ENGINE=InnoDB
-	COMMENT = 'Type of business object';
+	COMMENT = 'Types of business object';
 
 
 CREATE TABLE `privilege` (
 	`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Identifier',
-	`object_type_id` BIGINT UNSIGNED NOT NULL COMMENT 'Foreign key to object type',
-	`action_id` BIGINT UNSIGNED NOT NULL COMMENT 'Foreign key to action',
+	`object_type_id` BIGINT UNSIGNED NOT NULL COMMENT 'Object type identifier',
+	`action_id` BIGINT UNSIGNED NOT NULL COMMENT 'Action identifier',
     UNIQUE KEY `uk_privilege_obj_type_action` (`object_type_id`, `action_id`),
 	CONSTRAINT `fk_privilege_object_type_id` FOREIGN KEY (`object_type_id`) REFERENCES `object_type` (`id`),
 	CONSTRAINT `fk_privilege_action` FOREIGN KEY (`action_id`) REFERENCES `action` (`id`)
 ) ENGINE=InnoDB
-	COMMENT = 'Privilege for doing some action with object';
+	COMMENT = 'Privileges to perform action on business object';
 
 
 CREATE TABLE `role` (
 	`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Identifier',
-	`name` VARCHAR(50) NOT NULL COMMENT 'Name of role',
-	`description` VARCHAR(250) COMMENT 'Description of role',
-	`parent_id` BIGINT UNSIGNED COMMENT 'Foreign key to parent role',
+	`name` VARCHAR(50) NOT NULL COMMENT 'Role name',
+	`description` VARCHAR(250) COMMENT 'Role description',
+	`parent_id` BIGINT UNSIGNED COMMENT 'Parent role identifier',
     UNIQUE KEY `uk_role_name` (`name`),
 	CONSTRAINT `fk_role_parent_id` FOREIGN KEY (`parent_id`) REFERENCES `role` (`id`)
 ) ENGINE=InnoDB
-	COMMENT = 'Role of a user in the application';
+	COMMENT = 'Roles of a user in the application';
 
 
 CREATE TABLE `principal` (
-	`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Common identifier for user and group tables'
+	`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Identifier'
 ) ENGINE=InnoDB
-  COMMENT = 'Table with common keys for user and group tables';
+  COMMENT = 'Security principals';
 
 
 CREATE TABLE `group` (
-	`id` BIGINT UNSIGNED NOT NULL PRIMARY KEY COMMENT 'Foreign key to principal. Primary key',
-	`name` VARCHAR(50) NOT NULL COMMENT 'Name of group (fields must be unique)',
-	`description` VARCHAR(250) COMMENT 'Description to group of users',
+	`id` BIGINT UNSIGNED NOT NULL PRIMARY KEY COMMENT 'Identifier',
+	`name` VARCHAR(50) NOT NULL COMMENT 'Group name',
+	`description` VARCHAR(250) COMMENT 'Group description',
     UNIQUE KEY `uk_group_name` (`name`),
     CONSTRAINT `fk_group_principle_id` FOREIGN KEY (`id`) REFERENCES `principal` (`id`)
 ) ENGINE=InnoDB
-  COMMENT = 'Group of users';
+  COMMENT = 'Groups of users';
 
 
 CREATE TABLE `user` (
-	`id` BIGINT UNSIGNED NOT NULL PRIMARY KEY COMMENT 'Foreign key to principal. Primary key',
-	`user_name` VARCHAR(50) NOT NULL COMMENT 'User name (fields must be unique)',
-	`password` VARCHAR(60) NOT NULL COMMENT 'BCrypt-hashed password',
+	`id` BIGINT UNSIGNED NOT NULL PRIMARY KEY COMMENT 'Identifier',
+	`user_name` VARCHAR(50) NOT NULL COMMENT 'User name',
+	`password` VARCHAR(60) NOT NULL COMMENT 'Password hash',
 	`first_name` VARCHAR(50) NOT NULL COMMENT 'First name',
 	`last_name` VARCHAR(50) NOT NULL COMMENT 'Surname',
-	`email` VARCHAR(100) NOT NULL COMMENT 'e-mail',
+	`email` VARCHAR(100) NOT NULL COMMENT 'E-mail',
     `active` BOOLEAN NOT NULL DEFAULT TRUE COMMENT 'Flag of active user',
     UNIQUE KEY `uk_user_user_name` (`user_name`),
     CONSTRAINT `fk_user_principle_id` FOREIGN KEY (`id`) REFERENCES `principal` (`id`)
 ) ENGINE=InnoDB
-  COMMENT = 'User';
+  COMMENT = 'Users';
 
 
 CREATE TABLE `user_role` (
-	`user_id` BIGINT UNSIGNED NOT NULL COMMENT 'Foreign key to User (part of primary key)',
-	`role_id` BIGINT UNSIGNED NOT NULL COMMENT 'Foreign key to Role (part of primary key)',
+	`user_id` BIGINT UNSIGNED NOT NULL COMMENT 'User identifier',
+	`role_id` BIGINT UNSIGNED NOT NULL COMMENT 'Role identifier',
     PRIMARY KEY (`user_id`, `role_id`),
 	CONSTRAINT `fk_user_role_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
 	CONSTRAINT `fk_user_role_role_id` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
 ) ENGINE=InnoDB
-	COMMENT = 'Connection Many-to-Many between User and Role tables';
+	COMMENT = 'Roles assigned to users';
 
 
 CREATE TABLE `user_group` (
-	`user_id` BIGINT UNSIGNED NOT NULL COMMENT 'Foreign key to user (part of primary key)',
-	`group_id` BIGINT UNSIGNED NOT NULL COMMENT 'Foreign key to group (part of primary key)',
+	`user_id` BIGINT UNSIGNED NOT NULL COMMENT 'User identifier',
+	`group_id` BIGINT UNSIGNED NOT NULL COMMENT 'Group identifier',
     PRIMARY KEY (`user_id`, `group_id`),
 	CONSTRAINT `fk_user_group_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
 	CONSTRAINT `fk_user_group_group_id` FOREIGN KEY (`group_id`) REFERENCES `group` (`id`)
 ) ENGINE=InnoDB
-	COMMENT = 'Connection Many-to-Many between User and Group tables';
+	COMMENT = 'Users included to groups';
 
 
 CREATE TABLE `role_privilege` (
-	`role_id` BIGINT UNSIGNED NOT NULL COMMENT 'Foreign key to role (part of primary key)',
-	`privilege_id` BIGINT UNSIGNED NOT NULL COMMENT 'Foreign key to privilege (part of primary key)',
+	`role_id` BIGINT UNSIGNED NOT NULL COMMENT 'Role identifier',
+	`privilege_id` BIGINT UNSIGNED NOT NULL COMMENT 'Privilege identifier',
     PRIMARY KEY (`role_id`, `privilege_id`),
 	CONSTRAINT `fk_role_privilege_role_id` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
 	CONSTRAINT `fk_role_privilege_privilege_id` FOREIGN KEY (`privilege_id`) REFERENCES `privilege` (`id`)
 ) ENGINE=InnoDB
-	COMMENT = 'Connection Many-to-Many between Role and Privilege tables';
+	COMMENT = 'Privileges assigned to roles';
 
 
 CREATE TABLE `customer` (
