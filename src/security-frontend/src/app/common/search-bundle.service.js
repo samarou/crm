@@ -45,6 +45,8 @@
 			bundle.filter.sortAsc = bundle.sortProperties.firstName.asc;
 
 			bundle.find = function find() {
+				// todo: fix angular.isString and !!
+				/*eslint-disable */
 				// nulling, to prevent empty parameters in url
 				angular.forEach(bundle.filter, function (value, key) {
 					if (typeof(value) !== 'string') {
@@ -52,6 +54,7 @@
 					}
 					bundle.filter[key] = !!value ? value : null;
 				});
+				/*eslint-enable */
 				bundle.performSeach(bundle.filter).then(function (response) {
 					bundle.itemsList = response.data.data;
 					var totalCount = response.data.totalCount;

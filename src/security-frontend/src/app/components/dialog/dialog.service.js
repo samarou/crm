@@ -103,6 +103,8 @@
 		};
 	}
 
+	// todo: fix scope using
+	/*eslint-disable */
 	/** @ngInject */
 	function CustomDialogController($scope, $uibModalInstance, model) {
 		angular.extend($scope, model);
@@ -116,5 +118,6 @@
 			$uibModalInstance.dismiss();
 		};
 	}
+	/*eslint-enable */
 
 })();

@@ -136,7 +136,7 @@
 			});
 		}
 
-		function addPermissionsForUser(customer) {
+		function addPermissionsForUser() {
 			vm.userBundle.find();
 			DialogService.custom('app/components/customer/public-users.modal.view.html', {
 				title: 'Add Permissions for User',
