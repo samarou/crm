@@ -144,7 +144,7 @@ angular.module("app").controller("RolesController", ["$q", "RoleService", "Privi
         }
 
         function showDialog(model) {
-            var dialog = DialogService.custom('app/role/role.modal.view.html', model);
+            var dialog = DialogService.custom('app/components/role/role.modal.view.html', model);
             dialog.result.then(function (model) {
                 update(model.role);
             });

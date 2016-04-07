@@ -10,7 +10,7 @@ angular.module("app").directive("privileges", [function () {
         require: "objectTypes",
         restrict: "E",
         replace: true,
-        templateUrl: "app/privilege/privilege.partial.view.html",
+        templateUrl: "app/components/privilege/privilege.partial.view.html",
         controller: ["$scope", function ($scope) {
             $scope.selectAll = function (objectType, checked) {
                 objectType.actions.forEach(function (action) {

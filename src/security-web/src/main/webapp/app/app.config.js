@@ -13,27 +13,27 @@
         $routeProvider
             .when('/login', {
                 controller: 'LoginController',
-                templateUrl: 'app/login/login.view.html',
+                templateUrl: 'app/components/login/login.view.html',
                 controllerAs: 'vm'
             })
             .when('/users', {
                 controller: 'UsersController',
-                templateUrl: 'app/user/users.view.html',
+                templateUrl: 'app/components/user/users.view.html',
                 controllerAs: 'vm'
             })
             .when("/groups", {
                 controller: "GroupsController",
-                templateUrl: "app/group/groups.view.html",
+                templateUrl: "app/components/group/groups.view.html",
                 controllerAs: "vm"
             })
             .when("/roles", {
                 controller: "RolesController",
-                templateUrl: "app/role/roles.view.html",
+                templateUrl: "app/components/role/roles.view.html",
                 controllerAs: "vm"
             })
             .when("/customers", {
                 controller: "CustomersController",
-                templateUrl: "app/customer/customers.view.html",
+                templateUrl: "app/components/customer/customers.view.html",
                 controllerAs: "vm"
             })
             .otherwise({redirectTo: '/login'});

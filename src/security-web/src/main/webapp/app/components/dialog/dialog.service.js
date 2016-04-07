@@ -3,7 +3,7 @@ angular.module('app')
         return {
             notify: function (message) {
                 return $uibModal.open({
-                    templateUrl: 'app/dialog/notify.view.html',
+                    templateUrl: 'app/components/dialog/notify.view.html',
                     controller: 'NotifyDialogController',
                     controllerAs: 'vm',
                     resolve: {
@@ -15,7 +15,7 @@ angular.module('app')
             },
             error: function (message) {
                 return $uibModal.open({
-                    templateUrl: 'app/dialog/error.view.html',
+                    templateUrl: 'app/components/dialog/error.view.html',
                     controller: 'ErrorDialogController',
                     controllerAs: 'vm',
                     resolve: {
@@ -27,7 +27,7 @@ angular.module('app')
             },
             confirm: function (message) {
                 return $uibModal.open({
-                    templateUrl: 'app/dialog/confirm.view.html',
+                    templateUrl: 'app/components/dialog/confirm.view.html',
                     controller: 'ConfirmDialogController',
                     controllerAs: 'vm',
                     resolve: {
@@ -48,7 +48,7 @@ angular.module('app')
             custom: function (bodyUrl, model) {
                 return $uibModal.open({
                     templateUrl: bodyUrl,
-                    windowTemplateUrl: 'app/dialog/custom.template.html',
+                    windowTemplateUrl: 'app/components/dialog/custom.template.html',
                     controller: 'CustomDialogController',
                     controllerAs: 'vm',
                     keyboard: true,

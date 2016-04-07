@@ -92,7 +92,7 @@ angular.module("app").controller("CustomersController", ["$q", "AuthService", "C
 
 		function openCustomerDialog(model) {
 			model.bundle = editCustomerBundle;
-			DialogService.custom("app/customer/customer.modal.view.html", model).result.then(updateCustomer);
+			DialogService.custom("app/components/customer/customer.modal.view.html", model).result.then(updateCustomer);
 		}
 
 		function updateCustomer(model) {
@@ -122,7 +122,7 @@ angular.module("app").controller("CustomersController", ["$q", "AuthService", "C
 
 		function addPermissionsForUser(customer) {
 			vm.userBundle.find();
-			DialogService.custom("app/customer/public-users.modal.view.html", {
+			DialogService.custom("app/components/customer/public-users.modal.view.html", {
 				title: "Add Permissions for User",
 				bundle: vm.userBundle,
 				size: "modal--user-table",
@@ -137,7 +137,7 @@ angular.module("app").controller("CustomersController", ["$q", "AuthService", "C
 
 		function addPermissionsForGroup() {
 			vm.groupBundle.find();
-			DialogService.custom("app/customer/public-groups.modal.view.html", {
+			DialogService.custom("app/components/customer/public-groups.modal.view.html", {
 				title: "Add Permissions for Group",
 				bundle: vm.groupBundle,
 				size: "modal--group-table",

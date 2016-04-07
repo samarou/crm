@@ -25,7 +25,7 @@ angular.module("app").controller("GroupsController", ["$uibModal", "$q", "GroupS
 
         function showDialog(model) {
             DialogService
-                .custom('app/group/group.modal.view.html', model)
+                .custom('app/components/group/group.modal.view.html', model)
                 .result.then(function (model) {
                     update(model.group);
                 });
