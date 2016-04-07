@@ -6,40 +6,11 @@
     <title>Security Management</title>
 </head>
 <body ng-app="app" ng-controller="AppController as vm">
-<div class="container-fluid">
-    <div class="col-md-8 col-md-offset-2">
-        <header>
-            <nav class="navbar navbar-default">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="#">Security Management</a>
-                    </div>
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <ul class="nav navbar-nav" ng-show="vm.isLoggedUser()">
-                            <li ng-show="vm.isManager() || vm.isSpecialist()"><a href="#/customers">Customers</a></li>
-                            <li ng-show="vm.isAdmin()" class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                                   aria-expanded="false">Administration<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li ng-class="{'active' : vm.isActive('/user')}"><a href="#/users">Users</a></li>
-                                    <li ng-class="{'active' : vm.isActive('/group')}"><a href="#/groups">Groups</a></li>
-                                    <li ng-class="{'active' : vm.isActive('/role')}"><a href="#/roles">Roles</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                        <div class="nav navbar-nav navbar-right" ng-show="vm.isLoggedUser()">
-                            <a class="btn btn-info navbar-btn pull-right" href="#" ng-click="vm.logout();">Logout</a>
-                            <span class="navbar-text pull-right"
-                                  ng-cloak>User: <strong>{{vm.getUserName()}}</strong> </span>
-                        </div>
-                    </div>
-                    <!-- /.navbar-collapse -->
-                </div>
-                <!-- /.container-fluid -->
-            </nav>
-        </header>
-        <div ng-view></div>
-    </div>
+<nav-bar></nav-bar>
+<div class="container">
+
+    <div ng-view></div>
+
 </div>
 </body>
 <script src="bower_components/jquery/dist/jquery.js"></script>
@@ -51,6 +22,8 @@
 <script src="app/app.config.js"></script>
 <script src="app/app.controller.js"></script>
 <script src="app/app.templates.js"></script>
+<script src="app/components/navbar/navbar.controller.js"></script>
+<script src="app/components/navbar/navbar.directive.js"></script>
 <script src="app/components/dialog/dialog.service.js"></script>
 <script src="app/components/login/login.controller.js"></script>
 <script src="app/common/auth.service.js"></script>
