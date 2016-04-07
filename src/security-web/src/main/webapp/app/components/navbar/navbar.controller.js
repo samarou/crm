@@ -3,11 +3,13 @@
  */
 (function () {
 	'use strict';
+	
 	angular
-			.module('app')
+			.module('securityManagement')
 			.controller('AppController', navBarController);
 
-	function navBarController(AuthService, $location) {
+	function navBarController(AuthService, $state, $location) {
+		'use strict';
 
 		var vm = this;
 
@@ -26,7 +28,7 @@
 
 		vm.logout = function () {
 			AuthService.logout();
-			$location.path('/login');
+			$state.go('login');
 		};
 
 		vm.isAdmin = AuthService.isAdmin;

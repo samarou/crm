@@ -4,29 +4,41 @@
         <caption>Groups</caption>
         <thead>
         <tr>
-            <td class="block--narrow"><input type="checkbox" ng-model="bundle.isSelectedAll" ng-click="bundle.selectAll(bundle.isSelectedAll)"></td>
+            <td class="block--narrow"><input type="checkbox" ng-model="bundle.isSelectedAll"
+                                             ng-click="bundle.selectAll(bundle.isSelectedAll)"></td>
             <td class="block--narrow">#</td>
-            <td class="hover--highlight" ng-click="bundle.pagingFilterConfig.sortAsc = !bundle.pagingFilterConfig.sortAsc">
-                <div class="pull-left col-md-3"><span class="glyphicon" ng-class="{'glyphicon-sort-by-attributes' :  bundle.pagingFilterConfig.sortAsc, 'glyphicon-sort-by-attributes-alt' : !bundle.pagingFilterConfig.sortAsc}"></span></div>
+            <td class="hover--highlight"
+                ng-click="bundle.pagingFilterConfig.sortAsc = !bundle.pagingFilterConfig.sortAsc">
+                <div class="pull-left col-md-3"><span class="glyphicon"
+                                                      ng-class="{'glyphicon-sort-by-attributes' :  bundle.pagingFilterConfig.sortAsc, 'glyphicon-sort-by-attributes-alt' : !bundle.pagingFilterConfig.sortAsc}"></span>
+                </div>
                 Name
             </td>
             <td> Description</td>
         </tr>
         </thead>
         <tbody>
-        <tr class="hover--highlight"  ng-repeat="group in (bundle.pageGroups = (bundle.groupList | pagingFilter:bundle.pagingFilterConfig))">
-            <td><input type="checkbox" ng-model="group.checked" ng-click="bundle.selectOne()" ></td>
-            <td>{{bundle.pagingFilterConfig.itemsPerPage * (bundle.pagingFilterConfig.currentPage - 1) + ($index + 1)}}</td>
+        <tr class="hover--highlight"
+            ng-repeat="group in (bundle.pageGroups = (bundle.groupList | pagingFilter:bundle.pagingFilterConfig))">
+            <td><input type="checkbox" ng-model="group.checked" ng-click="bundle.selectOne()"></td>
+            <td>{{bundle.pagingFilterConfig.itemsPerPage * (bundle.pagingFilterConfig.currentPage - 1) + ($index +
+                1)}}
+            </td>
             <td>{{group.name}}</td>
             <td>{{group.description}}</td>
         </tr>
         </tbody>
     </table>
 </div>
-<span class="text--summary" ng-hide="bundle.paging.totalCount === 0">Total: {{bundle.pagingFilterConfig.totalCount}}</span>
+<span class="text--summary"
+      ng-hide="bundle.paging.totalCount === 0">Total: {{bundle.pagingFilterConfig.totalCount}}</span>
 <div class="text--center">
-    <uib-pagination class="pagination-sm" ng-change="bundle.isSelectedAll = false; bundle.selectAll(bundle.isSelectedAll)" ng-model="bundle.pagingFilterConfig.currentPage"
-                    total-items="bundle.pagingFilterConfig.totalCount" items-per-page="bundle.pagingFilterConfig.itemsPerPage" max-size="bundle.pagingFilterConfig.visiblePages"
+    <uib-pagination class="pagination-sm"
+                    ng-change="bundle.isSelectedAll = false; bundle.selectAll(bundle.isSelectedAll)"
+                    ng-model="bundle.pagingFilterConfig.currentPage"
+                    total-items="bundle.pagingFilterConfig.totalCount"
+                    items-per-page="bundle.pagingFilterConfig.itemsPerPage"
+                    max-size="bundle.pagingFilterConfig.visiblePages"
                     boundary-links="true" rotate="false">
     </uib-pagination>
 </div>

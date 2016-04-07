@@ -1,27 +1,36 @@
 /**
  * @author yauheni.putsykovich
  */
-angular.module("app").factory("GroupService", ["$http", function ($http) {
-    "use strict";
-    this.getAll = function () {
-        return $http.get("rest/groups");
-    };
+(function () {
+	'use strict';
 
-    this.getPublicGroups = function () {
-        return $http.get("rest/groups/public");
-    };
+	angular
+			.module('securityManagement')
+			.factory('GroupService', GroupService);
 
-    this.create = function (group) {
-        return $http.post("rest/groups", group);
-    };
+	/** @ngInject */
+	function GroupService($http) {
+		var service = this;
+		service.getAll = function () {
+			return $http.get('/rest/groups');
+		};
 
-    this.update = function (group) {
-        return $http.put("rest/groups", group);
-    };
+		service.getPublicGroups = function () {
+			return $http.get('/rest/groups/public');
+		};
 
-    this.remove = function (id) {
-        return $http.delete("rest/groups/" + id);
-    };
+		service.create = function (group) {
+			return $http.post('/rest/groups', group);
+		};
 
-    return this;
-}]);
+		service.update = function (group) {
+			return $http.put('/rest/groups', group);
+		};
+
+		service.remove = function (id) {
+			return $http.delete('/rest/groups/' + id);
+		};
+
+		return service;
+	}
+})();

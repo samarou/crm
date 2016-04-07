@@ -11,8 +11,12 @@
             </div>
             <div class="modal-body" uib-modal-transclude></div>
             <div class="modal-footer">
-                <button type="button" ng-show="$parent.cancelTitle" class="btn btn-default" ng-click="$parent.cancel()">{{$parent.cancelTitle}}</button>
-                <button type="button" ng-show="$parent.okTitle"   class="btn btn-primary" ng-click="$parent.ok()">{{$parent.okTitle}}</button>
+                <button type="button" ng-show="$parent.cancelTitle" class="btn btn-default" ng-click="$parent.cancel()">
+                    {{$parent.cancelTitle}}
+                </button>
+                <button type="button" ng-show="$parent.okTitle" class="btn btn-primary" ng-click="$parent.ok()">
+                    {{$parent.okTitle}}
+                </button>
             </div>
         </div>
     </div>

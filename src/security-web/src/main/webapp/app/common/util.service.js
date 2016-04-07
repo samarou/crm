@@ -1,23 +1,31 @@
 /**
  * @author yauheni.putsykovich
  */
+(function () {
+	'use strict';
 
-angular.module("app").factory("Util", ["$timeout", function ($timeout) {
-    this.createDelayTypingListener = function (action, delay) {
-        return (function () {
-            var timer;
+	angular
+			.module('securityManagement')
+			.factory('Util', Util);
 
-            return {
-                keyDown: function () {
-                    $timeout.cancel(timer);
-                },
-                keyUp: function () {
-                    $timeout.cancel(timer);
-                    timer = $timeout(action, delay);
-                }
-            }
-        })();
-    };
+	/** @ngInject */
+	function Util($timeout) {
+		this.createDelayTypingListener = function (action, delay) {
+			return (function () {
+				var timer;
 
-    return this;
-}]);
+				return {
+					keyDown: function () {
+						$timeout.cancel(timer);
+					},
+					keyUp: function () {
+						$timeout.cancel(timer);
+						timer = $timeout(action, delay);
+					}
+				}
+			})();
+		};
+
+		return this;
+	}
+})();

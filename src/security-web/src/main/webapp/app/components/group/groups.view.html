@@ -11,16 +11,22 @@
         <caption>
             Groups
             <ul class="list-inline pull-right">
-                <li><span class="glyphicon glyphicon-plus hover--pointer" title="New Group" ng-click="vm.create()"></span></li>
-                <li><span class="glyphicon glyphicon-minus hover--pointer" title="Remove Group" ng-click="vm.remove()"></span></li>
+                <li><span class="glyphicon glyphicon-plus hover--pointer" title="New Group"
+                          ng-click="vm.create()"></span></li>
+                <li><span class="glyphicon glyphicon-minus hover--pointer" title="Remove Group"
+                          ng-click="vm.remove()"></span></li>
             </ul>
         </caption>
         <thead>
         <tr>
-            <td class="block--narrow"><input type="checkbox" ng-model="vm.bundle.isSelectedAll" ng-click="vm.bundle.selectAll(vm.bundle.isSelectedAll)"></td>
+            <td class="block--narrow"><input type="checkbox" ng-model="vm.bundle.isSelectedAll"
+                                             ng-click="vm.bundle.selectAll(vm.bundle.isSelectedAll)"></td>
             <td class="block--narrow">#</td>
-            <td class="hover--highlight" ng-click="vm.bundle.pagingFilterConfig.sortAsc = !vm.bundle.pagingFilterConfig.sortAsc">
-                <div class="pull-left col-md-3"><span class="glyphicon" ng-class="{'glyphicon-sort-by-attributes' :  vm.bundle.pagingFilterConfig.sortAsc, 'glyphicon-sort-by-attributes-alt' : !vm.bundle.pagingFilterConfig.sortAsc}"></span></div>
+            <td class="hover--highlight"
+                ng-click="vm.bundle.pagingFilterConfig.sortAsc = !vm.bundle.pagingFilterConfig.sortAsc">
+                <div class="pull-left col-md-3"><span class="glyphicon"
+                                                      ng-class="{'glyphicon-sort-by-attributes' :  vm.bundle.pagingFilterConfig.sortAsc, 'glyphicon-sort-by-attributes-alt' : !vm.bundle.pagingFilterConfig.sortAsc}"></span>
+                </div>
                 Name
             </td>
             <td class="hover--highlight">
@@ -30,18 +36,26 @@
         </tr>
         </thead>
         <tbody>
-        <tr class="hover--highlight"  ng-dblclick="vm.edit(group)" ng-repeat="group in (vm.bundle.pageGroups = (vm.bundle.groupList | pagingFilter:vm.bundle.pagingFilterConfig))">
-            <td><input type="checkbox" ng-model="group.checked" ng-click="vm.bundle.selectOne()" ng-dblclick="$event.stopPropagation()"></td>
-            <td>{{vm.bundle.pagingFilterConfig.itemsPerPage * (vm.bundle.pagingFilterConfig.currentPage - 1) + ($index + 1)}}</td>
+        <tr class="hover--highlight" ng-dblclick="vm.edit(group)"
+            ng-repeat="group in (vm.bundle.pageGroups = (vm.bundle.groupList | pagingFilter:vm.bundle.pagingFilterConfig))">
+            <td><input type="checkbox" ng-model="group.checked" ng-click="vm.bundle.selectOne()"
+                       ng-dblclick="$event.stopPropagation()"></td>
+            <td>{{vm.bundle.pagingFilterConfig.itemsPerPage * (vm.bundle.pagingFilterConfig.currentPage - 1) + ($index +
+                1)}}
+            </td>
             <td>{{group.name}}</td>
             <td>{{group.description}}</td>
-            <td><span class="glyphicon glyphicon-edit hover--pointer" title="Edit Group" ng-click="vm.edit(group)"></span></td>
+            <td><span class="glyphicon glyphicon-edit hover--pointer" title="Edit Group"
+                      ng-click="vm.edit(group)"></span></td>
         </tr>
         </tbody>
     </table>
 </div>
 <div class="text--center">
-    <uib-pagination class="pagination-sm" ng-model="vm.bundle.pagingFilterConfig.currentPage" ng-change="vm.bundle.isSelectedAll = false; vm.bundle.selectAll(vm.bundle.isSelectedAll)"
-                    total-items="vm.bundle.pagingFilterConfig.totalCount" items-per-page="vm.bundle.pagingFilterConfig.itemsPerPage" max-size="vm.bundle.pagingFilterConfig.visiblePages"
+    <uib-pagination class="pagination-sm" ng-model="vm.bundle.pagingFilterConfig.currentPage"
+                    ng-change="vm.bundle.isSelectedAll = false; vm.bundle.selectAll(vm.bundle.isSelectedAll)"
+                    total-items="vm.bundle.pagingFilterConfig.totalCount"
+                    items-per-page="vm.bundle.pagingFilterConfig.itemsPerPage"
+                    max-size="vm.bundle.pagingFilterConfig.visiblePages"
                     boundary-links="true" rotate="false"></uib-pagination>
 </div>

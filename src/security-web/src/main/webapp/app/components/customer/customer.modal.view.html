@@ -4,21 +4,25 @@
             <div class="row">
                 <div class="col-md-6 form-group">
                     <label for="customer-first-name">First name</label>
-                    <input  ng-disabled="!bundle.canEdit" id="customer-first-name" class="form-control" ng-model="bundle.customer.firstName">
+                    <input ng-disabled="!bundle.canEdit" id="customer-first-name" class="form-control"
+                           ng-model="bundle.customer.firstName">
                 </div>
                 <div class="col-md-6 form-group">
                     <label for="customer-last-name">Last name</label>
-                    <input ng-disabled="!bundle.canEdit" id="customer-last-name" class="form-control" ng-model="bundle.customer.lastName">
+                    <input ng-disabled="!bundle.canEdit" id="customer-last-name" class="form-control"
+                           ng-model="bundle.customer.lastName">
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 form-group">
                     <label for="customer-email">Email</label>
-                    <input ng-disabled="!bundle.canEdit" id="customer-email" class="form-control" ng-model="bundle.customer.email">
+                    <input ng-disabled="!bundle.canEdit" id="customer-email" class="form-control"
+                           ng-model="bundle.customer.email">
                 </div>
                 <div class="col-md-6 form-group">
                     <label for="customer-address">Address</label>
-                    <input ng-disabled="!bundle.canEdit" id="customer-address" class="form-control" ng-model="bundle.customer.address">
+                    <input ng-disabled="!bundle.canEdit" id="customer-address" class="form-control"
+                           ng-model="bundle.customer.address">
                 </div>
             </div>
         </uib-tab>
@@ -27,9 +31,14 @@
                 <caption>
                     Permissions
                     <ul class="list-inline pull-right">
-                        <li ng-show="bundle.canEdit"><span ng-click="bundle.actions.addPermissionsForUser(bundle.customer)" class="hover--pointer icon--small icon--user-add"></span></li>
-                        <li ng-show="bundle.canEdit"><span ng-click="bundle.actions.addPermissionsForGroup(bundle.customer)" class="hover--pointer icon--small icon--user-group-add"></span></li>
-                        <li ng-show="bundle.canEdit"><span ng-click="bundle.actions.removePermissions(bundle.customer)" class="hover--pointer icon--small icon--remove"></span></li>
+                        <li ng-show="bundle.canEdit"><span
+                                ng-click="bundle.actions.addPermissionsForUser(bundle.customer)"
+                                class="hover--pointer icon--small icon--user-add"></span></li>
+                        <li ng-show="bundle.canEdit"><span
+                                ng-click="bundle.actions.addPermissionsForGroup(bundle.customer)"
+                                class="hover--pointer icon--small icon--user-group-add"></span></li>
+                        <li ng-show="bundle.canEdit"><span ng-click="bundle.actions.removePermissions(bundle.customer)"
+                                                           class="hover--pointer icon--small icon--remove"></span></li>
                     </ul>
                 </caption>
                 <thead>
@@ -47,7 +56,9 @@
                 <tbody>
                 <tr ng-repeat="p in bundle.permissions">
                     <td><input ng-show="bundle.canEdit" type="checkbox" ng-model="p.checked"></td>
-                    <td><span title="{{p.principalTypeName}}" class="icon--small hover--pointer" ng-class="{'icon--user': p.principalTypeName === 'user', 'icon--user-group': p.principalTypeName === 'group'}"></span></td>
+                    <td><span title="{{p.principalTypeName}}" class="icon--small hover--pointer"
+                              ng-class="{'icon--user': p.principalTypeName === 'user', 'icon--user-group': p.principalTypeName === 'group'}"></span>
+                    </td>
                     <td>{{p.name}}</td>
                     <td><input ng-disabled="!bundle.canEdit" type="checkbox" ng-model="p.canRead"></td>
                     <td><input ng-disabled="!bundle.canEdit" type="checkbox" ng-model="p.canWrite"></td>

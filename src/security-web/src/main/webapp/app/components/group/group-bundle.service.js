@@ -1,67 +1,75 @@
 /**
  * @author yauheni.putsykovich
  */
-angular.module("app").service("GroupBundle", ["GroupService", function (GroupService) {
-    "use strict";
+(function () {
+	'use strict';
+	
+	angular
+			.module('securityManagement')
+			.service('GroupBundle', GroupBundle);
 
-    function createBundle(){
-        var bundle = {};
+	/** @ngInject */
+	function GroupBundle(GroupService) {
 
-        bundle.searchText = "";
-        bundle.pageGroups = [];
+		function createBundle() {
+			var bundle = {};
 
-        //todo: resolve problem with filtering
-        bundle.pagingFilterConfig = {
-            currentPage: 1,
-            itemsPerPage: 10,
-            visiblePages: 5,
-            totalCount: null,
-            filterObject: {
-                name: ""
-            },
-            sortProperty: "name",
-            sortAsc: true
-        };
+			bundle.searchText = '';
+			bundle.pageGroups = [];
 
-        bundle.performSearch = GroupService.getPublicGroups;
-        bundle.find = function () {
-            bundle.performSearch().then(function (response) {
-                bundle.groupList = response.data;
-                bundle.pagingFilterConfig.totalCount = bundle.groupList.length;
-            });
-        };
+			// todo: resolve problem with filtering
+			bundle.pagingFilterConfig = {
+				currentPage: 1,
+				itemsPerPage: 10,
+				visiblePages: 5,
+				totalCount: null,
+				filterObject: {
+					name: ''
+				},
+				sortProperty: 'name',
+				sortAsc: true
+			};
 
-        bundle.selectAll = function (checked) {
-            if (checked) {
-                bundle.pageGroups.forEach(function (group) {
-                    group.checked = true;
-                });
-            } else {
-                bundle.groupList.forEach(function (group) {
-                    group.checked = false;
-                });
-            }
-        };
+			bundle.performSearch = GroupService.getPublicGroups;
+			bundle.find = function () {
+				bundle.performSearch().then(function (response) {
+					bundle.groupList = response.data;
+					bundle.pagingFilterConfig.totalCount = bundle.groupList.length;
+				});
+			};
 
-        bundle.selectOne = function () {
-            bundle.isSelectedAll = bundle.pageGroups.every(function (group) {
-                return group.checked;
-            });
-        };
+			bundle.selectAll = function (checked) {
+				if (checked) {
+					bundle.pageGroups.forEach(function (group) {
+						group.checked = true;
+					});
+				} else {
+					bundle.groupList.forEach(function (group) {
+						group.checked = false;
+					});
+				}
+			};
 
-        return bundle;
-    }
+			bundle.selectOne = function () {
+				bundle.isSelectedAll = bundle.pageGroups.every(function (group) {
+					return group.checked;
+				});
+			};
 
-    return {
-        publicMode: function () {
-            var bundle = createBundle();
-            bundle.performSearch = GroupService.getPublicGroups;
-            return bundle;
-        },
-        securedMode: function () {
-            var bundle = createBundle();
-            bundle.performSearch = GroupService.getAll;
-            return bundle;
-        }
-    };
-}]);
+			return bundle;
+		}
+
+		return {
+			publicMode: function () {
+				var bundle = createBundle();
+				bundle.performSearch = GroupService.getPublicGroups;
+				return bundle;
+			},
+			securedMode: function () {
+				var bundle = createBundle();
+				bundle.performSearch = GroupService.getAll;
+				return bundle;
+			}
+		};
+	}
+})();

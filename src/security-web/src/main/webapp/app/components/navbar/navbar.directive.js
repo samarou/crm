@@ -5,7 +5,7 @@
 	'use strict';
 
 	angular
-			.module('app')
+			.module('securityManagement')
 			.directive('navBar', navBar);
 
 	/** @ngInject */

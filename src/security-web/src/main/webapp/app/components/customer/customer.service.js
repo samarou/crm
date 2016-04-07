@@ -1,41 +1,49 @@
 /**
  * @author yauheni.putsykovich
  */
+(function () {
+	'use strict';
+	angular
+			.module('securityManagement')
+			.service('CustomerService', CustomerService);
 
-angular.module("app").service("CustomerService", ["$http", function ($http) {
-    this.getAll = function () {
-        return $http.get("rest/customers");
-    };
+	/** @ngInject */
+	function CustomerService($http) {
+		var service = this;
+		service.getAll = function () {
+			return $http.get('/rest/customers');
+		};
 
-    this.create = function (customer) {
-        return $http.post("rest/customers", customer);
-    };
+		service.create = function (customer) {
+			return $http.post('/rest/customers', customer);
+		};
 
-    this.update = function (customer) {
-        return $http.put("rest/customers", customer);
-    };
+		service.update = function (customer) {
+			return $http.put('/rest/customers', customer);
+		};
 
-    this.remove = function (id) {
-        return $http.delete("rest/customers/" + id);
-    };
+		service.remove = function (id) {
+			return $http.delete('/rest/customers/' + id);
+		};
 
-    this.find = function (filter) {
-        return $http.get("rest/customers/find", {params: filter});
-    };
+		service.find = function (filter) {
+			return $http.get('/rest/customers/find', { params: filter });
+		};
 
-    this.getPermissions = function (id) {
-        return $http.get("rest/customers/" + id + "/permissions");
-    };
+		service.getPermissions = function (id) {
+			return $http.get('/rest/customers/' + id + '/permissions');
+		};
 
-    this.updatePermissions = function (id, permissions) {
-        return $http.put("rest/customers/" + id + "/permissions", permissions);
-    };
+		service.updatePermissions = function (id, permissions) {
+			return $http.put('/rest/customers/' + id + '/permissions', permissions);
+		};
 
-    this.removePermissions = function (id, permissionId) {
-        return $http.delete("rest/customers/" + id + "/permissions/" + permissionId)
-    };
+		service.removePermissions = function (id, permissionId) {
+			return $http.delete('/rest/customers/' + id + '/permissions/' + permissionId)
+		};
 
-    this.isAllowed = function (customerId, permission) {
-        return $http.get("rest/customers/" + customerId + "/actions/" + permission);
-    };
-}]);
+		service.isAllowed = function (customerId, permission) {
+			return $http.get('/rest/customers/' + customerId + '/actions/' + permission);
+		};
+	}
+})();

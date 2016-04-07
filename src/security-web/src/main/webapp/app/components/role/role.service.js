@@ -1,22 +1,31 @@
 /**
  * @author yauheni.putsykovich
  */
-angular.module("app").factory("RoleService", ["$http", function ($http) {
-    this.fetchAll = function () {
-        return $http.get("rest/roles");
-    };
+(function () {
+	'use strict';
+	angular
+			.module('securityManagement')
+			.factory('RoleService', RoleService);
 
-    this.create = function (role) {
-        return $http.post("rest/roles", role);
-    };
+	/** @ngInject */
+	function RoleService($http) {
+		var service = this;
+		service.fetchAll = function () {
+			return $http.get('/rest/roles');
+		};
 
-    this.update = function (role) {
-        return $http.put("rest/roles", role);
-    };
+		service.create = function (role) {
+			return $http.post('/rest/roles', role);
+		};
 
-    this.remove = function (id) {
-        return $http.delete("rest/roles/" + id);
-    };
+		service.update = function (role) {
+			return $http.put('/rest/roles', role);
+		};
 
-    return this;
-}]);
+		service.remove = function (id) {
+			return $http.delete('/rest/roles/' + id);
+		};
+
+		return service;
+	}
+})();

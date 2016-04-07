@@ -1,12 +1,21 @@
 /**
  * @author yauheni.putsykovich
  */
+(function () {
+	'use strict';
+	
+	angular
+			.module('securityManagement')
+			.service('PrivilegeService', PrivilegeService);
 
-angular.module("app").service("PrivilegeService", ["$http", function ($http) {
-    "use strict";
-    this.fetchAll = function () {
-        return $http.get("rest/privileges");
-    };
+	/** @ngInject */
+	function PrivilegeService($http) {
+		'use strict';
+		this.fetchAll = function () {
+			return $http.get('/rest/privileges');
+		};
 
-    return this;
-}]);
+		return this;
+	}
+})();
+
