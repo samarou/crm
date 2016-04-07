@@ -68,7 +68,7 @@ CREATE TABLE `role` (
 CREATE TABLE `principal` (
 	`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Identifier'
 ) ENGINE=InnoDB
-  COMMENT = 'Security principals';
+    COMMENT = 'Security principals';
 
 
 CREATE TABLE `group` (
@@ -78,7 +78,7 @@ CREATE TABLE `group` (
     UNIQUE KEY `uk_group_name` (`name`),
     CONSTRAINT `fk_group_principle_id` FOREIGN KEY (`id`) REFERENCES `principal` (`id`)
 ) ENGINE=InnoDB
-  COMMENT = 'Groups of users';
+    COMMENT = 'Groups of users';
 
 
 CREATE TABLE `user` (
@@ -92,7 +92,7 @@ CREATE TABLE `user` (
     UNIQUE KEY `uk_user_user_name` (`user_name`),
     CONSTRAINT `fk_user_principle_id` FOREIGN KEY (`id`) REFERENCES `principal` (`id`)
 ) ENGINE=InnoDB
-  COMMENT = 'Users';
+    COMMENT = 'Users';
 
 
 CREATE TABLE `user_role` (
@@ -125,25 +125,36 @@ CREATE TABLE `role_privilege` (
 	COMMENT = 'Privileges assigned to roles';
 
 
-CREATE TABLE `customer` (
-	`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `firstName` VARCHAR(50) NOT NULL,
-	`lastName` VARCHAR(50) NOT NULL,
-	`email` VARCHAR(100) NOT NULL,
-	`address` VARCHAR(250)
-) ENGINE=InnoDB;
+CREATE TABLE `acl_object_identity` (
+	`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Identifier',
+	`object_type_id` BIGINT UNSIGNED NOT NULL COMMENT 'Object type identifier',
+	`object_id` BIGINT UNSIGNED NOT NULL COMMENT 'Object identifier',
+	`parent_id` BIGINT UNSIGNED COMMENT 'Parent ACL identity identifier',
+	`owner_id` BIGINT UNSIGNED COMMENT 'Owner identifier',
+	`inheriting` BOOLEAN NOT NULL DEFAULT FALSE COMMENT 'Flag of inheritance from parent',
+	UNIQUE KEY `uk_acl_object_identity` (`object_type_id`, `object_id`),
+	INDEX `idx_acl_object_identity_parent_id` (`parent_id`),
+	INDEX `idx_acl_object_identity_owner_id` (`owner_id`),
+	CONSTRAINT `fk_acl_object_identity_object_type_id` FOREIGN KEY (`object_type_id`) REFERENCES `object_type` (`id`),
+	CONSTRAINT `fk_acl_object_identity_parent_id` FOREIGN KEY (`parent_id`) REFERENCES `acl_object_identity` (`id`) ON DELETE SET NULL,
+	CONSTRAINT `fk_acl_object_identity_owner_id` FOREIGN KEY (`owner_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB
+	COMMENT = 'ACL identities. Represents domain object instances';
 
 
-CREATE TABLE `order` (
-	`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `product` VARCHAR(100) NOT NULL,
-	`count` INT UNSIGNED NOT NULL,
-	`price` DECIMAL(10, 2) UNSIGNED NOT NULL,
-    `customer_id` BIGINT UNSIGNED NOT NULL,
-    INDEX `idx_order_customer_id` (`customer_id`),
-	CONSTRAINT `fk_order_customer_id` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`)
-) ENGINE=InnoDB;
+CREATE TABLE `acl_entry` (
+	`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Identifier',
+	`object_identity_id` BIGINT UNSIGNED NOT NULL COMMENT 'ACL identity identifier',
+    `principal_id` BIGINT UNSIGNED NOT NULL COMMENT 'Principal identifier',
+	`permission_mask` INT UNSIGNED NOT NULL COMMENT 'Binary mask for permissions (READ – 1, WRITE – 2, CREATE – 4, DELETE – 8, ADMIN - 16)',
+	UNIQUE KEY `uk_acl_entry` (`object_identity_id`, `principal_id`),
+	INDEX `idx_acl_entry_principal_id` (`principal_id`),
+	CONSTRAINT `fk_acl_entry_identity_id` FOREIGN KEY (`object_identity_id`) REFERENCES `acl_object_identity` (`id`),
+	CONSTRAINT `fk_acl_entry_principal_id` FOREIGN KEY (`principal_id`) REFERENCES `principal` (`id`)
+) ENGINE=InnoDB
+	COMMENT = 'ACL entries. Permissions that principal has on object';
 
+	
 DELIMITER $$
 
 CREATE TRIGGER `trg_user_adr` 
@@ -163,35 +174,25 @@ END$$
 
 DELIMITER ;
 
--- ACL TABLES ------------------------------------------------------------------------
+
+-- BUSINESS TABLES ------------------------------------------------------------------------
+	
+	
+CREATE TABLE `customer` (
+	`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `firstName` VARCHAR(50) NOT NULL,
+	`lastName` VARCHAR(50) NOT NULL,
+	`email` VARCHAR(100) NOT NULL,
+	`address` VARCHAR(250)
+) ENGINE=InnoDB;
 
 
-CREATE TABLE `acl_object_identity` (
-	`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Identifier',
-	`object_type_id` BIGINT UNSIGNED NOT NULL COMMENT 'Foreign key to object type',
-	`object_id` BIGINT UNSIGNED NOT NULL COMMENT 'Foreign key to object',
-	`parent_id` BIGINT UNSIGNED COMMENT 'Foreign key to parent ACL entity',
-	`owner_id` BIGINT UNSIGNED COMMENT 'Foreign key to User, that owns this object (owner can do everything with this object)',
-	`inheriting` BOOLEAN NOT NULL DEFAULT FALSE COMMENT 'Flag for inheritance from parent',
-	UNIQUE KEY `uk_acl_object_identity` (`object_type_id`, `object_id`),
-	INDEX `idx_acl_object_identity_parent_id` (`parent_id`),
-	INDEX `idx_acl_object_identity_owner_id` (`owner_id`),
-	CONSTRAINT `fk_acl_object_identity_object_type_id` FOREIGN KEY (`object_type_id`) REFERENCES `object_type` (`id`),
-	CONSTRAINT `fk_acl_object_identity_parent_id` FOREIGN KEY (`parent_id`) REFERENCES `acl_object_identity` (`id`) ON DELETE SET NULL,
-	CONSTRAINT `fk_acl_object_identity_owner_id` FOREIGN KEY (`owner_id`) REFERENCES `user` (`id`)
-)	ENGINE=InnoDB
-	COMMENT = 'ACL entity. Represents a single domain object instance with some additional information like ownership and inheritance. Contains permissions for principals on this object';
-
-
-CREATE TABLE `acl_entry` (
-	`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Identifier',
-	`object_identity_id` BIGINT UNSIGNED NOT NULL COMMENT 'Foreign key to ACL object identity',
-    `principal_id` BIGINT UNSIGNED NOT NULL COMMENT 'Foreign key to principal',
-	`permission_mask` INT UNSIGNED NOT NULL COMMENT 'Binary mask for permissions (READ – 1, WRITE – 2, CREATE – 4, DELETE – 8, ADMIN - 16)',
-	UNIQUE KEY `uk_acl_entry` (`object_identity_id`, `principal_id`),
-	INDEX `idx_acl_entry_principal_id` (`principal_id`),
-	CONSTRAINT `fk_acl_entry_identity_id` FOREIGN KEY (`object_identity_id`) REFERENCES `acl_object_identity` (`id`),
-	CONSTRAINT `fk_acl_entry_principal_id` FOREIGN KEY (`principal_id`) REFERENCES `principal` (`id`)
-)	ENGINE=InnoDB
-	COMMENT = 'ACL entry. Describes permissions that principal has on object';
-
+CREATE TABLE `order` (
+	`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `product` VARCHAR(100) NOT NULL,
+	`count` INT UNSIGNED NOT NULL,
+	`price` DECIMAL(10, 2) UNSIGNED NOT NULL,
+    `customer_id` BIGINT UNSIGNED NOT NULL,
+    INDEX `idx_order_customer_id` (`customer_id`),
+	CONSTRAINT `fk_order_customer_id` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`)
+) ENGINE=InnoDB;
