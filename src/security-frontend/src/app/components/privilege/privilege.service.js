@@ -12,7 +12,7 @@
 	function PrivilegeService($http) {
 		'use strict';
 		this.fetchAll = function () {
-			return $http.get('/rest/privileges');
+			return $http.get('rest/privileges');
 		};
 
 		return this;

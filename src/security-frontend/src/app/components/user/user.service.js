@@ -23,43 +23,43 @@
 		return service;
 
 		function getPublicUsers() {
-			return $http.get('/rest/users/public');
+			return $http.get('rest/users/public');
 		}
 
 		function fetchAll() {
-			return $http.get('/rest/users');
+			return $http.get('rest/users');
 		}
 
 		function getById(id) {
-			return $http.get('/rest/users/' + id);
+			return $http.get('rest/users/' + id);
 		}
 
 		function create(user) {
-			return $http.post('/rest/users', user);
+			return $http.post('rest/users', user);
 		}
 
 		function update(user) {
-			return $http.put('/rest/users', user);
+			return $http.put('rest/users', user);
 		}
 
 		function remove(id) {
-			return $http.delete('/rest/users/' + id);
+			return $http.delete('rest/users/' + id);
 		}
 
 		function find(filter) {
-			return $http.get('/rest/users/find', {params: filter});
+			return $http.get('rest/users/find', {params: filter});
 		}
 
 		function findPublicUsers(filter) {
-			return $http.get('/rest/users/public/find', {params: filter});
+			return $http.get('rest/users/public/find', {params: filter});
 		}
 
 		function activate(id) {
-			return $http.put('/rest/users/activate/' + id);
+			return $http.put('rest/users/activate/' + id);
 		}
 
 		function deactivate(id) {
-			return $http.put('/rest/users/deactivate/' + id);
+			return $http.put('rest/users/deactivate/' + id);
 		}
 	}
 })();

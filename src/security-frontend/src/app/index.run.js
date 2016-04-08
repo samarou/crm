@@ -9,7 +9,7 @@
 			if (next.controller == 'LoginController') {
 				AuthService.logout();
 			} else if (!AuthService.isAuthenticated()) {
-				$log.log('Try to /restore token');
+				$log.log('Try to restore token');
 				if (!AuthService.restore()) {
 					$state.go('/login');
 				}
