@@ -39,9 +39,14 @@
 		vm.searchCustomerBundle.find();
 
 		vm.create = function () {
-			editCustomerBundle.customer = {};
-			editCustomerBundle.permissions = [];
-			openCustomerDialog({title: 'Create Customer'});
+				editCustomerBundle.canEdit = true;
+				editCustomerBundle.customer = {};
+				editCustomerBundle.permissions = [];
+				openCustomerDialog({
+					title: 'Create Customer',
+					okTitle: 'Add',
+					cancelTitle: 'Cancel'
+				});
 		};
 
 		vm.edit = function (customer) {
