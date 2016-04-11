@@ -27,7 +27,7 @@
 					tasks.push(GroupService.remove(group.id))
 				}
 			});
-			$q.all(tasks).then(vm.bundle.fetchAllGroups);
+			$q.all(tasks).then(vm.bundle.find);
 			vm.bundle.isSelectedAll = false;
 		};
 
