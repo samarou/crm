@@ -26,8 +26,7 @@
 			totalItems: null,
 			privilegeSearchText: null,
 			filterObject: {
-				name: '',
-				description: ''
+				name: ''
 			},
 			sortProperty: 'name',
 			sortAsc: true
