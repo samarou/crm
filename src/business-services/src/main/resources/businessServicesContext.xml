@@ -41,7 +41,7 @@
         </property>
     </bean>
 
-    <bean name="customerService" class="com.itechart.security.business.service.impl.CustomerServiceImpl"/>
+    <bean name="contactService" class="com.itechart.security.business.service.impl.ContactServiceImpl"/>
 
     <!-- Method Security -->
 

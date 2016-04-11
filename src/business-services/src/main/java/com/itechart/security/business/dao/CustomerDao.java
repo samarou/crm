@@ -1,7 +1,7 @@
 package com.itechart.security.business.dao;
 
-import com.itechart.security.business.filter.CustomerFilter;
-import com.itechart.security.business.model.persistent.Customer;
+import com.itechart.security.business.filter.ContactFilter;
+import com.itechart.security.business.model.persistent.Contact;
 
 import java.util.List;
 
@@ -10,15 +10,15 @@ import java.util.List;
  */
 public interface CustomerDao {
 
-    Long save(Customer customer);
+    Long save(Contact contact);
 
-    List<Customer> loadAll();
+    List<Contact> loadAll();
 
-    void update(Customer customer);
+    void update(Contact contact);
 
     void deleteById(Long id);
 
-    List findCustomers(CustomerFilter filter);
+    List findCustomers(ContactFilter filter);
 
-    int countCustomers(CustomerFilter filter);
+    int countCustomers(ContactFilter filter);
 }

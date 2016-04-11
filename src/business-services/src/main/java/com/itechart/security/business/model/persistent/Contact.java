@@ -6,13 +6,13 @@ import javax.persistence.*;
 import java.util.Set;
 
 /**
- * Customer
+ * Contact
  *
  * @author andrei.samarou
  */
 @Entity
 @Table(name = "customer")
-public class Customer extends SecuredEntity {
+public class Contact extends SecuredEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

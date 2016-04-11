@@ -29,7 +29,7 @@ public class Order extends SecuredEntity {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "customer_id", nullable = false)
-    private Customer customer;
+    private Contact customer;
 
     @Override
     public Long getId() {
@@ -64,11 +64,11 @@ public class Order extends SecuredEntity {
         this.price = price;
     }
 
-    public Customer getCustomer() {
+    public Contact getCustomer() {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
+    public void setCustomer(Contact customer) {
         this.customer = customer;
     }
 

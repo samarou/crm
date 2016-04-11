@@ -1,9 +1,9 @@
-package com.itechart.security.business.filter;
+package com.itechart.security.web.model.dto;
 
 /**
  * @author yauheni.putsykovich
  */
-public class CustomerFilter extends PagingFilter {
+public class ContactFilterDto extends PagingFilterDto {
     private String text;
 
     public String getText() {
