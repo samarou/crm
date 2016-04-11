@@ -13,7 +13,7 @@
 		service.getAll = function () {
 			return $http.get('rest/contacts');
 		};
-		
+
 		service.create = function (contact) {
 			return $http.post('rest/contacts', contact);
 		};
@@ -41,7 +41,7 @@
 		service.removePermissions = function (id, permissionId) {
 			return $http.delete('rest/contacts/' + id + '/permissions/' + permissionId)
 		};
-		
+
 		service.isAllowed = function (contactId, permission) {
 			return $http.get('rest/contacts/' + contactId + '/actions/' + permission);
 		};
