@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author andrei.samarou
  */
-public interface CustomerDao {
+public interface ContactDao {
 
     Long save(Contact contact);
 
@@ -18,7 +18,7 @@ public interface CustomerDao {
 
     void deleteById(Long id);
 
-    List findCustomers(ContactFilter filter);
+    List findContacts(ContactFilter filter);
 
-    int countCustomers(ContactFilter filter);
+    int countContacts(ContactFilter filter);
 }

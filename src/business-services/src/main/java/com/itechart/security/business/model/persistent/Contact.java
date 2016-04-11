@@ -11,7 +11,7 @@ import java.util.Set;
  * @author andrei.samarou
  */
 @Entity
-@Table(name = "customer")
+@Table(name = "contact")
 public class Contact extends SecuredEntity {
 
     @Id
@@ -30,7 +30,7 @@ public class Contact extends SecuredEntity {
     @Column(name = "address", length = 250)
     private String address;
 
-    @OneToMany(orphanRemoval = true, mappedBy = "customer")
+    @OneToMany(orphanRemoval = true, mappedBy = "contact")
     private Set<Order> orders;
 
     public Set<Order> getOrders() {
@@ -84,6 +84,6 @@ public class Contact extends SecuredEntity {
 
     @Override
     public String getObjectType() {
-        return ObjectTypes.CUSTOMER.getName();
+        return ObjectTypes.CONTACT.getName();
     }
 }

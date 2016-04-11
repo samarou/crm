@@ -28,8 +28,8 @@ public class Order extends SecuredEntity {
     private BigDecimal price;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "customer_id", nullable = false)
-    private Contact customer;
+    @JoinColumn(name = "contact_id", nullable = false)
+    private Contact contact;
 
     @Override
     public Long getId() {
@@ -64,12 +64,12 @@ public class Order extends SecuredEntity {
         this.price = price;
     }
 
-    public Contact getCustomer() {
-        return customer;
+    public Contact getContact() {
+        return contact;
     }
 
-    public void setCustomer(Contact customer) {
-        this.customer = customer;
+    public void setContact(Contact contact) {
+        this.contact = contact;
     }
 
     @Override

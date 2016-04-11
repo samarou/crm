@@ -1,6 +1,6 @@
 package com.itechart.security.business.dao.impl;
 
-import com.itechart.security.business.dao.CustomerDao;
+import com.itechart.security.business.dao.ContactDao;
 import com.itechart.security.business.filter.ContactFilter;
 import com.itechart.security.business.model.persistent.Contact;
 import com.itechart.security.core.annotation.AclFilter;
@@ -20,7 +20,7 @@ import java.util.List;
  * @author andrei.samarou
  */
 @Repository
-public class CustomerDaoImpl extends AbstractHibernateDao<Contact> implements CustomerDao {
+public class ContactDaoImpl extends AbstractHibernateDao<Contact> implements ContactDao {
 
     @Override
     public Long save(Contact contact) {
@@ -46,7 +46,7 @@ public class CustomerDaoImpl extends AbstractHibernateDao<Contact> implements Cu
 
     @Override
     @AclFilter(@AclFilterRule(type = Contact.class, permissions = {Permission.READ}))
-    public int countCustomers(ContactFilter filter){
+    public int countContacts(ContactFilter filter){
         return getHibernateTemplate().executeWithNativeSession(session -> {
             Criteria criteria = createFilterCriteria(session, filter);
             criteria.setProjection(Projections.rowCount());
@@ -56,7 +56,7 @@ public class CustomerDaoImpl extends AbstractHibernateDao<Contact> implements Cu
 
     @Override
     @AclFilter(@AclFilterRule(type = Contact.class, permissions = {Permission.READ}))
-    public List<Contact> findCustomers(ContactFilter filter) {
+    public List<Contact> findContacts(ContactFilter filter) {
         return getHibernateTemplate().executeWithNativeSession(session -> {
             Criteria criteria = createFilterCriteria(session, filter);
             return executePagingDistinctCriteria(session, criteria, filter);

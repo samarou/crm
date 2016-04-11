@@ -1,6 +1,6 @@
 package com.itechart.security.business.service.impl;
 
-import com.itechart.security.business.dao.CustomerDao;
+import com.itechart.security.business.dao.ContactDao;
 import com.itechart.security.business.filter.ContactFilter;
 import com.itechart.security.business.model.persistent.Contact;
 import com.itechart.security.business.service.ContactService;
@@ -17,18 +17,18 @@ import java.util.List;
 public class ContactServiceImpl implements ContactService {
 
     @Autowired
-    private CustomerDao customerDao;
+    private ContactDao contactDao;
 
     @Override
     @Transactional
     public List<Contact> findContacts(ContactFilter filter) {
-        return customerDao.findCustomers(filter);
+        return contactDao.findContacts(filter);
     }
 
     @Override
     @Transactional
     public Long saveContact(Contact contact) {
-        return customerDao.save(contact);
+        return contactDao.save(contact);
     }
 
     @Override
@@ -40,24 +40,24 @@ public class ContactServiceImpl implements ContactService {
     //@PostFilter ("filterObject.owner == authentication.name")
     //@PostFilter("hasPermission(filterObject, 'READ')")
     public List<Contact> getContacts() {
-        return customerDao.loadAll();
+        return contactDao.loadAll();
     }
 
     @Override
     @Transactional
     public void updateContact(Contact contact) {
-        customerDao.update(contact);
+        contactDao.update(contact);
     }
 
     @Override
     @Transactional
     public void deleteById(Long id) {
-        customerDao.deleteById(id);
+        contactDao.deleteById(id);
     }
 
     @Override
     @Transactional
     public int countContacts(ContactFilter filter) {
-        return customerDao.countCustomers(filter);
+        return contactDao.countContacts(filter);
     }
 }

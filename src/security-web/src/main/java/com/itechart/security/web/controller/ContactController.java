@@ -80,7 +80,7 @@ public class ContactController {
     public Long create(@RequestBody ContactDto dto) {
         Long contactId = contactService.saveContact(covert(dto));
         Long userId = SecurityUtils.getAuthenticatedUserId();
-        aclService.createAcl(new ObjectIdentityImpl(contactId, ObjectTypes.CUSTOMER.getName()), null, userId);
+        aclService.createAcl(new ObjectIdentityImpl(contactId, ObjectTypes.CONTACT.getName()), null, userId);
         return contactId;
     }
 
@@ -147,6 +147,6 @@ public class ContactController {
     }
 
     private ObjectIdentity createIdentity(Long contactId) {
-        return new ObjectIdentityImpl(contactId, ObjectTypes.CUSTOMER.getName());
+        return new ObjectIdentityImpl(contactId, ObjectTypes.CONTACT.getName());
     }
 }
