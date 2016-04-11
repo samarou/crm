@@ -1,7 +1,7 @@
 package com.itechart.security.web.model.dto;
 
-import com.itechart.security.business.filter.CustomerFilter;
-import com.itechart.security.business.model.persistent.Customer;
+import com.itechart.security.business.filter.ContactFilter;
+import com.itechart.security.business.model.persistent.Contact;
 import com.itechart.security.business.model.persistent.Order;
 import com.itechart.security.model.filter.UserFilter;
 import com.itechart.security.model.persistent.*;
@@ -99,8 +99,8 @@ public class Converter {
         return filter;
     }
 
-    public static CustomerFilter convert(CustomerFilterDto dto) {
-        CustomerFilter filter = new CustomerFilter();
+    public static ContactFilter convert(ContactFilterDto dto) {
+        ContactFilter filter = new ContactFilter();
         filter.setText(dto.getText());
         filter.setFrom(dto.getFrom());
         filter.setCount(dto.getCount());
@@ -253,31 +253,31 @@ public class Converter {
         return objectType;
     }
 
-    public static List<CustomerDto> convertCustomers(List<Customer> customers) {
-        if (CollectionUtils.isEmpty(customers)) {
+    public static List<ContactDto> convertContacts(List<Contact> contacts) {
+        if (CollectionUtils.isEmpty(contacts)) {
             return Collections.emptyList();
         }
-        return customers.stream().map(Converter::convert).collect(Collectors.toList());
+        return contacts.stream().map(Converter::convert).collect(Collectors.toList());
     }
 
-    public static CustomerDto convert(Customer customer) {
-        CustomerDto dto = new CustomerDto();
-        dto.setId(customer.getId());
-        dto.setFirstName(customer.getFirstName());
-        dto.setLastName(customer.getLastName());
-        dto.setEmail(customer.getEmail());
-        dto.setAddress(customer.getAddress());
+    public static ContactDto convert(Contact contact) {
+        ContactDto dto = new ContactDto();
+        dto.setId(contact.getId());
+        dto.setFirstName(contact.getFirstName());
+        dto.setLastName(contact.getLastName());
+        dto.setEmail(contact.getEmail());
+        dto.setAddress(contact.getAddress());
         return dto;
     }
 
-    public static Customer covert(CustomerDto dto) {
-        Customer customer = new Customer();
-        customer.setId(dto.getId());
-        customer.setFirstName(dto.getFirstName());
-        customer.setLastName(dto.getLastName());
-        customer.setEmail(dto.getEmail());
-        customer.setAddress(dto.getAddress());
-        return customer;
+    public static Contact covert(ContactDto dto) {
+        Contact contact = new Contact();
+        contact.setId(dto.getId());
+        contact.setFirstName(dto.getFirstName());
+        contact.setLastName(dto.getLastName());
+        contact.setEmail(dto.getEmail());
+        contact.setAddress(dto.getAddress());
+        return contact;
     }
 
     public static Set<OrderDto> convertOrders(Set<Order> orders) {

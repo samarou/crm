@@ -7,7 +7,7 @@
 	angular.module('securityManagement').service('SearchBundle', SearchBundle);
 
 	/** @ngInject */
-	function SearchBundle(UserService, CustomerService, Util) {
+	function SearchBundle(UserService, ContactService, Util) {
 		function createCommonBundle() {
 			var bundle = {};
 
@@ -108,9 +108,9 @@
 				bundle.filter.active = true;
 				return bundle;
 			},
-			customerMode: function () {
+			contactMode: function () {
 				var bundle = createCommonBundle();
-				bundle.performSeach = CustomerService.find;
+				bundle.performSeach = ContactService.find;
 				bundle.sortProperties.address = {name: 'address', asc: true, enabled: false};
 				return bundle;
 			}

@@ -6,13 +6,13 @@ import javax.persistence.*;
 import java.util.Set;
 
 /**
- * Customer
+ * Contact
  *
  * @author andrei.samarou
  */
 @Entity
-@Table(name = "customer")
-public class Customer extends SecuredEntity {
+@Table(name = "contact")
+public class Contact extends SecuredEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +30,7 @@ public class Customer extends SecuredEntity {
     @Column(name = "address", length = 250)
     private String address;
 
-    @OneToMany(orphanRemoval = true, mappedBy = "customer")
+    @OneToMany(orphanRemoval = true, mappedBy = "contact")
     private Set<Order> orders;
 
     public Set<Order> getOrders() {
@@ -84,6 +84,6 @@ public class Customer extends SecuredEntity {
 
     @Override
     public String getObjectType() {
-        return ObjectTypes.CUSTOMER.getName();
+        return ObjectTypes.CONTACT.getName();
     }
 }

@@ -7,7 +7,6 @@
   "disallowMultipleVarDecl": true,
   "disallowNewlineBeforeBlockStatements": true,
   "disallowQuotedKeysInObjects": "allButReserved",
-  "disallowSpaceAfterPrefixUnaryOperators": ["!"],
   "disallowSpaceBeforeBinaryOperators": [","],
   "disallowSpaceAfterPrefixUnaryOperators": ["++", "--", "+", "-", "~", "!"],
   "disallowSpaceBeforePostfixUnaryOperators": ["++", "--"],

@@ -32,10 +32,10 @@
 					templateUrl: 'app/components/role/roles.view.html',
 					controllerAs: 'vm'
 				})
-				.state('customers', {
-					url: '/customers',
-					controller: 'CustomersController',
-					templateUrl: 'app/components/customer/customers.view.html',
+				.state('contacts', {
+					url: '/contacts',
+					controller: 'ContactsController',
+					templateUrl: 'app/components/contact/contacts.view.html',
 					controllerAs: 'vm'
 				});
 

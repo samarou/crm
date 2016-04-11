@@ -1,8 +1,8 @@
 package com.itechart.security.web.controller;
 
-import com.itechart.security.business.filter.CustomerFilter;
+import com.itechart.security.business.filter.ContactFilter;
 import com.itechart.security.business.model.enums.ObjectTypes;
-import com.itechart.security.business.service.CustomerService;
+import com.itechart.security.business.service.ContactService;
 import com.itechart.security.core.SecurityUtils;
 import com.itechart.security.core.acl.AclPermissionEvaluator;
 import com.itechart.security.core.model.acl.ObjectIdentity;
@@ -16,8 +16,8 @@ import com.itechart.security.service.AclService;
 import com.itechart.security.service.PrincipalService;
 import com.itechart.security.web.model.PrincipalTypes;
 import com.itechart.security.web.model.dto.AclEntryDto;
-import com.itechart.security.web.model.dto.CustomerDto;
-import com.itechart.security.web.model.dto.CustomerFilterDto;
+import com.itechart.security.web.model.dto.ContactDto;
+import com.itechart.security.web.model.dto.ContactFilterDto;
 import com.itechart.security.web.model.dto.DataPageDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,10 +36,10 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
  */
 @RestController
 @PreAuthorize("hasAnyRole('MANAGER', 'SPECIALIST')")
-public class CustomerController {
+public class ContactController {
 
     @Autowired
-    private CustomerService customerService;
+    private ContactService contactService;
 
     @Autowired
     private PrincipalService principalService;
@@ -50,51 +50,51 @@ public class CustomerController {
     @Autowired
     private AclPermissionEvaluator aclPermissionEvaluator;
 
-    @RequestMapping("/customers/{customerId}/actions/{value}")
-    public boolean isAllowed(@PathVariable Long customerId, @PathVariable String value) {
+    @RequestMapping("/contacts/{contactId}/actions/{value}")
+    public boolean isAllowed(@PathVariable Long contactId, @PathVariable String value) {
         Permission permission = Permission.valueOf(value.toUpperCase());
-        return aclPermissionEvaluator.hasPermission(SecurityUtils.getAuthentication(), createIdentity(customerId), permission);
+        return aclPermissionEvaluator.hasPermission(SecurityUtils.getAuthentication(), createIdentity(contactId), permission);
     }
 
-    @RequestMapping("/customers")
-    public List<CustomerDto> getCustomers() {
-        return convertCustomers(customerService.getCustomers());
+    @RequestMapping("/contacts")
+    public List<ContactDto> getContacts() {
+        return convertContacts(contactService.getContacts());
     }
 
-    @PreAuthorize("hasPermission(#dto.getId(), 'sample.Customer', 'WRITE')")
-    @RequestMapping(value = "/customers", method = PUT)
-    public void update(@RequestBody CustomerDto dto) {
-        customerService.updateCustomer(covert(dto));
+    @PreAuthorize("hasPermission(#dto.getId(), 'sample.Contact', 'WRITE')")
+    @RequestMapping(value = "/contacts", method = PUT)
+    public void update(@RequestBody ContactDto dto) {
+        contactService.updateContact(covert(dto));
     }
 
-    @RequestMapping("/customers/find")
-    public DataPageDto find(CustomerFilterDto filterDto) {
-        CustomerFilter filter = convert(filterDto);
-        DataPageDto<CustomerDto> page = new DataPageDto<>();
-        page.setData(convertCustomers(customerService.findCustomers(filter)));
-        page.setTotalCount(customerService.countCustomers(filter));
+    @RequestMapping("/contacts/find")
+    public DataPageDto find(ContactFilterDto filterDto) {
+        ContactFilter filter = convert(filterDto);
+        DataPageDto<ContactDto> page = new DataPageDto<>();
+        page.setData(convertContacts(contactService.findContacts(filter)));
+        page.setTotalCount(contactService.countContacts(filter));
         return page;
     }
 
-    @RequestMapping(value = "/customers", method = POST)
-    public Long create(@RequestBody CustomerDto dto) {
-        Long customerId = customerService.saveCustomer(covert(dto));
+    @RequestMapping(value = "/contacts", method = POST)
+    public Long create(@RequestBody ContactDto dto) {
+        Long contactId = contactService.saveContact(covert(dto));
         Long userId = SecurityUtils.getAuthenticatedUserId();
-        aclService.createAcl(new ObjectIdentityImpl(customerId, ObjectTypes.CUSTOMER.getName()), null, userId);
-        return customerId;
+        aclService.createAcl(new ObjectIdentityImpl(contactId, ObjectTypes.CONTACT.getName()), null, userId);
+        return contactId;
     }
 
-    @RequestMapping(value = "/customers/{customerId}", method = RequestMethod.DELETE)
-    @PreAuthorize("hasPermission(#customerId, 'sample.Customer', 'DELETE')")
-    public void delete(@PathVariable Long customerId) {
-        Acl acl = getAcl(customerId);
+    @RequestMapping(value = "/contacts/{contactId}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasPermission(#contactId, 'sample.Contact', 'DELETE')")
+    public void delete(@PathVariable Long contactId) {
+        Acl acl = getAcl(contactId);
         aclService.deleteAcl(acl);
-        customerService.deleteById(customerId);
+        contactService.deleteById(contactId);
     }
 
-    @RequestMapping("/customers/{customerId}/permissions")
-    public List<AclEntryDto> getPermissions(@PathVariable Long customerId) {
-        Acl acl = getAcl(customerId);
+    @RequestMapping("/contacts/{contactId}/permissions")
+    public List<AclEntryDto> getPermissions(@PathVariable Long contactId) {
+        Acl acl = getAcl(contactId);
         Map<Long, Set<Permission>> allPermissions = acl.getPermissions();
         List<Principal> principals = principalService.getByIds(new ArrayList<>(allPermissions.keySet()));
         return principals.stream().map(principal -> {
@@ -118,9 +118,9 @@ public class CustomerController {
         }).collect(Collectors.toList());
     }
 
-    @RequestMapping(value = "/customers/{customerId}/permissions", method = PUT)
-    public void createOrUpdatePermissions(@PathVariable Long customerId, @RequestBody List<AclEntryDto> permissions) {
-        Acl acl = getAcl(customerId);
+    @RequestMapping(value = "/contacts/{contactId}/permissions", method = PUT)
+    public void createOrUpdatePermissions(@PathVariable Long contactId, @RequestBody List<AclEntryDto> permissions) {
+        Acl acl = getAcl(contactId);
         permissions.forEach(permission -> {
             boolean isItNewPrincipal = acl.getPermissions(permission.getId()) == null;
             if (isItNewPrincipal) acl.addPermissions(permission.getId(), Collections.emptySet());
@@ -135,18 +135,18 @@ public class CustomerController {
         aclService.updateAcl(acl);
     }
 
-    @RequestMapping(value = "/customers/{customerId}/permissions/{principalId}", method = RequestMethod.DELETE)
-    public void deletePermission(@PathVariable Long customerId, @PathVariable Long principalId) {
-        Acl acl = getAcl(customerId);
+    @RequestMapping(value = "/contacts/{contactId}/permissions/{principalId}", method = RequestMethod.DELETE)
+    public void deletePermission(@PathVariable Long contactId, @PathVariable Long principalId) {
+        Acl acl = getAcl(contactId);
         acl.removePrincipal(principalId);
         aclService.updateAcl(acl);
     }
 
-    private Acl getAcl(Long customerId) {
-        return aclService.getAcl(createIdentity(customerId));
+    private Acl getAcl(Long contactId) {
+        return aclService.getAcl(createIdentity(contactId));
     }
 
-    private ObjectIdentity createIdentity(Long customerId) {
-        return new ObjectIdentityImpl(customerId, ObjectTypes.CUSTOMER.getName());
+    private ObjectIdentity createIdentity(Long contactId) {
+        return new ObjectIdentityImpl(contactId, ObjectTypes.CONTACT.getName());
     }
 }

@@ -7,7 +7,7 @@ package com.itechart.security.business.model.enums;
  */
 public enum ObjectTypes {
 
-    CUSTOMER("sample.Customer"),
+    CONTACT("sample.Contact"),
     ORDER("sample.Order");
 
     private String name;

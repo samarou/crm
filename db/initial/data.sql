@@ -9,7 +9,7 @@ INSERT INTO `action` (`id`, `name`, `description`) VALUES
 (4, 'ADMIN', 'ADMIN ACTION');
 
 INSERT INTO `object_type` (`id`, `name`, `description`) VALUES 
-(1, 'sample.Customer', ''),
+(1, 'sample.Contact', ''),
 (2, 'sample.Order', '');
 
 INSERT INTO `privilege` (`id`, `object_type_id`, `action_id`) VALUES 
@@ -68,14 +68,14 @@ INSERT INTO `role_privilege` (`role_id`, `privilege_id`) VALUES
 (3, 7),
 (3, 8);
 
-INSERT INTO `customer` (`id`, `firstName`, `lastName`, `email`, `address`) VALUES 
+INSERT INTO `contact` (`id`, `firstName`, `lastName`, `email`, `address`) VALUES 
 (1, 'john', 'smith', '123@gmail.com', 'addr'),
 (2, 'bill', 'gates', '456@gmail.com', null),
 (3, 'obi-wan', 'cenoby', '456@gmail.com', null),
 (4, 'tom', 'brown', '458@gmail.com', null),
 (5, 'zakk', 'wylde', '454@gmail.com', null);
 
-INSERT INTO `order` (`id`, `product`, `count`, `price`, `customer_id`) VALUES 
+INSERT INTO `order` (`id`, `product`, `count`, `price`, `contact_id`) VALUES 
 (1, 'book', '2', '12.75', 1),
 (2, 'magazine', '1', '5', 1),
 (3, 'ball', '1', '99', 2);
@@ -103,7 +103,7 @@ ALTER TABLE `object_type` AUTO_INCREMENT = 10;
 ALTER TABLE `privilege` AUTO_INCREMENT = 10;
 ALTER TABLE `principal` AUTO_INCREMENT = 10;
 ALTER TABLE `role` AUTO_INCREMENT = 10;
-ALTER TABLE `customer` AUTO_INCREMENT = 10;
+ALTER TABLE `contact` AUTO_INCREMENT = 10;
 ALTER TABLE `order` AUTO_INCREMENT = 10;
 ALTER TABLE `acl_object_identity` AUTO_INCREMENT = 10;
 ALTER TABLE `acl_entry` AUTO_INCREMENT = 10;

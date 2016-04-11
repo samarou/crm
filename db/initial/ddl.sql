@@ -5,7 +5,7 @@ CREATE SCHEMA IF NOT EXISTS security_sample
 USE security_sample;
 
 DROP TABLE IF EXISTS `order`;
-DROP TABLE IF EXISTS `customer`;
+DROP TABLE IF EXISTS `contact`;
 DROP TABLE IF EXISTS `acl_entry`;
 DROP TABLE IF EXISTS `acl_object_identity`;
 DROP TABLE IF EXISTS `user_role`;
@@ -178,7 +178,7 @@ DELIMITER ;
 -- BUSINESS TABLES ------------------------------------------------------------------------
 	
 	
-CREATE TABLE `customer` (
+CREATE TABLE `contact` (
 	`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `firstName` VARCHAR(50) NOT NULL,
 	`lastName` VARCHAR(50) NOT NULL,
@@ -192,7 +192,7 @@ CREATE TABLE `order` (
     `product` VARCHAR(100) NOT NULL,
 	`count` INT UNSIGNED NOT NULL,
 	`price` DECIMAL(10, 2) UNSIGNED NOT NULL,
-    `customer_id` BIGINT UNSIGNED NOT NULL,
-    INDEX `idx_order_customer_id` (`customer_id`),
-	CONSTRAINT `fk_order_customer_id` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`)
+    `contact_id` BIGINT UNSIGNED NOT NULL,
+    INDEX `idx_order_contact_id` (`contact_id`),
+	CONSTRAINT `fk_order_contact_id` FOREIGN KEY (`contact_id`) REFERENCES `contact` (`id`)
 ) ENGINE=InnoDB;

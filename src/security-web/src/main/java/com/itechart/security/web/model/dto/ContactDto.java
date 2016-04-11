@@ -3,7 +3,7 @@ package com.itechart.security.web.model.dto;
 /**
  * @author yauheni.putsykovich
  */
-public class CustomerDto {
+public class ContactDto {
     private Long id;
     private String firstName;
     private String lastName;

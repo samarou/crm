@@ -3,26 +3,26 @@
         <uib-tab index="0" heading="Personal Info">
             <div class="row">
                 <div class="col-md-6 form-group">
-                    <label for="customer-first-name">First name</label>
-                    <input ng-disabled="!bundle.canEdit" id="customer-first-name" class="form-control"
-                           ng-model="bundle.customer.firstName">
+                    <label for="contact-first-name">First name</label>
+                    <input ng-disabled="!bundle.canEdit" id="contact-first-name" class="form-control"
+                           ng-model="bundle.contact.firstName">
                 </div>
                 <div class="col-md-6 form-group">
-                    <label for="customer-last-name">Last name</label>
-                    <input ng-disabled="!bundle.canEdit" id="customer-last-name" class="form-control"
-                           ng-model="bundle.customer.lastName">
+                    <label for="contact-last-name">Last name</label>
+                    <input ng-disabled="!bundle.canEdit" id="contact-last-name" class="form-control"
+                           ng-model="bundle.contact.lastName">
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 form-group">
-                    <label for="customer-email">Email</label>
-                    <input ng-disabled="!bundle.canEdit" id="customer-email" class="form-control"
-                           ng-model="bundle.customer.email">
+                    <label for="contact-email">Email</label>
+                    <input ng-disabled="!bundle.canEdit" id="contact-email" class="form-control"
+                           ng-model="bundle.contact.email">
                 </div>
                 <div class="col-md-6 form-group">
-                    <label for="customer-address">Address</label>
-                    <input ng-disabled="!bundle.canEdit" id="customer-address" class="form-control"
-                           ng-model="bundle.customer.address">
+                    <label for="contact-address">Address</label>
+                    <input ng-disabled="!bundle.canEdit" id="contact-address" class="form-control"
+                           ng-model="bundle.contact.address">
                 </div>
             </div>
         </uib-tab>
@@ -32,12 +32,12 @@
                     Permissions
                     <ul class="list-inline pull-right">
                         <li ng-show="bundle.canEdit"><span
-                                ng-click="bundle.actions.addPermissionsForUser(bundle.customer)"
+                                ng-click="bundle.actions.addPermissionsForUser(bundle.contact)"
                                 class="hover--pointer icon--small icon--user-add"></span></li>
                         <li ng-show="bundle.canEdit"><span
-                                ng-click="bundle.actions.addPermissionsForGroup(bundle.customer)"
+                                ng-click="bundle.actions.addPermissionsForGroup(bundle.contact)"
                                 class="hover--pointer icon--small icon--user-group-add"></span></li>
-                        <li ng-show="bundle.canEdit"><span ng-click="bundle.actions.removePermissions(bundle.customer)"
+                        <li ng-show="bundle.canEdit"><span ng-click="bundle.actions.removePermissions(bundle.contact)"
                                                            class="hover--pointer icon--small icon--remove"></span></li>
                     </ul>
                 </caption>

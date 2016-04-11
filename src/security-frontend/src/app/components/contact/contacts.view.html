@@ -1,0 +1,78 @@
+<input ng-model="vm.searchContactBundle.filter.text" ng-keyup="vm.searchContactBundle.typing.keyUp()"
+       ng-keydown="vm.searchContactBundle.typing.keyDown()" class="form-control"
+       placeholder="Search by first name, last name, email, address...">
+<div class="table--fixed__wrapper">
+    <table class="table table--fixed text--unselectable">
+        <caption>
+            Contacts
+            <ul class="list-inline pull-right">
+                <li ng-show="vm.isManager"><span ng-click="vm.create()" title="Add New Contact"
+                                                 class="hover--pointer glyphicon glyphicon-plus"></span></li>
+                <li><span ng-click="vm.remove()" title="Remove Contact"
+                          class="hover--pointer glyphicon glyphicon-minus"></span></li>
+            </ul>
+        </caption>
+        <thead>
+        <tr>
+            <td class="block--narrow"></td>
+            <td class="block--narrow">#</td>
+            <td class="hover--highlight a"
+                ng-click="vm.searchContactBundle.sortBy(vm.searchContactBundle.sortProperties.firstName)">
+                <div class="pull-left col-md-3"><span ng-show="vm.searchContactBundle.sortProperties.firstName.enabled"
+                                                      class="glyphicon"
+                                                      ng-class="{'glyphicon-sort-by-attributes' : vm.searchContactBundle.sortProperties.firstName.asc, 'glyphicon-sort-by-attributes-alt' : !vm.searchContactBundle.sortProperties.firstName.asc}"></span>
+                </div>
+                First name
+            </td>
+            <td class="hover--highlight"
+                ng-click="vm.searchContactBundle.sortBy(vm.searchContactBundle.sortProperties.lastName)">
+                <div class="pull-left col-md-3"><span ng-show="vm.searchContactBundle.sortProperties.lastName.enabled"
+                                                      class="glyphicon"
+                                                      ng-class="{'glyphicon-sort-by-attributes' :  vm.searchContactBundle.sortProperties.lastName.asc, 'glyphicon-sort-by-attributes-alt' : !vm.searchContactBundle.sortProperties.lastName.asc}"></span>
+                </div>
+                Last name
+            </td>
+            <td class="hover--highlight"
+                ng-click="vm.searchContactBundle.sortBy(vm.searchContactBundle.sortProperties.email)">
+                <div class="pull-left col-md-3"><span ng-show="vm.searchContactBundle.sortProperties.email.enabled"
+                                                      class="glyphicon"
+                                                      ng-class="{'glyphicon-sort-by-attributes' : vm.searchContactBundle.sortProperties.email.asc, 'glyphicon-sort-by-attributes-alt' : !vm.searchContactBundle.sortProperties.email.asc}"></span>
+                </div>
+                Email
+            </td>
+            <td class="hover--highlight"
+                ng-click="vm.searchContactBundle.sortBy(vm.searchContactBundle.sortProperties.address)">
+                <div class="pull-left col-md-3"><span ng-show="vm.searchContactBundle.sortProperties.address.enabled"
+                                                      class="glyphicon"
+                                                      ng-class="{'glyphicon-sort-by-attributes' : vm.searchContactBundle.sortProperties.address.asc, 'glyphicon-sort-by-attributes-alt' : !vm.searchContactBundle.sortProperties.address.asc}"></span>
+                </div>
+                Address
+            </td>
+            <td class="block--narrow"></td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="hover--highlight" ng-dblclick="vm.edit(contact)"
+            ng-repeat="contact in vm.searchContactBundle.itemsList">
+            <td><input type="checkbox" ng-model="contact.checked" ng-click="vm.searchContactBundle.selectOne()"
+                       ng-dblclick="$event.stopPropagation()"></td>
+            <td>{{vm.searchContactBundle.filter.from + ($index + 1)}}</td>
+            <td>{{contact.firstName}}</td>
+            <td>{{contact.lastName}}</td>
+            <td>{{contact.email}}</td>
+            <td>{{contact.address}}</td>
+            <td><span class="hover--pointer glyphicon glyphicon-edit" ng-click="vm.edit(contact)"></span></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<span class="text--summary" ng-hide="vm.bundle.paging.totalCount === 0">Total: {{vm.searchContactBundle.paging.totalCount}}</span>
+<div class="text--center">
+    <uib-pagination class="pagination-sm" ng-change="vm.searchContactBundle.paging.onPageChanged()"
+                    ng-model="vm.searchContactBundle.paging.currentPage"
+                    total-items="vm.searchContactBundle.paging.totalCount"
+                    items-per-page="vm.searchContactBundle.paging.itemsPerPage"
+                    max-size="vm.searchContactBundle.paging.visiblePages"
+                    boundary-link-numbers="true" rotate="false">
+    </uib-pagination>
+</div>
