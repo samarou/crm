@@ -36,7 +36,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
  */
 @RestController
 @PreAuthorize("hasAnyRole('MANAGER', 'SPECIALIST')")
-public class CustomerController {
+public class ContactController {
 
     @Autowired
     private CustomerService customerService;
@@ -50,24 +50,24 @@ public class CustomerController {
     @Autowired
     private AclPermissionEvaluator aclPermissionEvaluator;
 
-    @RequestMapping("/customers/{customerId}/actions/{value}")
+    @RequestMapping("/contacts/{customerId}/actions/{value}")
     public boolean isAllowed(@PathVariable Long customerId, @PathVariable String value) {
         Permission permission = Permission.valueOf(value.toUpperCase());
         return aclPermissionEvaluator.hasPermission(SecurityUtils.getAuthentication(), createIdentity(customerId), permission);
     }
 
-    @RequestMapping("/customers")
+    @RequestMapping("/contacts")
     public List<CustomerDto> getCustomers() {
         return convertCustomers(customerService.getCustomers());
     }
 
     @PreAuthorize("hasPermission(#dto.getId(), 'sample.Customer', 'WRITE')")
-    @RequestMapping(value = "/customers", method = PUT)
+    @RequestMapping(value = "/contacts", method = PUT)
     public void update(@RequestBody CustomerDto dto) {
         customerService.updateCustomer(covert(dto));
     }
 
-    @RequestMapping("/customers/find")
+    @RequestMapping("/contacts/find")
     public DataPageDto find(CustomerFilterDto filterDto) {
         CustomerFilter filter = convert(filterDto);
         DataPageDto<CustomerDto> page = new DataPageDto<>();
@@ -76,7 +76,7 @@ public class CustomerController {
         return page;
     }
 
-    @RequestMapping(value = "/customers", method = POST)
+    @RequestMapping(value = "/contacts", method = POST)
     public Long create(@RequestBody CustomerDto dto) {
         Long customerId = customerService.saveCustomer(covert(dto));
         Long userId = SecurityUtils.getAuthenticatedUserId();
@@ -84,7 +84,7 @@ public class CustomerController {
         return customerId;
     }
 
-    @RequestMapping(value = "/customers/{customerId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/contacts/{customerId}", method = RequestMethod.DELETE)
     @PreAuthorize("hasPermission(#customerId, 'sample.Customer', 'DELETE')")
     public void delete(@PathVariable Long customerId) {
         Acl acl = getAcl(customerId);
@@ -92,7 +92,7 @@ public class CustomerController {
         customerService.deleteById(customerId);
     }
 
-    @RequestMapping("/customers/{customerId}/permissions")
+    @RequestMapping("/contacts/{customerId}/permissions")
     public List<AclEntryDto> getPermissions(@PathVariable Long customerId) {
         Acl acl = getAcl(customerId);
         Map<Long, Set<Permission>> allPermissions = acl.getPermissions();
@@ -118,7 +118,7 @@ public class CustomerController {
         }).collect(Collectors.toList());
     }
 
-    @RequestMapping(value = "/customers/{customerId}/permissions", method = PUT)
+    @RequestMapping(value = "/contacts/{customerId}/permissions", method = PUT)
     public void createOrUpdatePermissions(@PathVariable Long customerId, @RequestBody List<AclEntryDto> permissions) {
         Acl acl = getAcl(customerId);
         permissions.forEach(permission -> {
@@ -135,7 +135,7 @@ public class CustomerController {
         aclService.updateAcl(acl);
     }
 
-    @RequestMapping(value = "/customers/{customerId}/permissions/{principalId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/contacts/{customerId}/permissions/{principalId}", method = RequestMethod.DELETE)
     public void deletePermission(@PathVariable Long customerId, @PathVariable Long principalId) {
         Acl acl = getAcl(customerId);
         acl.removePrincipal(principalId);
