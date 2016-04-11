@@ -5,21 +5,21 @@
 	'use strict';
 	angular
 			.module('securityManagement')
-			.service('CustomerService', CustomerService);
+			.service('ContactService', ContactService);
 
 	/** @ngInject */
-	function CustomerService($http) {
+	function ContactService($http) {
 		var service = this;
 		service.getAll = function () {
 			return $http.get('rest/customers');
 		};
 
-		service.create = function (customer) {
-			return $http.post('rest/customers', customer);
+		service.create = function (contact) {
+			return $http.post('rest/customers', contact);
 		};
 
-		service.update = function (customer) {
-			return $http.put('rest/customers', customer);
+		service.update = function (contact) {
+			return $http.put('rest/customers', contact);
 		};
 
 		service.remove = function (id) {
@@ -42,8 +42,8 @@
 			return $http.delete('rest/customers/' + id + '/permissions/' + permissionId)
 		};
 
-		service.isAllowed = function (customerId, permission) {
-			return $http.get('rest/customers/' + customerId + '/actions/' + permission);
+		service.isAllowed = function (contactId, permission) {
+			return $http.get('rest/customers/' + contactId + '/actions/' + permission);
 		};
 	}
 })();
