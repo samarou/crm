@@ -62,11 +62,28 @@
 					templateUrl: 'app/components/group/groups.details.view.html',
 					controllerAs: 'vm'
 				})
-
+				/** Roles routes */
 				.state('roles', {
+					abstract: true,
 					url: '/roles',
-					controller: 'RolesController',
-					templateUrl: 'app/components/role/roles.view.html',
+					template: '<ui-view/>'
+				})
+				.state('roles.list', {
+					url: '/list',
+					controller: 'RolesListController',
+					templateUrl: 'app/components/role/list/roles.list.view.html',
+					controllerAs: 'vm'
+				})
+				.state('roles.add', {
+					url: '/add',
+					controller: 'RolesAddController',
+					templateUrl: 'app/components/role/roles.details.view.html',
+					controllerAs: 'vm'
+				})
+				.state('roles.edit', {
+					url: '/:id',
+					controller: 'RolesEditController',
+					templateUrl: 'app/components/role/roles.details.view.html',
 					controllerAs: 'vm'
 				})
 				.state('contacts', {

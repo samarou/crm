@@ -6,12 +6,12 @@
             ng-repeat="objectType in objectTypes | filter:{objectTypeName: filterText}">
             <li class="list--compact__collapse">
                 <div class="row">
-                    <div class="col-md-1"><span class="glyphicon"
+                    <div class="col-sm-1"><span class="glyphicon"
                                                 ng-class="{'glyphicon-collapse-down' : isCollapsed, 'glyphicon-collapse-up' : !isCollapsed}"></span></div>
-                    <div class="col-md-1"><input type="checkbox" ng-model="objectType.isSelectAll"
+                    <div class="col-sm-1"><input type="checkbox" ng-model="objectType.isSelectAll"
                                                  ng-click="selectAll(objectType, objectType.isSelectAll); $event.stopPropagation()"></div>
-                    <div class="col-md-3"><span class="text-info"> {{objectType.objectTypeName}}</span></div>
-                    <div class="col-md-7 text-left">[<span
+                    <div class="col-sm-3"><span class="text-info"> {{objectType.objectTypeName}}</span></div>
+                    <div class="col-sm-7 text-left">[<span
                             ng-repeat="action in objectType.actions | filter:{privilege:{checked: true}}">{{action.name}}{{$last ? '' : ', '}}</span>]</div>
                 </div>
             </li>
@@ -20,10 +20,10 @@
                     <li ng-repeat="action in objectType.actions"
                         ng-click="action.privilege.checked = !action.privilege.checked; $event.stopPropagation();">
                         <div class="row">
-                            <div class="col-md-1 col-md-offset-2"><input type="checkbox"
+                            <div class="col-sm-1 col-sm-offset-2"><input type="checkbox"
                                                                          ng-model="action.privilege.checked"
                                                                          ng-click="selectOne(objectType); $event.stopPropagation();"></div>
-                            <div class="col-md-9">{{action.name}}</div>
+                            <div class="col-sm-9">{{action.name}}</div>
                         </div>
                     </li>
                 </ul>

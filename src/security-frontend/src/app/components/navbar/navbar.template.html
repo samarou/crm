@@ -15,7 +15,7 @@
                 <li ng-show="vm.isManager() || vm.isSpecialist()" ng-class="{'active' : vm.isActive('/contacts')}"><a href="#/contacts">Contacts</a></li>
                 <li ng-show="vm.isAdmin()" ng-class="{'active' : vm.isActive('/user')}"><a href="#/users/list">Users</a></li>
                 <li ng-show="vm.isAdmin()" ng-class="{'active' : vm.isActive('/group')}"><a href="#/groups/list">Groups</a></li>
-                <li ng-show="vm.isAdmin()" ng-class="{'active' : vm.isActive('/role')}"><a href="#/roles">Roles</a></li>
+                <li ng-show="vm.isAdmin()" ng-class="{'active' : vm.isActive('/role')}"><a href="#/roles/list">Roles</a></li>
 
             </ul>
             <ul class="nav navbar-nav navbar-right" ng-show="vm.isLoggedUser()">
