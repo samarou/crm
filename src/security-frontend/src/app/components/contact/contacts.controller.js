@@ -147,7 +147,8 @@
 				title: 'Add Permissions for User',
 				bundle: vm.userBundle,
 				size: 'modal--user-table',
-				cancelTitle: 'Back'
+				cancelTitle: 'Back',
+				okTitle: 'Ok'
 			}).result.then(function (model) {
 				model.bundle.itemsList.forEach(function (user) {
 					var stillNotPresent = !Collections.find(user, editContactBundle.permissions);
@@ -164,7 +165,8 @@
 				title: 'Add Permissions for Group',
 				bundle: vm.groupBundle,
 				size: 'modal--group-table',
-				cancelTitle: 'Back'
+				cancelTitle: 'Back',
+				okTitle: 'Ok'
 			}).result.then(function (model) {
 				model.bundle.groupList.forEach(function (group) {
 					var alreadyPresent = !!Collections.find(group, editContactBundle.permissions);
