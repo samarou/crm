@@ -30,6 +30,11 @@ public class RoleController {
         return convertRoles(roleService.getRoles());
     }
 
+    @RequestMapping(value = "/roles/{id}", method = GET)
+    public RoleDto get(@PathVariable Long id){
+        return convert(roleService.getRole(id));
+    }
+
     @RequestMapping(value = "/roles", method = PUT)
     public void update(@RequestBody RoleDto role){
         roleService.updateRole(convert(role));
