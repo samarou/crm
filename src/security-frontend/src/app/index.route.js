@@ -14,12 +14,31 @@
 					templateUrl: 'app/components/login/login.view.html',
 					controllerAs: 'vm'
 				})
+
 				.state('users', {
+					abstract: true,
 					url: '/users',
-					controller: 'UsersController',
-					templateUrl: 'app/components/user/users.view.html',
+					template: '<ui-view/>'
+				})
+				.state('users.list', {
+					url: '/list',
+					controller: 'UsersListController',
+					templateUrl: 'app/components/user/list/users.list.view.html',
 					controllerAs: 'vm'
 				})
+				.state('users.add', {
+					url: '/add',
+					controller: 'UsersAddController',
+					templateUrl: 'app/components/user/users.details.view.html',
+					controllerAs: 'vm'
+				})
+				.state('users.edit', {
+					url: '/:id',
+					controller: 'UsersEditController',
+					templateUrl: 'app/components/user/users.details.view.html',
+					controllerAs: 'vm'
+				})
+
 				.state('groups', {
 					url: '/groups',
 					controller: 'GroupsController',

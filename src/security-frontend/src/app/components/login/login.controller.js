@@ -10,7 +10,7 @@
 		vm.login = function () {
 			AuthService.login(vm.username, vm.password).then(
 					function () {
-						$state.go(AuthService.isAdmin() ? 'users' : 'contacts');
+						$state.go(AuthService.isAdmin() ? 'users.list' : 'contacts');
 					},
 					function (error) {
 						$log.error(error);
