@@ -1,28 +1,31 @@
+<div class="page-header">
+    <h1>{{vm.title}}</h1>
+</div>
 <form class="form">
     <uib-tabset active="active">
         <uib-tab index="0" heading="Personal Info">
             <div class="row">
                 <div class="col-md-6 form-group">
                     <label for="contact-first-name">First name</label>
-                    <input ng-disabled="!bundle.canEdit" id="contact-first-name" class="form-control"
-                           ng-model="bundle.contact.firstName">
+                    <input ng-disabled="!vm.canEdit" id="contact-first-name" class="form-control"
+                           ng-model="vm.contact.firstName">
                 </div>
                 <div class="col-md-6 form-group">
                     <label for="contact-last-name">Last name</label>
-                    <input ng-disabled="!bundle.canEdit" id="contact-last-name" class="form-control"
-                           ng-model="bundle.contact.lastName">
+                    <input ng-disabled="!vm.canEdit" id="contact-last-name" class="form-control"
+                           ng-model="vm.contact.lastName">
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 form-group">
                     <label for="contact-email">Email</label>
-                    <input ng-disabled="!bundle.canEdit" id="contact-email" class="form-control"
-                           ng-model="bundle.contact.email">
+                    <input ng-disabled="!vm.canEdit" id="contact-email" class="form-control"
+                           ng-model="vm.contact.email">
                 </div>
                 <div class="col-md-6 form-group">
                     <label for="contact-address">Address</label>
-                    <input ng-disabled="!bundle.canEdit" id="contact-address" class="form-control"
-                           ng-model="bundle.contact.address">
+                    <input ng-disabled="!vm.canEdit" id="contact-address" class="form-control"
+                           ng-model="vm.contact.address">
                 </div>
             </div>
         </uib-tab>
@@ -31,13 +34,13 @@
                 <caption>
                     Permissions
                     <ul class="list-inline pull-right">
-                        <li ng-show="bundle.canEdit"><span
-                                ng-click="bundle.actions.addPermissionsForUser(bundle.contact)"
+                        <li ng-show="vm.canEdit"><span
+                                ng-click="vm.actions.addPermissionsForUser(vm)"
                                 class="hover--pointer icon--small icon--user-add"></span></li>
-                        <li ng-show="bundle.canEdit"><span
-                                ng-click="bundle.actions.addPermissionsForGroup(bundle.contact)"
+                        <li ng-show="vm.canEdit"><span
+                                ng-click="vm.actions.addPermissionsForGroup(vm)"
                                 class="hover--pointer icon--small icon--user-group-add"></span></li>
-                        <li ng-show="bundle.canEdit"><span ng-click="bundle.actions.removePermissions(bundle.contact)"
+                        <li ng-show="vm.canEdit"><span ng-click="vm.actions.removePermissions(vm)"
                                                            class="hover--pointer icon--small icon--remove"></span></li>
                     </ul>
                 </caption>
@@ -54,20 +57,28 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="p in bundle.permissions">
-                    <td><input ng-show="bundle.canEdit" type="checkbox" ng-model="p.checked"></td>
+                <tr ng-repeat="p in vm.permissions">
+                    <td><input ng-show="vm.canEdit" type="checkbox" ng-model="p.checked"></td>
                     <td><span title="{{p.principalTypeName}}" class="icon--small hover--pointer"
                               ng-class="{'icon--user': p.principalTypeName === 'user', 'icon--user-group': p.principalTypeName === 'group'}"></span>
                     </td>
                     <td>{{p.name}}</td>
-                    <td><input ng-disabled="!bundle.canEdit" type="checkbox" ng-model="p.canRead"></td>
-                    <td><input ng-disabled="!bundle.canEdit" type="checkbox" ng-model="p.canWrite"></td>
-                    <td><input ng-disabled="!bundle.canEdit" type="checkbox" ng-model="p.canCreate"></td>
-                    <td><input ng-disabled="!bundle.canEdit" type="checkbox" ng-model="p.canDelete"></td>
-                    <td><input ng-disabled="!bundle.canEdit" type="checkbox" ng-model="p.canAdmin"></td>
+                    <td><input ng-disabled="!vm.canEdit" type="checkbox" ng-model="p.canRead"></td>
+                    <td><input ng-disabled="!vm.canEdit" type="checkbox" ng-model="p.canWrite"></td>
+                    <td><input ng-disabled="!vm.canEdit" type="checkbox" ng-model="p.canCreate"></td>
+                    <td><input ng-disabled="!vm.canEdit" type="checkbox" ng-model="p.canDelete"></td>
+                    <td><input ng-disabled="!vm.canEdit" type="checkbox" ng-model="p.canAdmin"></td>
                 </tr>
                 </tbody>
             </table>
         </uib-tab>
     </uib-tabset>
+    <div class="btn-group pull-right">
+        <button ng-show="vm.cancelText" type="button" class="btn btn-default" ng-click="vm.cancel()">
+            {{vm.cancelText}}
+        </button>
+        <button ng-show="vm.submitText" type="button" class="btn btn-primary" ng-click="vm.submit()">
+            {{vm.submitText}}
+        </button>
+    </div>
 </form>

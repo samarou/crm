@@ -86,10 +86,28 @@
 					templateUrl: 'app/components/role/roles.details.view.html',
 					controllerAs: 'vm'
 				})
+				/** Contact routes */
 				.state('contacts', {
+					abstract: true,
 					url: '/contacts',
-					controller: 'ContactsController',
-					templateUrl: 'app/components/contact/contacts.view.html',
+					template: '<ui-view/>'
+				})
+				.state('contacts.list', {
+					url: '/list',
+					controller: 'ContactsListController',
+					templateUrl: 'app/components/contact/list/contacts.list.view.html',
+					controllerAs: 'vm'
+				})
+				.state('contacts.add', {
+					url: '/add',
+					controller: 'ContactsAddController',
+					templateUrl: 'app/components/contact/contacts.details.view.html',
+					controllerAs: 'vm'
+				})
+				.state('contacts.edit', {
+					url: '/:id',
+					controller: 'ContactsEditController',
+					templateUrl: 'app/components/contact/contacts.details.view.html',
 					controllerAs: 'vm'
 				});
 
