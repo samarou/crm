@@ -14,7 +14,7 @@
 					templateUrl: 'app/components/login/login.view.html',
 					controllerAs: 'vm'
 				})
-
+				/** Users routes */
 				.state('users', {
 					abstract: true,
 					url: '/users',
@@ -38,13 +38,31 @@
 					templateUrl: 'app/components/user/users.details.view.html',
 					controllerAs: 'vm'
 				})
-
+				/** Group routes */
 				.state('groups', {
+					abstract: true,
 					url: '/groups',
-					controller: 'GroupsController',
-					templateUrl: 'app/components/group/groups.view.html',
+					template: '<ui-view/>'
+				})
+				.state('groups.list', {
+					url: '/list',
+					controller: 'GroupsListController',
+					templateUrl: 'app/components/group/list/groups.list.view.html',
 					controllerAs: 'vm'
 				})
+				.state('groups.add', {
+					url: '/add',
+					controller: 'GroupsAddController',
+					templateUrl: 'app/components/group/groups.details.view.html',
+					controllerAs: 'vm'
+				})
+				.state('groups.edit', {
+					url: '/:id',
+					controller: 'GroupsEditController',
+					templateUrl: 'app/components/group/groups.details.view.html',
+					controllerAs: 'vm'
+				})
+
 				.state('roles', {
 					url: '/roles',
 					controller: 'RolesController',
