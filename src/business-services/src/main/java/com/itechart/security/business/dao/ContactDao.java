@@ -16,6 +16,8 @@ public interface ContactDao {
 
     void update(Contact contact);
 
+    Contact get(Long id);
+
     void deleteById(Long id);
 
     List findContacts(ContactFilter filter);
