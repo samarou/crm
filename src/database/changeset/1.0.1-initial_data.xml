@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="anton.charnou (generated)" id="1460547730551-3">
+        <insert tableName="action">
+            <column name="id" valueNumeric="1"/>
+            <column name="name" value="READ"/>
+            <column name="description" value="READ ACTION"/>
+        </insert>
+        <insert tableName="action">
+            <column name="id" valueNumeric="2"/>
+            <column name="name" value="WRITE"/>
+            <column name="description" value="WRITE ACTION"/>
+        </insert>
+        <insert tableName="action">
+            <column name="id" valueNumeric="3"/>
+            <column name="name" value="DELETE"/>
+            <column name="description" value="DELETE ACTION"/>
+        </insert>
+        <insert tableName="action">
+            <column name="id" valueNumeric="4"/>
+            <column name="name" value="ADMIN"/>
+            <column name="description" value="ADMIN ACTION"/>
+        </insert>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547730551-6">
+        <insert tableName="object_type">
+            <column name="id" valueNumeric="1"/>
+            <column name="name" value="sample.Contact"/>
+            <column name="description" value=""/>
+        </insert>
+        <insert tableName="object_type">
+            <column name="id" valueNumeric="2"/>
+            <column name="name" value="sample.Order"/>
+            <column name="description" value=""/>
+        </insert>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547730551-9">
+        <insert tableName="privilege">
+            <column name="id" valueNumeric="1"/>
+            <column name="object_type_id" valueNumeric="1"/>
+            <column name="action_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="privilege">
+            <column name="id" valueNumeric="2"/>
+            <column name="object_type_id" valueNumeric="1"/>
+            <column name="action_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="privilege">
+            <column name="id" valueNumeric="3"/>
+            <column name="object_type_id" valueNumeric="1"/>
+            <column name="action_id" valueNumeric="3"/>
+        </insert>
+        <insert tableName="privilege">
+            <column name="id" valueNumeric="4"/>
+            <column name="object_type_id" valueNumeric="1"/>
+            <column name="action_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="privilege">
+            <column name="id" valueNumeric="5"/>
+            <column name="object_type_id" valueNumeric="2"/>
+            <column name="action_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="privilege">
+            <column name="id" valueNumeric="6"/>
+            <column name="object_type_id" valueNumeric="2"/>
+            <column name="action_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="privilege">
+            <column name="id" valueNumeric="7"/>
+            <column name="object_type_id" valueNumeric="2"/>
+            <column name="action_id" valueNumeric="3"/>
+        </insert>
+        <insert tableName="privilege">
+            <column name="id" valueNumeric="8"/>
+            <column name="object_type_id" valueNumeric="2"/>
+            <column name="action_id" valueNumeric="4"/>
+        </insert>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547730551-8">
+        <insert tableName="principal">
+            <column name="id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="principal">
+            <column name="id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="principal">
+            <column name="id" valueNumeric="3"/>
+        </insert>
+        <insert tableName="principal">
+            <column name="id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="principal">
+            <column name="id" valueNumeric="5"/>
+        </insert>
+        <insert tableName="principal">
+            <column name="id" valueNumeric="6"/>
+        </insert>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547730551-12">
+        <insert tableName="user">
+            <column name="id" valueNumeric="1"/>
+            <column name="user_name" value="admin"/>
+            <column name="password" value="$2a$10$gXqyc1sgCadb6XnCsTkm/OInAIo6BfR3pw2AHhGiHDT3buRaS1itO"/>
+            <column name="first_name" value="brad"/>
+            <column name="last_name" value="pitt"/>
+            <column name="email" value="test2@test.com"/>
+            <column name="active" valueBoolean="true"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" valueNumeric="2"/>
+            <column name="user_name" value="manager"/>
+            <column name="password" value="$2a$04$aYm0Ym1rneEg6cgB06FxQebV0EhfmUoFYpkJsvg6fHgp392d.EXXG"/>
+            <column name="first_name" value="john"/>
+            <column name="last_name" value="smith"/>
+            <column name="email" value="test1@test.com"/>
+            <column name="active" valueBoolean="true"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" valueNumeric="3"/>
+            <column name="user_name" value="specialist"/>
+            <column name="password" value="$2a$04$tr7WDPbaGwBQ/IMiZDFSmueNaQgTlPBv/08huLxQ3lY8a6VZYMKkG"/>
+            <column name="first_name" value="tom"/>
+            <column name="last_name" value="sawyer"/>
+            <column name="email" value="test3@test.com"/>
+            <column name="active" valueBoolean="true"/>
+        </insert>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547730551-5">
+        <insert tableName="group">
+            <column name="id" valueNumeric="4"/>
+            <column name="name" value="admins"/>
+            <column name="description" value="admins group"/>
+        </insert>
+        <insert tableName="group">
+            <column name="id" valueNumeric="5"/>
+            <column name="name" value="managers"/>
+            <column name="description" value="managers group"/>
+        </insert>
+        <insert tableName="group">
+            <column name="id" valueNumeric="6"/>
+            <column name="name" value="specialists"/>
+            <column name="description" value="specialists group"/>
+        </insert>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547730551-10">
+        <insert tableName="role">
+            <column name="id" valueNumeric="1"/>
+            <column name="name" value="USER"/>
+            <column name="description" value="USER ROLE"/>
+            <column name="parent_id"/>
+        </insert>
+        <insert tableName="role">
+            <column name="id" valueNumeric="2"/>
+            <column name="name" value="ADMIN"/>
+            <column name="description" value="ADMIN ROLE"/>
+            <column name="parent_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="role">
+            <column name="id" valueNumeric="3"/>
+            <column name="name" value="MANAGER"/>
+            <column name="description" value="MANAGER ROLE"/>
+            <column name="parent_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="role">
+            <column name="id" valueNumeric="4"/>
+            <column name="name" value="SPECIALIST"/>
+            <column name="description" value="SPECIALIST ROLE"/>
+            <column name="parent_id" valueNumeric="1"/>
+        </insert>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547730551-14">
+        <insert tableName="user_role">
+            <column name="user_id" valueNumeric="1"/>
+            <column name="role_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="user_role">
+            <column name="user_id" valueNumeric="2"/>
+            <column name="role_id" valueNumeric="3"/>
+        </insert>
+        <insert tableName="user_role">
+            <column name="user_id" valueNumeric="3"/>
+            <column name="role_id" valueNumeric="4"/>
+        </insert>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547730551-13">
+        <insert tableName="user_group">
+            <column name="user_id" valueNumeric="1"/>
+            <column name="group_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="user_group">
+            <column name="user_id" valueNumeric="2"/>
+            <column name="group_id" valueNumeric="5"/>
+        </insert>
+        <insert tableName="user_group">
+            <column name="user_id" valueNumeric="3"/>
+            <column name="group_id" valueNumeric="6"/>
+        </insert>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547730551-11">
+        <insert tableName="role_privilege">
+            <column name="role_id" valueNumeric="1"/>
+            <column name="privilege_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="role_privilege">
+            <column name="role_id" valueNumeric="3"/>
+            <column name="privilege_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="role_privilege">
+            <column name="role_id" valueNumeric="3"/>
+            <column name="privilege_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="role_privilege">
+            <column name="role_id" valueNumeric="3"/>
+            <column name="privilege_id" valueNumeric="3"/>
+        </insert>
+        <insert tableName="role_privilege">
+            <column name="role_id" valueNumeric="3"/>
+            <column name="privilege_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="role_privilege">
+            <column name="role_id" valueNumeric="1"/>
+            <column name="privilege_id" valueNumeric="5"/>
+        </insert>
+        <insert tableName="role_privilege">
+            <column name="role_id" valueNumeric="3"/>
+            <column name="privilege_id" valueNumeric="5"/>
+        </insert>
+        <insert tableName="role_privilege">
+            <column name="role_id" valueNumeric="3"/>
+            <column name="privilege_id" valueNumeric="6"/>
+        </insert>
+        <insert tableName="role_privilege">
+            <column name="role_id" valueNumeric="3"/>
+            <column name="privilege_id" valueNumeric="7"/>
+        </insert>
+        <insert tableName="role_privilege">
+            <column name="role_id" valueNumeric="3"/>
+            <column name="privilege_id" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547730551-4">
+        <insert tableName="contact">
+            <column name="id" valueNumeric="1"/>
+            <column name="firstName" value="john"/>
+            <column name="lastName" value="smith"/>
+            <column name="email" value="123@gmail.com"/>
+            <column name="address" value="addr"/>
+        </insert>
+        <insert tableName="contact">
+            <column name="id" valueNumeric="2"/>
+            <column name="firstName" value="bill"/>
+            <column name="lastName" value="gates"/>
+            <column name="email" value="456@gmail.com"/>
+            <column name="address"/>
+        </insert>
+        <insert tableName="contact">
+            <column name="id" valueNumeric="3"/>
+            <column name="firstName" value="obi-wan"/>
+            <column name="lastName" value="cenoby"/>
+            <column name="email" value="456@gmail.com"/>
+            <column name="address"/>
+        </insert>
+        <insert tableName="contact">
+            <column name="id" valueNumeric="4"/>
+            <column name="firstName" value="tom"/>
+            <column name="lastName" value="brown"/>
+            <column name="email" value="458@gmail.com"/>
+            <column name="address"/>
+        </insert>
+        <insert tableName="contact">
+            <column name="id" valueNumeric="5"/>
+            <column name="firstName" value="zakk"/>
+            <column name="lastName" value="wylde"/>
+            <column name="email" value="454@gmail.com"/>
+            <column name="address"/>
+        </insert>
+    </changeSet>
+
+
+    <changeSet author="anton.charnou (generated)" id="1460547730551-7">
+        <insert tableName="order">
+            <column name="id" valueNumeric="1"/>
+            <column name="product" value="book"/>
+            <column name="count" valueNumeric="2"/>
+            <column name="price" valueNumeric="12.75"/>
+            <column name="contact_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="order">
+            <column name="id" valueNumeric="2"/>
+            <column name="product" value="magazine"/>
+            <column name="count" valueNumeric="1"/>
+            <column name="price" valueNumeric="5.00"/>
+            <column name="contact_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="order">
+            <column name="id" valueNumeric="3"/>
+            <column name="product" value="ball"/>
+            <column name="count" valueNumeric="1"/>
+            <column name="price" valueNumeric="99.00"/>
+            <column name="contact_id" valueNumeric="2"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="anton.charnou (generated)" id="1460547730551-2">
+        <insert tableName="acl_object_identity">
+            <column name="id" valueNumeric="1"/>
+            <column name="object_type_id" valueNumeric="1"/>
+            <column name="object_id" valueNumeric="1"/>
+            <column name="parent_id"/>
+            <column name="owner_id" valueNumeric="2"/>
+            <column name="inheriting" valueBoolean="true"/>
+        </insert>
+        <insert tableName="acl_object_identity">
+            <column name="id" valueNumeric="2"/>
+            <column name="object_type_id" valueNumeric="1"/>
+            <column name="object_id" valueNumeric="2"/>
+            <column name="parent_id"/>
+            <column name="owner_id" valueNumeric="2"/>
+            <column name="inheriting" valueBoolean="true"/>
+        </insert>
+        <insert tableName="acl_object_identity">
+            <column name="id" valueNumeric="3"/>
+            <column name="object_type_id" valueNumeric="1"/>
+            <column name="object_id" valueNumeric="3"/>
+            <column name="parent_id"/>
+            <column name="owner_id" valueNumeric="2"/>
+            <column name="inheriting" valueBoolean="true"/>
+        </insert>
+        <insert tableName="acl_object_identity">
+            <column name="id" valueNumeric="4"/>
+            <column name="object_type_id" valueNumeric="1"/>
+            <column name="object_id" valueNumeric="4"/>
+            <column name="parent_id"/>
+            <column name="owner_id" valueNumeric="2"/>
+            <column name="inheriting" valueBoolean="true"/>
+        </insert>
+        <insert tableName="acl_object_identity">
+            <column name="id" valueNumeric="5"/>
+            <column name="object_type_id" valueNumeric="1"/>
+            <column name="object_id" valueNumeric="5"/>
+            <column name="parent_id"/>
+            <column name="owner_id" valueNumeric="2"/>
+            <column name="inheriting" valueBoolean="true"/>
+        </insert>
+    </changeSet>
+
+
+    <changeSet author="anton.charnou (generated)" id="1460547730551-1">
+        <insert tableName="acl_entry">
+            <column name="id" valueNumeric="1"/>
+            <column name="object_identity_id" valueNumeric="1"/>
+            <column name="principal_id" valueNumeric="1"/>
+            <column name="permission_mask" valueNumeric="3"/>
+        </insert>
+        <insert tableName="acl_entry">
+            <column name="id" valueNumeric="2"/>
+            <column name="object_identity_id" valueNumeric="2"/>
+            <column name="principal_id" valueNumeric="2"/>
+            <column name="permission_mask" valueNumeric="3"/>
+        </insert>
+    </changeSet>
+
+
+</databaseChangeLog>
