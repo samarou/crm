@@ -1,6 +1,5 @@
-<div class="page-header">
-    <h1>{{vm.title}}</h1>
-</div>
+<form-panel title="vm.title" submit-text="vm.submitText" cancel-text="vm.cancelText" submit-btn="vm.submit()"
+            cancel-btn="vm.cancel()">
 <form class="form">
     <uib-tabset active="active">
         <uib-tab index="0" heading="Personal Info">
@@ -73,12 +72,5 @@
             </table>
         </uib-tab>
     </uib-tabset>
-    <div class="btn-group pull-right">
-        <button ng-show="vm.cancelText" type="button" class="btn btn-default" ng-click="vm.cancel()">
-            {{vm.cancelText}}
-        </button>
-        <button ng-show="vm.submitText" type="button" class="btn btn-primary" ng-click="vm.submit()">
-            {{vm.submitText}}
-        </button>
-    </div>
 </form>
+</form-panel>

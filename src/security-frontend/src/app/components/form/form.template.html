@@ -1,0 +1,16 @@
+<div class="page-header">
+    <h1>{{$ctrl.title}}</h1>
+</div>
+<div ng-transclude></div>
+<div class="row">
+    <div class="col-xs-6 col-md-3 pull-right">
+        <div class="btn-group btn-group-justified">
+            <a ng-show="$ctrl.cancelText" class="btn btn-default" ng-click="$ctrl.cancelBtn()">
+                {{$ctrl.cancelText}}
+            </a>
+            <a ng-show="$ctrl.submitText" class="btn btn-primary" ng-click="$ctrl.submitBtn()">
+                {{$ctrl.submitText}}
+            </a>
+        </div>
+    </div>
+</div>
