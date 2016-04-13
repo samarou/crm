@@ -11,7 +11,7 @@
 			} else if (!AuthService.isAuthenticated()) {
 				$log.log('Try to restore token');
 				if (!AuthService.restore()) {
-					$state.go('/login');
+					$state.go('login');
 				}
 			}
 		});
