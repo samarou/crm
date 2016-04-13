@@ -7,7 +7,7 @@
 
 
 	/** @ngInject */
-	function RolesEditController($q, RoleService, $stateParams, $state, PrivilegeService, Collections) {
+	function RolesEditController(RoleService, $stateParams, $state, RolePrivilegeService) {
 		var vm = this;
 		vm.role = {};
 		vm.submitText = 'Edit';
@@ -15,36 +15,15 @@
 		vm.title = 'Edit role';
 		vm.objectTypes = [];
 
-		$q.all(
-				[
-					RoleService.get($stateParams.id).then(function (response) {
-						vm.role = response.data;
-					}),
 
-					PrivilegeService.fetchAll().then(function (response) {
-						var objectTypeList = Object.create(null);
-						var privileges = response.data;
-						privileges.forEach(function (privilege) {
-							if (!(privilege.objectTypeName in objectTypeList)) {
-								objectTypeList[privilege.objectTypeName] = [];
-							}
-							objectTypeList[privilege.objectTypeName].push({
-								id: privilege.action.id,
-								name: privilege.actionName,
-								privilege: privilege
-							});
-						});
-						vm.objectTypes = Collections.sort(Object.keys(objectTypeList)).map(function (objectTypeName) {
-							return {
-								objectTypeName: objectTypeName,
-								actions: Collections.sort(objectTypeList[objectTypeName], true, Collections.byProperty('id'))
-							};
-						});
-					})
-				]
-		).then(function () {
-			checkPrivilegesOfRole(vm.role);
+		RoleService.get($stateParams.id).then(function (response) {
+			vm.role = response.data;
+		}).then(function () {
+			RolePrivilegeService.getObjectTypes(vm).then(function () {
+				RolePrivilegeService.checkPrivilegesOfRole(vm);
+			});
 		});
+
 
 		vm.submit = function () {
 			vm.role.privileges = [];
@@ -64,13 +43,6 @@
 			$state.go('roles.list');
 		};
 
-		function checkPrivilegesOfRole(role) {
-			vm.objectTypes.forEach(function (privilegeObject) {
-				privilegeObject.actions.forEach(function (action) {
-					action.privilege.checked = !!Collections.find(action.privilege, role.privileges);
-				})
-			});
-		}
 
 	}
 })();
