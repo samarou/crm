@@ -18,6 +18,10 @@
 			return $http.post('rest/roles', role);
 		};
 
+		service.get = function (id) {
+			return $http.get('rest/roles/' + id);
+		};
+
 		service.update = function (role) {
 			return $http.put('rest/roles', role);
 		};

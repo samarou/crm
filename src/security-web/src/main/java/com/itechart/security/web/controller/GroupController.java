@@ -31,6 +31,11 @@ public class GroupController {
         return convertGroups(groupService.getGroups());
     }
 
+    @RequestMapping(value = "/groups/{id}", method = GET)
+    public GroupDto  get(@PathVariable Long id) {
+        return convert(groupService.get(id));
+    }
+
     @PreAuthorize("hasRole('USER')")
     @RequestMapping("/groups/public")
     public List<PublicGroupDto> getPublicGroups() {

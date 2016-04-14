@@ -18,6 +18,10 @@
 			return $http.post('rest/contacts', contact);
 		};
 
+		service.get = function (id) {
+			return $http.get('rest/contacts/' + id);
+		};
+
 		service.update = function (contact) {
 			return $http.put('rest/contacts', contact);
 		};
@@ -27,7 +31,7 @@
 		};
 
 		service.find = function (filter) {
-			return $http.get('rest/contacts/find', { params: filter });
+			return $http.get('rest/contacts/find', {params: filter});
 		};
 
 		service.getPermissions = function (id) {

@@ -20,4 +20,6 @@ public interface RoleService {
     void deleteRole(Role role);
 
     void deleteRoleById(Long id);
+
+    Role getRole(Long id);
 }

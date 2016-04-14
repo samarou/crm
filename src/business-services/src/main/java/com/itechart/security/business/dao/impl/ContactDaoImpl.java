@@ -39,6 +39,11 @@ public class ContactDaoImpl extends AbstractHibernateDao<Contact> implements Con
     }
 
     @Override
+    public Contact get(Long id) {
+        return getHibernateTemplate().get(Contact.class, id);
+    }
+
+    @Override
     public void deleteById(Long id) {
         Contact contact = getHibernateTemplate().get(Contact.class, id);
         if (contact != null) getHibernateTemplate().delete(contact);

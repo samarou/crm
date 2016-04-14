@@ -61,6 +61,11 @@ public class ContactController {
         return convertContacts(contactService.getContacts());
     }
 
+    @RequestMapping(value = "/contacts/{contactId}", method = RequestMethod.GET)
+    public ContactDto get(@PathVariable Long contactId) {
+        return convert(contactService.get(contactId));
+    }
+
     @PreAuthorize("hasPermission(#dto.getId(), 'sample.Contact', 'WRITE')")
     @RequestMapping(value = "/contacts", method = PUT)
     public void update(@RequestBody ContactDto dto) {

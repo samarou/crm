@@ -32,6 +32,12 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
+    @Transactional
+    public Contact get(Long id) {
+        return contactDao.get(id);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     //@PreAuthorize("hasPrivilege('sample.Contact', 'READ') or hasRole('ROOT')")
     //@PreAuthorize("@mySecurityService.hasPermission('special')")

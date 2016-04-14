@@ -6,10 +6,10 @@
 
 	angular
 			.module('securityManagement')
-			.controller('RolesController', RolesController);
+			.controller('RolesListController', RolesListController);
 
 	/** @ngInject */
-	function RolesController($q, RoleService, PrivilegeService, DialogService, Collections) {
+	function RolesListController($q, RoleService, PrivilegeService, DialogService, Collections, $state) {
 		'use strict';
 
 		var vm = this;
@@ -87,7 +87,7 @@
 			});
 		};
 
-		vm.edit = function (role) {
+		vm.editOld = function (role) {
 			checkPrivilegesOfRole(role);
 			showDialog({
 				title: 'Editing Role',
@@ -105,6 +105,14 @@
 				objectTypes: vm.objectTypes,
 				role: {}
 			});
+		};
+
+		vm.edit = function (role) {
+			$state.go('roles.edit', {id: role.id});
+		};
+
+		vm.add = function () {
+			$state.go('roles.add');
 		};
 
 		vm.remove = function () {

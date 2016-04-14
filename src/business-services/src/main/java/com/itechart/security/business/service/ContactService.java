@@ -16,6 +16,8 @@ public interface ContactService {
 
     Long saveContact(Contact contact);
 
+    Contact get(Long id);
+
     List<Contact> getContacts();
 
     void updateContact(Contact contact);

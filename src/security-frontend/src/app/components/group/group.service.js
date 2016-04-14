@@ -19,6 +19,10 @@
 			return $http.get('rest/groups/public');
 		};
 
+		service.get = function (id) {
+			return $http.get('rest/groups/' + id);
+		};
+
 		service.create = function (group) {
 			return $http.post('rest/groups', group);
 		};
