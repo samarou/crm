@@ -76,11 +76,68 @@
                 <version>2.6</version>
             </plugin>
         </plugins>
-        <resources>
-            <resource>
-                <directory>${basedir}/src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
     </build>
+
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <security-web.mysql.jndi>jdbc/SecuritySampleDB</security-web.mysql.jndi>
+                <security-web.mail.session>mail/Session</security-web.mail.session>
+                <liquibase.properties>src/main/resources-env/dev/liquibase.properties</liquibase.properties>
+            </properties>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources-env/dev</directory>
+                    </resource>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>true</filtering>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <security-web.mysql.jndi>jdbc/SecuritySampleDB</security-web.mysql.jndi>
+                <security-web.mail.session>mail/Session</security-web.mail.session>
+                <liquibase.properties>src/main/resources-env/dev/liquibase.properties</liquibase.properties>
+            </properties>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources-env/dev</directory>
+                    </resource>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>true</filtering>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <security-web.mysql.jndi>jdbc/SecuritySampleDBProd</security-web.mysql.jndi>
+                <security-web.mail.session>mail/Session</security-web.mail.session>
+                <liquibase.properties>src/main/resources-env/prod/liquibase.properties</liquibase.properties>
+            </properties>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources-env/prod</directory>
+                    </resource>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>true</filtering>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+    </profiles>
 </project>

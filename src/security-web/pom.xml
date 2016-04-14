@@ -179,9 +179,7 @@
                         ${basedir}/../database/master.xml
                     </changeLogFile>
                     <driver>com.mysql.jdbc.Driver</driver>
-                    <url>jdbc:mysql://${security-web.mysql.host}:${security-web.mysql.port}/${security-web.mysql.db}</url>
-                    <username>${security-web.mysql.login}</username>
-                    <password>${security-web.mysql.password}</password>
+                    <propertyFile>${liquibase.properties}</propertyFile>
                 </configuration>
                 <executions>
                     <execution>
