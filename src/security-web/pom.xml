@@ -179,9 +179,9 @@
                         ${basedir}/../database/master.xml
                     </changeLogFile>
                     <driver>com.mysql.jdbc.Driver</driver>
-                    <url>jdbc:mysql://${mysql.host}:${mysql.port}/${mysql.db}</url>
-                    <username>${mysql.login}</username>
-                    <password>${mysql.password}</password>
+                    <url>jdbc:mysql://${security-web.mysql.host}:${security-web.mysql.port}/${security-web.mysql.db}</url>
+                    <username>${security-web.mysql.login}</username>
+                    <password>${security-web.mysql.password}</password>
                 </configuration>
                 <executions>
                     <execution>
