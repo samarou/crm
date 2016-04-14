@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="anton.charnou (generated)" id="1460547259963-1">
+        <createTable tableName="acl_entry">
+            <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="object_identity_id" remarks="ACL identity identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="principal_id" remarks="Principal identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="permission_mask" remarks="Binary mask for permissions (READ – 1, WRITE – 2, CREATE – 4, DELETE – 8, ADMIN - 16)" type="INT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-2">
+        <createTable tableName="acl_object_identity">
+            <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="object_type_id" remarks="Object type identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="object_id" remarks="Object identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="parent_id" remarks="Parent ACL identity identifier" type="BIGINT UNSIGNED"/>
+            <column name="owner_id" remarks="Owner identifier" type="BIGINT UNSIGNED"/>
+            <column defaultValueNumeric="0" name="inheriting" remarks="Flag of inheritance from parent" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-3">
+        <createTable tableName="action">
+            <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" remarks="Action name" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" remarks="Action description" type="VARCHAR(250)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-4">
+        <createTable tableName="contact">
+            <column autoIncrement="true" name="id" type="BIGINT UNSIGNED">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="firstName" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastName" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" type="VARCHAR(250)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-5">
+        <createTable tableName="group">
+            <column name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" remarks="Group name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" remarks="Group description" type="VARCHAR(250)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-6">
+        <createTable tableName="object_type">
+            <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" remarks="Object type name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" remarks="Object type description" type="VARCHAR(250)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-7">
+        <createTable tableName="order">
+            <column autoIncrement="true" name="id" type="BIGINT UNSIGNED">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="product" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="count" type="INT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="DECIMAL(10, 2) UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="contact_id" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-8">
+        <createTable tableName="principal">
+            <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-9">
+        <createTable tableName="privilege">
+            <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="object_type_id" remarks="Object type identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="action_id" remarks="Action identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-10">
+        <createTable tableName="role">
+            <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" remarks="Role name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" remarks="Role description" type="VARCHAR(250)"/>
+            <column name="parent_id" remarks="Parent role identifier" type="BIGINT UNSIGNED"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-11">
+        <createTable tableName="role_privilege">
+            <column name="role_id" remarks="Role identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="privilege_id" remarks="Privilege identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-12">
+        <createTable tableName="user">
+            <column name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_name" remarks="User name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" remarks="Password hash" type="VARCHAR(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" remarks="First name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" remarks="Surname" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" remarks="E-mail" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="1" name="active" remarks="Flag of active user" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-13">
+        <createTable tableName="user_group">
+            <column name="user_id" remarks="User identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="group_id" remarks="Group identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-14">
+        <createTable tableName="user_role">
+            <column name="user_id" remarks="User identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" remarks="Role identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-15">
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="group"/>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-16">
+        <addPrimaryKey columnNames="role_id, privilege_id" constraintName="PRIMARY" tableName="role_privilege"/>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-17">
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="user"/>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-18">
+        <addPrimaryKey columnNames="user_id, group_id" constraintName="PRIMARY" tableName="user_group"/>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-19">
+        <addPrimaryKey columnNames="user_id, role_id" constraintName="PRIMARY" tableName="user_role"/>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-20">
+        <addUniqueConstraint columnNames="object_identity_id, principal_id" constraintName="uk_acl_entry" tableName="acl_entry"/>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-21">
+        <addUniqueConstraint columnNames="object_type_id, object_id" constraintName="uk_acl_object_identity" tableName="acl_object_identity"/>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-22">
+        <addUniqueConstraint columnNames="name" constraintName="uk_action_name" tableName="action"/>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-23">
+        <addUniqueConstraint columnNames="name" constraintName="uk_group_name" tableName="group"/>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-24">
+        <addUniqueConstraint columnNames="name" constraintName="uk_object_type_name" tableName="object_type"/>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-25">
+        <addUniqueConstraint columnNames="object_type_id, action_id" constraintName="uk_privilege_obj_type_action" tableName="privilege"/>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-26">
+        <addUniqueConstraint columnNames="name" constraintName="uk_role_name" tableName="role"/>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-27">
+        <addUniqueConstraint columnNames="user_name" constraintName="uk_user_user_name" tableName="user"/>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-28">
+        <createIndex indexName="fk_privilege_action" tableName="privilege">
+            <column name="action_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-29">
+        <createIndex indexName="fk_role_parent_id" tableName="role">
+            <column name="parent_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-30">
+        <createIndex indexName="fk_role_privilege_privilege_id" tableName="role_privilege">
+            <column name="privilege_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-31">
+        <createIndex indexName="fk_user_group_group_id" tableName="user_group">
+            <column name="group_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-32">
+        <createIndex indexName="fk_user_role_role_id" tableName="user_role">
+            <column name="role_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-33">
+        <createIndex indexName="idx_acl_entry_principal_id" tableName="acl_entry">
+            <column name="principal_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-34">
+        <createIndex indexName="idx_acl_object_identity_owner_id" tableName="acl_object_identity">
+            <column name="owner_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-35">
+        <createIndex indexName="idx_acl_object_identity_parent_id" tableName="acl_object_identity">
+            <column name="parent_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-36">
+        <createIndex indexName="idx_order_contact_id" tableName="order">
+            <column name="contact_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-37">
+        <addForeignKeyConstraint baseColumnNames="object_identity_id" baseTableName="acl_entry" constraintName="fk_acl_entry_identity_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="acl_object_identity"/>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-38">
+        <addForeignKeyConstraint baseColumnNames="principal_id" baseTableName="acl_entry" constraintName="fk_acl_entry_principal_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="principal"/>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-39">
+        <addForeignKeyConstraint baseColumnNames="object_type_id" baseTableName="acl_object_identity" constraintName="fk_acl_object_identity_object_type_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="object_type"/>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-40">
+        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="acl_object_identity" constraintName="fk_acl_object_identity_owner_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="user"/>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-41">
+        <addForeignKeyConstraint baseColumnNames="parent_id" baseTableName="acl_object_identity" constraintName="fk_acl_object_identity_parent_id" deferrable="false" initiallyDeferred="false" onDelete="SET NULL" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="acl_object_identity"/>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-42">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="group" constraintName="fk_group_principle_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="principal"/>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-43">
+        <addForeignKeyConstraint baseColumnNames="contact_id" baseTableName="order" constraintName="fk_order_contact_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="contact"/>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-44">
+        <addForeignKeyConstraint baseColumnNames="action_id" baseTableName="privilege" constraintName="fk_privilege_action" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="action"/>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-45">
+        <addForeignKeyConstraint baseColumnNames="object_type_id" baseTableName="privilege" constraintName="fk_privilege_object_type_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="object_type"/>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-46">
+        <addForeignKeyConstraint baseColumnNames="parent_id" baseTableName="role" constraintName="fk_role_parent_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role"/>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-47">
+        <addForeignKeyConstraint baseColumnNames="privilege_id" baseTableName="role_privilege" constraintName="fk_role_privilege_privilege_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="privilege"/>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-48">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="role_privilege" constraintName="fk_role_privilege_role_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role"/>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-49">
+        <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="user_group" constraintName="fk_user_group_group_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="group"/>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-50">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_group" constraintName="fk_user_group_user_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="user"/>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-51">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="user" constraintName="fk_user_principle_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="principal"/>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-52">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="user_role" constraintName="fk_user_role_role_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role"/>
+    </changeSet>
+    <changeSet author="anton.charnou (generated)" id="1460547259963-53">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_role" constraintName="fk_user_role_user_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="user"/>
+    </changeSet>
+</databaseChangeLog>
