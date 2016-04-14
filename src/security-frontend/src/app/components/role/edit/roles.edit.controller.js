@@ -10,7 +10,7 @@
 	function RolesEditController(RoleService, $stateParams, $state, RolePrivilegeService) {
 		var vm = this;
 		vm.role = {};
-		vm.submitText = 'Edit';
+		vm.submitText = 'Save';
 		vm.cancelText = 'Cancel';
 		vm.title = 'Edit role';
 		vm.objectTypes = [];

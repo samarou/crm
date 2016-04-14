@@ -16,7 +16,7 @@
 		vm.user = {};
 		vm.groups = [];
 		vm.roles = [];
-		vm.submitText = 'Edit';
+		vm.submitText = 'Save';
 		vm.cancelText = 'Cancel';
 		vm.title = 'Edit user';
 

@@ -27,7 +27,7 @@
 			admin: 'admin'
 		};
 
-		vm.submitText = 'Edit';
+		vm.submitText = 'Save';
 		vm.cancelText = 'Cancel';
 		vm.title = 'Edit contact';
 

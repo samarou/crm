@@ -12,7 +12,7 @@
 	function GroupsEditController(GroupService, $stateParams, $state) {
 		var vm = this;
 		vm.group = {};
-		vm.submitText = 'Edit';
+		vm.submitText = 'Save';
 		vm.cancelText = 'Cancel';
 		vm.title = 'Edit group';
 
