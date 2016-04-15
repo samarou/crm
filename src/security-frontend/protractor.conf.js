@@ -29,14 +29,9 @@ exports.config = {
     browserName: 'chrome'
   },
 
-
-  suites: {
-    security: paths.e2e + '/suites/security/*.spec.js',
-    pages: paths.e2e + '/suites/page/*.spec.js'
-  },
   // Spec patterns are relative to the current working directory when
   // protractor is called.
-  // specs: [paths.e2e + '/**/*.js'],
+   specs: [paths.e2e + '/**/*.spec.js'],
 
   // Options to be passed to Jasmine-node.
   jasmineNodeOpts: {

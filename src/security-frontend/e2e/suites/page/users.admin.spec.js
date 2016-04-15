@@ -3,14 +3,13 @@
 
 describe('Users under role ADMIN', function () {
   var auth = require('../../authentication.js');
-
+  var usersPage = require('../../pages/users.po.js');
 
   beforeAll(function () {
     auth.login('admin', 'admin');
   });
 
   it('should be able to filter user records by roles', function () {
-    var usersPage = require('../../pages/users.po.js');
     browser.get('/#/users').then(function () {
       usersPage.getOption('ADMIN').click()
         .then(iterateThroughPages)
@@ -19,18 +18,16 @@ describe('Users under role ADMIN', function () {
         });
     });
 
-    afterAll(function () {
-      auth.logout();
-    });
 
 
     function goToNextPageIfNotLast(adminFound) {
       return usersPage.isLastPage()
         .then(function (isLastPage) {
             if (!isLastPage) {
-              return usersPage.nextPageButton().click().then(function () {
-                return AdminInPage(adminFound, isLastPage);
-              });
+              return usersPage.nextPageButton().click()
+                .then(function () {
+                  return AdminInPage(adminFound, isLastPage);
+                });
             } else {
               return AdminInPage(adminFound, isLastPage);
             }
@@ -54,16 +51,16 @@ describe('Users under role ADMIN', function () {
           if (adminInP.found) {
             return adminInP;
           } else if (adminInP.lastPage) {
-            return additionalCheckIfAdminOnPage();
+            return additionalCheckIfAdminOnPage(adminInP.lastPage);
           } else {
-            return additionalCheckIfAdminOnPage().then(checkingLoop);
+            return additionalCheckIfAdminOnPage(adminInP.lastPage).then(checkingLoop);
           }
         });
     }
 
-    function additionalCheckIfAdminOnPage() {
+    function additionalCheckIfAdminOnPage(isLastPage) {
       return checkAdminOnPage().then(function (found) {
-        return {found: found, lastPage: true};
+        return {found: found, lastPage: isLastPage};
       })
     }
 
@@ -79,5 +76,9 @@ describe('Users under role ADMIN', function () {
     function checkIfUserInArray(users, name) {
       return (users.indexOf(name)) != -1;
     }
+  });
+
+  afterAll(function () {
+    auth.logout();
   });
 });
