@@ -2,20 +2,19 @@
 'use strict';
 
 describe('Users under role ADMIN', function () {
-  var auth = require('../../authentication.js');
+  var loginService = require('../../login.service.js');
   var usersPage = require('../../pages/users.po.js');
-
+  var credentials = require('../../credentials');
+  var navbarPO = require('../../pages/navbar.po');
+  
   beforeAll(function () {
-    auth.login('admin', 'admin')
+    loginService.login(credentials.admin)
   });
 
   it('should be able to filter user records by roles', function () {
 
-    waitForOptionsPanel()
-      .then(function () {
-        usersPage.getOption('ADMIN').click();
-      })
-      .then(iterateThroughPages)
+    usersPage.getOption('ADMIN').click();
+    iterateThroughPages()
       .then(function (adminFound) {
         expect(adminFound.found).toBe(true);
       });
@@ -76,17 +75,9 @@ describe('Users under role ADMIN', function () {
     function checkIfUserInArray(users, name) {
       return (users.indexOf(name)) != -1;
     }
-
-
   });
 
-  function waitForOptionsPanel() {
-    return browser.wait(function () {
-      return usersPage.getOption('ADMIN').isPresent();
-    }, 5000)
-  }
-
   afterAll(function () {
-    auth.logout();
+    loginService.logout();
   });
 });

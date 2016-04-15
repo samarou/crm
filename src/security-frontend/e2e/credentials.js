@@ -6,6 +6,7 @@ var Credentials = function () {
 	self.manager = acc('manager', 'manager');
 	self.admin = acc('admin', 'admin');
 	self.specialist = acc('specialist', 'specialist');
+  
 	function acc(username, password) {
 		return {username: username, password: password}
 	}
