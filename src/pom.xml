@@ -13,6 +13,7 @@
         <module>security-core</module>
         <module>security-hibernate-support</module>
         <module>security-services</module>
+        <module>database</module>
         <module>security-web</module>
         <module>business-services</module>
         <module>security-frontend</module>
@@ -85,18 +86,15 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <security-web.mysql.jndi>jdbc/SecuritySampleDB</security-web.mysql.jndi>
-                <security-web.mail.session>mail/Session</security-web.mail.session>
-                <liquibase.properties>src/main/resources-env/dev/liquibase.properties</liquibase.properties>
+                <liquibase.properties>resources-env/local/liquibase.properties</liquibase.properties>
             </properties>
             <build>
                 <resources>
                     <resource>
-                        <directory>src/main/resources-env/dev</directory>
+                        <directory>src/main/resources-env/local</directory>
                     </resource>
                     <resource>
                         <directory>src/main/resources</directory>
-                        <filtering>true</filtering>
                     </resource>
                 </resources>
             </build>
@@ -104,9 +102,7 @@
         <profile>
             <id>dev</id>
             <properties>
-                <security-web.mysql.jndi>jdbc/SecuritySampleDB</security-web.mysql.jndi>
-                <security-web.mail.session>mail/Session</security-web.mail.session>
-                <liquibase.properties>src/main/resources-env/dev/liquibase.properties</liquibase.properties>
+                <liquibase.properties>resources-env/dev/liquibase.properties</liquibase.properties>
             </properties>
             <build>
                 <resources>
@@ -115,7 +111,6 @@
                     </resource>
                     <resource>
                         <directory>src/main/resources</directory>
-                        <filtering>true</filtering>
                     </resource>
                 </resources>
             </build>
@@ -123,9 +118,7 @@
         <profile>
             <id>prod</id>
             <properties>
-                <security-web.mysql.jndi>jdbc/SecuritySampleDBProd</security-web.mysql.jndi>
-                <security-web.mail.session>mail/Session</security-web.mail.session>
-                <liquibase.properties>src/main/resources-env/prod/liquibase.properties</liquibase.properties>
+                <liquibase.properties>resources-env/prod/liquibase.properties</liquibase.properties>
             </properties>
             <build>
                 <resources>
@@ -134,7 +127,6 @@
                     </resource>
                     <resource>
                         <directory>src/main/resources</directory>
-                        <filtering>true</filtering>
                     </resource>
                 </resources>
             </build>

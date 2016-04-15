@@ -99,12 +99,6 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.38</version>
-            <scope>runtime</scope>
-        </dependency>
 
     </dependencies>
     <build>
@@ -169,25 +163,6 @@
                         </configuration>
                     </execution>
 
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.liquibase</groupId>
-                <artifactId>liquibase-maven-plugin</artifactId>
-                <configuration>
-                    <changeLogFile>
-                        ${basedir}/../database/master.xml
-                    </changeLogFile>
-                    <driver>com.mysql.jdbc.Driver</driver>
-                    <propertyFile>${liquibase.properties}</propertyFile>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>update</goal>
-                        </goals>
-                    </execution>
                 </executions>
             </plugin>
         </plugins>
