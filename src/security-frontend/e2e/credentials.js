@@ -1,12 +1,14 @@
+/*globals require*/
 var Credentials = function () {
-  'use strict';
+	'use strict';
 
-  var self = this;
-  self.manager = acc('manager', 'manager');
-  self.admin = acc('admin', 'admin');
-  function acc(name, password) {
-    return {name:name,password:password}
-  }
+	var self = this;
+	self.manager = acc('manager', 'manager');
+	self.admin = acc('admin', 'admin');
+	self.specialist = acc('specialist', 'specialist');
+	function acc(username, password) {
+		return {username: username, password: password}
+	}
 };
 
 module.exports = new Credentials();
