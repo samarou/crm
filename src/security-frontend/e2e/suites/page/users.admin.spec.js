@@ -6,38 +6,19 @@ describe('Users under role ADMIN', function () {
   var usersPage = require('../../pages/users.po.js');
 
   beforeAll(function () {
-    auth.login('admin', 'admin');
+    auth.login('admin', 'admin')
   });
 
   it('should be able to filter user records by roles', function () {
-    browser.get('/#/users').then(function () {
-      usersPage.getOption('ADMIN').click()
-        .then(iterateThroughPages)
-        .then(function (adminFound) {
-          expect(adminFound.found).toBe(true);
-        });
-    });
 
-
-
-    function goToNextPageIfNotLast(adminFound) {
-      return usersPage.isLastPage()
-        .then(function (isLastPage) {
-            if (!isLastPage) {
-              return usersPage.nextPageButton().click()
-                .then(function () {
-                  return AdminInPage(adminFound, isLastPage);
-                });
-            } else {
-              return AdminInPage(adminFound, isLastPage);
-            }
-          }
-        );
-    }
-
-    function AdminInPage(adminFound, isLastPage) {
-      return {found: adminFound, lastPage: isLastPage}
-    }
+    waitForOptionsPanel()
+      .then(function () {
+        usersPage.getOption('ADMIN').click();
+      })
+      .then(iterateThroughPages)
+      .then(function (adminFound) {
+        expect(adminFound.found).toBe(true);
+      });
 
     function iterateThroughPages() {
       return checkAdminOnPage().then(function (isFound) {
@@ -58,6 +39,25 @@ describe('Users under role ADMIN', function () {
         });
     }
 
+    function goToNextPageIfNotLast(adminFound) {
+      return usersPage.isLastPage()
+        .then(function (isLastPage) {
+            if (!isLastPage) {
+              return usersPage.nextPageButton().click()
+                .then(function () {
+                  return AdminInPage(adminFound, isLastPage);
+                });
+            } else {
+              return AdminInPage(adminFound, isLastPage);
+            }
+          }
+        );
+    }
+
+    function AdminInPage(adminFound, isLastPage) {
+      return {found: adminFound, lastPage: isLastPage}
+    }
+
     function additionalCheckIfAdminOnPage(isLastPage) {
       return checkAdminOnPage().then(function (found) {
         return {found: found, lastPage: isLastPage};
@@ -76,7 +76,15 @@ describe('Users under role ADMIN', function () {
     function checkIfUserInArray(users, name) {
       return (users.indexOf(name)) != -1;
     }
+
+
   });
+
+  function waitForOptionsPanel() {
+    return browser.wait(function () {
+      return usersPage.getOption('ADMIN').isPresent();
+    }, 5000)
+  }
 
   afterAll(function () {
     auth.logout();
