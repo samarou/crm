@@ -17,70 +17,15 @@ describe('Users under role ADMIN', function () {
   it('should be able to filter user records by roles', function () {
 
     usersPage.getOption(ROLE_FILTERING_USER).click();
-    iterateThroughPages(userIsOnPage)
-      .then(function (adminFound) {
-        expect(adminFound).toBe(true);
-      });
-
-    function iterateThroughPages(checkingFunction) {
-      return checkingFunction()
-        .then(function (isFound) {
-          return checkingLoop(isFound, checkingFunction);
-        }).then(function (elementInPage) {
-          return elementInPage.found;
-        });
-    }
-
-    function checkingLoop(adminInPage, checkingFunction) {
-      return goToNextPageIfNotLast(adminInPage.found)
-        .then(function (adminInP) {
-          if (adminInP.found) {
-            return adminInP;
-          } else {
-            return checkingFunction(adminInP.lastPage)
-              .then(function (elementOnPage) {
-                if (adminInP.lastPage) {
-                  return elementOnPage;
-                } else {
-                  return checkingLoop(elementOnPage, checkingFunction);
-                }
-              });
-          }
-        });
-    }
-
-    function goToNextPageIfNotLast(elementFound) {
-      return usersPage.isLastPage()
-        .then(function (isLastPage) {
-            if (!isLastPage) {
-              return usersPage.nextPageButton().click()
-                .then(function () {
-                  return ElementInPage(elementFound, isLastPage);
-                });
-            } else {
-              return ElementInPage(elementFound, isLastPage);
-            }
-          }
-        );
-    }
-
-    function ElementInPage(elementFound, isLastPage) {
-      return {found: elementFound, lastPage: isLastPage}
-    }
-
-    function userIsOnPage(isLastPage) {
-      return checkUserOnPage(FILTERING_USER.username)
-        .then(function (found) {
-          return ElementInPage(found, isLastPage);
-        })
-    }
+    iterateThroughPages(isFilteringUserOnPage)
+      .then(expectFoundToBeTrue);
   });
 
   it('should be able to block the user and check if it`s blocked', function () {
     var userToBlock = BLOCKING_USER.username;
     usersPage.searchTab.sendKeys(userToBlock);
     usersPage.getOption(ROLE_BLOCKING_USER).click();
-    expect(checkUserOnPage(userToBlock)).toBe(true);
+    iterateThroughPages(isBlockingUserOnPage).then(expectFoundToBeTrue);
     activateUser(false, userToBlock);
     expect(checkUserOnPage(userToBlock)).toBe(false);
     usersPage.activeUserFlag.click();
@@ -88,20 +33,88 @@ describe('Users under role ADMIN', function () {
     activateUser(true, userToBlock);
     usersPage.activeUserFlag.click();
     expect(checkUserOnPage(userToBlock)).toBe(true);
-
-    function activateUser(isMakeActive, userName) {
-      usersPage.clickOnCheckboxOfUser(userName);
-      if (isMakeActive) {
-        usersPage.userActivation.click();
-      } else {
-        usersPage.userDeactivation.click();
-      }
-    }
   });
 
   afterEach(function () {
     loginService.logout();
   });
+
+  function expectFoundToBeTrue(found) {
+    expect(found).toBe(true);
+  }
+
+  function iterateThroughPages(checkingFunction) {
+    return checkingFunction()
+      .then(function (isFound) {
+        return checkingLoop(isFound, checkingFunction);
+      }).then(function (elementInPage) {
+        return elementInPage.found;
+      });
+  }
+
+  function isFilteringUserOnPage(isLastPage) {
+    return checkUserOnPage(FILTERING_USER.username)
+      .then(function (found) {
+        return ElementInPage(found, isLastPage);
+      })
+  }
+
+  function isBlockingUserOnPage(isLastPage) {
+    return checkUserOnPage(BLOCKING_USER.username)
+      .then(function (found) {
+        return ElementInPage(found, isLastPage);
+      })
+  }
+
+  function activateUser(isMakeActive, userName) {
+    usersPage.clickOnCheckboxOfUser(userName);
+    if (isMakeActive) {
+      usersPage.userActivation.click();
+    } else {
+      usersPage.userDeactivation.click();
+    }
+  }
+
+  function checkingLoop(initElOnPage, checkingFunction) {
+    return goToNextPageIfNotLast(initElOnPage.found)
+      .then(function (elOnPage) {
+        if (elOnPage.found) {
+          return elOnPage;
+        } else {
+          return checkingFunction(elOnPage.lastPage)
+            .then(function (elementOnPage) {
+              return loopIfPageNotLast(elementOnPage, checkingFunction);
+            });
+        }
+      });
+  }
+
+  function loopIfPageNotLast(elementOnPage, checkingFunction) {
+    if (elementOnPage.lastPage) {
+      return elementOnPage;
+    } else {
+      return checkingLoop(elementOnPage, checkingFunction);
+    }
+  }
+
+  function goToNextPageIfNotLast(elementFound) {
+    return usersPage.isLastPage()
+      .then(function (isLastPage) {
+          if (isLastPage || elementFound) {
+            return ElementInPage(elementFound, isLastPage);
+          } else {
+            return usersPage.nextPageButton().click()
+              .then(function () {
+                return ElementInPage(elementFound, isLastPage);
+              });
+          }
+        }
+      );
+  }
+
+  function ElementInPage(elementFound, isLastPage) {
+    return {found: elementFound, lastPage: isLastPage}
+  }
 
   function checkUserOnPage(userName) {
     return usersPage.getUserNamesInTable().then(function (users) {
