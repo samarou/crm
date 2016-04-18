@@ -1,7 +1,7 @@
 /*globals it, describe, beforeEach, browser, expect, beforeAll, afterAll, require*/
 'use strict';
 
-fdescribe('Users under role ADMIN', function () {
+describe('Users under role ADMIN', function () {
 	var loginService = require('../../login.service');
 	var credentials = require('../../credentials');
 	var groupsPO = require('../../pages/groups.po');
