@@ -14,7 +14,6 @@ var RolesPage = function () {
 		return element.all(
 				by.repeater('role in (vm.pageRoles = (vm.roleList | pagingFilter:vm.pagingFilterConfig))'));
 	};
-	self.searchInput = element();
 };
 
 module.exports = new RolesPage();
