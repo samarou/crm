@@ -5,17 +5,23 @@ describe('Users under role ADMIN', function () {
   var loginService = require('../../login.service.js');
   var usersPage = require('../../pages/users.po.js');
   var credentials = require('../../credentials');
+  var usersFormPO = require('../../pages/users.form.po.js');
+  var contactsPage = require('../../pages/contacts.po.js');
+  var navbarPO = require('../../pages/navbar.po');
 
   var ROLE_BLOCKING_USER = 'MANAGER';
   var ROLE_FILTERING_USER = 'ADMIN';
+  var ROLE_CHANGING_ROLE_USER = 'MANAGER';
+  var ADMIN = credentials.admin;
   var BLOCKING_USER = credentials.manager;
   var FILTERING_USER = credentials.admin;
+  var CHANGING_ROLE_USER = credentials.admin;
+
   beforeEach(function () {
-    loginService.login(credentials.admin)
+    loginService.login(ADMIN)
   });
 
   it('should be able to filter user records by roles', function () {
-
     usersPage.getOption(ROLE_FILTERING_USER).click();
     iterateThroughPages(isFilteringUserOnPage)
       .then(expectFoundToBeTrue);
@@ -33,6 +39,24 @@ describe('Users under role ADMIN', function () {
     activateUser(true, userToBlock);
     usersPage.activeUserFlag.click();
     expect(checkUserOnPage(userToBlock)).toBe(true);
+  });
+
+  it('should be able to add Manager role to admin and access contacts page', function () {
+    var userChangingRole = CHANGING_ROLE_USER.username;
+    iterateThroughPages(isChangingRoleUserOnPage).then(expectFoundToBeTrue);
+    usersPage.editUserClick(userChangingRole);
+    usersFormPO.checkRole(ROLE_CHANGING_ROLE_USER);
+    usersFormPO.submitButton.click();
+    loginService.logout();
+    loginService.login(CHANGING_ROLE_USER);
+    navbarPO.contactsLink.click();
+    expect(contactsPage.searchTab.isPresent()).toBe(true);
+    loginService.logout();
+    loginService.login(ADMIN);
+    iterateThroughPages(isChangingRoleUserOnPage).then(expectFoundToBeTrue);
+    usersPage.editUserClick(userChangingRole);
+    usersFormPO.uncheckRole(ROLE_CHANGING_ROLE_USER);
+    usersFormPO.submitButton.click();
   });
 
   afterEach(function () {
@@ -61,6 +85,13 @@ describe('Users under role ADMIN', function () {
 
   function isBlockingUserOnPage(isLastPage) {
     return checkUserOnPage(BLOCKING_USER.username)
+      .then(function (found) {
+        return ElementInPage(found, isLastPage);
+      })
+  }
+
+  function isChangingRoleUserOnPage(isLastPage) {
+    return checkUserOnPage(CHANGING_ROLE_USER.username)
       .then(function (found) {
         return ElementInPage(found, isLastPage);
       })

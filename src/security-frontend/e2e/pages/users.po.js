@@ -24,6 +24,18 @@ var UsersPage = function () {
   };
 
   self.clickOnCheckboxOfUser = function (userName) {
+    return self.getUserRow(userName)
+      .element(by.model('user.checked'))
+      .click();
+  };
+
+  self.editUserClick = function (userName) {
+    return self.getUserRow(userName)
+      .element(by.css('span[ng-click="vm.edit(user)"]'))
+      .click();
+  };
+
+  self.getUserRow = function (userName) {
     return self.tableRows.filter(function (elem) {
         return elem.element(by.binding('user.userName'))
           .getText()
@@ -31,9 +43,7 @@ var UsersPage = function () {
             return text === userName;
           });
       })
-      .first()
-      .element(by.model('user.checked'))
-      .click();
+      .first();
   };
 
   self.isLastPage = function () {
