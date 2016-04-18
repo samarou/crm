@@ -1,7 +1,7 @@
 /*globals it, describe, beforeEach, browser, expect, beforeAll, afterAll, require*/
 'use strict';
 
-fdescribe('Users under role Manager', function () {
+describe('Users under role Manager', function () {
 	var loginService = require('../../login.service');
 	var credentials = require('../../credentials');
 	var contactsPO = require('../../pages/contacts.po');

@@ -17,6 +17,9 @@ var GroupsPage = function () {
 	};
 	self.getConfirmButton = function () {
 		return element(by.css('button[ng-click="vm.yes()"]'));
+	};
+	self.getNotifyButton = function () {
+		return element.all(by.css('button[ng-click="vm.close()"]')).first();
 	}
 };
 
