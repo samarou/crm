@@ -24,7 +24,7 @@ var UsersPage = function () {
   };
 
   self.clickOnCheckboxOfUser = function (userName) {
-    return self.tableRows.filter(function (elem, index) {
+    return self.tableRows.filter(function (elem) {
         return elem.element(by.binding('user.userName'))
           .getText()
           .then(function (text) {
@@ -45,11 +45,6 @@ var UsersPage = function () {
   self.getOption = function (name) {
     return element(by.cssContainingText('option', name));
   };
-
-  function getText(element) {
-    return element.getText();
-  }
-
 };
 
 module.exports = new UsersPage();
