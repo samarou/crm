@@ -34,7 +34,7 @@ describe('Admin security', function () {
   it('should have permission to access roles page', function () {
     navbarPO.rolesLink.click();
     expect(rolesPage.searchTab.isPresent()).toBe(true);
-    expect(rolesPage.rolesOnPage().first().isPresent()).toBe(true);
+    expect(rolesPage.pageList().first().isPresent()).toBe(true);
     expect(rolesPage.table.isPresent()).toBe(true);
     expect(rolesPage.tableName()).toBe('Roles');
   });

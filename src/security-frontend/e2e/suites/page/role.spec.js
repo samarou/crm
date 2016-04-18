@@ -3,13 +3,14 @@
 
 describe('Users under role ADMIN', function () {
 	var loginService = require('../../login.service');
+	var searchService = require('../../search.service');
 	var credentials = require('../../credentials');
 	var rolesPO = require('../../pages/roles.po');
 	var rolesFormPO = require('../../pages/role.form.po');
 	var navbarPO = require('../../pages/navbar.po');
 
-	var ROLE_NAME = 'TestRole';
-	var ROLE_DESCRIPTION = 'TEST_DESCRIPTION';
+	var ROLE_NAME = 'TestRole61';
+	var ROLE_DESCRIPTION = 'zzzzzzzzzzzz';
 
 	beforeAll(function () {
 		loginService.login(credentials.admin);
@@ -27,42 +28,28 @@ describe('Users under role ADMIN', function () {
 	});
 
 	it('should be able to find role on page', function () {
-		var roles = findRolesByName(ROLE_NAME);
-		roles.count().then(function (count) {
-			if (count === 0) {
-				fail('Role didn\'t find');
-			} else {
-				checkRole(roles.first());
-			}
-		});
+		searchService.search(rolesPO, ROLE_NAME, by.binding('role.name')).then(checkRole);
 	});
 
 
 	afterAll(function () {
-		deleteRoleByRoleName(ROLE_NAME);
+		deleteRole();
 		loginService.logout();
 	});
 
-	function checkRole(role) {
-		role.element(by.css('span[ng-click="vm.edit(role)"]')).click();
+	function checkRole(roles) {
+		roles.element(by.css('span[ng-click="vm.edit(role)"]')).click();
 		expect(rolesFormPO.getName().getAttribute('value')).toBe(ROLE_NAME);
 		expect(rolesFormPO.getDescription().getAttribute('value')).toBe(ROLE_DESCRIPTION);
 		rolesFormPO.submitButton.click();
 	}
 
-	function findRolesByName(role) {
-		rolesPO.searchTab.sendKeys(ROLE_NAME);
-		return rolesPO.rolesOnPage().filter(function (row) {
-			return row.element(by.binding('role.name')).getText().then(function (text) {
-				return text === role;
-			});
-		})
-	}
-
-	function deleteRoleByRoleName(role) {
+	function deleteRole() {
 		navbarPO.rolesLink.click();
-		findRolesByName(role).first().element(by.model('role.checked')).click();
-		rolesPO.deleteButton.click();
+		searchService.search(rolesPO, ROLE_NAME, by.binding('role.name')).then(function (role) {
+			role.element(by.model('role.checked')).click();
+			rolesPO.deleteButton.click();
+		});
 	}
 
 

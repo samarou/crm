@@ -10,7 +10,7 @@ var RolesPage = function () {
 	self.tableName = function () {
 		return self.table.element(by.tagName('caption')).getText();
 	};
-	self.rolesOnPage = function () {
+	self.pageList = function () {
 		return element.all(
 				by.repeater('role in (vm.pageRoles = (vm.roleList | pagingFilter:vm.pagingFilterConfig))'));
 	};

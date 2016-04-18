@@ -3,6 +3,7 @@
 
 describe('Users under role Manager', function () {
 	var loginService = require('../../login.service');
+	var searchService = require('../../search.service');
 	var credentials = require('../../credentials');
 	var contactsPO = require('../../pages/contacts.po');
 	var contactFormPO = require('../../pages/contact.form.po');
@@ -31,21 +32,12 @@ describe('Users under role Manager', function () {
 	});
 
 	it('should be able to find contact on page', function () {
-		var contacts = findContactsByName(CONTACT_FIRST_NAME);
-		contacts.count().then(function (count) {
-			if (count === 0) {
-				fail('Contact didn\'t find');
-			} else {
-				checkContact(contacts.first());
-			}
-		});
+		searchService.search(contactsPO, CONTACT_EMAIL, by.binding('contact.email')).then(checkContact);
 	});
 
 
 	it('should be able to delete contact from page', function () {
-		deleteContactByName(CONTACT_FIRST_NAME);
-		var contacts = findContactsByName(CONTACT_FIRST_NAME);
-		expect(contacts.count()).toBe(0);
+		deleteContact();
 	});
 
 
@@ -62,20 +54,14 @@ describe('Users under role Manager', function () {
 		contactFormPO.submitButton.click();
 	}
 
-	function findContactsByName(contact) {
-		contactsPO.searchTab.sendKeys(CONTACT_FIRST_NAME);
-		return contactsPO.contactsOnPage().filter(function (row) {
-			return row.element(by.binding('contact.firstName')).getText().then(function (text) {
-				return text === contact;
-			});
-		})
-	}
 
-	function deleteContactByName(contact) {
+	function deleteContact() {
 		navbarPO.contactsLink.click();
-		findContactsByName(contact).first().element(by.model('contact.checked')).click();
-		contactsPO.deleteButton.click();
-		contactsPO.getConfirmButton().click();
+		searchService.search(contactsPO, CONTACT_EMAIL, by.binding('contact.email')).then(function (contact) {
+			contact.element(by.model('contact.checked')).click();
+			contactsPO.deleteButton.click();
+			contactsPO.getConfirmButton().click();
+		});
 	}
 
 

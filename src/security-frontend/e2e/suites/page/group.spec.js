@@ -3,6 +3,7 @@
 
 describe('Users under role ADMIN', function () {
 	var loginService = require('../../login.service');
+	var searchService = require('../../search.service');
 	var credentials = require('../../credentials');
 	var groupsPO = require('../../pages/groups.po');
 	var groupFormPO = require('../../pages/group.form.po');
@@ -27,19 +28,12 @@ describe('Users under role ADMIN', function () {
 	});
 
 	it('should be able to find group on page', function () {
-		var groups = findGroupsByName(GROUP_NAME);
-		groups.count().then(function (count) {
-			if (count === 0) {
-				fail('Group didn\'t find');
-			} else {
-				checkGroup(groups.first());
-			}
-		});
+		searchService.search(groupsPO, GROUP_NAME, by.binding('group.name')).then(checkGroup);
 	});
 
 
 	afterAll(function () {
-		deleteGroupByName(GROUP_NAME);
+		deleteGroup();
 		loginService.logout();
 	});
 
@@ -50,19 +44,13 @@ describe('Users under role ADMIN', function () {
 		groupFormPO.submitButton.click();
 	}
 
-	function findGroupsByName(group) {
-		groupsPO.searchTab.sendKeys(GROUP_NAME);
-		return groupsPO.groupsOnPage().filter(function (row) {
-			return row.element(by.binding('group.name')).getText().then(function (text) {
-				return text === group;
-			});
-		})
-	}
 
-	function deleteGroupByName(group) {
+	function deleteGroup() {
 		navbarPO.groupsLink.click();
-		findGroupsByName(group).first().element(by.model('group.checked')).click();
-		groupsPO.deleteButton.click();
+		searchService.search(groupsPO, GROUP_NAME, by.binding('group.name')).then(function (group) {
+			group.element(by.model('group.checked')).click();
+			groupsPO.deleteButton.click();
+		});
 	}
 
 

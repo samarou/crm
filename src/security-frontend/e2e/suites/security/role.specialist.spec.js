@@ -28,7 +28,7 @@ describe('Specialist security', function () {
 
 	it('should not have permission to edit contacts, only read', function () {
 		navbarPO.contactsLink.click();
-		contactsPage.contactsOnPage().first().element(by.css('span[ng-click="vm.edit(contact)"]')).click();
+		contactsPage.pageList().first().element(by.css('span[ng-click="vm.edit(contact)"]')).click();
 		expect(contactFormPO.getFirstName().isEnabled()).toBeFalsy();
 		expect(contactFormPO.getLastName().isEnabled()).toBeFalsy();
 		expect(contactFormPO.getEmail().isEnabled()).toBeFalsy();
@@ -38,7 +38,7 @@ describe('Specialist security', function () {
 
 	it('should not have permission to edit contacts, only read', function () {
 		navbarPO.contactsLink.click();
-		contactsPage.contactsOnPage().first().element(by.css('span[ng-click="vm.edit(contact)"]')).click();
+		contactsPage.pageList().first().element(by.css('span[ng-click="vm.edit(contact)"]')).click();
 		expect(contactFormPO.getFirstName().isEnabled()).toBeFalsy();
 		expect(contactFormPO.getLastName().isEnabled()).toBeFalsy();
 		expect(contactFormPO.getEmail().isEnabled()).toBeFalsy();
@@ -52,7 +52,7 @@ describe('Specialist security', function () {
 
 	it('should not have permission to delete contacts', function () {
 		navbarPO.contactsLink.click();
-		contactsPage.contactsOnPage().first().element(by.model('contact.checked')).click();
+		contactsPage.pageList().first().element(by.model('contact.checked')).click();
 		contactsPage.deleteButton.click();
 		contactsPage.getConfirmButton().click();
 		contactsPage.getNotifyButton().click();

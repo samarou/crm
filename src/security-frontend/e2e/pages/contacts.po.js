@@ -11,7 +11,7 @@ var GroupsPage = function () {
 	self.addButton = element(by.css('span[ng-click="vm.add()"]'));
 	self.deleteButton = element(by.css('span[ng-click="vm.remove()"]'));
 	self.nextPageButton = element(by.linkText('Next'));
-	self.contactsOnPage = function () {
+	self.pageList = function () {
 		return element.all(
 				by.repeater('contact in vm.searchContactBundle.itemsList'));
 	};
