@@ -9,8 +9,8 @@ describe('Users under role ADMIN', function () {
 	var rolesFormPO = require('../../pages/role.form.po');
 	var navbarPO = require('../../pages/navbar.po');
 
-	var ROLE_NAME = 'TestRole61';
-	var ROLE_DESCRIPTION = 'zzzzzzzzzzzz';
+	var ROLE_NAME = 'RoleName';
+	var ROLE_DESCRIPTION = 'RoleDescription';
 
 	beforeAll(function () {
 		loginService.login(credentials.admin);

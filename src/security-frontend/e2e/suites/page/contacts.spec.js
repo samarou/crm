@@ -37,7 +37,11 @@ describe('Users under role Manager', function () {
 
 
 	it('should be able to delete contact from page', function () {
+		navbarPO.contactsLink.click();
 		deleteContact();
+		searchService.search(contactsPO, CONTACT_EMAIL, by.binding('contact.email')).then(function (contact) {
+			expect(contact).toBeNull();
+		});
 	});
 
 

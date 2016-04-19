@@ -6,7 +6,7 @@ var RolesPage = function () {
 	self.table = element(by.css('table.table'));
 	self.addButton = element(by.css('span[ng-click="vm.add()"]'));
 	self.deleteButton = element(by.css('span[ng-click="vm.remove()"]'));
-	self.nextPageButton = element(by.linkText('Next'));
+	self.nextPageButton = element(by.css('li.pagination-next'));
 	self.tableName = function () {
 		return self.table.element(by.tagName('caption')).getText();
 	};
