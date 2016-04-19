@@ -24,14 +24,13 @@ describe('Users under role ADMIN', function () {
 
   it('should be able to filter user records by roles', function () {
     usersPO.getOption(ROLE_FILTERING_USER).click();
-    searchService.search(usersPO, FILTERING_USER.username, by.binding('user.userName')).then(expectFoundToBeTrue);
+    searchService.search(usersPO, FILTERING_USER.username, by.binding('user.userName')).then(expectToBeTruthy);
   });
 
   it('should be able to block the user and check if it`s blocked', function () {
     var userToBlock = BLOCKING_USER.username;
-    usersPO.searchTab.sendKeys(userToBlock);
     usersPO.getOption(ROLE_BLOCKING_USER).click();
-    iterateThroughPages(isBlockingUserOnPage).then(expectFoundToBeTrue);
+    searchService.search(usersPO, userToBlock, by.binding('user.userName')).then(expectToBeTruthy);
     activateUser(false, userToBlock);
     expect(checkUserOnPage(userToBlock)).toBe(false);
     usersPO.activeUserFlag.click();
@@ -43,17 +42,19 @@ describe('Users under role ADMIN', function () {
 
   it('should be able to add Manager role to admin and access contacts page', function () {
     var userChangingRole = CHANGING_ROLE_USER.username;
-    iterateThroughPages(isChangingRoleUserOnPage).then(expectFoundToBeTrue);
+    searchService.search(usersPO, userChangingRole, by.binding('user.userName')).then(expectToBeTruthy);
     usersPO.editUserClick(userChangingRole);
     usersFormPO.checkRole(ROLE_CHANGING_ROLE_USER);
     usersFormPO.submitButton.click();
     loginService.logout();
+
     loginService.login(CHANGING_ROLE_USER);
     navbarPO.contactsLink.click();
     expect(contactsPage.searchTab.isPresent()).toBe(true);
     loginService.logout();
+
     loginService.login(ADMIN);
-    iterateThroughPages(isChangingRoleUserOnPage).then(expectFoundToBeTrue);
+    searchService.search(usersPO, userChangingRole, by.binding('user.userName')).then(expectToBeTruthy);
     usersPO.editUserClick(userChangingRole);
     usersFormPO.uncheckRole(ROLE_CHANGING_ROLE_USER);
     usersFormPO.submitButton.click();
@@ -63,38 +64,8 @@ describe('Users under role ADMIN', function () {
     loginService.logout();
   });
 
-  function expectFoundToBeTrue(found) {
+  function expectToBeTruthy(found) {
     expect(found).toBeTruthy();
-  }
-
-  function iterateThroughPages(checkingFunction) {
-    return checkingFunction()
-      .then(function (isFound) {
-        return checkingLoop(isFound, checkingFunction);
-      }).then(function (elementInPage) {
-        return elementInPage.found;
-      });
-  }
-
-  function isFilteringUserOnPage(isLastPage) {
-    return checkUserOnPage(FILTERING_USER.username)
-      .then(function (found) {
-        return ElementInPage(found, isLastPage);
-      })
-  }
-
-  function isBlockingUserOnPage(isLastPage) {
-    return checkUserOnPage(BLOCKING_USER.username)
-      .then(function (found) {
-        return ElementInPage(found, isLastPage);
-      })
-  }
-
-  function isChangingRoleUserOnPage(isLastPage) {
-    return checkUserOnPage(CHANGING_ROLE_USER.username)
-      .then(function (found) {
-        return ElementInPage(found, isLastPage);
-      })
   }
 
   function activateUser(isMakeActive, userName) {
@@ -104,47 +75,6 @@ describe('Users under role ADMIN', function () {
     } else {
       usersPO.userDeactivation.click();
     }
-  }
-
-  function checkingLoop(initElOnPage, checkingFunction) {
-    return goToNextPageIfNotLast(initElOnPage.found)
-      .then(function (elOnPage) {
-        if (elOnPage.found) {
-          return elOnPage;
-        } else {
-          return checkingFunction(elOnPage.lastPage)
-            .then(function (elementOnPage) {
-              return loopIfPageNotLast(elementOnPage, checkingFunction);
-            });
-        }
-      });
-  }
-
-  function loopIfPageNotLast(elementOnPage, checkingFunction) {
-    if (elementOnPage.lastPage) {
-      return elementOnPage;
-    } else {
-      return checkingLoop(elementOnPage, checkingFunction);
-    }
-  }
-
-  function goToNextPageIfNotLast(elementFound) {
-    return usersPO.isLastPage()
-      .then(function (isLastPage) {
-          if (isLastPage || elementFound) {
-            return ElementInPage(elementFound, isLastPage);
-          } else {
-            return usersPO.nextPageButton().click()
-              .then(function () {
-                return ElementInPage(elementFound, isLastPage);
-              });
-          }
-        }
-      );
-  }
-
-  function ElementInPage(elementFound, isLastPage) {
-    return {found: elementFound, lastPage: isLastPage}
   }
 
   function checkUserOnPage(userName) {
