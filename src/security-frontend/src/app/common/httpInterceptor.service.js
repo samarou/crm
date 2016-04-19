@@ -4,18 +4,27 @@
 	angular.module('securityManagement').factory('HttpInterceptor', HttpInterceptor);
 
 	/** @ngInject */
-	function HttpInterceptor($q, $log, $injector) {
+	function HttpInterceptor($q, $log, $injector, toastr) {
 		return {
 			responseError: function (response) {
-				if (response.status === 401) {
-					var AuthService = $injector.get('AuthService');
-					if (AuthService.isAuthenticated()) {
-						AuthService.logout();
+				switch (response.status) {
+					case 401: {
+						var AuthService = $injector.get('AuthService');
+						if (AuthService.isAuthenticated()) {
+							AuthService.logout();
+						}
+						$injector.get('$state').transitionTo('login');
+						toastr.error('Your credentials are gone', 'Error');
+						break;
 					}
+					default: {
+						$log.error(response.status + ':' + response.data.type + ' ' + response.data.message);
+						toastr.error('Something goes wrong', 'Error');
+					}
+
 				}
-				$log.info('Redirect unauthorized to login');
-				$injector.get('$state').transitionTo('login');
 				return $q.reject(response);
+
 			}
 		}
 	}
