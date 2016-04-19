@@ -14,6 +14,9 @@
 					templateUrl: 'app/components/login/login.view.html',
 					controllerAs: 'vm'
 				})
+				.state('home', {
+					url: '/'
+				})
 				/** Users routes */
 				.state('users', {
 					abstract: true,
@@ -111,7 +114,7 @@
 					controllerAs: 'vm'
 				});
 
-		$urlRouterProvider.otherwise('/login');
+		$urlRouterProvider.otherwise('/');
 	}
 
 })();
