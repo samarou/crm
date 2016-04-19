@@ -3,11 +3,12 @@
 
 describe('Users under role ADMIN', function () {
   var loginService = require('../../login.service.js');
-  var usersPage = require('../../pages/users.po.js');
+  var usersPO = require('../../pages/users.po.js');
   var credentials = require('../../credentials');
   var usersFormPO = require('../../pages/users.form.po.js');
   var contactsPage = require('../../pages/contacts.po.js');
   var navbarPO = require('../../pages/navbar.po');
+  var searchService = require('../../search.service');
 
   var ROLE_BLOCKING_USER = 'MANAGER';
   var ROLE_FILTERING_USER = 'ADMIN';
@@ -22,29 +23,28 @@ describe('Users under role ADMIN', function () {
   });
 
   it('should be able to filter user records by roles', function () {
-    usersPage.getOption(ROLE_FILTERING_USER).click();
-    iterateThroughPages(isFilteringUserOnPage)
-      .then(expectFoundToBeTrue);
+    usersPO.getOption(ROLE_FILTERING_USER).click();
+    searchService.search(usersPO, FILTERING_USER.username, by.binding('user.userName')).then(expectFoundToBeTrue);
   });
 
   it('should be able to block the user and check if it`s blocked', function () {
     var userToBlock = BLOCKING_USER.username;
-    usersPage.searchTab.sendKeys(userToBlock);
-    usersPage.getOption(ROLE_BLOCKING_USER).click();
+    usersPO.searchTab.sendKeys(userToBlock);
+    usersPO.getOption(ROLE_BLOCKING_USER).click();
     iterateThroughPages(isBlockingUserOnPage).then(expectFoundToBeTrue);
     activateUser(false, userToBlock);
     expect(checkUserOnPage(userToBlock)).toBe(false);
-    usersPage.activeUserFlag.click();
+    usersPO.activeUserFlag.click();
     expect(checkUserOnPage(userToBlock)).toBe(true);
     activateUser(true, userToBlock);
-    usersPage.activeUserFlag.click();
+    usersPO.activeUserFlag.click();
     expect(checkUserOnPage(userToBlock)).toBe(true);
   });
 
   it('should be able to add Manager role to admin and access contacts page', function () {
     var userChangingRole = CHANGING_ROLE_USER.username;
     iterateThroughPages(isChangingRoleUserOnPage).then(expectFoundToBeTrue);
-    usersPage.editUserClick(userChangingRole);
+    usersPO.editUserClick(userChangingRole);
     usersFormPO.checkRole(ROLE_CHANGING_ROLE_USER);
     usersFormPO.submitButton.click();
     loginService.logout();
@@ -54,7 +54,7 @@ describe('Users under role ADMIN', function () {
     loginService.logout();
     loginService.login(ADMIN);
     iterateThroughPages(isChangingRoleUserOnPage).then(expectFoundToBeTrue);
-    usersPage.editUserClick(userChangingRole);
+    usersPO.editUserClick(userChangingRole);
     usersFormPO.uncheckRole(ROLE_CHANGING_ROLE_USER);
     usersFormPO.submitButton.click();
   });
@@ -64,7 +64,7 @@ describe('Users under role ADMIN', function () {
   });
 
   function expectFoundToBeTrue(found) {
-    expect(found).toBe(true);
+    expect(found).toBeTruthy();
   }
 
   function iterateThroughPages(checkingFunction) {
@@ -98,11 +98,11 @@ describe('Users under role ADMIN', function () {
   }
 
   function activateUser(isMakeActive, userName) {
-    usersPage.clickOnCheckboxOfUser(userName);
+    usersPO.clickOnCheckboxOfUser(userName);
     if (isMakeActive) {
-      usersPage.userActivation.click();
+      usersPO.userActivation.click();
     } else {
-      usersPage.userDeactivation.click();
+      usersPO.userDeactivation.click();
     }
   }
 
@@ -129,12 +129,12 @@ describe('Users under role ADMIN', function () {
   }
 
   function goToNextPageIfNotLast(elementFound) {
-    return usersPage.isLastPage()
+    return usersPO.isLastPage()
       .then(function (isLastPage) {
           if (isLastPage || elementFound) {
             return ElementInPage(elementFound, isLastPage);
           } else {
-            return usersPage.nextPageButton().click()
+            return usersPO.nextPageButton().click()
               .then(function () {
                 return ElementInPage(elementFound, isLastPage);
               });
@@ -148,7 +148,7 @@ describe('Users under role ADMIN', function () {
   }
 
   function checkUserOnPage(userName) {
-    return usersPage.getUserNamesInTable().then(function (users) {
+    return usersPO.getUserNamesInTable().then(function (users) {
       return checkIfUserInArray(users, userName);
     })
   }

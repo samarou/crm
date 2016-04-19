@@ -19,7 +19,7 @@ describe('Admin security', function () {
     expect(usersPage.roleSelector.isPresent()).toBe(true);
     expect(usersPage.activeUserFlag.isPresent()).toBe(true);
     expect(usersPage.table.isPresent()).toBe(true);
-    expect(usersPage.userRows.isPresent()).toBe(true);
+    expect(usersPage.pageList().isPresent()).toBe(true);
     expect(usersPage.tableName()).toBe('Users');
   });
 
