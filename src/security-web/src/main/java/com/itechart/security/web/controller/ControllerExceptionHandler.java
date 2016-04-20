@@ -4,6 +4,7 @@ import com.itechart.security.web.model.ExceptionResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,7 +19,18 @@ public class ControllerExceptionHandler {
     @ResponseBody
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Throwable.class)
-    public ExceptionResponse handleException(Throwable e) {
+    public ExceptionResponse handleServerException(Throwable e) {
+        return handleException(e);
+    }
+
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(BadCredentialsException.class)
+    public ExceptionResponse handleBadCredentialsException(Throwable e) {
+       return handleException(e);
+    }
+
+    private ExceptionResponse handleException(Throwable e) {
         logger.error(e.getMessage(), e);
         ExceptionResponse response = new ExceptionResponse();
         response.setType(e.getClass().getSimpleName());
