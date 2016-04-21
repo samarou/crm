@@ -11,7 +11,6 @@
 		var vm = this;
 		vm.role = {};
 		vm.submitText = 'Save';
-		vm.cancelText = 'Cancel';
 		vm.title = 'Edit role';
 		vm.objectTypes = [];
 
