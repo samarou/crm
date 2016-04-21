@@ -13,7 +13,6 @@
 		var vm = this;
 		vm.group = {};
 		vm.submitText = 'Save';
-		vm.cancelText = 'Cancel';
 		vm.title = 'Edit group';
 
 		GroupService.get($stateParams.id).then(function (response) {

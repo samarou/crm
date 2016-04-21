@@ -13,7 +13,6 @@
 		var vm = this;
 		vm.group = {};
 		vm.submitText = 'Add';
-		vm.cancelText = 'Cancel';
 		vm.title = 'Add group';
 
 		vm.submit = function () {
