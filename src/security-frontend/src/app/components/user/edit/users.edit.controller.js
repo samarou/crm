@@ -17,7 +17,6 @@
 		vm.groups = [];
 		vm.roles = [];
 		vm.submitText = 'Save';
-		vm.cancelText = 'Cancel';
 		vm.title = 'Edit user';
 
 		$q.all(

@@ -14,7 +14,6 @@
 		vm.gtoups = [];
 		vm.roles = [];
 		vm.submitText = 'Add';
-		vm.cancelText = 'Cancel';
 		vm.title = 'Add user';
 
 		GroupService.getAll().then(function (response) {
