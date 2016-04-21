@@ -10,7 +10,6 @@
 		var vm = this;
 		vm.role = {};
 		vm.submitText = 'Add';
-		vm.cancelText = 'Cancel';
 		vm.title = 'Add role';
 		vm.objectTypes = [];
 
