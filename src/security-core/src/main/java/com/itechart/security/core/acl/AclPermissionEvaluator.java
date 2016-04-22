@@ -52,11 +52,30 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
     }
 
     private boolean checkPermission(Authentication authentication, ObjectIdentity oid, Object permissionObject) {
-        logger.debug("Checking permission '{}' for object '{}'", permissionObject, oid);
         List<Permission> requiredPermissions = resolvePermission(permissionObject);
+        boolean isGrantedWithAcl = checkAclPermission(authentication, oid, requiredPermissions);
+        boolean isGrantedWithRolePrivilege = checkRolePrivilegePermission(authentication, oid, requiredPermissions);
+        boolean decision = isGrantedWithAcl && isGrantedWithRolePrivilege;
+        logger.debug("permissions on {} for {}: with acl: {}, with role-privileges: {}, decision: {}",
+                oid, permissionObject, isGrantedWithRolePrivilege, isGrantedWithAcl, decision ? "allow" : "denied");
+        return decision;
+    }
+
+    private boolean checkRolePrivilegePermission(Authentication authentication, ObjectIdentity oid, List<Permission> requiredPermissions) {
+        boolean isGranted = true;
+        SecurityOperations securityOperations = new SecurityOperations(authentication);
+        securityOperations.setRoleHierarchy(roleHierarchy);
+        for (Permission requiredPermission : requiredPermissions) {
+            // todo нужен маппинг привилегий на роли
+            isGranted &= securityOperations.hasPrivilege(oid.getObjectType(), requiredPermission.name());
+        }
+        return isGranted;
+    }
+
+    private boolean checkAclPermission(Authentication authentication, ObjectIdentity oid, List<Permission> requiredPermissions) {
+        boolean permissionsFound = false;
         List<SecurityAcl> acls = securityRepository.findAcls(oid);
         if (!CollectionUtils.isEmpty(acls)) {
-            Boolean permissionsFound = false;
             Long userId = SecurityUtils.getUserId(authentication);
             List<Long> principalIds = SecurityUtils.getPrincipalIds(authentication);
             for (SecurityAcl acl : acls) {
@@ -70,24 +89,9 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
                     }
                 }
             }
-            if (permissionsFound) {
-                // permissions was found and access is granted
-                logger.debug("Permissions found on {}. Required permissions is granted", oid);
-                return true;
-            }
         }
-        // if acl or permissions on acl wasn't found then check user roles and permissions
-        SecurityOperations securityOperations = new SecurityOperations(authentication);
-        securityOperations.setRoleHierarchy(roleHierarchy);
-        boolean granted = true;
-        for (Permission requiredPermission : requiredPermissions) {
-            // todo нужен маппинг привилегий на роли
-            granted &= securityOperations.hasPrivilege(oid.getObjectType(), requiredPermission.name());
-        }
-        logger.debug("Have no any permissions on {}, but required permissions granted througth roles/privileges", oid);
-        return granted;
+        return permissionsFound;
     }
-
 
     /**
      * Method checks that principals have required permissions on acl.
