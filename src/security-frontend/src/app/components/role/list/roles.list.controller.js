@@ -9,7 +9,7 @@
 			.controller('RolesListController', RolesListController);
 
 	/** @ngInject */
-	function RolesListController($q, roleService, privilegeService, dialogService, collections, $state) {
+	function RolesListController($q, roleService, rolePrivilegeService, dialogService, $state) {
 		'use strict';
 
 		var vm = this;
@@ -33,36 +33,9 @@
 		};
 		vm.objectTypes = [];
 
-		function fetchAllRoles() {
-			roleService.fetchAll().then(function (response) {
-				vm.roleList = response.data;
-				vm.pagingFilterConfig.totalItems = vm.roleList.length;
-			});
-		}
-
 		fetchAllRoles();
+		rolePrivilegeService.getObjectTypes(vm);
 
-
-		privilegeService.getAll().then(function (response) {
-			var objectTypeList = Object.create(null);
-			var privileges = response.data;
-			privileges.forEach(function (privilege) {
-				if (!(privilege.objectTypeName in objectTypeList)) {
-					objectTypeList[privilege.objectTypeName] = [];
-				}
-				objectTypeList[privilege.objectTypeName].push({
-					id: privilege.action.id,
-					name: privilege.actionName,
-					privilege: privilege
-				});
-			});
-			vm.objectTypes = collections.sort(Object.keys(objectTypeList)).map(function (objectTypeName) {
-				return {
-					objectTypeName: objectTypeName,
-					actions: collections.sort(objectTypeList[objectTypeName], true, collections.byProperty('id'))
-				};
-			});
-		});
 
 		vm.updateFilterObject = function () {
 			vm.pagingFilterConfig.filterObject.name = vm.searchText;
@@ -88,7 +61,7 @@
 		};
 
 		vm.editOld = function (role) {
-			checkPrivilegesOfRole(role);
+			rolePrivilegeService.checkPrivilegesOfRole(role);
 			showDialog({
 				title: 'Editing Role',
 				okTitle: 'Update',
@@ -98,7 +71,7 @@
 		};
 
 		vm.create = function () {
-			checkPrivilegesOfRole({});
+			rolePrivilegeService.checkPrivilegesOfRole({});
 			showDialog({
 				title: 'Create a New Role',
 				okTitle: 'Add',
@@ -128,13 +101,7 @@
 
 		function update(role) {
 			role.privileges = [];
-			vm.objectTypes.forEach(function (objectType) {
-				objectType.actions.forEach(function (action) {
-					if (action.privilege.checked) {
-						role.privileges.push(action.privilege);
-					}
-				});
-			});
+			rolePrivilegeService.getPrivilegesOfRole(vm);
 			if (role.id) {
 				var originRole = vm.roleList.find(function (r) {
 					return r.id === role.id
@@ -150,18 +117,17 @@
 			}
 		}
 
-		function checkPrivilegesOfRole(role) {
-			vm.objectTypes.forEach(function (privilegeObject) {
-				privilegeObject.actions.forEach(function (action) {
-					action.privilege.checked = !!collections.find(action.privilege, role.privileges);
-				})
-			});
-		}
-
 		function showDialog(model) {
 			var dialog = dialogService.custom('app/components/role/role.modal.view.html', model);
 			dialog.result.then(function (model) {
 				update(model.role);
+			});
+		}
+
+		function fetchAllRoles() {
+			roleService.fetchAll().then(function (response) {
+				vm.roleList = response.data;
+				vm.pagingFilterConfig.totalItems = vm.roleList.length;
 			});
 		}
 	}
