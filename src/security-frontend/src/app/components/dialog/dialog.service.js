@@ -3,7 +3,7 @@
 
 	angular
 			.module('securityManagement')
-			.factory('DialogService', DialogService)
+			.factory('dialogService', DialogService)
 			.controller('ErrorDialogController', ErrorDialogController)
 			.controller('NotifyDialogController', NotifyDialogController)
 			.controller('ConfirmDialogController', ConfirmDialogController)
@@ -11,65 +11,74 @@
 
 	/** @ngInject */
 	function DialogService($uibModal) {
+
+		function notify(message) {
+			return $uibModal.open({
+				templateUrl: 'app/components/dialog/notify.view.html',
+				controller: 'NotifyDialogController',
+				controllerAs: 'vm',
+				resolve: {
+					message: function () {
+						return message
+					}
+				}
+			});
+		}
+
+		function error(message) {
+			return $uibModal.open({
+				templateUrl: 'app/components/dialog/error.view.html',
+				controller: 'ErrorDialogController',
+				controllerAs: 'vm',
+				resolve: {
+					message: function () {
+						return message
+					}
+				}
+			});
+		}
+
+		function confirm(message) {
+			return $uibModal.open({
+				templateUrl: 'app/components/dialog/confirm.view.html',
+				controller: 'ConfirmDialogController',
+				controllerAs: 'vm',
+				resolve: {
+					message: function () {
+						return message
+					}
+				}
+			});
+		}
+
+		/**
+		 * Display a customized modal dialog
+		 * @param bodyUrl url of partial html that will be included as dialog body
+		 * @param model dialog model with fields:
+		 - title - dialog title
+		 - okTitle - title for OK button
+		 - cancelTitle - title for Cancel button
+		 */
+		function custom(bodyUrl, model) {
+			return $uibModal.open({
+				templateUrl: bodyUrl,
+				windowTemplateUrl: 'app/components/dialog/custom.template.html',
+				controller: 'CustomDialogController',
+				controllerAs: 'vm',
+				keyboard: true,
+				backdrop: false,
+				size: model.size,// if undefined or null, then property will not used
+				resolve: {
+					model: model
+				}
+			});
+		}
+
 		return {
-			notify: function (message) {
-				return $uibModal.open({
-					templateUrl: 'app/components/dialog/notify.view.html',
-					controller: 'NotifyDialogController',
-					controllerAs: 'vm',
-					resolve: {
-						message: function () {
-							return message
-						}
-					}
-				});
-			},
-			error: function (message) {
-				return $uibModal.open({
-					templateUrl: 'app/components/dialog/error.view.html',
-					controller: 'ErrorDialogController',
-					controllerAs: 'vm',
-					resolve: {
-						message: function () {
-							return message
-						}
-					}
-				});
-			},
-			confirm: function (message) {
-				return $uibModal.open({
-					templateUrl: 'app/components/dialog/confirm.view.html',
-					controller: 'ConfirmDialogController',
-					controllerAs: 'vm',
-					resolve: {
-						message: function () {
-							return message
-						}
-					}
-				});
-			},
-			/**
-			 * Display a customized modal dialog
-			 * @param bodyUrl url of partial html that will be included as dialog body
-			 * @param model dialog model with fields:
-			 - title - dialog title
-			 - okTitle - title for OK button
-			 - cancelTitle - title for Cancel button
-			 */
-			custom: function (bodyUrl, model) {
-				return $uibModal.open({
-					templateUrl: bodyUrl,
-					windowTemplateUrl: 'app/components/dialog/custom.template.html',
-					controller: 'CustomDialogController',
-					controllerAs: 'vm',
-					keyboard: true,
-					backdrop: false,
-					size: model.size,// if undefined or null, then property will not used
-					resolve: {
-						model: model
-					}
-				});
-			}
+			notify: notify,
+			error: error,
+			confirm: confirm,
+			custom: custom
 		};
 	}
 
@@ -118,6 +127,7 @@
 			$uibModalInstance.dismiss();
 		};
 	}
+
 	/*eslint-enable */
 
 })();

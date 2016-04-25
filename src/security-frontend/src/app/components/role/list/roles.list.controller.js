@@ -9,7 +9,7 @@
 			.controller('RolesListController', RolesListController);
 
 	/** @ngInject */
-	function RolesListController($q, roleService, privilegeService, DialogService, Collections, $state) {
+	function RolesListController($q, roleService, privilegeService, dialogService, Collections, $state) {
 		'use strict';
 
 		var vm = this;
@@ -159,7 +159,7 @@
 		}
 
 		function showDialog(model) {
-			var dialog = DialogService.custom('app/components/role/role.modal.view.html', model);
+			var dialog = dialogService.custom('app/components/role/role.modal.view.html', model);
 			dialog.result.then(function (model) {
 				update(model.role);
 			});

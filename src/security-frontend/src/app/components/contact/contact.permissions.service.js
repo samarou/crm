@@ -8,7 +8,7 @@
 			.factory('ContactPermissionsService', ContactPermissionsService);
 
 	/** @ngInject */
-	function ContactPermissionsService($q, Collections, DialogService, groupBundle, SearchBundle, ContactService) {
+	function ContactPermissionsService($q, Collections, dialogService, groupBundle, SearchBundle, ContactService) {
 		var vm = this;
 		vm.groupBundle = groupBundle.publicMode();
 		vm.userBundle = SearchBundle.userPublicMode();
@@ -29,7 +29,7 @@
 
 		function addPermissionsForUser(scope) {
 			vm.userBundle.find();
-			DialogService.custom('app/components/contact/public-users.modal.view.html', {
+			dialogService.custom('app/components/contact/public-users.modal.view.html', {
 				title: 'Add Permissions for User',
 				bundle: vm.userBundle,
 				size: 'modal--user-table',
@@ -47,7 +47,7 @@
 
 		function addPermissionsForGroup(scope) {
 			vm.groupBundle.find();
-			DialogService.custom('app/components/contact/public-groups.modal.view.html', {
+			dialogService.custom('app/components/contact/public-groups.modal.view.html', {
 				title: 'Add Permissions for Group',
 				bundle: vm.groupBundle,
 				size: 'modal--group-table',

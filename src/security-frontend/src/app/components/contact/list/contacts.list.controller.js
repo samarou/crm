@@ -9,7 +9,7 @@
 			.controller('ContactsListController', ContactsListController);
 
 	/** @ngInject */
-	function ContactsListController($q, AuthService, ContactService, SearchBundle, DialogService, $state) {
+	function ContactsListController($q, AuthService, ContactService, SearchBundle, dialogService, $state) {
 		'use strict';
 		var vm = this;
 
@@ -32,7 +32,7 @@
 		vm.edit = function (contact) {
 			ContactService.isAllowed(contact.id, permissions.read).then(function (response) {
 				if (!response.data) {
-					DialogService.notify('You haven\'t permissions to edit that contact!');
+					dialogService.notify('You haven\'t permissions to edit that contact!');
 					return;
 				}
 				$state.go('contacts.edit', {id: contact.id});
@@ -56,7 +56,7 @@
 				});
 				$q.all(tasks).then(function () {
 					if (!allContactsCanBeDeleted) {
-						DialogService.notify('You don\'t have permissions to do it.');
+						dialogService.notify('You don\'t have permissions to do it.');
 						return;
 					}
 
@@ -74,7 +74,7 @@
 		};
 
 		function openRemoveDialog() {
-			return DialogService.confirm('Do you want to delete this contact?').result;
+			return dialogService.confirm('Do you want to delete this contact?').result;
 		}
 
 
