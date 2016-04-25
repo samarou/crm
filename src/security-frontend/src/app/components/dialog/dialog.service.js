@@ -62,7 +62,6 @@
 		function custom(bodyUrl, model) {
 			return $uibModal.open({
 				templateUrl: bodyUrl,
-				windowTemplateUrl: 'app/components/dialog/custom.template.html',
 				controller: 'CustomDialogController',
 				controllerAs: 'vm',
 				keyboard: true,
@@ -112,22 +111,19 @@
 		};
 	}
 
-	// todo: fix scope using
-	/*eslint-disable */
 	/** @ngInject */
-	function CustomDialogController($scope, $uibModalInstance, model) {
-		angular.extend($scope, model);
-		$scope.title = model.title || 'Dialog';
-		$scope.okTitle = model.okTitle;
-		$scope.cancelTitle = model.cancelTitle;
-		$scope.ok = function () {
-			$uibModalInstance.close($scope);
+	function CustomDialogController($uibModalInstance, model) {
+		var vm = this;
+		angular.extend(vm, model);
+		vm.title = model.title || 'Dialog';
+		vm.okTitle = model.okTitle;
+		vm.cancelTitle = model.cancelTitle;
+		vm.ok = function () {
+			$uibModalInstance.close(vm);
 		};
-		$scope.cancel = function () {
+		vm.cancel = function () {
 			$uibModalInstance.dismiss();
 		};
 	}
-
-	/*eslint-enable */
 
 })();
