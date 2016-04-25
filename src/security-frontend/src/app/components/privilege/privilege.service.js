@@ -6,16 +6,19 @@
 
 	angular
 			.module('securityManagement')
-			.service('PrivilegeService', PrivilegeService);
+			.factory('privilegeService', PrivilegeService);
 
 	/** @ngInject */
 	function PrivilegeService($http) {
 		'use strict';
-		this.fetchAll = function () {
-			return $http.get('rest/privileges');
-		};
 
-		return this;
+		function getAll() {
+			return $http.get('rest/privileges');
+		}
+
+		return {
+			getAll: getAll
+		}
 	}
 })();
 

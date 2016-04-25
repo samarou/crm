@@ -9,7 +9,7 @@
 			.controller('RolesListController', RolesListController);
 
 	/** @ngInject */
-	function RolesListController($q, roleService, PrivilegeService, DialogService, Collections, $state) {
+	function RolesListController($q, roleService, privilegeService, DialogService, Collections, $state) {
 		'use strict';
 
 		var vm = this;
@@ -43,7 +43,7 @@
 		fetchAllRoles();
 
 
-		PrivilegeService.getAll().then(function (response) {
+		privilegeService.getAll().then(function (response) {
 			var objectTypeList = Object.create(null);
 			var privileges = response.data;
 			privileges.forEach(function (privilege) {

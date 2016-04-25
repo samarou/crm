@@ -5,10 +5,10 @@
 			.factory('rolePrivilegeService', RolePrivilegeService);
 
 	/** @ngInject */
-	function RolePrivilegeService(Collections, PrivilegeService) {
+	function RolePrivilegeService(Collections, privilegeService) {
 
 		function getObjectTypes(scope) {
-			return PrivilegeService.getAll().then(function (response) {
+			return privilegeService.getAll().then(function (response) {
 				var privileges = response.data;
 				var objectTypeList = fillObjectTypeList(privileges);
 				scope.objectTypes = sortObjectTypes(objectTypeList);
