@@ -5,7 +5,7 @@
 			.module('crm.group')
 			.controller('GroupsListController', GroupsListController);
 
-	function GroupsListController($q, groupService, groupSearch, $state) {
+	function GroupsListController($q, groupService, groupSearch, dialogService, $state) {
 		var vm = this;
 
 		vm.bundle = groupSearch.securedMode();
@@ -27,15 +27,48 @@
 			$state.go('groups.edit', {id: group.id});
 		}
 
-		function remove() {
-			var tasks = [];
-			vm.bundle.pageGroups.forEach(function (group) {
-				if (group.checked) {
-					tasks.push(groupService.remove(group.id))
-				}
-			});
-			$q.all(tasks).then(vm.bundle.find);
-			vm.bundle.isSelectedAll = false;
-		}
+    vm.remove = function () {
+      var checkedGroups = vm.bundle.pageGroups.filter(function (group) {
+        return group.checked;
+      });
+      ifAllGroupsAreEmpty(checkedGroups).then(function () {
+          removeAll(checkedGroups);
+      }, function () {
+        dialogService.notify('Allowed remove only empty groups!');
+      });
+    };
+
+    function ifAllGroupsAreEmpty(groups) {
+      var allGroupsAreEmpty = true;
+      var resultDefer = $q.defer();
+      $q.all(
+        groups.map(function (group) {
+          if (!allGroupsAreEmpty) {
+            return;
+          }
+          return groupService.get(group.id).then(function (response) {
+            var group = response.data;
+            if (group.members.length > 0) {
+              allGroupsAreEmpty = false;
+            }
+          });
+        })
+      ).then(function () {
+        if (allGroupsAreEmpty) {
+          resultDefer.resolve();
+        } else {
+          resultDefer.reject();
+        }
+      });
+      return resultDefer.promise;
+    }
+
+    function removeAll(groups) {
+      $q.all(
+        groups.map(function (group) {
+          return groupService.remove(group.id);
+        })
+      ).then(vm.bundle.find);
+    }
 	}
 })();
