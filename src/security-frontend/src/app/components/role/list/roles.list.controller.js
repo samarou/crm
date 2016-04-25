@@ -9,7 +9,7 @@
 			.controller('RolesListController', RolesListController);
 
 	/** @ngInject */
-	function RolesListController($q, RoleService, PrivilegeService, DialogService, Collections, $state) {
+	function RolesListController($q, roleService, PrivilegeService, DialogService, Collections, $state) {
 		'use strict';
 
 		var vm = this;
@@ -34,7 +34,7 @@
 		vm.objectTypes = [];
 
 		function fetchAllRoles() {
-			RoleService.fetchAll().then(function (response) {
+			roleService.fetchAll().then(function (response) {
 				vm.roleList = response.data;
 				vm.pagingFilterConfig.totalItems = vm.roleList.length;
 			});
@@ -43,7 +43,7 @@
 		fetchAllRoles();
 
 
-		PrivilegeService.fetchAll().then(function (response) {
+		PrivilegeService.getAll().then(function (response) {
 			var objectTypeList = Object.create(null);
 			var privileges = response.data;
 			privileges.forEach(function (privilege) {
@@ -119,7 +119,7 @@
 			var tasks = [];
 			vm.pageRoles.forEach(function (role) {
 				if (role.checked) {
-					tasks.push(RoleService.remove(role.id))
+					tasks.push(roleService.remove(role.id))
 				}
 			});
 			$q.all(tasks).then(fetchAllRoles);
@@ -140,9 +140,9 @@
 					return r.id === role.id
 				});
 				angular.copy(role, originRole);
-				RoleService.update(role);
+				roleService.update(role);
 			} else {
-				RoleService.create(role).then(function (response) {
+				roleService.create(role).then(function (response) {
 					role.id = response.data;
 					vm.roleList.push(role);
 					vm.pagingFilterConfig.totalItems = vm.roleList.length;

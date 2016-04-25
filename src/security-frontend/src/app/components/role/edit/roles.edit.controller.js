@@ -7,7 +7,7 @@
 
 
 	/** @ngInject */
-	function RolesEditController(RoleService, $stateParams, $state, RolePrivilegeService) {
+	function RolesEditController(roleService, $stateParams, $state, rolePrivilegeService) {
 		var vm = this;
 		vm.role = {};
 		vm.submitText = 'Save';
@@ -15,11 +15,11 @@
 		vm.objectTypes = [];
 
 
-		RoleService.get($stateParams.id).then(function (response) {
+		roleService.get($stateParams.id).then(function (response) {
 			vm.role = response.data;
 		}).then(function () {
-			RolePrivilegeService.getObjectTypes(vm).then(function () {
-				RolePrivilegeService.checkPrivilegesOfRole(vm);
+			rolePrivilegeService.getObjectTypes(vm).then(function () {
+				rolePrivilegeService.checkPrivilegesOfRole(vm);
 			});
 		});
 
@@ -33,7 +33,7 @@
 					}
 				});
 			});
-			RoleService.update(vm.role).then(function () {
+			roleService.update(vm.role).then(function () {
 				$state.go('roles.list');
 			})
 		};

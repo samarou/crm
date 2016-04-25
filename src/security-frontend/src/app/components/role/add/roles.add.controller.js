@@ -6,20 +6,20 @@
 			.controller('RolesAddController', RolesAddController);
 
 
-	function RolesAddController(RoleService, RolePrivilegeService, $state) {
+	function RolesAddController(roleService, rolePrivilegeService, $state) {
 		var vm = this;
 		vm.role = {};
 		vm.submitText = 'Add';
 		vm.title = 'Add role';
 		vm.objectTypes = [];
 
-		RolePrivilegeService.getObjectTypes(vm);
+		rolePrivilegeService.getObjectTypes(vm);
 
 
 		vm.submit = function () {
 			vm.role.privileges = [];
-			RolePrivilegeService.getPrivilegesOfRole(vm);
-			RoleService.create(vm.role).then(function () {
+			rolePrivilegeService.getPrivilegesOfRole(vm);
+			roleService.create(vm.role).then(function () {
 				$state.go('roles.list');
 			})
 		};

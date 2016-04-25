@@ -5,31 +5,37 @@
 	'use strict';
 	angular
 			.module('securityManagement')
-			.factory('RoleService', RoleService);
+			.factory('roleService', RoleService);
 
 	/** @ngInject */
 	function RoleService($http) {
-		var service = this;
-		service.fetchAll = function () {
+
+		function fetchAll() {
 			return $http.get('rest/roles');
-		};
+		}
 
-		service.create = function (role) {
+		function create(role) {
 			return $http.post('rest/roles', role);
-		};
+		}
 
-		service.get = function (id) {
+		function get(id) {
 			return $http.get('rest/roles/' + id);
-		};
+		}
 
-		service.update = function (role) {
+		function update(role) {
 			return $http.put('rest/roles', role);
-		};
+		}
 
-		service.remove = function (id) {
+		function remove(id) {
 			return $http.delete('rest/roles/' + id);
-		};
+		}
 
-		return service;
+		return {
+			fetchAll: fetchAll,
+			create: create,
+			get: get,
+			update: update,
+			remove: remove
+		};
 	}
 })();
