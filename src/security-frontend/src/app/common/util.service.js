@@ -6,11 +6,12 @@
 
 	angular
 			.module('securityManagement')
-			.factory('Util', Util);
+			.factory('util', util);
 
 	/** @ngInject */
-	function Util($timeout) {
-		this.createDelayTypingListener = function (action, delay) {
+	function util($timeout) {
+
+		function createDelayTypingListener(action, delay) {
 			return (function () {
 				var timer;
 
@@ -24,8 +25,10 @@
 					}
 				}
 			})();
-		};
+		}
 
-		return this;
+		return {
+			createDelayTypingListener: createDelayTypingListener
+		};
 	}
 })();

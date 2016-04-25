@@ -4,7 +4,9 @@
 (function () {
 	'use strict';
 
-	angular.module('securityManagement').directive('privileges', privileges);
+	angular
+			.module('securityManagement')
+			.directive('privileges', privileges);
 
 	/** @ngInject */
 	function privileges() {

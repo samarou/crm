@@ -3,14 +3,14 @@
 
 	angular
 			.module('securityManagement')
-			.factory('dialogService', DialogService)
+			.factory('dialogService', dialogService)
 			.controller('ErrorDialogController', ErrorDialogController)
 			.controller('NotifyDialogController', NotifyDialogController)
 			.controller('ConfirmDialogController', ConfirmDialogController)
 			.controller('CustomDialogController', CustomDialogController);
 
 	/** @ngInject */
-	function DialogService($uibModal) {
+	function dialogService($uibModal) {
 
 		function notify(message) {
 			return $uibModal.open({

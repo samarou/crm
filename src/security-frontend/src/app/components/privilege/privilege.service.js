@@ -6,11 +6,10 @@
 
 	angular
 			.module('securityManagement')
-			.factory('privilegeService', PrivilegeService);
+			.factory('privilegeService', privilegeService);
 
 	/** @ngInject */
-	function PrivilegeService($http) {
-		'use strict';
+	function privilegeService($http) {
 
 		function getAll() {
 			return $http.get('rest/privileges');

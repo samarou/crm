@@ -7,7 +7,7 @@
 
 
 	/** @ngInject */
-	function UserListController($q, userService, SearchBundle, groupService, roleService, $state) {
+	function UserListController($q, userService, searchBundle, groupService, roleService, $state) {
 		'use strict';
 		var vm = this;
 
@@ -18,7 +18,7 @@
 			vm.roles = response.data;
 		});
 
-		vm.bundle = SearchBundle.userSecuredMode();
+		vm.bundle = searchBundle.userSecuredMode();
 		vm.bundle.find();
 
 		vm.activate = function (newState) {

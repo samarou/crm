@@ -9,7 +9,7 @@
 			.controller('RolesListController', RolesListController);
 
 	/** @ngInject */
-	function RolesListController($q, roleService, privilegeService, dialogService, Collections, $state) {
+	function RolesListController($q, roleService, privilegeService, dialogService, collections, $state) {
 		'use strict';
 
 		var vm = this;
@@ -56,10 +56,10 @@
 					privilege: privilege
 				});
 			});
-			vm.objectTypes = Collections.sort(Object.keys(objectTypeList)).map(function (objectTypeName) {
+			vm.objectTypes = collections.sort(Object.keys(objectTypeList)).map(function (objectTypeName) {
 				return {
 					objectTypeName: objectTypeName,
-					actions: Collections.sort(objectTypeList[objectTypeName], true, Collections.byProperty('id'))
+					actions: collections.sort(objectTypeList[objectTypeName], true, collections.byProperty('id'))
 				};
 			});
 		});
@@ -153,7 +153,7 @@
 		function checkPrivilegesOfRole(role) {
 			vm.objectTypes.forEach(function (privilegeObject) {
 				privilegeObject.actions.forEach(function (action) {
-					action.privilege.checked = !!Collections.find(action.privilege, role.privileges);
+					action.privilege.checked = !!collections.find(action.privilege, role.privileges);
 				})
 			});
 		}

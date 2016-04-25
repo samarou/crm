@@ -9,7 +9,7 @@
 			.controller('ContactsListController', ContactsListController);
 
 	/** @ngInject */
-	function ContactsListController($q, AuthService, contactService, SearchBundle, dialogService, $state) {
+	function ContactsListController($q, authService, contactService, searchBundle, dialogService, $state) {
 		'use strict';
 		var vm = this;
 
@@ -21,8 +21,8 @@
 			admin: 'admin'
 		};
 
-		vm.isManager = AuthService.isManager();
-		vm.searchContactBundle = SearchBundle.contactMode();
+		vm.isManager = authService.isManager();
+		vm.searchContactBundle = searchBundle.contactMode();
 		vm.searchContactBundle.find();
 
 		vm.add = function () {

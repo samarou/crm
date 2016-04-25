@@ -6,10 +6,10 @@
 
 	angular
 			.module('securityManagement')
-			.factory('groupBundle', GroupBundle);
+			.factory('groupBundle', groupBundle);
 
 	/** @ngInject */
-	function GroupBundle(groupService) {
+	function groupBundle(groupService) {
 
 		function createBundle() {
 			var bundle = {};

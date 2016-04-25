@@ -5,10 +5,10 @@
 	'use strict';
 	angular
 			.module('securityManagement')
-			.factory('roleService', RoleService);
+			.factory('roleService', roleService);
 
 	/** @ngInject */
-	function RoleService($http) {
+	function roleService($http) {
 
 		function fetchAll() {
 			return $http.get('rest/roles');

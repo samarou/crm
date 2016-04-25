@@ -8,7 +8,7 @@
 			.module('securityManagement')
 			.controller('AppController', navBarController);
 
-	function navBarController(AuthService, $state, $location) {
+	function navBarController(authService, $state, $location) {
 		'use strict';
 
 		var vm = this;
@@ -18,21 +18,21 @@
 		};
 
 		vm.isLoggedUser = function () {
-			return AuthService.isAuthenticated();
+			return authService.isAuthenticated();
 		};
 
 		vm.getUserName = function () {
-			var auth = AuthService.getAuthentication();
+			var auth = authService.getAuthentication();
 			return auth ? auth.username : null;
 		};
 
 		vm.logout = function () {
-			AuthService.logout();
+			authService.logout();
 			$state.go('login');
 		};
 
-		vm.isAdmin = AuthService.isAdmin;
-		vm.isManager = AuthService.isManager;
-		vm.isSpecialist = AuthService.isSpecialist;
+		vm.isAdmin = authService.isAdmin;
+		vm.isManager = authService.isManager;
+		vm.isSpecialist = authService.isSpecialist;
 	}
 })();

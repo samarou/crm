@@ -2,10 +2,10 @@
 	'use strict';
 	angular
 			.module('securityManagement')
-			.factory('rolePrivilegeService', RolePrivilegeService);
+			.factory('rolePrivilegeService', rolePrivilegeService);
 
 	/** @ngInject */
-	function RolePrivilegeService(Collections, privilegeService) {
+	function rolePrivilegeService(collections, privilegeService) {
 
 		function getObjectTypes(scope) {
 			return privilegeService.getAll().then(function (response) {
@@ -16,10 +16,10 @@
 		}
 
 		function sortObjectTypes(objectTypeList) {
-			return Collections.sort(Object.keys(objectTypeList)).map(function (objectTypeName) {
+			return collections.sort(Object.keys(objectTypeList)).map(function (objectTypeName) {
 				return {
 					objectTypeName: objectTypeName,
-					actions: Collections.sort(objectTypeList[objectTypeName], true, Collections.byProperty('id'))
+					actions: collections.sort(objectTypeList[objectTypeName], true, collections.byProperty('id'))
 				};
 			});
 		}
@@ -42,7 +42,7 @@
 		function checkPrivilegesOfRole(scope) {
 			scope.objectTypes.forEach(function (privilegeObject) {
 				privilegeObject.actions.forEach(function (action) {
-					action.privilege.checked = !!Collections.find(action.privilege, scope.role.privileges);
+					action.privilege.checked = !!collections.find(action.privilege, scope.role.privileges);
 				})
 			});
 		}

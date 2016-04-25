@@ -6,7 +6,7 @@
 			.controller('ContactsEditController', ContactsEditController);
 
 	/** @ngInject */
-	function ContactsEditController($q, $state, AuthService, contactService, contactPermissionsService, $stateParams) {
+	function ContactsEditController($q, $state, authService, contactService, contactPermissionsService, $stateParams) {
 		'use strict';
 		var vm = this;
 		vm.canEdit = false;
@@ -14,7 +14,7 @@
 		vm.permissions = [];
 		vm.actions = contactPermissionsService;
 
-		vm.isManager = AuthService.isManager();
+		vm.isManager = authService.isManager();
 
 		var permissions = {
 			read: 'read',

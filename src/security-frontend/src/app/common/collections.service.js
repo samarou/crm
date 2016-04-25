@@ -1,25 +1,28 @@
 (function () {
 	'use strict';
-	angular.module('securityManagement').service('Collections', Collections);
+
+	angular
+			.module('securityManagement')
+			.factory('collections', collections);
 
 	/** @ngInject */
-	function Collections() {
+	function collections() {
 
-		var self = this;
-
-		self.byId = function (a, b) {
+		function byId(a, b) {
 			return a.id === b.id;
-		};
-		self.compareTo = function (a, b) {
-			return a > b ? 1 : a === b ? 0 : -1;
-		};
-		self.byProperty = function (propertyName) {
-			return function (a, b) {
-				return self.compareTo(a[propertyName], b[propertyName]);
-			}
-		};
+		}
 
-		self.difference = function difference(from, what, comparator) {
+		function compareTo(a, b) {
+			return a > b ? 1 : a === b ? 0 : -1;
+		}
+
+		function byProperty(propertyName) {
+			return function (a, b) {
+				return compareTo(a[propertyName], b[propertyName]);
+			}
+		}
+
+		function difference(from, what, comparator) {
 			comparator = comparator || self.byId;
 			if (!from) {
 				return what;
@@ -32,27 +35,34 @@
 					return comparator(f, w);
 				})
 			})
-		};
+		}
 
-		self.sort = function sort(collection, asc, comparator) {
+		function sort(collection, asc, comparator) {
 			asc = asc || true;
-			comparator = comparator || self.compareTo;
+			comparator = comparator || compareTo;
 			collection.sort(function (a, b) {
 				return (asc ? 1 : -1) * comparator(a, b);
 			});
 			return collection;
-		};
+		}
 
-		self.find = function find(item, collection, comparator) {
+		function find(item, collection, comparator) {
 			if (!collection || !item) {
 				return false;
 			}
-			comparator = comparator || self.byId;
-			var foundItem = collection.find(function (collectionItem) {
+			comparator = comparator || byId;
+			return collection.find(function (collectionItem) {
 				return comparator(item, collectionItem);
 			});
+		}
 
-			return foundItem;
-		};
+		return {
+			byId: byId,
+			compareTo: compareTo,
+			byProperty: byProperty,
+			difference: difference,
+			sort: sort,
+			find: find
+		}
 	}
 })();

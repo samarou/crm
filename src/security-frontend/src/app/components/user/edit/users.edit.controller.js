@@ -1,6 +1,3 @@
-/**
- * Created by anton.charnou on 11.04.2016.
- */
 (function () {
 	'use strict';
 
@@ -10,7 +7,7 @@
 
 
 	/** @ngInject */
-	function UserEditController(userService, groupService, roleService, $state, Collections, $stateParams, $q) {
+	function UserEditController(userService, groupService, roleService, $state, collections, $stateParams, $q) {
 		'use strict';
 		var vm = this;
 		vm.user = {};
@@ -62,10 +59,10 @@
 
 		function checkGroupsAndRolesWhichUserHas(user) {
 			vm.groups.forEach(function (group) {
-				group.checked = !!Collections.find(group, user.groups);
+				group.checked = !!collections.find(group, user.groups);
 			});
 			vm.roles.forEach(function (role) {
-				role.checked = !!Collections.find(role, user.roles);
+				role.checked = !!collections.find(role, user.roles);
 			});
 		}
 

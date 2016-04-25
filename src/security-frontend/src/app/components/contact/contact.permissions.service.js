@@ -3,13 +3,13 @@
 
 	angular
 			.module('securityManagement')
-			.factory('contactPermissionsService', ContactPermissionsService);
+			.factory('contactPermissionsService', contactPermissionsService);
 
 	/** @ngInject */
-	function ContactPermissionsService($q, Collections, dialogService, groupBundle, SearchBundle, contactService) {
+	function contactPermissionsService($q, collections, dialogService, groupBundle, searchBundle, contactService) {
 		var vm = this;
 		vm.groupBundle = groupBundle.publicMode();
-		vm.userBundle = SearchBundle.userPublicMode();
+		vm.userBundle = searchBundle.userPublicMode();
 
 		function removePermissions(scope) {
 			var tasks = [];
@@ -29,7 +29,7 @@
 			vm.userBundle.find();
 			openUserDialog().then(function (model) {
 				model.bundle.itemsList.forEach(function (user) {
-					var stillNotPresent = !Collections.find(user, scope.permissions);
+					var stillNotPresent = !collections.find(user, scope.permissions);
 					if (stillNotPresent && user.checked) {
 						addDefaultPermission(user.id, user.userName, 'user', scope);
 					}
@@ -51,7 +51,7 @@
 		function addPermissionsForGroup(scope) {
 			openGroupDialog().then(function (model) {
 				model.bundle.groupList.forEach(function (group) {
-					var alreadyPresent = !!Collections.find(group, scope.permissions);
+					var alreadyPresent = !!collections.find(group, scope.permissions);
 					if (!alreadyPresent && group.checked) {
 						addDefaultPermission(group.id, group.name, 'group', scope);
 					}

@@ -3,13 +3,13 @@
  */
 (function () {
 	'use strict';
-	
+
 	angular
 			.module('securityManagement')
-			.factory('contactService', ContactService);
+			.factory('contactService', contactService);
 
 	/** @ngInject */
-	function ContactService($http) {
+	function contactService($http) {
 		function getAll() {
 			return $http.get('rest/contacts');
 		}

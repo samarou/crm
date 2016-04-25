@@ -6,6 +6,7 @@
 			.controller('RolesAddController', RolesAddController);
 
 
+	/** @ngInject */
 	function RolesAddController(roleService, rolePrivilegeService, $state) {
 		var vm = this;
 		vm.role = {};

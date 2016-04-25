@@ -4,10 +4,12 @@
 (function () {
 	'use strict';
 
-	angular.module('securityManagement').service('SearchBundle', SearchBundle);
+	angular
+			.module('securityManagement')
+			.factory('searchBundle', searchBundle);
 
 	/** @ngInject */
-	function SearchBundle(userService, ContactService, Util) {
+	function searchBundle(userService, contactService, util) {
 		function createCommonBundle() {
 			var bundle = {};
 
@@ -64,7 +66,7 @@
 					bundle.isSelectedAll = false;
 				});
 			};
-			bundle.typing = Util.createDelayTypingListener(bundle.find, 500);
+			bundle.typing = util.createDelayTypingListener(bundle.find, 500);
 
 			bundle.sortBy = function (property) {
 				angular.forEach(bundle.sortProperties, function (sortProperty) {
@@ -110,7 +112,7 @@
 			},
 			contactMode: function () {
 				var bundle = createCommonBundle();
-				bundle.performSeach = ContactService.find;
+				bundle.performSeach = contactService.find;
 				bundle.sortProperties.address = {name: 'address', asc: true, enabled: false};
 				return bundle;
 			}

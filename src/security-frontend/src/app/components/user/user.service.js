@@ -3,10 +3,10 @@
 
 	angular
 			.module('securityManagement')
-			.factory('userService', UserService);
+			.factory('userService', userService);
 
 	/** @ngInject */
-	function UserService($http) {
+	function userService($http) {
 		function getPublicUsers() {
 			return $http.get('rest/users/public');
 		}

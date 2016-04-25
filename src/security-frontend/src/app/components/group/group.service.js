@@ -6,10 +6,10 @@
 
 	angular
 			.module('securityManagement')
-			.factory('groupService', GroupService);
+			.factory('groupService', groupService);
 
 	/** @ngInject */
-	function GroupService($http) {
+	function groupService($http) {
 
 		function getAll() {
 			return $http.get('rest/groups');
