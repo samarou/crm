@@ -7,7 +7,7 @@
 
 
 	/** @ngInject */
-	function UserAddController(UserService, GroupService, RoleService, $state) {
+	function UserAddController(userService, GroupService, roleService, $state) {
 		'use strict';
 		var vm = this;
 		vm.user = {active: 'true'};
@@ -19,14 +19,14 @@
 		GroupService.getAll().then(function (response) {
 			vm.groups = response.data;
 		});
-		RoleService.fetchAll().then(function (response) {
+		roleService.fetchAll().then(function (response) {
 			vm.roles = response.data;
 		});
 
 		vm.submit = function () {
 			checkGroups(vm.user);
 			checkRoles(vm.user);
-			UserService.create(vm.user).then(function () {
+			userService.create(vm.user).then(function () {
 				$state.go('users.list');
 			})
 		};

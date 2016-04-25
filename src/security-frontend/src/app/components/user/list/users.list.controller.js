@@ -7,14 +7,14 @@
 
 
 	/** @ngInject */
-	function UserListController($q, UserService, SearchBundle, GroupService, RoleService, $state) {
+	function UserListController($q, userService, SearchBundle, GroupService, roleService, $state) {
 		'use strict';
 		var vm = this;
 
 		GroupService.getAll().then(function (response) {
 			vm.groups = response.data;
 		});
-		RoleService.fetchAll().then(function (response) {
+		roleService.fetchAll().then(function (response) {
 			vm.roles = response.data;
 		});
 
@@ -26,9 +26,9 @@
 			vm.bundle.itemsList.forEach(function (user) {
 				if (user.checked) {
 					if (newState) {
-						tasks.push(UserService.activate(user.id));
+						tasks.push(userService.activate(user.id));
 					} else {
-						tasks.push(UserService.deactivate(user.id));
+						tasks.push(userService.deactivate(user.id));
 					}
 				}
 			});

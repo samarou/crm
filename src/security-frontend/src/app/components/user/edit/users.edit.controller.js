@@ -10,7 +10,7 @@
 
 
 	/** @ngInject */
-	function UserEditController(UserService, GroupService, RoleService, $state, $log, Collections, $stateParams, $q) {
+	function UserEditController(userService, GroupService, roleService, $state, Collections, $stateParams, $q) {
 		'use strict';
 		var vm = this;
 		vm.user = {};
@@ -24,12 +24,12 @@
 					GroupService.getAll().then(function (response) {
 						vm.groups = response.data;
 					}),
-					RoleService.fetchAll().then(function (response) {
+					roleService.fetchAll().then(function (response) {
 						vm.roles = response.data;
 					})
 				]
 		).then(function () {
-			UserService.getById($stateParams.id).then(function (response) {
+			userService.getById($stateParams.id).then(function (response) {
 				vm.user = response.data;
 				checkGroupsAndRolesWhichUserHas(vm.user);
 			});
@@ -38,7 +38,7 @@
 		vm.submit = function () {
 			checkGroups(vm.user);
 			checkRoles(vm.user);
-			UserService.update(vm.user).then(function () {
+			userService.update(vm.user).then(function () {
 				$state.go('users.list');
 			})
 		};

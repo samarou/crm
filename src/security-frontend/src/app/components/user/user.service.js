@@ -3,30 +3,15 @@
 
 	angular
 			.module('securityManagement')
-			.factory('UserService', UserService);
+			.factory('userService', UserService);
 
 	/** @ngInject */
 	function UserService($http) {
-		var service = {};
-
-		service.getPublicUsers = getPublicUsers;
-		service.getAll = fetchAll;
-		service.getById = getById;
-		service.create = create;
-		service.update = update;
-		service.remove = remove;
-		service.find = find;
-		service.findPublicUsers = findPublicUsers;
-		service.activate = activate;
-		service.deactivate = deactivate;
-
-		return service;
-
 		function getPublicUsers() {
 			return $http.get('rest/users/public');
 		}
 
-		function fetchAll() {
+		function getAll() {
 			return $http.get('rest/users');
 		}
 
@@ -60,6 +45,19 @@
 
 		function deactivate(id) {
 			return $http.put('rest/users/deactivate/' + id);
+		}
+
+		return {
+			getPublicUsers: getPublicUsers,
+			getAll: getAll,
+			getById: getById,
+			create: create,
+			update: update,
+			remove: remove,
+			find: find,
+			findPublicUsers: findPublicUsers,
+			activate: activate,
+			deactivate: deactivate
 		}
 	}
 })();

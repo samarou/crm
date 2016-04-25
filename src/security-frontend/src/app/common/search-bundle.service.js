@@ -7,7 +7,7 @@
 	angular.module('securityManagement').service('SearchBundle', SearchBundle);
 
 	/** @ngInject */
-	function SearchBundle(UserService, ContactService, Util) {
+	function SearchBundle(userService, ContactService, Util) {
 		function createCommonBundle() {
 			var bundle = {};
 
@@ -95,13 +95,13 @@
 		return {
 			userPublicMode: function () {
 				var bundle = createCommonBundle();
-				bundle.performSeach = UserService.findPublicUsers;
+				bundle.performSeach = userService.findPublicUsers;
 				bundle.sortProperties.userName = {name: 'userName', asc: true, enabled: false};
 				return bundle;
 			},
 			userSecuredMode: function () {
 				var bundle = createCommonBundle();
-				bundle.performSeach = UserService.find;
+				bundle.performSeach = userService.find;
 				bundle.sortProperties.userName = {name: 'userName', asc: true, enabled: false};
 				bundle.filter.groupId = null;
 				bundle.filter.roleId = null;
