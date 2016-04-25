@@ -7,11 +7,11 @@
 
 
 	/** @ngInject */
-	function UserListController($q, userService, SearchBundle, GroupService, roleService, $state) {
+	function UserListController($q, userService, SearchBundle, groupService, roleService, $state) {
 		'use strict';
 		var vm = this;
 
-		GroupService.getAll().then(function (response) {
+		groupService.getAll().then(function (response) {
 			vm.groups = response.data;
 		});
 		roleService.fetchAll().then(function (response) {

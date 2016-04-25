@@ -6,10 +6,10 @@
 
 	angular
 			.module('securityManagement')
-			.service('GroupBundle', GroupBundle);
+			.factory('groupBundle', GroupBundle);
 
 	/** @ngInject */
-	function GroupBundle(GroupService) {
+	function GroupBundle(groupService) {
 
 		function createBundle() {
 			var bundle = {};
@@ -30,7 +30,7 @@
 				sortAsc: true
 			};
 
-			bundle.performSearch = GroupService.getPublicGroups;
+			bundle.performSearch = groupService.getPublicGroups;
 			bundle.find = function () {
 				bundle.performSearch().then(function (response) {
 					bundle.groupList = response.data;
@@ -62,12 +62,12 @@
 		return {
 			publicMode: function () {
 				var bundle = createBundle();
-				bundle.performSearch = GroupService.getPublicGroups;
+				bundle.performSearch = groupService.getPublicGroups;
 				return bundle;
 			},
 			securedMode: function () {
 				var bundle = createBundle();
-				bundle.performSearch = GroupService.getAll;
+				bundle.performSearch = groupService.getAll;
 				return bundle;
 			}
 		};

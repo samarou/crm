@@ -10,7 +10,7 @@
 
 
 	/** @ngInject */
-	function UserEditController(userService, GroupService, roleService, $state, Collections, $stateParams, $q) {
+	function UserEditController(userService, groupService, roleService, $state, Collections, $stateParams, $q) {
 		'use strict';
 		var vm = this;
 		vm.user = {};
@@ -21,7 +21,7 @@
 
 		$q.all(
 				[
-					GroupService.getAll().then(function (response) {
+					groupService.getAll().then(function (response) {
 						vm.groups = response.data;
 					}),
 					roleService.fetchAll().then(function (response) {

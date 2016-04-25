@@ -8,9 +8,9 @@
 			.factory('ContactPermissionsService', ContactPermissionsService);
 
 	/** @ngInject */
-	function ContactPermissionsService($q, Collections, DialogService, GroupBundle, SearchBundle, ContactService) {
+	function ContactPermissionsService($q, Collections, DialogService, groupBundle, SearchBundle, ContactService) {
 		var vm = this;
-		vm.groupBundle = GroupBundle.publicMode();
+		vm.groupBundle = groupBundle.publicMode();
 		vm.userBundle = SearchBundle.userPublicMode();
 
 		function removePermissions(scope) {

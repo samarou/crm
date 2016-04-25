@@ -9,14 +9,14 @@
 			.controller('GroupsAddController', GroupsAddController);
 
 
-	function GroupsAddController(GroupService, $state) {
+	function GroupsAddController(groupService, $state) {
 		var vm = this;
 		vm.group = {};
 		vm.submitText = 'Add';
 		vm.title = 'Add group';
 
 		vm.submit = function () {
-			GroupService.create(vm.group).then(function () {
+			groupService.create(vm.group).then(function () {
 				$state.go('groups.list');
 			})
 		};

@@ -9,7 +9,7 @@
 			.controller('ContactsListController', ContactsListController);
 
 	/** @ngInject */
-	function ContactsListController($q, AuthService, ContactService, GroupBundle, SearchBundle, Collections, DialogService, $state) {
+	function ContactsListController($q, AuthService, ContactService, SearchBundle, DialogService, $state) {
 		'use strict';
 		var vm = this;
 

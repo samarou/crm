@@ -9,10 +9,10 @@
 			.controller('GroupsListController', GroupsListController);
 
 
-	function GroupsListController($q, GroupService, GroupBundle, $state) {
+	function GroupsListController($q, groupService, groupBundle, $state) {
 		var vm = this;
 
-		vm.bundle = GroupBundle.securedMode();
+		vm.bundle = groupBundle.securedMode();
 		vm.bundle.find();
 		vm.add = function () {
 			$state.go('groups.add');
@@ -25,7 +25,7 @@
 			var tasks = [];
 			vm.bundle.pageGroups.forEach(function (group) {
 				if (group.checked) {
-					tasks.push(GroupService.remove(group.id))
+					tasks.push(groupService.remove(group.id))
 				}
 			});
 			$q.all(tasks).then(vm.bundle.find);

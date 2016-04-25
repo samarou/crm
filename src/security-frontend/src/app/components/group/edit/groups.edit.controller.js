@@ -9,18 +9,18 @@
 			.controller('GroupsEditController', GroupsEditController);
 
 
-	function GroupsEditController(GroupService, $stateParams, $state) {
+	function GroupsEditController(groupService, $stateParams, $state) {
 		var vm = this;
 		vm.group = {};
 		vm.submitText = 'Save';
 		vm.title = 'Edit group';
 
-		GroupService.get($stateParams.id).then(function (response) {
+		groupService.get($stateParams.id).then(function (response) {
 			vm.group = response.data;
 		});
 
 		vm.submit = function () {
-			GroupService.update(vm.group).then(function () {
+			groupService.update(vm.group).then(function () {
 				$state.go('groups.list');
 			})
 		};
