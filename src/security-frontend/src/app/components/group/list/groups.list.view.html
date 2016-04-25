@@ -38,15 +38,12 @@
         <tbody>
         <tr class="hover--highlight" ng-dblclick="vm.edit(group)"
             ng-repeat="group in (vm.bundle.pageGroups = (vm.bundle.groupList | pagingFilter:vm.bundle.pagingFilterConfig))">
-            <td><input type="checkbox" ng-model="group.checked" ng-click="vm.bundle.selectOne()"
-                       ng-dblclick="$event.stopPropagation()"></td>
-            <td>{{vm.bundle.pagingFilterConfig.itemsPerPage * (vm.bundle.pagingFilterConfig.currentPage - 1) + ($index +
-                1)}}
-            </td>
-            <td>{{group.name}}</td>
-            <td>{{group.description}}</td>
-            <td><span class="glyphicon glyphicon-edit hover--pointer" title="Edit Group"
-                      ng-click="vm.edit(group)"></span></td>
+          <td><input type="checkbox" ng-model="group.checked" ng-click="vm.bundle.selectOne()" ng-dblclick="$event.stopPropagation()"></td>
+          <td>{{vm.bundle.pagingFilterConfig.itemsPerPage * (vm.bundle.pagingFilterConfig.currentPage - 1) + ($index + 1)}}</td>
+          <td>{{group.name}}</td>
+          <td>{{group.description}}</td>
+          <td><span class="glyphicon glyphicon-edit hover--pointer" title="Edit Group" ng-click="vm.edit(group)"></span>
+          </td>
         </tr>
         </tbody>
     </table>
