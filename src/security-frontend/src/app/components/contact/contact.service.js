@@ -3,51 +3,64 @@
  */
 (function () {
 	'use strict';
+	
 	angular
 			.module('securityManagement')
-			.service('ContactService', ContactService);
+			.factory('contactService', ContactService);
 
 	/** @ngInject */
 	function ContactService($http) {
-		var service = this;
-		service.getAll = function () {
+		function getAll() {
 			return $http.get('rest/contacts');
-		};
+		}
 
-		service.create = function (contact) {
+		function create(contact) {
 			return $http.post('rest/contacts', contact);
-		};
+		}
 
-		service.get = function (id) {
+		function get(id) {
 			return $http.get('rest/contacts/' + id);
-		};
+		}
 
-		service.update = function (contact) {
+		function update(contact) {
 			return $http.put('rest/contacts', contact);
-		};
+		}
 
-		service.remove = function (id) {
+		function remove(id) {
 			return $http.delete('rest/contacts/' + id);
-		};
+		}
 
-		service.find = function (filter) {
+		function find(filter) {
 			return $http.get('rest/contacts/find', {params: filter});
-		};
+		}
 
-		service.getPermissions = function (id) {
+		function getPermissions(id) {
 			return $http.get('rest/contacts/' + id + '/permissions');
-		};
+		}
 
-		service.updatePermissions = function (id, permissions) {
+		function updatePermissions(id, permissions) {
 			return $http.put('rest/contacts/' + id + '/permissions', permissions);
-		};
+		}
 
-		service.removePermissions = function (id, permissionId) {
+		function removePermissions(id, permissionId) {
 			return $http.delete('rest/contacts/' + id + '/permissions/' + permissionId)
-		};
+		}
 
-		service.isAllowed = function (contactId, permission) {
+		function isAllowed(contactId, permission) {
 			return $http.get('rest/contacts/' + contactId + '/actions/' + permission);
-		};
+		}
+
+		return {
+			getAll: getAll,
+			create: create,
+			get: get,
+			update: update,
+			remove: remove,
+			find: find,
+			getPermissions: getPermissions,
+			updatePermissions: updatePermissions,
+			removePermissions: removePermissions,
+			isAllowed: isAllowed
+		}
 	}
 })();

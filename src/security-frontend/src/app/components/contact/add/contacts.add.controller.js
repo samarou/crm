@@ -1,6 +1,3 @@
-/**
- * Created by anton.charnou on 12.04.2016.
- */
 (function () {
 	'use strict';
 
@@ -9,13 +6,13 @@
 			.controller('ContactsAddController', ContactsAddController);
 
 	/** @ngInject */
-	function ContactsAddController(ContactService, ContactPermissionsService, $state) {
+	function ContactsAddController(contactService, contactPermissionsService, $state) {
 		'use strict';
 		var vm = this;
 		vm.canEdit = true;
 		vm.contact = {};
 		vm.permissions = [];
-		vm.actions = ContactPermissionsService;
+		vm.actions = contactPermissionsService;
 
 		vm.submitText = 'Add';
 		vm.cancelText = 'Cancel';
@@ -23,9 +20,9 @@
 
 
 		vm.submit = function () {
-			ContactService.create(vm.contact).then(function (response) {
+			contactService.create(vm.contact).then(function (response) {
 				var id = response.data;
-				ContactService.updatePermissions(id, vm.permissions).then(
+				contactService.updatePermissions(id, vm.permissions).then(
 						function () {
 							$state.go('contacts.list');
 						}

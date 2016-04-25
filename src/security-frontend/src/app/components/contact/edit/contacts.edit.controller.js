@@ -1,6 +1,3 @@
-/**
- * Created by anton.charnou on 12.04.2016.
- */
 (function () {
 	'use strict';
 
@@ -9,13 +6,13 @@
 			.controller('ContactsEditController', ContactsEditController);
 
 	/** @ngInject */
-	function ContactsEditController($q, $state, AuthService, ContactService, ContactPermissionsService, $stateParams) {
+	function ContactsEditController($q, $state, AuthService, contactService, contactPermissionsService, $stateParams) {
 		'use strict';
 		var vm = this;
 		vm.canEdit = false;
 		vm.contact = {};
 		vm.permissions = [];
-		vm.actions = ContactPermissionsService;
+		vm.actions = contactPermissionsService;
 
 		vm.isManager = AuthService.isManager();
 
@@ -33,7 +30,7 @@
 
 		$q.all(
 				[
-					ContactService.isAllowed($stateParams.id, permissions.write).then(function (response) {
+					contactService.isAllowed($stateParams.id, permissions.write).then(function (response) {
 						vm.canEdit = !!response.data;
 						if (!vm.canEdit) {
 							vm.submitText = null;
@@ -41,20 +38,20 @@
 						}
 
 					}),
-					ContactService.getPermissions($stateParams.id).then(function (response) {
+					contactService.getPermissions($stateParams.id).then(function (response) {
 						vm.permissions = response.data;
 					})
 				]
 		).then(function () {
-			ContactService.get($stateParams.id).then(function (response) {
+			contactService.get($stateParams.id).then(function (response) {
 				vm.contact = response.data;
 			})
 		});
 
 
 		vm.submit = function () {
-			ContactService.update(vm.contact).then(function () {
-				ContactService.updatePermissions(vm.contact.id, vm.permissions).then(
+			contactService.update(vm.contact).then(function () {
+				contactService.updatePermissions(vm.contact.id, vm.permissions).then(
 						function () {
 							$state.go('contacts.list');
 						}

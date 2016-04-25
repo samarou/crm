@@ -9,7 +9,7 @@
 			.controller('ContactsListController', ContactsListController);
 
 	/** @ngInject */
-	function ContactsListController($q, AuthService, ContactService, SearchBundle, dialogService, $state) {
+	function ContactsListController($q, AuthService, contactService, SearchBundle, dialogService, $state) {
 		'use strict';
 		var vm = this;
 
@@ -30,7 +30,7 @@
 		};
 
 		vm.edit = function (contact) {
-			ContactService.isAllowed(contact.id, permissions.read).then(function (response) {
+			contactService.isAllowed(contact.id, permissions.read).then(function (response) {
 				if (!response.data) {
 					dialogService.notify('You haven\'t permissions to edit that contact!');
 					return;
@@ -47,7 +47,7 @@
 					return contact.checked;
 				});
 				checkedContacts.forEach(function (contact) {
-					var task = ContactService.isAllowed(contact.id, permissions.delete).then(function (response) {
+					var task = contactService.isAllowed(contact.id, permissions.delete).then(function (response) {
 						if (!response.data) {
 							allContactsCanBeDeleted = false;
 						}
@@ -63,7 +63,7 @@
 					tasks = [];
 					checkedContacts.forEach(function (contact) {
 						if (contact.checked) {
-							tasks.push(ContactService.remove(contact.id));
+							tasks.push(contactService.remove(contact.id));
 						}
 					});
 					if (allContactsCanBeDeleted) {

@@ -1,14 +1,12 @@
-/**
- * Created by anton.charnou on 12.04.2016.
- */
 (function () {
 	'use strict';
+
 	angular
 			.module('securityManagement')
-			.factory('ContactPermissionsService', ContactPermissionsService);
+			.factory('contactPermissionsService', ContactPermissionsService);
 
 	/** @ngInject */
-	function ContactPermissionsService($q, Collections, dialogService, groupBundle, SearchBundle, ContactService) {
+	function ContactPermissionsService($q, Collections, dialogService, groupBundle, SearchBundle, contactService) {
 		var vm = this;
 		vm.groupBundle = groupBundle.publicMode();
 		vm.userBundle = SearchBundle.userPublicMode();
@@ -17,11 +15,11 @@
 			var tasks = [];
 			scope.permissions.forEach(function (p) {
 				if (p.checked) {
-					tasks.push(ContactService.removePermissions(scope.contact.id, p.id));
+					tasks.push(contactService.removePermissions(scope.contact.id, p.id));
 				}
 			});
 			$q.all(tasks).then(function () {
-				ContactService.getPermissions(scope.contact.id).then(function (response) {
+				contactService.getPermissions(scope.contact.id).then(function (response) {
 					scope.permissions = response.data;
 				})
 			});
@@ -29,13 +27,7 @@
 
 		function addPermissionsForUser(scope) {
 			vm.userBundle.find();
-			dialogService.custom('app/components/contact/public-users.modal.view.html', {
-				title: 'Add Permissions for User',
-				bundle: vm.userBundle,
-				size: 'modal--user-table',
-				cancelTitle: 'Back',
-				okTitle: 'Ok'
-			}).result.then(function (model) {
+			openUserDialog().then(function (model) {
 				model.bundle.itemsList.forEach(function (user) {
 					var stillNotPresent = !Collections.find(user, scope.permissions);
 					if (stillNotPresent && user.checked) {
@@ -45,15 +37,19 @@
 			});
 		}
 
-		function addPermissionsForGroup(scope) {
-			vm.groupBundle.find();
-			dialogService.custom('app/components/contact/public-groups.modal.view.html', {
-				title: 'Add Permissions for Group',
-				bundle: vm.groupBundle,
-				size: 'modal--group-table',
+		function openUserDialog() {
+			vm.userBundle.find();
+			return dialogService.custom('app/components/contact/public-users.modal.view.html', {
+				title: 'Add Permissions for User',
+				bundle: vm.userBundle,
+				size: 'modal--user-table',
 				cancelTitle: 'Back',
 				okTitle: 'Ok'
-			}).result.then(function (model) {
+			}).result;
+		}
+
+		function addPermissionsForGroup(scope) {
+			openGroupDialog().then(function (model) {
 				model.bundle.groupList.forEach(function (group) {
 					var alreadyPresent = !!Collections.find(group, scope.permissions);
 					if (!alreadyPresent && group.checked) {
@@ -61,6 +57,17 @@
 					}
 				});
 			});
+		}
+
+		function openGroupDialog() {
+			vm.groupBundle.find();
+			return dialogService.custom('app/components/contact/public-groups.modal.view.html', {
+				title: 'Add Permissions for Group',
+				bundle: vm.groupBundle,
+				size: 'modal--group-table',
+				cancelTitle: 'Back',
+				okTitle: 'Ok'
+			}).result
 		}
 
 		function addDefaultPermission(id, name, type, scope) {
