@@ -7,4 +7,5 @@
 
     <include file="changelog/1.0/160414-initial_schema.xml" relativeToChangelogFile="true"/>
     <include file="changelog/1.0/160414-initial_data.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/1.0/250414-add_privileges_for_specialist.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
