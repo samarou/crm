@@ -1,7 +1,7 @@
 (function () {
 	'use strict';
 
-	angular.module('securityManagement')
+	angular.module('crm')
 			.filter('pagingFilter', pagingFilter)
 			.filter('html', html);
 

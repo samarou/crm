@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-			.module('securityManagement')
+			.module('crm')
 			.constant('permissions', {
 				read: 'read',
 				write: 'write',

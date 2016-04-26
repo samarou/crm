@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-			.module('securityManagement')
+			.module('crm')
 			.factory('roleDetailsService', roleDetailsService);
 
 	/** @ngInject */

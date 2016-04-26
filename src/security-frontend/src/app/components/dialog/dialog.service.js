@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-			.module('securityManagement')
+			.module('crm')
 			.factory('dialogService', dialogService)
 			.controller('ErrorDialogController', ErrorDialogController)
 			.controller('NotifyDialogController', NotifyDialogController)

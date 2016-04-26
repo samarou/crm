@@ -1,7 +1,7 @@
 (function () {
 	'use strict';
 
-	angular.module('securityManagement').run(run);
+	angular.module('crm').run(run);
 
 	/** @ngInject */
 	function run($rootScope, $state, authService, $log) {

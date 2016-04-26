@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-			.module('securityManagement')
+			.module('crm')
 			.factory('groupSearch', groupSearch);
 
 	/** @ngInject */

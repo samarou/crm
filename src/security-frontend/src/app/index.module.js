@@ -2,6 +2,6 @@
 	'use strict';
 
 	angular
-			.module('securityManagement', ['ngResource', 'ui.router', 'ui.bootstrap', 'toastr']);
+			.module('crm', ['ngResource', 'ui.router', 'ui.bootstrap', 'toastr']);
 
 })();

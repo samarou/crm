@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-			.module('securityManagement')
+			.module('crm')
 			.controller('LoginController', LoginController);
 
 	function LoginController($state, authService) {
