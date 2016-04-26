@@ -7,4 +7,5 @@
 
     <include file="changelog/1.0/160414-initial_schema.xml" relativeToChangelogFile="true"/>
     <include file="changelog/1.0/160414-initial_data.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/1.1/160425-d545216_adding_attachments.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
