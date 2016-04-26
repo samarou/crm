@@ -11,7 +11,7 @@
 		'use strict';
 		var vm = this;
 		vm.user = {active: 'true'};
-		vm.gtoups = [];
+		vm.groups = [];
 		vm.roles = [];
 		vm.submitText = 'Add';
 		vm.title = 'Add user';
