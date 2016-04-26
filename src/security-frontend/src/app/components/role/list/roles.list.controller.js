@@ -6,24 +6,12 @@
 			.controller('RolesListController', RolesListController);
 
 	/** @ngInject */
-	function RolesListController($q, roleService, rolePrivilegeService, $state) {
+	function RolesListController($q, roleService, rolePrivilegeService, pagingFilter, $state) {
 		var vm = this;
 		vm.searchText = '';
 		vm.pageRoles = [];
 		vm.objectTypes = [];
-		// todo: resolve problem with filtering
-		vm.pagingFilterConfig = {
-			currentPage: 1,
-			itemsPerPage: 10,
-			visiblePages: 5,
-			totalItems: null,
-			privilegeSearchText: null,
-			filterObject: {
-				name: ''
-			},
-			sortProperty: 'name',
-			sortAsc: true
-		};
+		vm.pagingFilterConfig = pagingFilter.config;
 		vm.updateFilterObject = updateFilterObject;
 		vm.selectAll = selectAll;
 		vm.selectOne = selectOne;
@@ -39,8 +27,7 @@
 		}
 
 		function updateFilterObject() {
-			vm.pagingFilterConfig.filterObject.name = vm.searchText;
-			vm.pagingFilterConfig.filterObject.description = vm.searchText;
+			pagingFilter.updateFilterObject(vm.searchText)
 		}
 
 		function selectAll(checked) {
@@ -83,7 +70,7 @@
 		function fetchAllRoles() {
 			roleService.fetchAll().then(function (response) {
 				vm.roleList = response.data;
-				vm.pagingFilterConfig.totalItems = vm.roleList.length;
+				pagingFilter.setLength(vm.roleList.length);
 			});
 		}
 	}
