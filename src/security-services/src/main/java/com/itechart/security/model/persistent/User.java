@@ -3,6 +3,7 @@ package com.itechart.security.model.persistent;
 import com.itechart.security.core.model.SecurityUser;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -32,6 +33,9 @@ public class User extends Principal implements SecurityUser {
 
     @Column(name = "active", nullable = false)
     private boolean active;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<UserDefaultAcl> acls;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
@@ -99,6 +103,14 @@ public class User extends Principal implements SecurityUser {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public List<UserDefaultAcl> getAcls() {
+        return acls;
+    }
+
+    public void setAcls(List<UserDefaultAcl> acls) {
+        this.acls = acls;
     }
 
     @Override
