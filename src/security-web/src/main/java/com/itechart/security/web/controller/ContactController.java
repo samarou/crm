@@ -8,13 +8,10 @@ import com.itechart.security.core.acl.AclPermissionEvaluator;
 import com.itechart.security.core.model.acl.ObjectIdentity;
 import com.itechart.security.core.model.acl.ObjectIdentityImpl;
 import com.itechart.security.core.model.acl.Permission;
-import com.itechart.security.model.persistent.Group;
 import com.itechart.security.model.persistent.Principal;
-import com.itechart.security.model.persistent.User;
 import com.itechart.security.model.persistent.acl.Acl;
 import com.itechart.security.service.AclService;
 import com.itechart.security.service.PrincipalService;
-import com.itechart.security.web.model.PrincipalTypes;
 import com.itechart.security.web.model.dto.AclEntryDto;
 import com.itechart.security.web.model.dto.ContactDto;
 import com.itechart.security.web.model.dto.ContactFilterDto;
@@ -23,11 +20,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import static com.itechart.security.core.model.acl.Permission.*;
-import static com.itechart.security.web.model.dto.Converter.*;
+import static com.itechart.security.web.model.dto.Converter.convert;
+import static com.itechart.security.web.model.dto.Converter.convertContacts;
+import static java.util.stream.Collectors.toList;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
@@ -69,7 +69,7 @@ public class ContactController {
     @PreAuthorize("hasPermission(#dto.getId(), 'sample.Contact', 'WRITE')")
     @RequestMapping(value = "/contacts", method = PUT)
     public void update(@RequestBody ContactDto dto) {
-        contactService.updateContact(covert(dto));
+        contactService.updateContact(convert(dto));
     }
 
     @RequestMapping("/contacts/find")
@@ -83,7 +83,7 @@ public class ContactController {
 
     @RequestMapping(value = "/contacts", method = POST)
     public Long create(@RequestBody ContactDto dto) {
-        Long contactId = contactService.saveContact(covert(dto));
+        Long contactId = contactService.saveContact(convert(dto));
         Long userId = SecurityUtils.getAuthenticatedUserId();
         aclService.createAcl(new ObjectIdentityImpl(contactId, ObjectTypes.CONTACT.getName()), null, userId);
         return contactId;
@@ -102,41 +102,13 @@ public class ContactController {
         Acl acl = getAcl(contactId);
         Map<Long, Set<Permission>> allPermissions = acl.getPermissions();
         List<Principal> principals = principalService.getByIds(new ArrayList<>(allPermissions.keySet()));
-        return principals.stream().map(principal -> {
-            AclEntryDto dto = new AclEntryDto();
-            dto.setId(principal.getId());
-            dto.setName(principal.getName());
-            allPermissions.get(principal.getId()).forEach(permission -> {
-                dto.setCanRead(permission == READ);
-                dto.setCanWrite(permission == WRITE);
-                dto.setCanCreate(permission == CREATE);
-                dto.setCanDelete(permission == DELETE);
-                dto.setCanAdmin(permission == ADMIN);
-            });
-            if (principal instanceof User) {
-                dto.setPrincipalTypeName(PrincipalTypes.USER.getObjectType());
-            } else if (principal instanceof Group) {
-                dto.setPrincipalTypeName(PrincipalTypes.GROUP.getObjectType());
-            }
-
-            return dto;
-        }).collect(Collectors.toList());
+        return principals.stream().map(principal -> convert(principal, allPermissions.get(principal.getId()))).collect(toList());
     }
 
     @RequestMapping(value = "/contacts/{contactId}/permissions", method = PUT)
     public void createOrUpdatePermissions(@PathVariable Long contactId, @RequestBody List<AclEntryDto> permissions) {
         Acl acl = getAcl(contactId);
-        permissions.forEach(permission -> {
-            boolean isItNewPrincipal = acl.getPermissions(permission.getId()) == null;
-            if (isItNewPrincipal) acl.addPermissions(permission.getId(), Collections.emptySet());
-
-            acl.denyAll(permission.getId());
-            if (permission.isCanRead()) acl.addPermission(permission.getId(), READ);
-            if (permission.isCanWrite()) acl.addPermission(permission.getId(), WRITE);
-            if (permission.isCanCreate()) acl.addPermission(permission.getId(), CREATE);
-            if (permission.isCanDelete()) acl.addPermission(permission.getId(), DELETE);
-            if (permission.isCanAdmin()) acl.addPermission(permission.getId(), ADMIN);
-        });
+        permissions.forEach(permission -> acl.addPermissions(permission.getId(), convert(permission)));
         aclService.updateAcl(acl);
     }
 
