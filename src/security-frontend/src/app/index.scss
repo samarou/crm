@@ -64,14 +64,6 @@ $icon-font-path: "../../bower_components/bootstrap-sass/assets/fonts/bootstrap/"
   cursor: pointer;
 }
 
-.modal--user-table {
-  width: 850px;
-}
-
-.modal--group-table {
-  width: 650px;
-}
-
 .list--compact {
   margin: 0;
 }
@@ -144,22 +136,27 @@ $icon-font-path: "../../bower_components/bootstrap-sass/assets/fonts/bootstrap/"
 }
 
 .icon--user {
+  @extend .icon--small;
   background: url("../assets/icons/user.svg");
 }
 
 .icon--remove {
+  @extend .icon--small;
   background: url("../assets/icons/remove.svg");
 }
 
 .icon--user-add {
+  @extend .icon--small;
   background: url("../assets/icons/user-add.svg");
 }
 
 .icon--user-group {
+  @extend .icon--small;
   background: url("../assets/icons/group.svg");
 }
 
 .icon--user-group-add {
+  @extend .icon--small;
   background: url("../assets/icons/group-add.svg");
 }
 
