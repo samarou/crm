@@ -31,8 +31,8 @@
 
 		vm.submit = function () {
 			ContactService.create(vm.contact).then(function (response) {
-				var id = response.data;
-				ContactService.updatePermissions(id, vm.permissions).then(
+        vm.contact.id = response.data;
+				ContactService.updatePermissions(vm.contact.id, vm.aclHandler.permissions).then(
 						function () {
 							$state.go('contacts.list');
 						}
