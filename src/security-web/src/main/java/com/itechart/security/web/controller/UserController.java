@@ -8,6 +8,7 @@ import com.itechart.security.web.model.dto.*;
 import com.itechart.security.web.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.itechart.security.web.model.dto.Converter.convert;
+import static com.itechart.security.web.model.dto.Converter.convertToAcl;
 import static com.itechart.security.web.model.dto.Converter.convertToPublicUsers;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
@@ -47,7 +49,10 @@ public class UserController {
 
     @RequestMapping("/users/{id}")
     public SecuredUserDto findById(@PathVariable Long id) {
-        return convert(userService.getUser(id));
+        User user = userService.getUserWithAcls(id);
+        SecuredUserDto userDto = convert(user);
+        userDto.setAcls(convertToAcl(user.getAcls()));
+        return userDto;
     }
 
     @RequestMapping(value = "/users", method = PUT)
