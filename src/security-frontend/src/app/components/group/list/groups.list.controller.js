@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-			.module('crm')
+			.module('crm.group')
 			.controller('GroupsListController', GroupsListController);
 
 	function GroupsListController($q, groupService, groupSearch, $state) {

@@ -2,9 +2,8 @@
 	'use strict';
 
 	angular
-			.module('crm')
+			.module('crm.user')
 			.controller('UsersAddController', UserAddController);
-
 
 	/** @ngInject */
 	function UserAddController(userDetailsService) {

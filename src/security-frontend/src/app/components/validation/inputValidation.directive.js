@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-			.module('crm')
+			.module('crm.validation')
 			.directive('crmInputValidation', crmInputValidation);
 
 	/** @ngInject */

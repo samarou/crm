@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-			.module('crm')
+			.module('crm.navbar')
 			.directive('navBar', navBar);
 
 	/** @ngInject */

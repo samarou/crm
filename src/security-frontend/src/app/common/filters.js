@@ -1,7 +1,7 @@
 (function () {
 	'use strict';
 
-	angular.module('crm')
+	angular.module('crm.common')
 			.filter('pagingFilter', pagingFilter)
 			.filter('html', html);
 

@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-			.module('crm')
+			.module('crm.user')
 			.controller('UsersListController', UserListController);
 
 	/** @ngInject */

@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-			.module('crm')
+			.module('crm.user')
 			.factory('userService', userService);
 
 	/** @ngInject */

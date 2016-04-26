@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-			.module('crm')
+			.module('crm.group')
 			.factory('groupDetailsService', groupDetailsService);
 
 	/** @ngInject */

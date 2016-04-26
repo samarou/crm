@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-			.module('crm')
+			.module('crm.navbar')
 			.controller('AppController', navBarController);
 
 	function navBarController(authService, $state, $location) {
