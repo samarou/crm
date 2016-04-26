@@ -9,17 +9,19 @@
 			.controller('ContactsAddController', ContactsAddController);
 
 	/** @ngInject */
-	function ContactsAddController(ContactService, AclServiceBuilder, ConcatPermissionServiceBuilder, $state) {
+	function ContactsAddController(ContactService, AclServiceBuilder, PermissionServiceBuilder, $state) {
 		'use strict';
 		var vm = this;
 		vm.contact = {};
 
+    function getId() {
+      return vm.contact.id;
+    }
+
     vm.aclHandler = {
       canEdit: true,
       permissions: [],
-      actions: AclServiceBuilder(ConcatPermissionServiceBuilder(function () {
-        return vm.contact;
-      }))
+      actions: AclServiceBuilder(PermissionServiceBuilder(getId, ContactService))
     };
 
 		vm.submitText = 'Add';
