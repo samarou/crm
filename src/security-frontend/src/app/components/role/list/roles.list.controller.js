@@ -9,9 +9,7 @@
 			.controller('RolesListController', RolesListController);
 
 	/** @ngInject */
-	function RolesListController($q, roleService, rolePrivilegeService, dialogService, $state) {
-		'use strict';
-
+	function RolesListController($q, roleService, rolePrivilegeService, $state) {
 		var vm = this;
 
 		vm.searchText = '';
@@ -60,26 +58,6 @@
 			});
 		};
 
-		vm.editOld = function (role) {
-			rolePrivilegeService.checkPrivilegesOfRole(role);
-			showDialog({
-				title: 'Editing Role',
-				okTitle: 'Update',
-				objectTypes: vm.objectTypes,
-				role: angular.copy(role)
-			});
-		};
-
-		vm.create = function () {
-			rolePrivilegeService.checkPrivilegesOfRole({});
-			showDialog({
-				title: 'Create a New Role',
-				okTitle: 'Add',
-				objectTypes: vm.objectTypes,
-				role: {}
-			});
-		};
-
 		vm.edit = function (role) {
 			$state.go('roles.edit', {id: role.id});
 		};
@@ -98,31 +76,6 @@
 			$q.all(tasks).then(fetchAllRoles);
 			vm.isSelectedAll = false;
 		};
-
-		function update(role) {
-			role.privileges = [];
-			rolePrivilegeService.getPrivilegesOfRole(vm);
-			if (role.id) {
-				var originRole = vm.roleList.find(function (r) {
-					return r.id === role.id
-				});
-				angular.copy(role, originRole);
-				roleService.update(role);
-			} else {
-				roleService.create(role).then(function (response) {
-					role.id = response.data;
-					vm.roleList.push(role);
-					vm.pagingFilterConfig.totalItems = vm.roleList.length;
-				});
-			}
-		}
-
-		function showDialog(model) {
-			var dialog = dialogService.custom('app/components/role/role.modal.view.html', model);
-			dialog.result.then(function (model) {
-				update(model.role);
-			});
-		}
 
 		function fetchAllRoles() {
 			roleService.fetchAll().then(function (response) {
