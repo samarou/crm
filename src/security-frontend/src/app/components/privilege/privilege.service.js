@@ -1,6 +1,3 @@
-/**
- * @author yauheni.putsykovich
- */
 (function () {
 	'use strict';
 
@@ -10,13 +7,12 @@
 
 	/** @ngInject */
 	function privilegeService($http) {
+		return {
+			getAll: getAll
+		};
 
 		function getAll() {
 			return $http.get('rest/privileges');
-		}
-
-		return {
-			getAll: getAll
 		}
 	}
 })();

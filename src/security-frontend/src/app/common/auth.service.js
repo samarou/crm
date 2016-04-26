@@ -10,6 +10,17 @@
 		var service = this;
 		service.authentication = null;
 
+		return {
+			login: login,
+			logout: logout,
+			restore: restore,
+			isAuthenticated: isAuthenticated,
+			getAuthentication: getAuthentication,
+			isAdmin: isAdmin,
+			isManager: isManager,
+			isSpecialist: isSpecialist
+		};
+
 		function setAuthentication(authData) {
 			service.authentication = authData;
 			$http.defaults.headers.common['X-Auth-Token'] =
@@ -80,17 +91,6 @@
 
 		function isSpecialist() {
 			return hasRole('SPECIALIST');
-		}
-
-		return {
-			login: login,
-			logout: logout,
-			restore: restore,
-			isAuthenticated: isAuthenticated,
-			getAuthentication: getAuthentication,
-			isAdmin: isAdmin,
-			isManager: isManager,
-			isSpecialist: isSpecialist
 		}
 	}
 })();

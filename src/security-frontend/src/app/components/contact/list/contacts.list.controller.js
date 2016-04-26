@@ -6,11 +6,11 @@
 			.controller('ContactsListController', ContactsListController);
 
 	/** @ngInject */
-	function ContactsListController($q, authService, contactService, searchBundle, dialogService, $state, contactSecurityService) {
+	function ContactsListController($q, authService, contactService, searchService, dialogService, $state, contactSecurityService) {
 		'use strict';
 		var vm = this;
 		vm.isManager = authService.isManager();
-		vm.searchContactBundle = searchBundle.contactMode();
+		vm.searchContactBundle = searchService.contactMode();
 		vm.add = add;
 		vm.edit = edit;
 		vm.remove = remove;

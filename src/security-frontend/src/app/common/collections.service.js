@@ -7,6 +7,14 @@
 
 	/** @ngInject */
 	function collections() {
+		return {
+			byId: byId,
+			compareTo: compareTo,
+			byProperty: byProperty,
+			difference: difference,
+			sort: sort,
+			find: find
+		};
 
 		function byId(a, b) {
 			return a.id === b.id;
@@ -54,15 +62,6 @@
 			return collection.find(function (collectionItem) {
 				return comparator(item, collectionItem);
 			});
-		}
-
-		return {
-			byId: byId,
-			compareTo: compareTo,
-			byProperty: byProperty,
-			difference: difference,
-			sort: sort,
-			find: find
 		}
 	}
 })();

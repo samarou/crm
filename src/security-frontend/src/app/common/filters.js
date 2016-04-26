@@ -1,6 +1,3 @@
-/**
- * @author yauheni.putsykovich
- */
 (function () {
 	'use strict';
 

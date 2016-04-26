@@ -6,10 +6,10 @@
 			.controller('UsersListController', UserListController);
 
 	/** @ngInject */
-	function UserListController($q, userService, userDetailsService, searchBundle, $state) {
+	function UserListController($q, userService, userDetailsService, searchService, $state) {
 		'use strict';
 		var vm = this;
-		vm.bundle = searchBundle.userSecuredMode();
+		vm.bundle = searchService.userSecuredMode();
 		vm.activate = activate;
 		vm.add = add;
 		vm.edit = edit;

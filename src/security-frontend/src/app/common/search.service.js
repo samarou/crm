@@ -1,15 +1,42 @@
-/**
- * @author yauheni.putsykovich
- */
 (function () {
 	'use strict';
 
 	angular
 			.module('securityManagement')
-			.factory('searchBundle', searchBundle);
+			.factory('searchService', searchService);
 
 	/** @ngInject */
-	function searchBundle(userService, contactService, util) {
+	function searchService(userService, contactService, util) {
+		return {
+			userPublicMode: getPublicBunle,
+			userSecuredMode: getSecureBundle,
+			contactMode: getContactBundle
+		};
+
+		function getPublicBunle() {
+			var bundle = createCommonBundle();
+			bundle.performSeach = userService.findPublicUsers;
+			bundle.sortProperties.userName = {name: 'userName', asc: true, enabled: false};
+			return bundle;
+		}
+
+		function getSecureBundle() {
+			var bundle = createCommonBundle();
+			bundle.performSeach = userService.find;
+			bundle.sortProperties.userName = {name: 'userName', asc: true, enabled: false};
+			bundle.filter.groupId = null;
+			bundle.filter.roleId = null;
+			bundle.filter.active = true;
+			return bundle;
+		}
+
+		function getContactBundle() {
+			var bundle = createCommonBundle();
+			bundle.performSeach = contactService.find;
+			bundle.sortProperties.address = {name: 'address', asc: true, enabled: false};
+			return bundle;
+		}
+
 		function createCommonBundle() {
 			var bundle = {};
 
@@ -93,29 +120,5 @@
 
 			return bundle;
 		}
-
-		return {
-			userPublicMode: function () {
-				var bundle = createCommonBundle();
-				bundle.performSeach = userService.findPublicUsers;
-				bundle.sortProperties.userName = {name: 'userName', asc: true, enabled: false};
-				return bundle;
-			},
-			userSecuredMode: function () {
-				var bundle = createCommonBundle();
-				bundle.performSeach = userService.find;
-				bundle.sortProperties.userName = {name: 'userName', asc: true, enabled: false};
-				bundle.filter.groupId = null;
-				bundle.filter.roleId = null;
-				bundle.filter.active = true;
-				return bundle;
-			},
-			contactMode: function () {
-				var bundle = createCommonBundle();
-				bundle.performSeach = contactService.find;
-				bundle.sortProperties.address = {name: 'address', asc: true, enabled: false};
-				return bundle;
-			}
-		};
 	}
 })();

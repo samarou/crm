@@ -6,10 +6,10 @@
 			.factory('contactPermissionsService', contactPermissionsService);
 
 	/** @ngInject */
-	function contactPermissionsService($q, collections, dialogService, groupBundle, searchBundle, contactService) {
+	function contactPermissionsService($q, collections, dialogService, groupSearch, searchService, contactService) {
 		var service = this;
-		service.groupBundle = groupBundle.publicMode();
-		service.userBundle = searchBundle.userPublicMode();
+		service.groupBundle = groupSearch.publicMode();
+		service.userBundle = searchService.userPublicMode();
 
 		return {
 			addPermissionsForUser: addPermissionsForUser,

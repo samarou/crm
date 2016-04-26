@@ -11,6 +11,12 @@
 
 	/** @ngInject */
 	function dialogService($uibModal) {
+		return {
+			notify: notify,
+			error: error,
+			confirm: confirm,
+			custom: custom
+		};
 
 		function notify(message) {
 			return $uibModal.open({
@@ -72,13 +78,6 @@
 				}
 			});
 		}
-
-		return {
-			notify: notify,
-			error: error,
-			confirm: confirm,
-			custom: custom
-		};
 	}
 
 	/** @ngInject */

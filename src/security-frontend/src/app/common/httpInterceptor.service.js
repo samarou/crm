@@ -7,6 +7,10 @@
 
 	/** @ngInject */
 	function httpInterceptor($q, $log, $injector, toastr) {
+		return {
+			responseError: catchError
+		};
+
 		function catchError(response) {
 			switch (response.status) {
 				case 401: {
@@ -33,10 +37,6 @@
 		function catchDefaultError(response) {
 			$log.error(response.status + ':' + response.data.type + ' ' + response.data.message);
 			toastr.error('Something goes wrong', 'Error');
-		}
-
-		return {
-			responseError: catchError
 		}
 	}
 

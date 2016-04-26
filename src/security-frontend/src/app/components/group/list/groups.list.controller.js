@@ -5,9 +5,9 @@
 			.module('securityManagement')
 			.controller('GroupsListController', GroupsListController);
 
-	function GroupsListController($q, groupService, groupBundle, $state) {
+	function GroupsListController($q, groupService, groupSearch, $state) {
 		var vm = this;
-		vm.bundle = groupBundle.securedMode();
+		vm.bundle = groupSearch.securedMode();
 		vm.add = add;
 		vm.edit = edit;
 		vm.remove = remove;

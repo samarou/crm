@@ -3,10 +3,10 @@
 
 	angular
 			.module('securityManagement')
-			.factory('groupBundle', groupBundle);
+			.factory('groupSearch', groupSearch);
 
 	/** @ngInject */
-	function groupBundle(groupService) {
+	function groupSearch(groupService) {
 		return {
 			publicMode: getPublicBundle,
 			securedMode: getSecuredBundle

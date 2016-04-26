@@ -1,6 +1,3 @@
-/**
- * @author yauheni.putsykovich
- */
 (function () {
 	'use strict';
 
@@ -10,6 +7,9 @@
 
 	/** @ngInject */
 	function util($timeout) {
+		return {
+			createDelayTypingListener: createDelayTypingListener
+		};
 
 		function createDelayTypingListener(action, delay) {
 			return (function () {
@@ -26,9 +26,5 @@
 				}
 			})();
 		}
-
-		return {
-			createDelayTypingListener: createDelayTypingListener
-		};
 	}
 })();

@@ -12,5 +12,4 @@
 			templateUrl: 'app/components/navbar/navbar.template.html'
 		};
 	}
-
 })();
