@@ -7,4 +7,5 @@
 
     <include file="changelog/1.0/160414-initial_schema.xml" relativeToChangelogFile="true"/>
     <include file="changelog/1.0/160414-initial_data.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/1.0/160426-create_default_acl_table.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

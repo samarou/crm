@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="yauheni.putsykovich" id="1">
+        <createTable tableName="user_default_acl">
+            <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="user_id" remarks="Identifier of user that has a default acls" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="principal_id" remarks="Principal identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="permission_mask" remarks="Binary mask for permissions (READ – 1, WRITE – 2, CREATE – 4, DELETE – 8, ADMIN - 16)" type="INT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="yauheni.putsykovich" id="2">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_default_acl" referencedColumnNames="id" referencedTableName="user" constraintName="fk_user_default_acl_user_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+    <changeSet author="yauheni.putsykovich" id="3">
+        <addForeignKeyConstraint baseColumnNames="principal_id" baseTableName="acl_entry" referencedColumnNames="id" referencedTableName="principal" constraintName="fk_user_default_acl_principal_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+</databaseChangeLog>
