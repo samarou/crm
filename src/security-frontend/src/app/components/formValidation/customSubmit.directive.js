@@ -10,29 +10,27 @@
 		return {
 			restrict: 'A',
 			link: function (scope, element, attributes) {
-				var $element = angular.element(element);
+				var button = angular.element(element);
 
-				attributes.$set('novalidate', 'novalidate');
-				$element.find('.ng-pristine').removeClass('ng-pristine');
 
-				$element.bind('submit', function (e) {
+				button.bind('click', function (e) {
 					e.preventDefault();
 
-					var form = scope[attributes.name];
-					form.$pristine = false;
-					form.$dirty = true;
-					angular.forEach(form.$error, function (error) {
-						angular.forEach(error, function (field) {
-							field.$setDirty();
+					var form = scope.$apply(attributes.formName);
+					if (form) {
+						form.$setDirty();
+						angular.forEach(form.$error, function (error) {
+							angular.forEach(error, function (field) {
+								field.$setDirty();
+							});
 						});
-					});
-					scope.$digest();
+						scope.$apply();
 
-					if (form.$invalid) {
-						$element.find('.ng-invalid').first().focus();
-						return;
+						if (form.$invalid) {
+							angular.element('input[class~=ng-invalid]').first().focus();
+							return;
+						}
 					}
-
 					scope.$eval(attributes.customSubmit);
 					scope.$apply();
 				});

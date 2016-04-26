@@ -1,31 +1,15 @@
-<div class="page-header">
-    <h2>{{vm.title}}</h2>
-</div>
-<form name="groupsForm" class="form-group" custom-submit="vm.submit()">
-    <div class="form-group has-feedback" input-validation>
-        <label for="group-name">Name</label>
-        <input type="text" id="group-name" class="form-control" name="groupname" ng-model="vm.group.name" required>
-        <span ng-show="groupsForm.groupname.$dirty && groupsForm.groupname.$error.required" class="help-block">Group name is required</span>
-    </div>
-    <div class="form-group" input-validation>
-        <label for="group-description">Description</label>
+<form-wrapper form-title="vm.title" submit-text="{{vm.submitText}}" submit-btn="vm.submit()"
+              cancel-btn="vm.cancel()" form-name="groupsForm">
+    <form name="groupsForm" class="form-group">
+        <div class="form-group has-feedback" input-validation>
+            <label for="group-name">Name</label>
+            <input type="text" id="group-name" class="form-control" name="groupname" ng-model="vm.group.name" required>
+            <span ng-show="groupsForm.groupname.$dirty && groupsForm.groupname.$error.required" class="help-block">Group name is required</span>
+        </div>
+        <div class="form-group" input-validation>
+            <label for="group-description">Description</label>
         <textarea id="group-description" class="form-control" name="groupDescription"
                   ng-model="vm.group.description"></textarea>
-    </div>
-    <div class="row">
-        <div class="col-xs-6 col-md-3 pull-right">
-            <div class="btn-group btn-group-justified">
-                <div class="btn-group">
-                    <button class="btn btn-default" ng-click="vm.cancel()">
-                        Cancel
-                    </button>
-                </div>
-                <div class="btn-group">
-                    <button type="submit" class="btn btn-primary">
-                        {{vm.submitText}}
-                    </button>
-                </div>
-            </div>
         </div>
-    </div>
-</form>
+    </form>
+</form-wrapper>

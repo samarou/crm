@@ -1,6 +1,6 @@
 <div class="col-md-4 col-md-offset-4">
     <h2>Login</h2>
-    <form name="form" custom-submit="vm.login()" role="form" >
+    <form name="form" role="form">
         <div class="has-error" ng-show="vm.error">
             <span class="help-block">{{vm.error}}</span>
         </div>
@@ -15,7 +15,7 @@
             <span ng-show="form.password.$dirty && form.password.$error.required" class="help-block">Password is required</span>
         </div>
         <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Login</button>
+            <button custom-submit="vm.login()" form-name="form" class="btn btn-primary">Login</button>
         </div>
     </form>
 </div>

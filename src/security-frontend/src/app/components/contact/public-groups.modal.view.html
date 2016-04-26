@@ -1,5 +1,5 @@
-<custom-form title="vm.title" submit-text="vm.okTitle" cancel-text="vm.cancelTitle" submit-btn="vm.ok()"
-             cancel-btn="vm.cancel()">
+<form-wrapper form-title="vm.title" submit-text="Ok" cancel-text="Cancel" submit-btn="vm.ok()"
+              cancel-btn="vm.cancel()" modal="true">
     <input class="form-control" ng-model="vm.bundle.pagingFilterConfig.filterObject.$" placeholder="Search...">
     <div class="table--fixed__wrapper">
         <table class="table table--fixed  text--unselectable">
@@ -45,4 +45,4 @@
                         boundary-links="true" rotate="false">
         </uib-pagination>
     </div>
-</custom-form>
+</form-wrapper>

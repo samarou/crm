@@ -14,8 +14,6 @@
 		vm.permissions = [];
 		vm.actions = contactPermissionsService;
 
-		vm.submitText = 'Add';
-		vm.cancelText = 'Cancel';
 		vm.title = 'Add contact';
 
 

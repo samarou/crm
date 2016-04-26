@@ -1,5 +1,5 @@
-<custom-form title="vm.title" submit-text="vm.okTitle" cancel-text="vm.cancelTitle" submit-btn="vm.ok()"
-             cancel-btn="vm.cancel()">
+<form-wrapper form-title="vm.title" submit-text="Ok" cancel-text="Cancel" submit-btn="vm.ok()"
+              cancel-btn="vm.cancel()" modal="true">
     <input class="form-control" ng-model="vm.bundle.filter.text" ng-keyup="vm.bundle.typing.keyUp()"
            ng-keydown="vm.bundle.typing.keyDown()" placeholder="Search by first name, last name, username, email...">
     <div class="table--fixed__wrapper">
@@ -63,4 +63,4 @@
                         boundary-link="true" rotate="false">
         </uib-pagination>
     </div>
-</custom-form>
+</form-wrapper>

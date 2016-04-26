@@ -25,7 +25,6 @@
 		};
 
 		vm.submitText = 'Save';
-		vm.cancelText = 'Cancel';
 		vm.title = 'Edit contact';
 
 		$q.all(
