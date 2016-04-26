@@ -1,14 +1,19 @@
-/**
- * @author yauheni.putsykovich
- */
 (function () {
 	'use strict';
+
 	angular
 			.module('securityManagement')
 			.factory('roleService', roleService);
 
 	/** @ngInject */
 	function roleService($http) {
+		return {
+			fetchAll: fetchAll,
+			create: create,
+			get: get,
+			update: update,
+			remove: remove
+		};
 
 		function fetchAll() {
 			return $http.get('rest/roles');
@@ -29,13 +34,5 @@
 		function remove(id) {
 			return $http.delete('rest/roles/' + id);
 		}
-
-		return {
-			fetchAll: fetchAll,
-			create: create,
-			get: get,
-			update: update,
-			remove: remove
-		};
 	}
 })();

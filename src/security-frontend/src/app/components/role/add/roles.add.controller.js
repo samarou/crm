@@ -5,29 +5,24 @@
 			.module('securityManagement')
 			.controller('RolesAddController', RolesAddController);
 
-
 	/** @ngInject */
-	function RolesAddController(roleService, rolePrivilegeService, $state) {
+	function RolesAddController(roleDetailsService, rolePrivilegeService) {
 		var vm = this;
 		vm.role = {};
 		vm.submitText = 'Add';
 		vm.title = 'Add role';
 		vm.objectTypes = [];
+		vm.submit = submit;
+		vm.cancel = roleDetailsService.cancel;
 
-		rolePrivilegeService.getObjectTypes(vm);
+		init();
 
+		function init() {
+			rolePrivilegeService.getObjectTypes(vm);
+		}
 
-		vm.submit = function () {
-			vm.role.privileges = [];
-			rolePrivilegeService.getPrivilegesOfRole(vm);
-			roleService.create(vm.role).then(function () {
-				$state.go('roles.list');
-			})
-		};
-
-		vm.cancel = function () {
-			$state.go('roles.list');
-		};
-
+		function submit() {
+			roleDetailsService.submit(vm, true);
+		}
 	}
 })();

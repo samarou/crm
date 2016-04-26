@@ -1,6 +1,3 @@
-/**
- * @author yauheni.putsykovich
- */
 (function () {
 	'use strict';
 
@@ -11,12 +8,10 @@
 	/** @ngInject */
 	function RolesListController($q, roleService, rolePrivilegeService, $state) {
 		var vm = this;
-
 		vm.searchText = '';
 		vm.pageRoles = [];
-
+		vm.objectTypes = [];
 		// todo: resolve problem with filtering
-
 		vm.pagingFilterConfig = {
 			currentPage: 1,
 			itemsPerPage: 10,
@@ -29,18 +24,26 @@
 			sortProperty: 'name',
 			sortAsc: true
 		};
-		vm.objectTypes = [];
+		vm.updateFilterObject = updateFilterObject;
+		vm.selectAll = selectAll;
+		vm.selectOne = selectOne;
+		vm.edit = edit;
+		vm.add = add;
+		vm.remove = remove;
 
-		fetchAllRoles();
-		rolePrivilegeService.getObjectTypes(vm);
+		init();
 
+		function init() {
+			fetchAllRoles();
+			rolePrivilegeService.getObjectTypes(vm);
+		}
 
-		vm.updateFilterObject = function () {
+		function updateFilterObject() {
 			vm.pagingFilterConfig.filterObject.name = vm.searchText;
 			vm.pagingFilterConfig.filterObject.description = vm.searchText;
-		};
+		}
 
-		vm.selectAll = function (checked) {
+		function selectAll(checked) {
 			if (checked) {
 				vm.pageRoles.forEach(function (role) {
 					role.checked = true;
@@ -50,23 +53,23 @@
 					role.checked = false;
 				});
 			}
-		};
+		}
 
-		vm.selectOne = function () {
+		function selectOne() {
 			vm.isSelectedAll = vm.pageRoles.every(function (role) {
 				return role.checked;
 			});
-		};
+		}
 
-		vm.edit = function (role) {
+		function edit(role) {
 			$state.go('roles.edit', {id: role.id});
-		};
+		}
 
-		vm.add = function () {
+		function add() {
 			$state.go('roles.add');
-		};
+		}
 
-		vm.remove = function () {
+		function remove() {
 			var tasks = [];
 			vm.pageRoles.forEach(function (role) {
 				if (role.checked) {
@@ -75,7 +78,7 @@
 			});
 			$q.all(tasks).then(fetchAllRoles);
 			vm.isSelectedAll = false;
-		};
+		}
 
 		function fetchAllRoles() {
 			roleService.fetchAll().then(function (response) {

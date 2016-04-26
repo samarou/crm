@@ -1,11 +1,17 @@
 (function () {
 	'use strict';
+
 	angular
 			.module('securityManagement')
 			.factory('rolePrivilegeService', rolePrivilegeService);
 
 	/** @ngInject */
 	function rolePrivilegeService(collections, privilegeService) {
+		return {
+			getObjectTypes: getObjectTypes,
+			checkPrivilegesOfRole: checkPrivilegesOfRole,
+			getPrivilegesOfRole: getPrivilegesOfRole
+		};
 
 		function getObjectTypes(scope) {
 			return privilegeService.getAll().then(function (response) {
@@ -55,12 +61,6 @@
 					}
 				});
 			});
-		}
-
-		return {
-			getObjectTypes: getObjectTypes,
-			checkPrivilegesOfRole: checkPrivilegesOfRole,
-			getPrivilegesOfRole: getPrivilegesOfRole
 		}
 	}
 })();

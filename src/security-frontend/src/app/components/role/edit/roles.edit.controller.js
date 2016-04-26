@@ -5,43 +5,30 @@
 			.module('securityManagement')
 			.controller('RolesEditController', RolesEditController);
 
-
 	/** @ngInject */
-	function RolesEditController(roleService, $stateParams, $state, rolePrivilegeService) {
+	function RolesEditController(roleService, roleDetailsService, $stateParams, rolePrivilegeService) {
 		var vm = this;
 		vm.role = {};
 		vm.submitText = 'Save';
 		vm.title = 'Edit role';
 		vm.objectTypes = [];
+		vm.submit = submit;
+		vm.cancel = roleDetailsService.cancel;
 
+		init();
 
-		roleService.get($stateParams.id).then(function (response) {
-			vm.role = response.data;
-		}).then(function () {
-			rolePrivilegeService.getObjectTypes(vm).then(function () {
-				rolePrivilegeService.checkPrivilegesOfRole(vm);
-			});
-		});
-
-
-		vm.submit = function () {
-			vm.role.privileges = [];
-			vm.objectTypes.forEach(function (objectType) {
-				objectType.actions.forEach(function (action) {
-					if (action.privilege.checked) {
-						vm.role.privileges.push(action.privilege);
-					}
+		function init() {
+			roleService.get($stateParams.id).then(function (response) {
+				vm.role = response.data;
+			}).then(function () {
+				rolePrivilegeService.getObjectTypes(vm).then(function () {
+					rolePrivilegeService.checkPrivilegesOfRole(vm);
 				});
 			});
-			roleService.update(vm.role).then(function () {
-				$state.go('roles.list');
-			})
-		};
+		}
 
-		vm.cancel = function () {
-			$state.go('roles.list');
-		};
-
-
+		function submit() {
+			roleDetailsService.submit(vm, false);
+		}
 	}
 })();
