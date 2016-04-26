@@ -1,5 +1,6 @@
 package com.itechart.security.web.model.dto;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -15,6 +16,7 @@ public class SecuredUserDto {
     private boolean active;
     private Set<RoleDto> roles;
     private Set<GroupDto> groups;
+    private List<AclEntryDto> acls;
 
     public Long getId() {
         return id;
@@ -86,5 +88,13 @@ public class SecuredUserDto {
 
     public void setGroups(Set<GroupDto> groups) {
         this.groups = groups;
+    }
+
+    public void setAcls(List<AclEntryDto> acls) {
+        this.acls = acls;
+    }
+
+    public List<AclEntryDto> getAcls() {
+        return acls;
     }
 }
