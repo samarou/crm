@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet id="001" author="maksim.kalenik">
+        <createTable tableName="attachment" remarks="Attachments for contacts">
+            <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" remarks="Attachment name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_upload" remarks="Uploading date" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="comment" remarks="Attachment comment" type="MEDIUMTEXT"/>
+            <column name="date_deleted" remarks="Date deleted" type="DATETIME"/>
+            <column name="contact_id" remarks="Contact identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="attachment"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="002" author="maksim.kalenik">
+        <createIndex indexName="fk_attachment_contact_id" tableName="attachment">
+            <column name="contact_id"/>
+        </createIndex>
+        <rollback>
+            <dropIndex tableName="attachment" indexName="fk_attachment_contact_id"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="003" author="maksim.kalenik">
+        <addForeignKeyConstraint baseColumnNames="contact_id" baseTableName="attachment" constraintName="fk_attachment_contact_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="contact"/>
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="attachment" constraintName="fk_attachment_contact_id"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
