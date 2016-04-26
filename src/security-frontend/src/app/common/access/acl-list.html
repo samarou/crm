@@ -1,0 +1,36 @@
+<table class="table">
+  <caption>
+    Permissions
+    <ul ng-show="handler.canEdit" class="list-inline pull-right">
+      <li><span ng-click="handler.actions.addPermissionsForUser(handler)" class="hover--pointer icon--user-add"></span></li>
+      <li><span ng-click="handler.actions.addPermissionsForGroup(handler)" class="hover--pointer icon--user-group-add"></span></li>
+      <li><span ng-click="handler.actions.removePermissions(handler)" class="hover--pointer icon--remove"></span></li>
+    </ul>
+  </caption>
+  <thead>
+  <tr>
+    <td></td>
+    <td></td>
+    <td>Name</td>
+    <td>Read</td>
+    <td>Write</td>
+    <td>Create</td>
+    <td>Delete</td>
+    <td>Admin</td>
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="p in handler.permissions">
+    <td><input ng-show="handler.canEdit" type="checkbox" ng-model="p.checked"></td>
+    <td><span title="{{p.principalTypeName}}" class="icon--small hover--pointer"
+              ng-class="{'icon--user': p.principalTypeName === 'user', 'icon--user-group': p.principalTypeName === 'group'}"></span>
+    </td>
+    <td>{{p.name}}</td>
+    <td><input ng-disabled="!handler.canEdit" type="checkbox" ng-model="p.canRead"></td>
+    <td><input ng-disabled="!handler.canEdit" type="checkbox" ng-model="p.canWrite"></td>
+    <td><input ng-disabled="!handler.canEdit" type="checkbox" ng-model="p.canCreate"></td>
+    <td><input ng-disabled="!handler.canEdit" type="checkbox" ng-model="p.canDelete"></td>
+    <td><input ng-disabled="!handler.canEdit" type="checkbox" ng-model="p.canAdmin"></td>
+  </tr>
+  </tbody>
+</table>
