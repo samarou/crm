@@ -4,18 +4,18 @@
         <div class="has-error" ng-show="vm.error">
             <span class="help-block">{{vm.error}}</span>
         </div>
-        <div class="form-group" input-validation>
+        <div class="form-group" crm-input-validation>
             <label for="username">Username</label>
             <input type="text" name="username" id="username" class="form-control" ng-model="vm.username" required/>
             <span ng-show="form.username.$dirty && form.username.$error.required" class="help-block">Username is required</span>
         </div>
-        <div class="form-group" input-validation>
+        <div class="form-group" crm-input-validation>
             <label for="password">Password</label>
             <input type="password" name="password" id="password" class="form-control" ng-model="vm.password" required/>
             <span ng-show="form.password.$dirty && form.password.$error.required" class="help-block">Password is required</span>
         </div>
         <div class="form-actions">
-            <button custom-submit="vm.login()" form-name="form" class="btn btn-primary">Login</button>
+            <button crm-custom-submit="vm.login()" crm-form-validation="form" class="btn btn-primary">Login</button>
         </div>
     </form>
 </div>

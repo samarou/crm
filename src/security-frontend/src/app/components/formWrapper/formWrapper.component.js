@@ -3,10 +3,10 @@
 
 	angular
 			.module('securityManagement')
-			.component('formWrapper', formWrapper());
+			.component('crmFormWrapper', crmFormWrapper());
 
 	/** @ngInject */
-	function formWrapper() {
+	function crmFormWrapper() {
 		return {
 			restrict: 'E',
 			transclude: true,
@@ -14,7 +14,7 @@
 				formTitle: '<',
 				submitText: '@',
 				cancelText: '@',
-				formName: '=',
+				crmFormValidation: '=',
 				cancelBtn: '&',
 				submitBtn: '&',
 				modal: '@'

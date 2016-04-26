@@ -12,8 +12,8 @@
                 {{$ctrl.cancelText ? $ctrl.cancelText : 'Cancel'}}
             </a>
             <a ng-show="$ctrl.submitText" class="btn btn-primary"
-               custom-submit="$ctrl.submitBtn()"
-               form-name="$ctrl.formName">
+               crm-custom-submit="$ctrl.submitBtn()"
+               crm-form-validation="$ctrl.crmFormValidation">
                 {{$ctrl.submitText}}
             </a>
         </div>

@@ -1,11 +1,11 @@
-<form-wrapper form-title="vm.title" submit-text="{{vm.submitText}}" cancel-text="{{vm.cancelText}}" submit-btn="vm.submit()"
-              cancel-btn="vm.cancel()" form-name="contactForm">
+<crm-form-wrapper form-title="vm.title" submit-text="{{vm.submitText}}" cancel-text="{{vm.cancelText}}" submit-btn="vm.submit()"
+              cancel-btn="vm.cancel()" crm-form-validation="contactForm">
     <form name="contactForm" class="form-group">
         <uib-tabset active="active">
             <uib-tab index="0" heading="Personal Info">
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="form-group" input-validation>
+                        <div class="form-group" crm-input-validation>
                             <label for="contact-first-name">First name</label>
                             <input ng-disabled="!vm.canEdit" id="contact-first-name" class="form-control"
                                    name="firstName"
@@ -15,7 +15,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group" input-validation>
+                        <div class="form-group" crm-input-validation>
                             <label for="contact-last-name">Last name</label>
                             <input ng-disabled="!vm.canEdit" id="contact-last-name" class="form-control" name="lastName"
                                    ng-model="vm.contact.lastName" required>
@@ -26,7 +26,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="form-group" input-validation>
+                        <div class="form-group" crm-input-validation>
                             <label for="contact-email">Email</label>
                             <input type="email" ng-disabled="!vm.canEdit" id="contact-email" class="form-control"
                                    name="email"
@@ -38,7 +38,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group" input-validation>
+                        <div class="form-group" crm-input-validation>
                             <label for="contact-address">Address</label>
                             <input ng-disabled="!vm.canEdit" id="contact-address" class="form-control" name="address"
                                    ng-model="vm.contact.address">
@@ -91,4 +91,4 @@
             </uib-tab>
         </uib-tabset>
     </form>
-</form-wrapper>
+</crm-form-wrapper>

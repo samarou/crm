@@ -3,10 +3,10 @@
 
 	angular
 			.module('securityManagement')
-			.directive('inputValidation', inputValidation);
+			.directive('crmInputValidation', crmInputValidation);
 
 	/** @ngInject */
-	function inputValidation() {
+	function crmInputValidation() {
 		return {
 			restrict: 'A',
 			require: '^form',

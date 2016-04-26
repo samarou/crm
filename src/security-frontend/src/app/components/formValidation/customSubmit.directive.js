@@ -3,10 +3,10 @@
 
 	angular
 			.module('securityManagement')
-			.directive('customSubmit', customSubmit);
+			.directive('crmCustomSubmit', crmCustomSubmit);
 
 	/** @ngInject */
-	function customSubmit() {
+	function crmCustomSubmit() {
 		return {
 			restrict: 'A',
 			link: function (scope, element, attributes) {
@@ -16,7 +16,7 @@
 				button.bind('click', function (e) {
 					e.preventDefault();
 
-					var form = scope.$apply(attributes.formName);
+					var form = scope.$apply(attributes.crmFormValidation);
 					if (form) {
 						form.$setDirty();
 						angular.forEach(form.$error, function (error) {
@@ -31,7 +31,7 @@
 							return;
 						}
 					}
-					scope.$eval(attributes.customSubmit);
+					scope.$eval(attributes.crmCustomSubmit);
 					scope.$apply();
 				});
 			}
