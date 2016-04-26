@@ -6,70 +6,30 @@
             <div class="row">
                 <div class="col-md-6 form-group">
                     <label for="contact-first-name">First name</label>
-                    <input ng-disabled="!vm.canEdit" id="contact-first-name" class="form-control"
+                    <input ng-disabled="!vm.aclHandler.canEdit" id="contact-first-name" class="form-control"
                            ng-model="vm.contact.firstName">
                 </div>
                 <div class="col-md-6 form-group">
                     <label for="contact-last-name">Last name</label>
-                    <input ng-disabled="!vm.canEdit" id="contact-last-name" class="form-control"
+                    <input ng-disabled="!vm.aclHandler.canEdit" id="contact-last-name" class="form-control"
                            ng-model="vm.contact.lastName">
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 form-group">
                     <label for="contact-email">Email</label>
-                    <input ng-disabled="!vm.canEdit" id="contact-email" class="form-control"
+                    <input ng-disabled="!vm.aclHandler.canEdit" id="contact-email" class="form-control"
                            ng-model="vm.contact.email">
                 </div>
                 <div class="col-md-6 form-group">
                     <label for="contact-address">Address</label>
-                    <input ng-disabled="!vm.canEdit" id="contact-address" class="form-control"
+                    <input ng-disabled="!vm.aclHandler.canEdit" id="contact-address" class="form-control"
                            ng-model="vm.contact.address">
                 </div>
             </div>
         </uib-tab>
         <uib-tab index="1" heading="Access">
-            <table class="table">
-                <caption>
-                    Permissions
-                    <ul class="list-inline pull-right">
-                        <li ng-show="vm.canEdit"><span
-                                ng-click="vm.actions.addPermissionsForUser(vm)"
-                                class="hover--pointer icon--small icon--user-add"></span></li>
-                        <li ng-show="vm.canEdit"><span
-                                ng-click="vm.actions.addPermissionsForGroup(vm)"
-                                class="hover--pointer icon--small icon--user-group-add"></span></li>
-                        <li ng-show="vm.canEdit"><span ng-click="vm.actions.removePermissions(vm)"
-                                                           class="hover--pointer icon--small icon--remove"></span></li>
-                    </ul>
-                </caption>
-                <thead>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td>Name</td>
-                    <td>Read</td>
-                    <td>Write</td>
-                    <td>Create</td>
-                    <td>Delete</td>
-                    <td>Admin</td>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="p in vm.permissions">
-                    <td><input ng-show="vm.canEdit" type="checkbox" ng-model="p.checked"></td>
-                    <td><span title="{{p.principalTypeName}}" class="icon--small hover--pointer"
-                              ng-class="{'icon--user': p.principalTypeName === 'user', 'icon--user-group': p.principalTypeName === 'group'}"></span>
-                    </td>
-                    <td>{{p.name}}</td>
-                    <td><input ng-disabled="!vm.canEdit" type="checkbox" ng-model="p.canRead"></td>
-                    <td><input ng-disabled="!vm.canEdit" type="checkbox" ng-model="p.canWrite"></td>
-                    <td><input ng-disabled="!vm.canEdit" type="checkbox" ng-model="p.canCreate"></td>
-                    <td><input ng-disabled="!vm.canEdit" type="checkbox" ng-model="p.canDelete"></td>
-                    <td><input ng-disabled="!vm.canEdit" type="checkbox" ng-model="p.canAdmin"></td>
-                </tr>
-                </tbody>
-            </table>
+          <acl-form handler="vm.aclHandler"></acl-form>
         </uib-tab>
     </uib-tabset>
 </form>
