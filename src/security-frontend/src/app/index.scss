@@ -57,34 +57,30 @@ $icon-font-path: "../../bower_components/bootstrap-sass/assets/fonts/bootstrap/"
 
 .table__row--inactive {
   background-color: #fff6f4;
-}
-
-.table__row--inactive:hover {
-  background-color: #bebebe;
-  cursor: pointer;
+  &:hover {
+    background-color: #bebebe;
+    cursor: pointer;
+  }
 }
 
 .list--compact {
   margin: 0;
+  li ul {
+    margin-top: 0;
+    padding-top: 0;
+    li {
+      background-color: #f6f6f6;
+      &:hover {
+        cursor: pointer;
+        background-color: #eeeeee;
+      }
+    }
+  }
 }
 
 .list--compact__collapse {
   cursor: pointer;
   background-color: #eeeeee;
-}
-
-.list--compact li ul li {
-  background-color: #f6f6f6;
-}
-
-.list--compact li ul li:hover {
-  cursor: pointer;
-  background-color: #eeeeee;
-}
-
-.list--compact li ul {
-  margin-top: 0;
-  padding-top: 0;
 }
 
 .block--scrollable {
@@ -105,10 +101,10 @@ $icon-font-path: "../../bower_components/bootstrap-sass/assets/fonts/bootstrap/"
   min-height: 156px;
   max-height: 156px;
   overflow-y: auto;
-}
 
-.list--scrollable li {
-  line-height: 25px;
+  li {
+    line-height: 25px;
+  }
 }
 
 .text--unselectable {
