@@ -1,6 +1,3 @@
-/**
- * @author yauheni.putsykovich
- */
 (function () {
 	'use strict';
 
@@ -8,20 +5,28 @@
 			.module('securityManagement')
 			.controller('GroupsListController', GroupsListController);
 
-
 	function GroupsListController($q, groupService, groupBundle, $state) {
 		var vm = this;
-
 		vm.bundle = groupBundle.securedMode();
-		vm.bundle.find();
-		vm.add = function () {
-			$state.go('groups.add');
-		};
-		vm.edit = function (group) {
-			$state.go('groups.edit', {id: group.id});
-		};
+		vm.add = add;
+		vm.edit = edit;
+		vm.remove = remove;
 
-		vm.remove = function () {
+		init();
+
+		function init() {
+			vm.bundle.find();
+		}
+
+		function add() {
+			$state.go('groups.add');
+		}
+
+		function edit(group) {
+			$state.go('groups.edit', {id: group.id});
+		}
+
+		function remove() {
 			var tasks = [];
 			vm.bundle.pageGroups.forEach(function (group) {
 				if (group.checked) {
@@ -30,6 +35,6 @@
 			});
 			$q.all(tasks).then(vm.bundle.find);
 			vm.bundle.isSelectedAll = false;
-		};
+		}
 	}
 })();

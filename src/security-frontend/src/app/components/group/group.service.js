@@ -1,6 +1,3 @@
-/**
- * @author yauheni.putsykovich
- */
 (function () {
 	'use strict';
 
@@ -10,6 +7,14 @@
 
 	/** @ngInject */
 	function groupService($http) {
+		return {
+			getAll: getAll,
+			getPublicGroups: getPublicGroups,
+			get: get,
+			create: create,
+			update: update,
+			remove: remove
+		};
 
 		function getAll() {
 			return $http.get('rest/groups');
@@ -34,14 +39,5 @@
 		function remove(id) {
 			return $http.delete('rest/groups/' + id);
 		}
-
-		return {
-			getAll: getAll,
-			getPublicGroups: getPublicGroups,
-			get: get,
-			create: create,
-			update: update,
-			remove: remove
-		};
 	}
 })();

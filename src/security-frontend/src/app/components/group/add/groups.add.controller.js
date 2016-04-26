@@ -1,6 +1,3 @@
-/**
- * @author yauheni.putsykovich
- */
 (function () {
 	'use strict';
 
@@ -8,22 +5,16 @@
 			.module('securityManagement')
 			.controller('GroupsAddController', GroupsAddController);
 
-
-	function GroupsAddController(groupService, $state) {
+	function GroupsAddController(groupDetailsService) {
 		var vm = this;
 		vm.group = {};
 		vm.submitText = 'Add';
 		vm.title = 'Add group';
+		vm.submit = submit;
+		vm.cancel = groupDetailsService.cancel;
 
-		vm.submit = function () {
-			groupService.create(vm.group).then(function () {
-				$state.go('groups.list');
-			})
-		};
-
-		vm.cancel = function () {
-			$state.go('groups.list');
-		};
-
+		function submit() {
+			groupDetailsService.submit(vm.group, true);
+		}
 	}
 })();

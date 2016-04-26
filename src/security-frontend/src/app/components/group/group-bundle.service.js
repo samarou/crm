@@ -1,6 +1,3 @@
-/**
- * @author yauheni.putsykovich
- */
 (function () {
 	'use strict';
 
@@ -10,6 +7,22 @@
 
 	/** @ngInject */
 	function groupBundle(groupService) {
+		return {
+			publicMode: getPublicBundle,
+			securedMode: getSecuredBundle
+		};
+
+		function getPublicBundle() {
+			var bundle = createBundle();
+			bundle.performSearch = groupService.getPublicGroups;
+			return bundle;
+		}
+
+		function getSecuredBundle() {
+			var bundle = createBundle();
+			bundle.performSearch = groupService.getAll;
+			return bundle;
+		}
 
 		function createBundle() {
 			var bundle = {};
@@ -58,18 +71,5 @@
 
 			return bundle;
 		}
-
-		return {
-			publicMode: function () {
-				var bundle = createBundle();
-				bundle.performSearch = groupService.getPublicGroups;
-				return bundle;
-			},
-			securedMode: function () {
-				var bundle = createBundle();
-				bundle.performSearch = groupService.getAll;
-				return bundle;
-			}
-		};
 	}
 })();

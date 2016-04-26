@@ -1,6 +1,3 @@
-/**
- * @author yauheni.putsykovich
- */
 (function () {
 	'use strict';
 
@@ -8,26 +5,24 @@
 			.module('securityManagement')
 			.controller('GroupsEditController', GroupsEditController);
 
-
-	function GroupsEditController(groupService, $stateParams, $state) {
+	function GroupsEditController(groupService, groupDetailsService, $stateParams) {
 		var vm = this;
 		vm.group = {};
 		vm.submitText = 'Save';
 		vm.title = 'Edit group';
+		vm.submit = submit;
+		vm.cancel = groupDetailsService.cancel;
 
-		groupService.get($stateParams.id).then(function (response) {
-			vm.group = response.data;
-		});
+		init();
 
-		vm.submit = function () {
-			groupService.update(vm.group).then(function () {
-				$state.go('groups.list');
-			})
-		};
+		function init() {
+			groupService.get($stateParams.id).then(function (response) {
+				vm.group = response.data;
+			});
+		}
 
-		vm.cancel = function () {
-			$state.go('groups.list');
-		};
-
+		function submit() {
+			groupDetailsService.submit(vm.group, false);
+		}
 	}
 })();
