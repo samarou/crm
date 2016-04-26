@@ -7,9 +7,15 @@
 
 	/** @ngInject */
 	function contactPermissionsService($q, collections, dialogService, groupBundle, searchBundle, contactService) {
-		var vm = this;
-		vm.groupBundle = groupBundle.publicMode();
-		vm.userBundle = searchBundle.userPublicMode();
+		var service = this;
+		service.groupBundle = groupBundle.publicMode();
+		service.userBundle = searchBundle.userPublicMode();
+
+		return {
+			addPermissionsForUser: addPermissionsForUser,
+			addPermissionsForGroup: addPermissionsForGroup,
+			removePermissions: removePermissions
+		};
 
 		function removePermissions(scope) {
 			var tasks = [];
@@ -26,7 +32,7 @@
 		}
 
 		function addPermissionsForUser(scope) {
-			vm.userBundle.find();
+			service.userBundle.find();
 			openUserDialog().then(function (model) {
 				model.bundle.itemsList.forEach(function (user) {
 					var stillNotPresent = !collections.find(user, scope.permissions);
@@ -38,10 +44,10 @@
 		}
 
 		function openUserDialog() {
-			vm.userBundle.find();
+			service.userBundle.find();
 			return dialogService.custom('app/components/contact/public-users.modal.view.html', {
 				title: 'Add Permissions for User',
-				bundle: vm.userBundle,
+				bundle: service.userBundle,
 				size: 'modal--user-table',
 				cancelTitle: 'Back',
 				okTitle: 'Ok'
@@ -60,10 +66,10 @@
 		}
 
 		function openGroupDialog() {
-			vm.groupBundle.find();
+			service.groupBundle.find();
 			return dialogService.custom('app/components/contact/public-groups.modal.view.html', {
 				title: 'Add Permissions for Group',
-				bundle: vm.groupBundle,
+				bundle: service.groupBundle,
 				size: 'modal--group-table',
 				cancelTitle: 'Back',
 				okTitle: 'Ok'
@@ -82,12 +88,6 @@
 				canAdmin: false
 			};
 			scope.permissions.push(defaultPermission);
-		}
-
-		return {
-			addPermissionsForUser: addPermissionsForUser,
-			addPermissionsForGroup: addPermissionsForGroup,
-			removePermissions: removePermissions
 		}
 	}
 })();

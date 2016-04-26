@@ -6,31 +6,20 @@
 			.controller('ContactsAddController', ContactsAddController);
 
 	/** @ngInject */
-	function ContactsAddController(contactService, contactPermissionsService, $state) {
+	function ContactsAddController(contactDetailsService, contactPermissionsService) {
 		'use strict';
 		var vm = this;
 		vm.canEdit = true;
 		vm.contact = {};
 		vm.permissions = [];
 		vm.actions = contactPermissionsService;
-
 		vm.title = 'Add contact';
+		vm.submitText = 'Add';
+		vm.submit = submit;
+		vm.cancel = contactDetailsService.cancel;
 
-
-		vm.submit = function () {
-			contactService.create(vm.contact).then(function (response) {
-				var id = response.data;
-				contactService.updatePermissions(id, vm.permissions).then(
-						function () {
-							$state.go('contacts.list');
-						}
-				)
-			});
-
-		};
-
-		vm.cancel = function () {
-			$state.go('contacts.list');
-		};
+		function submit() {
+			contactDetailsService.submit(vm.contact, vm.permissions, true);
+		}
 	}
 })();

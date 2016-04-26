@@ -1,6 +1,3 @@
-/**
- * @author yauheni.putsykovich
- */
 (function () {
 	'use strict';
 
@@ -10,6 +7,19 @@
 
 	/** @ngInject */
 	function contactService($http) {
+		return {
+			getAll: getAll,
+			create: create,
+			get: get,
+			update: update,
+			remove: remove,
+			find: find,
+			getPermissions: getPermissions,
+			updatePermissions: updatePermissions,
+			removePermissions: removePermissions,
+			isAllowed: isAllowed
+		};
+
 		function getAll() {
 			return $http.get('rest/contacts');
 		}
@@ -48,19 +58,6 @@
 
 		function isAllowed(contactId, permission) {
 			return $http.get('rest/contacts/' + contactId + '/actions/' + permission);
-		}
-
-		return {
-			getAll: getAll,
-			create: create,
-			get: get,
-			update: update,
-			remove: remove,
-			find: find,
-			getPermissions: getPermissions,
-			updatePermissions: updatePermissions,
-			removePermissions: removePermissions,
-			isAllowed: isAllowed
 		}
 	}
 })();
