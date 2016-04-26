@@ -13,16 +13,16 @@
 
   /** @ngInject */
   function ConcatPermissionServiceBuilder($q, ContactService) {
-    return function (contact) {
+    return function (getcontact) {
       return {
         getPermissions: function () {
-          return ContactService.getPermissions(contact.id);
+          return ContactService.getPermissions(getcontact().id);
         },
         removePermissions: function (permissions) {
           var resultDefer = $q.defer();
           $q.all(
             permissions.map(function (permission) {
-              return ContactService.removePermissions(contact.id, permission.id);
+              return ContactService.removePermissions(getcontact().id, permission.id);
             })
           ).then(resultDefer.resolve, resultDefer.reject);
           return resultDefer.promise;
