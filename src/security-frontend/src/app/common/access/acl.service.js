@@ -5,34 +5,33 @@
 	'use strict';
 	angular
 			.module('securityManagement')
-			.factory('ContactPermissionsService', ContactPermissionsService);
+			.service('AclServiceBuilder', AclServiceBuilder);
 
 	/** @ngInject */
-	function ContactPermissionsService($q, Collections, DialogService, GroupBundle, SearchBundle, ContactService) {
-		var vm = this;
+	function AclServiceBuilder(Collections, DialogService, GroupBundle, SearchBundle) {
+		var vm = {};
+
 		vm.groupBundle = GroupBundle.publicMode();
 		vm.userBundle = SearchBundle.userPublicMode();
 
-		function removePermissions(scope) {
-			var tasks = [];
-			scope.permissions.forEach(function (p) {
-				if (p.checked) {
-					tasks.push(ContactService.removePermissions(scope.contact.id, p.id));
-				}
-			});
-			$q.all(tasks).then(function () {
-				ContactService.getPermissions(scope.contact.id).then(function (response) {
-					scope.permissions = response.data;
-				})
-			});
-		}
+    function createRemovePermissionsAction(permissionsService) {
+      return function removePermissions(scope) {
+        permissionsService.removePermissions(scope.permissions.filter(function (p) {
+          return p.checked;
+        })).then(function () {
+          permissionsService.getPermissions().then(function (response) {
+            scope.permissions = response.data;
+          })
+        });
+      }
+    }
 
 		function addPermissionsForUser(scope) {
 			vm.userBundle.find();
-			DialogService.custom('app/components/contact/public-users.modal.view.html', {
+			DialogService.custom('app/common/access/public-users.modal.view.html', {
 				title: 'Add Permissions for User',
 				bundle: vm.userBundle,
-				size: 'modal--user-table',
+				size: 'lg',
 				cancelTitle: 'Back',
 				okTitle: 'Ok'
 			}).result.then(function (model) {
@@ -47,10 +46,10 @@
 
 		function addPermissionsForGroup(scope) {
 			vm.groupBundle.find();
-			DialogService.custom('app/components/contact/public-groups.modal.view.html', {
+			DialogService.custom('app/common/access/public-groups.modal.view.html', {
 				title: 'Add Permissions for Group',
 				bundle: vm.groupBundle,
-				size: 'modal--group-table',
+				size: 'lg',
 				cancelTitle: 'Back',
 				okTitle: 'Ok'
 			}).result.then(function (model) {
@@ -63,11 +62,11 @@
 			});
 		}
 
-		function addDefaultPermission(id, name, type, scope) {
+		function addDefaultPermission(id, name, principalTypeName, scope) {
 			var defaultPermission = {
 				id: id,
 				name: name,
-				principalTypeName: type,
+				principalTypeName: principalTypeName,
 				canRead: false,
 				canWrite: false,
 				canCreate: false,
@@ -77,10 +76,12 @@
 			scope.permissions.push(defaultPermission);
 		}
 
-		return {
-			addPermissionsForUser: addPermissionsForUser,
-			addPermissionsForGroup: addPermissionsForGroup,
-			removePermissions: removePermissions
-		}
+		return function (permissionService) {
+      return {
+        addPermissionsForUser: addPermissionsForUser,
+        addPermissionsForGroup: addPermissionsForGroup,
+        removePermissions: createRemovePermissionsAction(permissionService)
+      }
+    }
 	}
 })();
