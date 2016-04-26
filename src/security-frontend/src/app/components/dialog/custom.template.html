@@ -1,7 +1,7 @@
 <div modal-render="{{$isRendered}}" tabindex="-1" role="dialog" class="modal"
      uib-modal-animation-class="fade" modal-in-class="in"
      ng-style="{'z-index': 1050 + index * 10, display: 'block'}">
-    <div class="modal-dialog {{size ? size : ''}}">
+    <div class="modal-dialog modal-{{size ? size : ''}}">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" aria-label="Close" ng-click="$parent.cancel()">
