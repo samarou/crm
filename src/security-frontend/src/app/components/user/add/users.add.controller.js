@@ -7,7 +7,7 @@
 
 
 	/** @ngInject */
-	function UserAddController(userService, groupService, roleService, $state) {
+	function UserAddController(userDetailsService) {
 		'use strict';
 		var vm = this;
 		vm.user = {active: 'true'};
@@ -15,39 +15,17 @@
 		vm.roles = [];
 		vm.submitText = 'Add';
 		vm.title = 'Add user';
+		vm.submit = submit;
+		vm.cancel = userDetailsService.cancel;
 
-		groupService.getAll().then(function (response) {
-			vm.groups = response.data;
-		});
-		roleService.fetchAll().then(function (response) {
-			vm.roles = response.data;
-		});
+		init();
 
-		vm.submit = function () {
-			checkGroups(vm.user);
-			checkRoles(vm.user);
-			userService.create(vm.user).then(function () {
-				$state.go('users.list');
-			})
-		};
-
-		vm.cancel = function () {
-			$state.go('users.list');
-		};
-
-		function checkGroups(user) {
-			user.groups = vm.groups.filter(function (group) {
-				return group.checked;
-			});
-
+		function init() {
+			userDetailsService.getGroupsAndRoles();
 		}
 
-		function checkRoles(user) {
-			user.roles = vm.roles.filter(function (role) {
-				return role.checked;
-			});
+		function submit() {
+			userDetailsService.save(vm.user, vm.roles, vm.groups, true);
 		}
-
-
 	}
 })();

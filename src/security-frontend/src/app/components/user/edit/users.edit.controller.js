@@ -5,9 +5,8 @@
 			.module('securityManagement')
 			.controller('UsersEditController', UserEditController);
 
-
 	/** @ngInject */
-	function UserEditController(userService, groupService, roleService, $state, collections, $stateParams, $q) {
+	function UserEditController(userService, userDetailsService, collections, $stateParams) {
 		'use strict';
 		var vm = this;
 		vm.user = {};
@@ -15,45 +14,25 @@
 		vm.roles = [];
 		vm.submitText = 'Save';
 		vm.title = 'Edit user';
+		vm.submit = submit;
+		vm.cancel = userDetailsService.cancel;
 
-		$q.all(
-				[
-					groupService.getAll().then(function (response) {
-						vm.groups = response.data;
-					}),
-					roleService.fetchAll().then(function (response) {
-						vm.roles = response.data;
-					})
-				]
-		).then(function () {
-			userService.getById($stateParams.id).then(function (response) {
-				vm.user = response.data;
-				checkGroupsAndRolesWhichUserHas(vm.user);
-			});
-		});
+		init();
 
-		vm.submit = function () {
-			checkGroups(vm.user);
-			checkRoles(vm.user);
-			userService.update(vm.user).then(function () {
-				$state.go('users.list');
-			})
-		};
-
-		vm.cancel = function () {
-			$state.go('users.list');
-		};
-
-		function checkGroups(user) {
-			user.groups = vm.groups.filter(function (group) {
-				return group.checked;
-			});
-
+		function init() {
+			userDetailsService.getGroupsAndRoles().then(initUser);
 		}
 
-		function checkRoles(user) {
-			user.roles = vm.roles.filter(function (role) {
-				return role.checked;
+		function submit() {
+			userDetailsService.save(vm.user, vm.roles, vm.groups, false);
+		}
+
+		function initUser(groupsAndRoles) {
+			vm.groups = groupsAndRoles[0].data;
+			vm.roles = groupsAndRoles[1].data;
+			return userService.getById($stateParams.id).then(function (response) {
+				vm.user = response.data;
+				checkGroupsAndRolesWhichUserHas(vm.user);
 			});
 		}
 
@@ -65,7 +44,5 @@
 				role.checked = !!collections.find(role, user.roles);
 			});
 		}
-
-
 	}
 })();

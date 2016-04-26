@@ -7,6 +7,19 @@
 
 	/** @ngInject */
 	function userService($http) {
+		return {
+			getPublicUsers: getPublicUsers,
+			getAll: getAll,
+			getById: getById,
+			create: create,
+			update: update,
+			remove: remove,
+			find: find,
+			findPublicUsers: findPublicUsers,
+			activate: activate,
+			deactivate: deactivate
+		};
+
 		function getPublicUsers() {
 			return $http.get('rest/users/public');
 		}
@@ -45,19 +58,6 @@
 
 		function deactivate(id) {
 			return $http.put('rest/users/deactivate/' + id);
-		}
-
-		return {
-			getPublicUsers: getPublicUsers,
-			getAll: getAll,
-			getById: getById,
-			create: create,
-			update: update,
-			remove: remove,
-			find: find,
-			findPublicUsers: findPublicUsers,
-			activate: activate,
-			deactivate: deactivate
 		}
 	}
 })();

@@ -5,23 +5,41 @@
 			.module('securityManagement')
 			.controller('UsersListController', UserListController);
 
-
 	/** @ngInject */
-	function UserListController($q, userService, searchBundle, groupService, roleService, $state) {
+	function UserListController($q, userService, userDetailsService, searchBundle, $state) {
 		'use strict';
 		var vm = this;
-
-		groupService.getAll().then(function (response) {
-			vm.groups = response.data;
-		});
-		roleService.fetchAll().then(function (response) {
-			vm.roles = response.data;
-		});
-
 		vm.bundle = searchBundle.userSecuredMode();
-		vm.bundle.find();
+		vm.activate = activate;
+		vm.add = add;
+		vm.edit = edit;
 
-		vm.activate = function (newState) {
+		init(vm.bundle);
+
+		function init(bundle) {
+			userDetailsService.getGroupsAndRoles().then(fullGroupsAndRoles);
+			bundle.find();
+		}
+
+		function fullGroupsAndRoles(groupsAndRoles) {
+			vm.groups = groupsAndRoles[0].data;
+			vm.roles = groupsAndRoles[1].data;
+		}
+
+		function activate(newState) {
+			var tasks = prepareActivationStateTasks(newState);
+			$q.all(tasks).then(vm.bundle.find);
+		}
+
+		function add() {
+			$state.go('users.add');
+		}
+
+		function edit(user) {
+			$state.go('users.edit', {id: user.id});
+		}
+
+		function prepareActivationStateTasks(newState) {
 			var tasks = [];
 			vm.bundle.itemsList.forEach(function (user) {
 				if (user.checked) {
@@ -32,16 +50,7 @@
 					}
 				}
 			});
-			$q.all(tasks).then(vm.bundle.find);
-		};
-
-
-		vm.add = function () {
-			$state.go('users.add');
-		};
-
-		vm.edit = function (user) {
-			$state.go('users.edit', {id: user.id});
-		};
+			return tasks;
+		}
 	}
 })();
