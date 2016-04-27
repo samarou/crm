@@ -3,5 +3,13 @@
     padding-left: 15px;
     padding-right: 15px;
   }
+}
 
+.navbar-brand {
+  padding: 0px;
+}
+.navbar-brand>img {
+  height: 100%;
+  padding: 7px 15px;
+  width: auto;
 }
