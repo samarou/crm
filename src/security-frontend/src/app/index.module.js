@@ -9,7 +9,8 @@
 				'crm.group',
 				'crm.contact',
 				'crm.contact',
-				'crm.navbar']);
+				'crm.navbar',
+				'crm.footer']);
 
 	angular
 			.module('crm.core', [

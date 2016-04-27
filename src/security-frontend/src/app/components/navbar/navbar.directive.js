@@ -3,7 +3,7 @@
 
 	angular
 			.module('crm.navbar')
-			.directive('navBar', navBar);
+			.directive('crmNavBar', navBar);
 
 	/** @ngInject */
 	function navBar() {
