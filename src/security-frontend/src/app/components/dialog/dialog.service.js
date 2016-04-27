@@ -2,75 +2,74 @@
 	'use strict';
 
 	angular
-			.module('securityManagement')
-			.factory('DialogService', DialogService)
+			.module('crm.dialog')
+			.factory('dialogService', dialogService)
 			.controller('ErrorDialogController', ErrorDialogController)
 			.controller('NotifyDialogController', NotifyDialogController)
 			.controller('ConfirmDialogController', ConfirmDialogController)
 			.controller('CustomDialogController', CustomDialogController);
 
 	/** @ngInject */
-	function DialogService($uibModal) {
+	function dialogService($uibModal) {
 		return {
-			notify: function (message) {
-				return $uibModal.open({
-					templateUrl: 'app/components/dialog/notify.view.html',
-					controller: 'NotifyDialogController',
-					controllerAs: 'vm',
-					resolve: {
-						message: function () {
-							return message
-						}
-					}
-				});
-			},
-			error: function (message) {
-				return $uibModal.open({
-					templateUrl: 'app/components/dialog/error.view.html',
-					controller: 'ErrorDialogController',
-					controllerAs: 'vm',
-					resolve: {
-						message: function () {
-							return message
-						}
-					}
-				});
-			},
-			confirm: function (message) {
-				return $uibModal.open({
-					templateUrl: 'app/components/dialog/confirm.view.html',
-					controller: 'ConfirmDialogController',
-					controllerAs: 'vm',
-					resolve: {
-						message: function () {
-							return message
-						}
-					}
-				});
-			},
-			/**
-			 * Display a customized modal dialog
-			 * @param bodyUrl url of partial html that will be included as dialog body
-			 * @param model dialog model with fields:
-			 - title - dialog title
-			 - okTitle - title for OK button
-			 - cancelTitle - title for Cancel button
-			 */
-			custom: function (bodyUrl, model) {
-				return $uibModal.open({
-					templateUrl: bodyUrl,
-					windowTemplateUrl: 'app/components/dialog/custom.template.html',
-					controller: 'CustomDialogController',
-					controllerAs: 'vm',
-					keyboard: true,
-					backdrop: false,
-					size: model.size,// if undefined or null, then property will not used
-					resolve: {
-						model: model
-					}
-				});
-			}
+			notify: notify,
+			error: error,
+			confirm: confirm,
+			custom: custom
 		};
+
+		function notify(message) {
+			return $uibModal.open({
+				templateUrl: 'app/components/dialog/notify.view.html',
+				controller: 'NotifyDialogController',
+				controllerAs: 'vm',
+				resolve: {
+					message: function () {
+						return message
+					}
+				}
+			});
+		}
+
+		function error(message) {
+			return $uibModal.open({
+				templateUrl: 'app/components/dialog/error.view.html',
+				controller: 'ErrorDialogController',
+				controllerAs: 'vm',
+				resolve: {
+					message: function () {
+						return message
+					}
+				}
+			});
+		}
+
+		function confirm(message) {
+			return $uibModal.open({
+				templateUrl: 'app/components/dialog/confirm.view.html',
+				controller: 'ConfirmDialogController',
+				controllerAs: 'vm',
+				resolve: {
+					message: function () {
+						return message
+					}
+				}
+			});
+		}
+
+		function custom(bodyUrl, model) {
+			return $uibModal.open({
+				templateUrl: bodyUrl,
+				controller: 'CustomDialogController',
+				controllerAs: 'vm',
+				keyboard: true,
+				backdrop: false,
+				size: model.size,// if undefined or null, then property will not used
+				resolve: {
+					model: model
+				}
+			});
+		}
 	}
 
 	/** @ngInject */
@@ -103,21 +102,19 @@
 		};
 	}
 
-	// todo: fix scope using
-	/*eslint-disable */
 	/** @ngInject */
-	function CustomDialogController($scope, $uibModalInstance, model) {
-		angular.extend($scope, model);
-		$scope.title = model.title || 'Dialog';
-		$scope.okTitle = model.okTitle;
-		$scope.cancelTitle = model.cancelTitle;
-		$scope.ok = function () {
-			$uibModalInstance.close($scope);
+	function CustomDialogController($uibModalInstance, model) {
+		var vm = this;
+		angular.extend(vm, model);
+		vm.title = model.title || 'Dialog';
+		vm.okTitle = model.okTitle;
+		vm.cancelTitle = model.cancelTitle;
+		vm.ok = function () {
+			$uibModalInstance.close(vm);
 		};
-		$scope.cancel = function () {
+		vm.cancel = function () {
 			$uibModalInstance.dismiss();
 		};
 	}
-	/*eslint-enable */
 
 })();

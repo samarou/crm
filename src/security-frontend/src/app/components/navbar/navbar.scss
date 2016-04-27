@@ -1,7 +1,26 @@
 @media screen and (max-width: 767px) {
-  .navbar-pad {
-    padding-left: 15px;
-    padding-right: 15px;
+  .crm-navbar-margin {
+    margin: 15px 15px 0 15px;
   }
-
 }
+
+.navbar-brand {
+  padding: 0px;
+}
+.navbar-brand>img {
+  height: 100%;
+  padding: 10px 15px;
+  width: auto;
+}
+
+.navbar-nav > li > a {
+  color: #383838;
+  text-transform: uppercase;
+}
+
+.logout-btn {
+  background-color: #00BAF2;
+}
+
+
+

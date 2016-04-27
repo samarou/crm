@@ -1,16 +1,17 @@
-/**
- * @author yauheni.putsykovich
- */
 (function () {
 	'use strict';
 
 	angular
-			.module('securityManagement')
-			.factory('Util', Util);
+			.module('crm.common')
+			.factory('util', util);
 
 	/** @ngInject */
-	function Util($timeout) {
-		this.createDelayTypingListener = function (action, delay) {
+	function util($timeout) {
+		return {
+			createDelayTypingListener: createDelayTypingListener
+		};
+
+		function createDelayTypingListener(action, delay) {
 			return (function () {
 				var timer;
 
@@ -24,8 +25,6 @@
 					}
 				}
 			})();
-		};
-
-		return this;
+		}
 	}
 })();

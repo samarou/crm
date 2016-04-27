@@ -2,31 +2,29 @@
 	'use strict';
 
 	angular
-			.module('securityManagement')
-			.factory('UserService', UserService);
+			.module('crm.user')
+			.factory('userService', userService);
 
 	/** @ngInject */
-	function UserService($http) {
-		var service = {};
-
-		service.getPublicUsers = getPublicUsers;
-		service.getAll = fetchAll;
-		service.getById = getById;
-		service.create = create;
-		service.update = update;
-		service.remove = remove;
-		service.find = find;
-		service.findPublicUsers = findPublicUsers;
-		service.activate = activate;
-		service.deactivate = deactivate;
-
-		return service;
+	function userService($http) {
+		return {
+			getPublicUsers: getPublicUsers,
+			getAll: getAll,
+			getById: getById,
+			create: create,
+			update: update,
+			remove: remove,
+			find: find,
+			findPublicUsers: findPublicUsers,
+			activate: activate,
+			deactivate: deactivate
+		};
 
 		function getPublicUsers() {
 			return $http.get('rest/users/public');
 		}
 
-		function fetchAll() {
+		function getAll() {
 			return $http.get('rest/users');
 		}
 

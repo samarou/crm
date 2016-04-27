@@ -1,10 +1,9 @@
-/**
- * @author yauheni.putsykovich
- */
 (function () {
 	'use strict';
 
-	angular.module('securityManagement').directive('privileges', privileges);
+	angular
+			.module('crm.privilege')
+			.directive('privileges', privileges);
 
 	/** @ngInject */
 	function privileges() {

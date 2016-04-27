@@ -1,21 +1,19 @@
-/**
- * @author yauheni.putsykovich
- */
 (function () {
 	'use strict';
 
 	angular
-			.module('securityManagement')
-			.service('PrivilegeService', PrivilegeService);
+			.module('crm.privilege')
+			.factory('privilegeService', privilegeService);
 
 	/** @ngInject */
-	function PrivilegeService($http) {
-		'use strict';
-		this.fetchAll = function () {
-			return $http.get('rest/privileges');
+	function privilegeService($http) {
+		return {
+			getAll: getAll
 		};
 
-		return this;
+		function getAll() {
+			return $http.get('rest/privileges');
+		}
 	}
 })();
 

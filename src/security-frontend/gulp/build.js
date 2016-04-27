@@ -20,7 +20,7 @@ gulp.task('partials', function () {
 				collapseWhitespace: true
 			}))
 			.pipe($.angularTemplatecache('templateCacheHtml.js', {
-				module: 'securityManagement',
+				module: 'crm',
 				root: 'app'
 			}))
 			.pipe(gulp.dest(conf.paths.tmp + '/partials/'));
@@ -43,7 +43,7 @@ gulp.task('html', ['inject', 'partials'], function () {
 			.pipe($.useref())
 			.pipe(jsFilter)
 			.pipe($.sourcemaps.init())
-			.pipe($.stripDebug())
+			.pipe($.stripNgLog())
 			.pipe($.ngAnnotate())
 			.pipe($.uglify({preserveComments: $.uglifySaveLicense})).on('error', conf.errorHandler('Uglify'))
 			.pipe($.rev())

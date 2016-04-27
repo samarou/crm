@@ -1,18 +1,23 @@
 (function () {
 	'use strict';
 
-	angular.module('securityManagement').run(run);
+	angular.module('crm').run(run);
 
 	/** @ngInject */
-	function run($rootScope, $state, AuthService, $log) {
+	function run($rootScope, $state, authService, $log) {
 		var callback = $rootScope.$on('$stateChangeStart', function (event, next) {
-			if (next.controller == 'LoginController') {
-				AuthService.logout();
-			} else if (!AuthService.isAuthenticated()) {
+			if (next.name == 'login') {
+				authService.logout();
+			} else if (!authService.isAuthenticated()) {
 				$log.log('Try to restore token');
-				if (!AuthService.restore()) {
+				if (!authService.restore()) {
+					event.preventDefault();
 					$state.go('login');
 				}
+			}
+			if (next.name == 'home') {
+				event.preventDefault();
+				$state.go(authService.isAdmin() ? 'users.list' : 'contacts.list');
 			}
 		});
 

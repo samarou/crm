@@ -1,22 +1,42 @@
 (function () {
 	'use strict';
 
-	angular.module('securityManagement').factory('HttpInterceptor', HttpInterceptor);
+	angular
+			.module('crm.common')
+			.factory('httpInterceptor', httpInterceptor);
 
 	/** @ngInject */
-	function HttpInterceptor($q, $log, $injector) {
+	function httpInterceptor($q, $log, $injector, toastr) {
 		return {
-			responseError: function (response) {
-				if (response.status === 401) {
-					var AuthService = $injector.get('AuthService');
-					if (AuthService.isAuthenticated()) {
-						AuthService.logout();
-					}
+			responseError: catchError
+		};
+
+		function catchError(response) {
+			switch (response.status) {
+				case 401: {
+					catchAuthError();
+					break;
 				}
-				$log.info('Redirect unauthorized to login');
-				$injector.get('$state').transitionTo('login');
-				return $q.reject(response);
+				default: {
+					catchDefaultError(response);
+				}
+
 			}
+			return $q.reject(response);
+		}
+
+		function catchAuthError() {
+			var AuthService = $injector.get('authService');
+			if (AuthService.isAuthenticated()) {
+				AuthService.logout();
+			}
+			$injector.get('$state').transitionTo('login');
+			toastr.error('Authentication problem', 'Error');
+		}
+
+		function catchDefaultError(response) {
+			$log.error(response.status + ':' + response.data.type + ' ' + response.data.message);
+			toastr.error('Something goes wrong', 'Error');
 		}
 	}
 

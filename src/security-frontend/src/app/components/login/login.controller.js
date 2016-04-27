@@ -2,20 +2,22 @@
 	'use strict';
 
 	angular
-			.module('securityManagement')
+			.module('crm')
 			.controller('LoginController', LoginController);
 
-	function LoginController($state, AuthService, $log) {
+	function LoginController($state, authService) {
 		var vm = this;
+
 		vm.login = function () {
-			AuthService.login(vm.username, vm.password).then(
-					function () {
-						$state.go(AuthService.isAdmin() ? 'users.list' : 'contacts.list');
-					},
-					function (error) {
-						$log.error(error);
-						vm.error = 'Invalid login or password';
-					});
+			authService.login(vm.username, vm.password).then(goToHomePage).catch(showError);
 		};
+
+		function goToHomePage() {
+			$state.go(authService.isAdmin() ? 'users.list' : 'contacts.list');
+		}
+
+		function showError() {
+			vm.error = 'Invalid login or password';
+		}
 	}
 })();
