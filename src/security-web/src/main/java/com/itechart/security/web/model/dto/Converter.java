@@ -323,12 +323,12 @@ public class Converter {
     public static UserDefaultAclEntryDto convert(UserDefaultAclEntry acl) {
         UserDefaultAclEntryDto dto = new UserDefaultAclEntryDto();
         dto.setId(acl.getPrincipal().getId());
-        dto.setRecordId(acl.getPrincipal().getId());
+        dto.setRecordId((Long) acl.getId());
         initAclDto(dto, acl.getPrincipal(), acl.getPermissions());
         return dto;
     }
 
-    private static void initAclDto(AclEntryDto dto, Principal principal, Set<Permission> permissions){
+    private static void initAclDto(AclEntryDto dto, Principal principal, Set<Permission> permissions) {
         dto.setName(principal.getName());
         if (principal instanceof User) {
             dto.setPrincipalTypeName(PrincipalTypes.USER.getObjectType());
