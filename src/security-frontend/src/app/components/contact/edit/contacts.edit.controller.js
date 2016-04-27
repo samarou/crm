@@ -9,7 +9,7 @@
     .controller('ContactsEditController', ContactsEditController);
 
   /** @ngInject */
-  function ContactsEditController($q, $state, AuthService, ContactService, AclServiceBuilder, PermissionServiceBuilder, $stateParams) {
+  function ContactsEditController($q, $state, AuthService, ContactService, AclDialogServiceBuilder, AclServiceBuilder, $stateParams) {
     'use strict';
     var vm = this;
     var permissions = {
@@ -34,7 +34,7 @@
     vm.aclHandler = {
       canEdit: false,
       permissions: [],
-      actions: AclServiceBuilder(PermissionServiceBuilder(getId, ContactService))
+      actions: AclDialogServiceBuilder(AclServiceBuilder(getId, ContactService))
     };
 
     $q.all(
@@ -47,8 +47,8 @@
           }
 
         }),
-        ContactService.getPermissions($stateParams.id).then(function (response) {
-          vm.aclHandler.permissions = response.data;
+        ContactService.getAcls($stateParams.id).then(function (response) {
+          vm.aclHandler.acls = response.data;
         })
       ]
     ).then(function () {
@@ -60,7 +60,7 @@
 
     vm.submit = function () {
       ContactService.update(vm.contact).then(function () {
-        ContactService.updatePermissions(vm.contact.id, vm.aclHandler.permissions).then(
+        ContactService.updateAcls(vm.contact.id, vm.aclHandler.acls).then(
           function () {
             $state.go('contacts.list');
           }

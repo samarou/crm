@@ -9,7 +9,7 @@
     .controller('ContactsAddController', ContactsAddController);
 
   /** @ngInject */
-  function ContactsAddController(UserService, ContactService, AclServiceBuilder, PermissionServiceBuilder, $state) {
+  function ContactsAddController(UserService, ContactService, AclDialogServiceBuilder, AclServiceBuilder, $state) {
     'use strict';
     var vm = this;
     vm.contact = {};
@@ -20,22 +20,22 @@
 
     vm.aclHandler = {
       canEdit: true,
-      permissions: [],
-      actions: AclServiceBuilder(PermissionServiceBuilder(getId, ContactService))
+      acls: [],
+      actions: AclDialogServiceBuilder(AclServiceBuilder(getId, ContactService))
     };
 
     vm.submitText = 'Add';
     vm.cancelText = 'Cancel';
     vm.title = 'Add contact';
 
-    UserService.getPermissionOfCurrentUser().then(function (response) {
-      vm.aclHandler.permissions = response.data;
+    UserService.getDefaultAcls().then(function (response) {
+      vm.aclHandler.acls = response.data;
     });
 
     vm.submit = function () {
       ContactService.create(vm.contact).then(function (response) {
         vm.contact.id = response.data;
-        ContactService.updatePermissions(vm.contact.id, vm.aclHandler.permissions).then(
+        ContactService.updateAcls(vm.contact.id, vm.aclHandler.acls).then(
           function () {
             $state.go('contacts.list');
           }

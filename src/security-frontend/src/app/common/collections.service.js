@@ -48,11 +48,9 @@
 				return false;
 			}
 			comparator = comparator || self.byId;
-			var foundItem = collection.find(function (collectionItem) {
-				return comparator(item, collectionItem);
-			});
-
-			return foundItem;
+			return collection.find(function (collectionItem) {
+        return comparator(item, collectionItem);
+      });
 		};
 	}
 })();

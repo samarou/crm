@@ -34,16 +34,16 @@
 			return $http.get('rest/contacts/find', {params: filter});
 		};
 
-		service.getPermissions = function (id) {
-			return $http.get('rest/contacts/' + id + '/permissions');
+		service.getAcls = function (id) {
+			return $http.get('rest/contacts/' + id + '/acls');
 		};
 
-		service.updatePermissions = function (id, permissions) {
-			return $http.put('rest/contacts/' + id + '/permissions', permissions);
+		service.updateAcls = function (id, acls) {
+			return $http.put('rest/contacts/' + id + '/acls', acls);
 		};
 
-		service.removePermissions = function (id, permissionId) {
-			return $http.delete('rest/contacts/' + id + '/permissions/' + permissionId)
+		service.removeAcl = function (id, aclId) {
+			return $http.delete('rest/contacts/' + id + '/acls/' + aclId)
 		};
 
 		service.isAllowed = function (contactId, permission) {

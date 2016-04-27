@@ -19,9 +19,9 @@
 		service.findPublicUsers = findPublicUsers;
 		service.activate = activate;
 		service.deactivate = deactivate;
-    service.removePermissions = removePermissions;
-    service.getPermissions = getPermissions;
-    service.getPermissionOfCurrentUser = getPermissionOfCurrentUser;
+    service.removeAcls = removeAcl;
+    service.getAcls = getAcls;
+    service.getDefaultAcls = getDefaultAcls;
 
     return service;
 
@@ -65,16 +65,16 @@
 			return $http.put('rest/users/deactivate/' + id);
 		}
 
-    function removePermissions(id, permissionId) {
-      return $http.delete('rest/users/' + id + '/permissions/' + permissionId);
+    function removeAcl(id, aclId) {
+      return $http.delete('rest/users/' + id + '/acls/' + aclId);
     }
 
-    function getPermissions(id) {
-      return $http.get('rest/users/' + id + '/permissions');
+    function getAcls(id) {
+      return $http.get('rest/users/' + id + '/acls');
     }
 
-    function getPermissionOfCurrentUser(){
-      return $http.get('rest/users/current/permissions');
+    function getDefaultAcls(){
+      return $http.get('rest/users/current/acls');
     }
 	}
 })();

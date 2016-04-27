@@ -7,7 +7,7 @@
 
 
 	/** @ngInject */
-	function UserAddController(UserService, GroupService, RoleService, AclServiceBuilder, PermissionServiceBuilder, $state) {
+	function UserAddController(UserService, GroupService, RoleService, AclDialogServiceBuilder, AclServiceBuilder, $state) {
 		'use strict';
 		var vm = this;
 
@@ -21,8 +21,8 @@
 		vm.roles = [];
     vm.aclHandler = {
       canEdit: true,
-      permissions:[],
-      actions: AclServiceBuilder(PermissionServiceBuilder(getId, UserService))
+      acls:[],
+      actions: AclDialogServiceBuilder(AclServiceBuilder(getId, UserService))
     };
 
 		GroupService.getAll().then(function (response) {
@@ -35,7 +35,7 @@
 		vm.submit = function () {
 			checkGroups(vm.user);
 			checkRoles(vm.user);
-      vm.user.acls = vm.aclHandler.permissions;
+      vm.user.acls = vm.aclHandler.acls;
 			UserService.create(vm.user).then(function () {
 				$state.go('users.list');
 			})

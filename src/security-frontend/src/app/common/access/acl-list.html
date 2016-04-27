@@ -2,9 +2,9 @@
   <caption>
     Permissions
     <ul ng-show="handler.canEdit" class="list-inline pull-right">
-      <li><span ng-click="handler.actions.addPermissionsForUser(handler)" class="hover--pointer icon--user-add"></span></li>
-      <li><span ng-click="handler.actions.addPermissionsForGroup(handler)" class="hover--pointer icon--user-group-add"></span></li>
-      <li><span ng-click="handler.actions.removePermissions(handler)" class="hover--pointer icon--remove"></span></li>
+      <li><span ng-click="handler.actions.addAclsForUser(handler)" class="hover--pointer icon--user-add"></span></li>
+      <li><span ng-click="handler.actions.addAclsForGroup(handler)" class="hover--pointer icon--user-group-add"></span></li>
+      <li><span ng-click="handler.actions.removeAcls(handler)" class="hover--pointer icon--remove"></span></li>
     </ul>
   </caption>
   <thead>
@@ -20,7 +20,7 @@
   </tr>
   </thead>
   <tbody>
-  <tr ng-repeat="p in handler.permissions">
+  <tr ng-repeat="p in handler.acls">
     <td><input ng-show="handler.canEdit" type="checkbox" ng-model="p.checked"></td>
     <td><span title="{{p.principalTypeName}}" class="icon--small hover--pointer"
               ng-class="{'icon--user': p.principalTypeName === 'user', 'icon--user-group': p.principalTypeName === 'group'}"></span>
