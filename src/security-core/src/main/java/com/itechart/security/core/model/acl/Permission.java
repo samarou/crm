@@ -19,7 +19,7 @@ public enum Permission {
         return 1 << ordinal();
     }
 
-    public static Set<Permission> asSet(int mask) {
+    public static Set<Permission> getFromMask(int mask) {
         int sum = 0;
         Set<Permission> result = EnumSet.noneOf(Permission.class);
         for (Permission permission : Permission.values()) {
