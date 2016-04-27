@@ -16,7 +16,7 @@ public class SecuredUserDto {
     private boolean active;
     private Set<RoleDto> roles;
     private Set<GroupDto> groups;
-    private List<AclEntryDto> acls;
+    private List<UserDefaultAclEntryDto> acls;
 
     public Long getId() {
         return id;
@@ -90,11 +90,11 @@ public class SecuredUserDto {
         this.groups = groups;
     }
 
-    public void setAcls(List<AclEntryDto> acls) {
+    public void setAcls(List<UserDefaultAclEntryDto> acls) {
         this.acls = acls;
     }
 
-    public List<AclEntryDto> getAcls() {
+    public List<UserDefaultAclEntryDto> getAcls() {
         return acls;
     }
 }
