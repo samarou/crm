@@ -73,7 +73,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void updateUser(User user) {
-        userDao.update(user);
+        //todo: try resolve saving user by using 'update'
+//        userDao.update(user);
+        userDao.merge(user);
     }
 
     @Override
