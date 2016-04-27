@@ -13,7 +13,6 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.itechart.security.core.model.acl.Permission.*;
 import static com.itechart.security.core.model.acl.Permission.ADMIN;
@@ -316,9 +315,22 @@ public class Converter {
         return permissions;
     }
 
-    public static AclEntryDto convert(Principal principal, Set<Permission> permissions) {
+    public static AclEntryDto convertToAclEntryDto(Principal principal, Set<Permission> permissions) {
         AclEntryDto dto = new AclEntryDto();
         dto.setId(principal.getId());
+        initAclDto(dto, principal, permissions);
+        return dto;
+    }
+
+    public static UserDefaultAclEntryDto convert(UserDefaultAclEntry acl) {
+        UserDefaultAclEntryDto dto = new UserDefaultAclEntryDto();
+        dto.setId(acl.getPrincipal().getId());
+        dto.setRecordId(acl.getPrincipal().getId());
+        initAclDto(dto, acl.getPrincipal(), acl.getPermissions());
+        return dto;
+    }
+
+    private static void initAclDto(AclEntryDto dto, Principal principal, Set<Permission> permissions){
         dto.setName(principal.getName());
         if (principal instanceof User) {
             dto.setPrincipalTypeName(PrincipalTypes.USER.getObjectType());
@@ -332,15 +344,12 @@ public class Converter {
             if (permission == DELETE) dto.setCanDelete(true);
             if (permission == ADMIN) dto.setCanAdmin(true);
         });
-        return dto;
     }
 
-    public static List<AclEntryDto> convertToAcl(List<UserDefaultAcl> acls) {
-        if(CollectionUtils.isEmpty(acls)){
+    public static List<UserDefaultAclEntryDto> convertToDefaultAclDtos(List<UserDefaultAclEntry> acls) {
+        if (CollectionUtils.isEmpty(acls)) {
             return Collections.emptyList();
         }
-        return acls.stream()
-                .map(acl -> convert(acl.getPrincipal(), Permission.asSet(acl.getPermissionMask())))
-                .collect(toList());
+        return acls.stream().map(Converter::convert).collect(toList());
     }
 }
