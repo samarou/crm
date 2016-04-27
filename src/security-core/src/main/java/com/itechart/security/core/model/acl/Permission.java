@@ -19,16 +19,6 @@ public enum Permission {
         return 1 << ordinal();
     }
 
-    public static Set<Permission> getFromMask(int mask) {
-        int sum = 0;
-        Set<Permission> result = EnumSet.noneOf(Permission.class);
-        for (Permission permission : Permission.values()) {
-            sum |= permission.getMask();
-            if(mask >= sum) result.add(permission);
-        }
-        return result;
-    }
-
     public boolean isAllow(Permission another) {
         return ordinal() >= another.ordinal();
     }
