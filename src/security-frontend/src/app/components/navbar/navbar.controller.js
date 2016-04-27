@@ -1,38 +1,37 @@
-/**
- * @author yauheni.putsykovich
- */
 (function () {
 	'use strict';
 
 	angular
-			.module('securityManagement')
+			.module('crm.navbar')
 			.controller('AppController', navBarController);
 
-	function navBarController(AuthService, $state, $location) {
-		'use strict';
-
+	function navBarController(authService, $state, $location) {
 		var vm = this;
 
-		vm.isActive = function (path) {
+		vm.isAdmin = authService.isAdmin;
+		vm.isManager = authService.isManager;
+		vm.isSpecialist = authService.isSpecialist;
+		vm.isActive = isActive;
+		vm.isLoggedUser = isLoggedUser;
+		vm.getUserName = getUserName;
+		vm.logout = logout;
+
+		function isActive(path) {
 			return $location.path().substr(0, path.length) === path;
-		};
+		}
 
-		vm.isLoggedUser = function () {
-			return AuthService.isAuthenticated();
-		};
+		function isLoggedUser() {
+			return authService.isAuthenticated();
+		}
 
-		vm.getUserName = function () {
-			var auth = AuthService.getAuthentication();
+		function getUserName() {
+			var auth = authService.getAuthentication();
 			return auth ? auth.username : null;
-		};
+		}
 
-		vm.logout = function () {
-			AuthService.logout();
+		function logout() {
+			authService.logout();
 			$state.go('login');
-		};
-
-		vm.isAdmin = AuthService.isAdmin;
-		vm.isManager = AuthService.isManager;
-		vm.isSpecialist = AuthService.isSpecialist;
+		}
 	}
 })();

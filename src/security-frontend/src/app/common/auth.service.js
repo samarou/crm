@@ -2,14 +2,25 @@
 	'use strict';
 
 	angular
-			.module('securityManagement')
-			.service('AuthService', AuthService);
+			.module('crm.common')
+			.factory('authService', authService);
 
 	/** @ngInject */
-	function AuthService($http, $q, $log) {
+	function authService($http, $q, $log) {
 		var service = this;
 
 		service.authentication = null;
+
+		return {
+			login: login,
+			logout: logout,
+			restore: restore,
+			isAuthenticated: isAuthenticated,
+			getAuthentication: getAuthentication,
+			isAdmin: isAdmin,
+			isManager: isManager,
+			isSpecialist: isSpecialist
+		};
 
 		function setAuthentication(authData) {
 			service.authentication = authData;
@@ -24,7 +35,7 @@
 			}
 		}
 
-		service.login = function (username, password) {
+		function login(username, password) {
 			return $http.post('rest/login', {
 				username: username,
 				password: password
@@ -35,13 +46,13 @@
 				setAuthentication(null);
 				return $q.reject(error);
 			});
-		};
+		}
 
-		service.logout = function () {
+		function logout() {
 			setAuthentication(null);
-		};
+		}
 
-		service.restore = function () {
+		function restore() {
 			if (sessionStorage) {
 				var authData = sessionStorage.getItem('auth.data');
 				if (authData) {
@@ -54,31 +65,33 @@
 				}
 			}
 			return false;
-		};
+		}
 
-		service.isAuthenticated = function () {
+		function isAuthenticated() {
 			return !!service.authentication;
-		};
+		}
 
-		service.getAuthentication = function () {
+		function getAuthentication() {
 			return angular.copy(service.authentication);
-		};
+		}
 
 		function hasRole(role) {
-			return service.isAuthenticated()
+			return isAuthenticated()
 					&& service.authentication
 					&& service.authentication.roles
 					&& service.authentication.roles.indexOf(role) !== -1;
 		}
 
-		service.isAdmin = function () {
+		function isAdmin() {
 			return hasRole('ADMIN');
-		};
-		service.isManager = function () {
+		}
+
+		function isManager() {
 			return hasRole('MANAGER');
-		};
-		service.isSpecialist = function () {
+		}
+
+		function isSpecialist() {
 			return hasRole('SPECIALIST');
-		};
+		}
 	}
 })();

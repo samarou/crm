@@ -1,40 +1,43 @@
-/**
- * @author yauheni.putsykovich
- */
 (function () {
 	'use strict';
 
 	angular
-			.module('securityManagement')
-			.factory('GroupService', GroupService);
+			.module('crm.group')
+			.factory('groupService', groupService);
 
 	/** @ngInject */
-	function GroupService($http) {
-		var service = this;
-		service.getAll = function () {
+	function groupService($http) {
+		return {
+			getAll: getAll,
+			getPublicGroups: getPublicGroups,
+			get: get,
+			create: create,
+			update: update,
+			remove: remove
+		};
+
+		function getAll() {
 			return $http.get('rest/groups');
-		};
+		}
 
-		service.getPublicGroups = function () {
+		function getPublicGroups() {
 			return $http.get('rest/groups/public');
-		};
+		}
 
-		service.get = function (id) {
+		function get(id) {
 			return $http.get('rest/groups/' + id);
-		};
+		}
 
-		service.create = function (group) {
+		function create(group) {
 			return $http.post('rest/groups', group);
-		};
+		}
 
-		service.update = function (group) {
+		function update(group) {
 			return $http.put('rest/groups', group);
-		};
+		}
 
-		service.remove = function (id) {
+		function remove(id) {
 			return $http.delete('rest/groups/' + id);
-		};
-
-		return service;
+		}
 	}
 })();

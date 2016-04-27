@@ -1,10 +1,7 @@
-/**
- * @author yauheni.putsykovich
- */
 (function () {
 	'use strict';
 
-	angular.module('securityManagement')
+	angular.module('crm.common')
 			.filter('pagingFilter', pagingFilter)
 			.filter('html', html);
 

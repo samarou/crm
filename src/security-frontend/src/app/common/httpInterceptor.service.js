@@ -1,31 +1,42 @@
 (function () {
 	'use strict';
 
-	angular.module('securityManagement').factory('HttpInterceptor', HttpInterceptor);
+	angular
+			.module('crm.common')
+			.factory('httpInterceptor', httpInterceptor);
 
 	/** @ngInject */
-	function HttpInterceptor($q, $log, $injector, toastr) {
+	function httpInterceptor($q, $log, $injector, toastr) {
 		return {
-			responseError: function (response) {
-				switch (response.status) {
-					case 401: {
-						var AuthService = $injector.get('AuthService');
-						if (AuthService.isAuthenticated()) {
-							AuthService.logout();
-						}
-						$injector.get('$state').transitionTo('login');
-						toastr.error('Your credentials are gone', 'Error');
-						break;
-					}
-					default: {
-						$log.error(response.status + ':' + response.data.type + ' ' + response.data.message);
-						toastr.error('Something goes wrong', 'Error');
-					}
+			responseError: catchError
+		};
 
+		function catchError(response) {
+			switch (response.status) {
+				case 401: {
+					catchAuthError();
+					break;
 				}
-				return $q.reject(response);
+				default: {
+					catchDefaultError(response);
+				}
 
 			}
+			return $q.reject(response);
+		}
+
+		function catchAuthError() {
+			var AuthService = $injector.get('authService');
+			if (AuthService.isAuthenticated()) {
+				AuthService.logout();
+			}
+			$injector.get('$state').transitionTo('login');
+			toastr.error('Authentication problem', 'Error');
+		}
+
+		function catchDefaultError(response) {
+			$log.error(response.status + ':' + response.data.type + ' ' + response.data.message);
+			toastr.error('Something goes wrong', 'Error');
 		}
 	}
 

@@ -1,0 +1,22 @@
+<div ng-class="$ctrl.modal ? 'modal-header' : 'page-header'">
+    <button ng-show="$ctrl.modal" type="button" class="close" aria-label="Close" ng-click="$ctrl.cancelBtn()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title" id="group-modal-view-label">{{$ctrl.formTitle ? $ctrl.formTitle : 'Dialog'}}</h4>
+</div>
+<div ng-class="$ctrl.modal ? 'modal-body' : ''" uib-modal-transclude></div>
+<div ng-class="$ctrl.modal ? 'modal-footer' : 'row'">
+    <div class="col-xs-6 col-md-4 pull-right">
+        <div class="btn-group btn-group-justified">
+            <a class="btn btn-default" ng-click="$ctrl.cancelBtn()">
+                {{$ctrl.cancelText ? $ctrl.cancelText : 'Cancel'}}
+            </a>
+            <a ng-show="$ctrl.submitText" class="btn btn-primary"
+               crm-custom-submit="$ctrl.submitBtn()"
+               crm-form-validation="$ctrl.crmFormValidation">
+                {{$ctrl.submitText}}
+            </a>
+        </div>
+    </div>
+</div>
+

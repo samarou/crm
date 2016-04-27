@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-			.module('securityManagement')
+			.module('crm')
 			.config(config);
 
 	/** @ngInject */
@@ -10,7 +10,7 @@
 		// Enable log
 		$logProvider.debugEnabled(true);
 
-		$httpProvider.interceptors.push('HttpInterceptor');
+		$httpProvider.interceptors.push('httpInterceptor');
 
 		$uibModalProvider.options = {backdrop: 'static', keyboard: false};
 

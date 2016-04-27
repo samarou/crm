@@ -1,42 +1,54 @@
-/**
- * Created by anton.charnou on 13.04.2016.
- */
 (function () {
 	'use strict';
+
 	angular
-			.module('securityManagement')
-			.factory('RolePrivilegeService', RolePrivilegeService);
+			.module('crm.role')
+			.factory('rolePrivilegeService', rolePrivilegeService);
 
 	/** @ngInject */
-	function RolePrivilegeService(Collections, PrivilegeService) {
+	function rolePrivilegeService(collections, privilegeService) {
+		return {
+			getObjectTypes: getObjectTypes,
+			checkPrivilegesOfRole: checkPrivilegesOfRole,
+			getPrivilegesOfRole: getPrivilegesOfRole
+		};
 
 		function getObjectTypes(scope) {
-			return PrivilegeService.fetchAll().then(function (response) {
-				var objectTypeList = Object.create(null);
+			return privilegeService.getAll().then(function (response) {
 				var privileges = response.data;
-				privileges.forEach(function (privilege) {
-					if (!(privilege.objectTypeName in objectTypeList)) {
-						objectTypeList[privilege.objectTypeName] = [];
-					}
-					objectTypeList[privilege.objectTypeName].push({
-						id: privilege.action.id,
-						name: privilege.actionName,
-						privilege: privilege
-					});
-				});
-				scope.objectTypes = Collections.sort(Object.keys(objectTypeList)).map(function (objectTypeName) {
-					return {
-						objectTypeName: objectTypeName,
-						actions: Collections.sort(objectTypeList[objectTypeName], true, Collections.byProperty('id'))
-					};
+				var objectTypeList = fillObjectTypeList(privileges);
+				scope.objectTypes = sortObjectTypes(objectTypeList);
+			});
+		}
+
+		function sortObjectTypes(objectTypeList) {
+			return collections.sort(Object.keys(objectTypeList)).map(function (objectTypeName) {
+				return {
+					objectTypeName: objectTypeName,
+					actions: collections.sort(objectTypeList[objectTypeName], true, collections.byProperty('id'))
+				};
+			});
+		}
+
+		function fillObjectTypeList(privileges) {
+			var objectTypeList = Object.create(null);
+			privileges.forEach(function (privilege) {
+				if (!(privilege.objectTypeName in objectTypeList)) {
+					objectTypeList[privilege.objectTypeName] = [];
+				}
+				objectTypeList[privilege.objectTypeName].push({
+					id: privilege.action.id,
+					name: privilege.actionName,
+					privilege: privilege
 				});
 			});
+			return objectTypeList;
 		}
 
 		function checkPrivilegesOfRole(scope) {
 			scope.objectTypes.forEach(function (privilegeObject) {
 				privilegeObject.actions.forEach(function (action) {
-					action.privilege.checked = !!Collections.find(action.privilege, scope.role.privileges);
+					action.privilege.checked = !!collections.find(action.privilege, scope.role.privileges);
 				})
 			});
 		}
@@ -49,12 +61,6 @@
 					}
 				});
 			});
-		}
-
-		return {
-			getObjectTypes: getObjectTypes,
-			checkPrivilegesOfRole: checkPrivilegesOfRole,
-			getPrivilegesOfRole: getPrivilegesOfRole
 		}
 	}
 })();

@@ -1,0 +1,15 @@
+<crm-form-wrapper form-title="vm.title" submit-text="{{vm.submitText}}" submit-btn="vm.submit()"
+              cancel-btn="vm.cancel()" crm-form-validation="groupsForm">
+    <form name="groupsForm" class="form-group">
+        <div class="form-group has-feedback" crm-input-validation>
+            <label for="group-name">Name</label>
+            <input type="text" id="group-name" class="form-control" name="groupname" ng-model="vm.group.name" required>
+            <span ng-show="groupsForm.groupname.$dirty && groupsForm.groupname.$error.required" class="help-block">Group name is required</span>
+        </div>
+        <div class="form-group" crm-input-validation>
+            <label for="group-description">Description</label>
+        <textarea id="group-description" class="form-control" name="groupDescription"
+                  ng-model="vm.group.description"></textarea>
+        </div>
+    </form>
+</crm-form-wrapper>
