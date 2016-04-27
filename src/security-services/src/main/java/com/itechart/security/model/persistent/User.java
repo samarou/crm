@@ -1,10 +1,13 @@
 package com.itechart.security.model.persistent;
 
 import com.itechart.security.core.model.SecurityUser;
+import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
+
+import static javax.persistence.CascadeType.ALL;
 
 /**
  * User
@@ -13,7 +16,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "user")
-@PrimaryKeyJoinColumn(name="id")
+@PrimaryKeyJoinColumn(name = "id")
 public class User extends Principal implements SecurityUser {
 
     @Column(name = "user_name", updatable = false, unique = true, nullable = false, length = 50)
@@ -34,8 +37,8 @@ public class User extends Principal implements SecurityUser {
     @Column(name = "active", nullable = false)
     private boolean active;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<UserDefaultAcl> acls;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = ALL, orphanRemoval = true)
+    private List<UserDefaultAclEntry> acls;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
@@ -105,11 +108,11 @@ public class User extends Principal implements SecurityUser {
         this.active = active;
     }
 
-    public List<UserDefaultAcl> getAcls() {
+    public List<UserDefaultAclEntry> getAcls() {
         return acls;
     }
 
-    public void setAcls(List<UserDefaultAcl> acls) {
+    public void setAcls(List<UserDefaultAclEntry> acls) {
         this.acls = acls;
     }
 
@@ -129,5 +132,25 @@ public class User extends Principal implements SecurityUser {
 
     public void setGroups(Set<Group> groups) {
         this.groups = groups;
+    }
+
+    public boolean removeDefaultAcl(Long principalId) {
+        UserDefaultAclEntry defaultAcl = findDefaultAcl(principalId);
+        return defaultAcl != null && removeDefaultAcl(defaultAcl);
+    }
+
+    private UserDefaultAclEntry findDefaultAcl(Long principalId) {
+        if (!CollectionUtils.isEmpty(acls)) {
+            for (UserDefaultAclEntry acl : acls) {
+                if (acl.getPrincipal().getId().equals(principalId)) {
+                    return acl;
+                }
+            }
+        }
+        return null;
+    }
+
+    private boolean removeDefaultAcl(UserDefaultAclEntry defaultAcl) {
+        return acls.remove(defaultAcl);
     }
 }
