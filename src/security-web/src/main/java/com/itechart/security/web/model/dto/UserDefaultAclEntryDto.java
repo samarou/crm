@@ -3,7 +3,7 @@ package com.itechart.security.web.model.dto;
 /**
  * @author yauheni.putsykovich
  */
-public class UserDefaultAclDto extends AclEntryDto {
+public class UserDefaultAclEntryDto extends AclEntryDto {
     /*
     * represent user-default-acl-entry's id
     * need, because acl-entry-dto's property id represent the principal-id
