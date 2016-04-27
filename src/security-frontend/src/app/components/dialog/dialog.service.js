@@ -57,14 +57,6 @@
 			});
 		}
 
-		/**
-		 * Display a customized modal dialog
-		 * @param bodyUrl url of partial html that will be included as dialog body
-		 * @param model dialog model with fields:
-		 - title - dialog title
-		 - okTitle - title for OK button
-		 - cancelTitle - title for Cancel button
-		 */
 		function custom(bodyUrl, model) {
 			return $uibModal.open({
 				templateUrl: bodyUrl,

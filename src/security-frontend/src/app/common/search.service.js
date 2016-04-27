@@ -8,19 +8,19 @@
 	/** @ngInject */
 	function searchService(userService, contactService, util) {
 		return {
-			userPublicMode: getPublicBunle,
-			userSecuredMode: getSecureBundle,
+			userPublicMode: getPublicBundle,
+			userSecurityMode: getSecurityBundle,
 			contactMode: getContactBundle
 		};
 
-		function getPublicBunle() {
+		function getPublicBundle() {
 			var bundle = createCommonBundle();
 			bundle.performSeach = userService.findPublicUsers;
 			bundle.sortProperties.userName = {name: 'userName', asc: true, enabled: false};
 			return bundle;
 		}
 
-		function getSecureBundle() {
+		function getSecurityBundle() {
 			var bundle = createCommonBundle();
 			bundle.performSeach = userService.find;
 			bundle.sortProperties.userName = {name: 'userName', asc: true, enabled: false};

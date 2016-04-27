@@ -8,6 +8,7 @@
 	/** @ngInject */
 	function RolesAddController(roleDetailsService, rolePrivilegeService) {
 		var vm = this;
+
 		vm.role = {};
 		vm.submitText = 'Add';
 		vm.title = 'Add role';

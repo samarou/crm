@@ -8,6 +8,7 @@
 	/** @ngInject */
 	function RolesEditController(roleService, roleDetailsService, $stateParams, rolePrivilegeService) {
 		var vm = this;
+
 		vm.role = {};
 		vm.submitText = 'Save';
 		vm.title = 'Edit role';

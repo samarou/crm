@@ -8,6 +8,7 @@
 	/** @ngInject */
 	function contactPermissionsService($q, collections, dialogService, groupSearch, searchService, contactService) {
 		var service = this;
+
 		service.groupBundle = groupSearch.publicMode();
 		service.userBundle = searchService.userPublicMode();
 

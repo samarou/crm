@@ -8,6 +8,7 @@
 	/** @ngInject */
 	function authService($http, $q, $log) {
 		var service = this;
+
 		service.authentication = null;
 
 		return {

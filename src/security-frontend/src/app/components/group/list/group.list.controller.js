@@ -7,6 +7,7 @@
 
 	function GroupsListController($q, groupService, groupSearch, $state) {
 		var vm = this;
+
 		vm.bundle = groupSearch.securedMode();
 		vm.add = add;
 		vm.edit = edit;

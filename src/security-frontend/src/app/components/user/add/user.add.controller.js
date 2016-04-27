@@ -7,8 +7,8 @@
 
 	/** @ngInject */
 	function UserAddController(userDetailsService) {
-		'use strict';
 		var vm = this;
+
 		vm.user = {active: 'true'};
 		vm.groups = [];
 		vm.roles = [];
