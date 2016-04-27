@@ -19,8 +19,11 @@
 		service.findPublicUsers = findPublicUsers;
 		service.activate = activate;
 		service.deactivate = deactivate;
+    service.removePermissions = removePermissions;
+    service.getPermissions = getPermissions;
+    service.getPermissionOfCurrentUser = getPermissionOfCurrentUser;
 
-		return service;
+    return service;
 
 		function getPublicUsers() {
 			return $http.get('rest/users/public');
@@ -61,5 +64,17 @@
 		function deactivate(id) {
 			return $http.put('rest/users/deactivate/' + id);
 		}
+
+    function removePermissions(id, permissionId) {
+      return $http.delete('rest/users/' + id + '/permissions/' + permissionId);
+    }
+
+    function getPermissions(id) {
+      return $http.get('rest/users/' + id + '/permissions');
+    }
+
+    function getPermissionOfCurrentUser(){
+      return $http.get('rest/users/current/permissions');
+    }
 	}
 })();

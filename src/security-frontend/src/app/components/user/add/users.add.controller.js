@@ -7,15 +7,23 @@
 
 
 	/** @ngInject */
-	function UserAddController(UserService, GroupService, RoleService, $state) {
+	function UserAddController(UserService, GroupService, RoleService, AclServiceBuilder, PermissionServiceBuilder, $state) {
 		'use strict';
 		var vm = this;
-		vm.user = {active: 'true'};
-		vm.gtoups = [];
-		vm.roles = [];
-		vm.submitText = 'Add';
-		vm.cancelText = 'Cancel';
+
+    vm.submitText = 'Save';
+    vm.cancelText = 'Cancel';
 		vm.title = 'Add user';
+
+    vm.user = {active: 'true'};
+
+    vm.gtoups = [];
+		vm.roles = [];
+    vm.aclHandler = {
+      canEdit: true,
+      permissions:[],
+      actions: AclServiceBuilder(PermissionServiceBuilder(getId, UserService))
+    };
 
 		GroupService.getAll().then(function (response) {
 			vm.groups = response.data;
@@ -27,6 +35,7 @@
 		vm.submit = function () {
 			checkGroups(vm.user);
 			checkRoles(vm.user);
+      vm.user.acls = vm.aclHandler.permissions;
 			UserService.create(vm.user).then(function () {
 				$state.go('users.list');
 			})
@@ -36,11 +45,14 @@
 			$state.go('users.list');
 		};
 
-		function checkGroups(user) {
+    function getId() {
+      return vm.user.id;
+    }
+
+    function checkGroups(user) {
 			user.groups = vm.groups.filter(function (group) {
 				return group.checked;
 			});
-
 		}
 
 		function checkRoles(user) {
@@ -48,7 +60,5 @@
 				return role.checked;
 			});
 		}
-
-
 	}
 })();
