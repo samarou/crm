@@ -8,6 +8,7 @@
 	/** @ngInject */
 	function RolesListController($q, roleService, rolePrivilegeService, pagingFilter, $state) {
 		var vm = this;
+
 		vm.searchText = '';
 		vm.pageRoles = [];
 		vm.objectTypes = [];

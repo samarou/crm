@@ -7,6 +7,7 @@
 
 	function GroupsAddController(groupDetailsService) {
 		var vm = this;
+
 		vm.group = {};
 		vm.submitText = 'Add';
 		vm.title = 'Add group';

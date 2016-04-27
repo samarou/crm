@@ -8,6 +8,7 @@
 	/** @ngInject */
 	function ContactsEditController($q, contactDetailsService, contactSecurityService, authService, contactService, contactPermissionsService, $stateParams) {
 		var vm = this;
+
 		vm.canEdit = false;
 		vm.contact = {};
 		vm.permissions = [];

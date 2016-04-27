@@ -7,8 +7,8 @@
 
 	/** @ngInject */
 	function ContactsAddController(contactDetailsService, contactPermissionsService) {
-		'use strict';
 		var vm = this;
+
 		vm.canEdit = true;
 		vm.contact = {};
 		vm.permissions = [];

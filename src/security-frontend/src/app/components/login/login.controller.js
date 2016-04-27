@@ -7,6 +7,7 @@
 
 	function LoginController($state, authService) {
 		var vm = this;
+
 		vm.login = function () {
 			authService.login(vm.username, vm.password).then(goToHomePage).catch(showError);
 		};

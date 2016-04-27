@@ -31,7 +31,7 @@
 				AuthService.logout();
 			}
 			$injector.get('$state').transitionTo('login');
-			toastr.error('Your credentials are gone', 'Error');
+			toastr.error('Authentication problem', 'Error');
 		}
 
 		function catchDefaultError(response) {

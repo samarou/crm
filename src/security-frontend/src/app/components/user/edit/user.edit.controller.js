@@ -7,8 +7,8 @@
 
 	/** @ngInject */
 	function UserEditController(userService, userDetailsService, collections, $stateParams) {
-		'use strict';
 		var vm = this;
+
 		vm.user = {};
 		vm.groups = [];
 		vm.roles = [];

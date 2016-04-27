@@ -8,6 +8,7 @@
 	/** @ngInject */
 	function pagingFilter() {
 		var service = this;
+
 		service.config = {
 			currentPage: 1,
 			itemsPerPage: 10,

@@ -7,8 +7,8 @@
 
 	/** @ngInject */
 	function ContactsListController($q, authService, contactService, searchService, dialogService, $state, contactSecurityService) {
-		'use strict';
 		var vm = this;
+
 		vm.isManager = authService.isManager();
 		vm.searchContactBundle = searchService.contactMode();
 		vm.add = add;

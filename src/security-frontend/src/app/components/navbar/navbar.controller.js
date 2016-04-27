@@ -7,6 +7,7 @@
 
 	function navBarController(authService, $state, $location) {
 		var vm = this;
+
 		vm.isAdmin = authService.isAdmin;
 		vm.isManager = authService.isManager;
 		vm.isSpecialist = authService.isSpecialist;

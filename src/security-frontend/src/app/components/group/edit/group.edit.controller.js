@@ -7,6 +7,7 @@
 
 	function GroupsEditController(groupService, groupDetailsService, $stateParams) {
 		var vm = this;
+
 		vm.group = {};
 		vm.submitText = 'Save';
 		vm.title = 'Edit group';
