@@ -16,11 +16,11 @@ gulp.task('styles-reload', ['styles'], function() {
     .pipe(browserSync.stream());
 });
 
-gulp.task('styles', function() {
+gulp.task('styles', function () {
   return buildStyles();
 });
 
-var buildStyles = function() {
+var buildStyles = function () {
   var sassOptions = {
     style: 'expanded'
   };

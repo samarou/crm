@@ -101,4 +101,4 @@ gulp.task('build:tomcat', ['build'], function () {
 	console.log('copy prod to' + process.argv[4]);
 	return gulp.src(path.join(conf.paths.dist, '/**/*'))
 			.pipe(gulp.dest(process.argv[4]))
-}); 
+});
