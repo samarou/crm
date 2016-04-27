@@ -31,9 +31,16 @@ describe('Users under role ADMIN', function () {
 		searchService.search(rolesPO, ROLE_NAME, by.binding('role.name')).then(checkRole);
 	});
 
+	it('should be able to delete role from page', function () {
+		navbarPO.rolesLink.click();
+		deleteRole();
+		searchService.search(rolesPO, ROLE_NAME, by.binding('role.name')).then(function (role) {
+			expect(role).toBeNull();
+		});
+	});
+
 
 	afterAll(function () {
-		deleteRole();
 		loginService.logout();
 	});
 
@@ -45,12 +52,9 @@ describe('Users under role ADMIN', function () {
 	}
 
 	function deleteRole() {
-		navbarPO.rolesLink.click();
 		searchService.search(rolesPO, ROLE_NAME, by.binding('role.name')).then(function (role) {
 			role.element(by.model('role.checked')).click();
 			rolesPO.deleteButton.click();
 		});
 	}
-
-
 });

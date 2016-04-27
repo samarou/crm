@@ -9,7 +9,7 @@ var LoginService = function () {
 	self.login = function (credentials) {
 		loginPage.userInput.sendKeys(credentials.username);
 		loginPage.passwordInput.sendKeys(credentials.password);
-		loginPage.form.submit();
+		loginPage.loginButton.click();
 	};
 
 	self.logout = function () {

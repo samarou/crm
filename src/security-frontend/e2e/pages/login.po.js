@@ -3,7 +3,7 @@ var LoginPage = function () {
 	var self = this;
 	self.userInput = element(by.id('username'));
 	self.passwordInput = element(by.id('password'));
-	self.form = element(by.css('form[name="form"]'));
+	self.loginButton = element(by.id('login_submit'));
 };
 
 module.exports = new LoginPage();

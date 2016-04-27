@@ -11,7 +11,7 @@ describe('Users under role Manager', function () {
 
 	var CONTACT_FIRST_NAME = 'TestName';
 	var CONTACT_SECOND_NAME = 'TestSecondName';
-	var CONTACT_EMAIL = 'TestEmail';
+	var CONTACT_EMAIL = 'Test@mail.com';
 	var CONTACT_ADDRESS = 'TestAddress';
 
 	beforeAll(function () {

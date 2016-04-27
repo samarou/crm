@@ -25,6 +25,7 @@
 		function init() {
 			fetchAllRoles();
 			rolePrivilegeService.getObjectTypes(vm);
+			vm.pagingFilterConfig.filterObject = {};
 		}
 
 		function updateFilterObject() {
