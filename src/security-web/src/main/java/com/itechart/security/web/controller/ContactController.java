@@ -97,23 +97,23 @@ public class ContactController {
         contactService.deleteById(contactId);
     }
 
-    @RequestMapping("/contacts/{contactId}/permissions")
-    public List<AclEntryDto> getPermissions(@PathVariable Long contactId) {
+    @RequestMapping("/contacts/{contactId}/acls")
+    public List<AclEntryDto> getAcls(@PathVariable Long contactId) {
         Acl acl = getAcl(contactId);
         Map<Long, Set<Permission>> allPermissions = acl.getPermissions();
         List<Principal> principals = principalService.getByIds(new ArrayList<>(allPermissions.keySet()));
         return principals.stream().map(principal -> convertToAclEntryDto(principal, allPermissions.get(principal.getId()))).collect(toList());
     }
 
-    @RequestMapping(value = "/contacts/{contactId}/permissions", method = PUT)
-    public void createOrUpdatePermissions(@PathVariable Long contactId, @RequestBody List<AclEntryDto> permissions) {
+    @RequestMapping(value = "/contacts/{contactId}/acls", method = PUT)
+    public void createOrUpdateAcls(@PathVariable Long contactId, @RequestBody List<AclEntryDto> permissions) {
         Acl acl = getAcl(contactId);
         permissions.forEach(permission -> acl.addPermissions(permission.getId(), convert(permission)));
         aclService.updateAcl(acl);
     }
 
-    @RequestMapping(value = "/contacts/{contactId}/permissions/{principalId}", method = RequestMethod.DELETE)
-    public void deletePermission(@PathVariable Long contactId, @PathVariable Long principalId) {
+    @RequestMapping(value = "/contacts/{contactId}/acls/{principalId}", method = RequestMethod.DELETE)
+    public void deleteAcl(@PathVariable Long contactId, @PathVariable Long principalId) {
         Acl acl = getAcl(contactId);
         acl.removePrincipal(principalId);
         aclService.updateAcl(acl);

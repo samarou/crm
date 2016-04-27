@@ -14,9 +14,9 @@
 			update: update,
 			remove: remove,
 			find: find,
-			getPermissions: getPermissions,
-			updatePermissions: updatePermissions,
-			removePermissions: removePermissions,
+			getAcls: getAcls,
+			updateAcls: updateAcls,
+			removeAcl: removeAcl,
 			isAllowed: isAllowed
 		};
 
@@ -44,16 +44,16 @@
 			return $http.get('rest/contacts/find', {params: filter});
 		}
 
-		function getPermissions(id) {
-			return $http.get('rest/contacts/' + id + '/permissions');
+		function getAcls(id) {
+			return $http.get('rest/contacts/' + id + '/acls');
 		}
 
-		function updatePermissions(id, permissions) {
-			return $http.put('rest/contacts/' + id + '/permissions', permissions);
+		function updateAcls(id, acls) {
+			return $http.put('rest/contacts/' + id + '/acls', acls);
 		}
 
-		function removePermissions(id, permissionId) {
-			return $http.delete('rest/contacts/' + id + '/permissions/' + permissionId)
+		function removeAcl(id, aclId) {
+			return $http.delete('rest/contacts/' + id + '/acls/' + aclId)
 		}
 
 		function isAllowed(contactId, permission) {

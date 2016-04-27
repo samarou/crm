@@ -146,22 +146,22 @@ public class UserController {
         return dataPage;
     }
 
-    @RequestMapping(value = "/users/{userId}/permissions/{principalId}", method = RequestMethod.DELETE)
-    public void deletePermission(@PathVariable Long userId, @PathVariable Long principalId) {
+    @RequestMapping(value = "/users/{userId}/acls/{principalId}", method = RequestMethod.DELETE)
+    public void deleteAcl(@PathVariable Long userId, @PathVariable Long principalId) {
         User user = userService.getUserWithAcls(userId);
         user.removeDefaultAcl(principalId);
         userService.updateUser(user);
     }
 
-    @RequestMapping(value = "/users/{userId}/permissions", method = GET)
-    public List<UserDefaultAclEntryDto> getPermission(@PathVariable Long userId) {
+    @RequestMapping(value = "/users/{userId}/acls", method = GET)
+    public List<UserDefaultAclEntryDto> getAcls(@PathVariable Long userId) {
         User user = userService.getUserWithAcls(userId);
         return convertToDefaultAclDtos(user.getAcls());
     }
 
     @PreAuthorize("hasRole('USER')")
-    @RequestMapping(value = "/users/current/permissions", method = GET)
-    public List<UserDefaultAclEntryDto> getPermissionOfCurrentUser() {
+    @RequestMapping(value = "/users/current/acls", method = GET)
+    public List<UserDefaultAclEntryDto> getDefaultAcls() {
         long userId = SecurityUtils.getAuthenticatedUserId();
         User user = userService.getUserWithAcls(userId);
         return convertToDefaultAclDtos(user.getAcls());

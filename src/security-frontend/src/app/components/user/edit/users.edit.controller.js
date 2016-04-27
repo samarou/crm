@@ -10,7 +10,7 @@
 
 
   /** @ngInject */
-  function UserEditController(UserService, GroupService, RoleService, AclServiceBuilder, PermissionServiceBuilder, $state, Collections, $stateParams, $q) {
+  function UserEditController(UserService, GroupService, RoleService, AclDialogServiceBuilder, AclServiceBuilder, $state, Collections, $stateParams, $q) {
     'use strict';
     var vm = this;
 
@@ -24,8 +24,8 @@
     vm.roles = [];
     vm.aclHandler = {
       canEdit: true,
-      permissions: [],
-      actions: AclServiceBuilder(PermissionServiceBuilder(getId, UserService))
+      acls: [],
+      actions: AclDialogServiceBuilder(AclServiceBuilder(getId, UserService))
     };
 
     $q.all(
@@ -41,8 +41,8 @@
         UserService.getById($stateParams.id).then(function (response) {
           vm.user = response.data;
           checkGroupsAndRolesWhichUserHas(vm.user);
-          UserService.getPermissions(getId()).then(function (response) {
-            vm.aclHandler.permissions = response.data;
+          UserService.getAcls(getId()).then(function (response) {
+            vm.aclHandler.acls = response.data;
           });
         });
       });
@@ -50,7 +50,7 @@
     vm.submit = function () {
       checkGroups(vm.user);
       checkRoles(vm.user);
-      vm.user.acls = vm.aclHandler.permissions;
+      vm.user.acls = vm.aclHandler.acls;
       UserService.update(vm.user).then(function () {
         $state.go('users.list');
       })
