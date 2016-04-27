@@ -12,10 +12,7 @@ import com.itechart.security.model.persistent.Principal;
 import com.itechart.security.model.persistent.acl.Acl;
 import com.itechart.security.service.AclService;
 import com.itechart.security.service.PrincipalService;
-import com.itechart.security.web.model.dto.AclEntryDto;
-import com.itechart.security.web.model.dto.ContactDto;
-import com.itechart.security.web.model.dto.ContactFilterDto;
-import com.itechart.security.web.model.dto.DataPageDto;
+import com.itechart.security.web.model.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +24,7 @@ import java.util.Set;
 
 import static com.itechart.security.web.model.dto.Converter.convert;
 import static com.itechart.security.web.model.dto.Converter.convertContacts;
+import static com.itechart.security.web.model.dto.Converter.convertToAclEntryDto;
 import static java.util.stream.Collectors.toList;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
@@ -102,7 +100,7 @@ public class ContactController {
         Acl acl = getAcl(contactId);
         Map<Long, Set<Permission>> allPermissions = acl.getPermissions();
         List<Principal> principals = principalService.getByIds(new ArrayList<>(allPermissions.keySet()));
-        return principals.stream().map(principal -> convert(principal, allPermissions.get(principal.getId()))).collect(toList());
+        return principals.stream().map(principal -> convertToAclEntryDto(principal, allPermissions.get(principal.getId()))).collect(toList());
     }
 
     @RequestMapping(value = "/contacts/{contactId}/permissions", method = PUT)
