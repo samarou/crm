@@ -1,4 +1,3 @@
-/*
 package com.itechart.security.business.model.persistent;
 
 import org.hibernate.annotations.Type;
@@ -32,6 +31,14 @@ public class Attachment extends SecuredEntity {
     @Override
     public Long getId() {
         return this.id;
+    }
+
+    public Date getDateDeleted() {
+        return this.dateDeleted;
+    }
+
+    public void setDateDeleted(Date dateDeleted) {
+        this.dateDeleted = dateDeleted;
     }
 
     public void setId(Long id) {
@@ -70,4 +77,3 @@ public class Attachment extends SecuredEntity {
         this.contact = contact;
     }
 }
-*/

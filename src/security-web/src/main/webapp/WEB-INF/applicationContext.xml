@@ -102,6 +102,16 @@
         <property name="acceptExisting" value="true"/>
     </bean>
 
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="${multipart.maxFileSize}"/>
+        <property name="defaultEncoding" value="UTF-8" />
+    </bean>
+
+    <bean id="uploadController" class="com.itechart.security.web.controller.ContactAttachmentsController">
+        <property name="uploadHome" value="${upload.home}"/>
+    </bean>
+
     <context:property-placeholder location="classpath:datasource.properties,classpath:application.properties"
                                   order="-1"/>
 

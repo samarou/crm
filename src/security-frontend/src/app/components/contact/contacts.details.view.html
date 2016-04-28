@@ -1,36 +1,110 @@
-<form-panel title="vm.title" submit-text="vm.submitText" cancel-text="vm.cancelText" submit-btn="vm.submit()"
-            cancel-btn="vm.cancel()">
-<form class="form">
+<div class="page-header">
+    <h2>{{vm.title}}</h2>
+</div>
+<form name="contactForm" class="form-group" custom-submit="vm.submit()">
     <uib-tabset active="active">
         <uib-tab index="0" heading="Personal Info">
             <div class="row">
-                <div class="col-md-6 form-group">
-                    <label for="contact-first-name">First name</label>
-                    <input ng-disabled="!vm.aclHandler.canEdit" id="contact-first-name" class="form-control"
-                           ng-model="vm.contact.firstName">
+                <div class="col-md-6">
+                    <div class="form-group" input-validation>
+                        <label for="contact-first-name">First name</label>
+                        <input ng-disabled="!vm.canEdit" id="contact-first-name" class="form-control" name="firstName"
+                               ng-model="vm.contact.firstName" required>
+                        <span ng-show="contactForm.firstName.$dirty && contactForm.firstName.$error.required"
+                              class="help-block">First name is required</span>
+                    </div>
                 </div>
-                <div class="col-md-6 form-group">
-                    <label for="contact-last-name">Last name</label>
-                    <input ng-disabled="!vm.aclHandler.canEdit" id="contact-last-name" class="form-control"
-                           ng-model="vm.contact.lastName">
+                <div class="col-md-6">
+                    <div class="form-group" input-validation>
+                        <label for="contact-last-name">Last name</label>
+                        <input ng-disabled="!vm.canEdit" id="contact-last-name" class="form-control" name="lastName"
+                               ng-model="vm.contact.lastName" required>
+                            <span ng-show="contactForm.lastName.$dirty && contactForm.lastName.$error.required"
+                                  class="help-block">Last name is required</span>
+                    </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6 form-group">
-                    <label for="contact-email">Email</label>
-                    <input ng-disabled="!vm.aclHandler.canEdit" id="contact-email" class="form-control"
-                           ng-model="vm.contact.email">
+                <div class="col-md-6">
+                    <div class="form-group" input-validation>
+                        <label for="contact-email">Email</label>
+                        <input type="email" ng-disabled="!vm.canEdit" id="contact-email" class="form-control"
+                               name="email"
+                               ng-model="vm.contact.email" required>
+                    <span ng-show="contactForm.email.$dirty">
+                        <span ng-show="contactForm.email.$error.required" class="help-block">Email is required</span>
+                        <span ng-show="contactForm.email.$error.email" class="help-block">Enter valid email</span>
+                    </span>
+                    </div>
                 </div>
-                <div class="col-md-6 form-group">
-                    <label for="contact-address">Address</label>
-                    <input ng-disabled="!vm.aclHandler.canEdit" id="contact-address" class="form-control"
-                           ng-model="vm.contact.address">
+                <div class="col-md-6">
+                    <div class="form-group" input-validation>
+                        <label for="contact-address">Address</label>
+                        <input ng-disabled="!vm.canEdit" id="contact-address" class="form-control" name="address"
+                               ng-model="vm.contact.address">
+                    </div>
                 </div>
             </div>
         </uib-tab>
         <uib-tab index="1" heading="Access">
           <acl-form handler="vm.aclHandler"></acl-form>
         </uib-tab>
+        <uib-tab index="2" heading="Attachments">
+            <table class="table table-hover">
+                <caption>
+                    Attachments
+                    <ul class="list-inline pull-right">
+                        <li><span role="button" class="glyphicon glyphicon-plus" title="New Attachment"
+                                  ng-click="vm.attachmentService.addAttachments(vm)"></span></li>
+                        <li><span role="button" class="glyphicon glyphicon-minus" title="Remove Attachment"
+                                  ng-click="vm.attachmentService.removeAttachments(vm)"></span></li>
+                    </ul>
+                </caption>
+                <thead>
+                <tr>
+                    <td></td>
+                    <td>#</td>
+                    <td>File</td>
+                    <td>Date of upload</td>
+                    <td>Comment</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="attachment in vm.attachments">
+                    <td><input type="checkbox" ng-model="attachment.checked"
+                               title="select attachment"></td>
+                    <td>{{$index + 1}}</td>
+                    <td><a ng-href="{{attachment.file}}">{{attachment.name}}</a></td>
+                    <td>{{attachment.uploadDate | date:'yyyy-MM-dd'}}</td>
+                    <td>{{attachment.comment}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="form-group">
+                <ul>
+                    <li ng-repeat="item in vm.uploader.queue">
+                        Name: <span ng-bind="item.file.name"></span><br/>
+                        <button ng-click="item.upload()">upload</button>
+                    </li>
+                </ul>
+            </div>
+        </uib-tab>
     </uib-tabset>
+    <div class="row">
+        <div class="col-xs-6 col-md-3 pull-right">
+            <div class="btn-group-justified">
+                <div class="btn-group" ng-show="vm.cancelText">
+                    <button class="btn btn-default" ng-click="vm.cancel()">
+                        {{vm.cancelText}}
+                    </button>
+                </div>
+                <div class="btn-group" ng-show="vm.submitText">
+                    <button type="submit" for="submit-form" class="btn btn-primary">
+                        {{vm.submitText}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </form>
 </form-panel>

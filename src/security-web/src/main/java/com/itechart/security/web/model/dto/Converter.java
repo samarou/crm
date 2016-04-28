@@ -1,8 +1,7 @@
 package com.itechart.security.web.model.dto;
 
 import com.itechart.security.business.filter.ContactFilter;
-import com.itechart.security.business.model.dto.ContactDto;
-import com.itechart.security.business.model.dto.OrderDto;
+import com.itechart.security.business.model.persistent.Attachment;
 import com.itechart.security.business.model.persistent.Contact;
 import com.itechart.security.business.model.persistent.Order;
 import com.itechart.security.core.model.acl.Permission;
@@ -266,49 +265,6 @@ public class Converter {
         return objectType;
     }
 
-    public static List<ContactDto> convertContacts(List<Contact> contacts) {
-        if (CollectionUtils.isEmpty(contacts)) {
-            return Collections.emptyList();
-        }
-        return contacts.stream().map(Converter::convert).collect(toList());
-    }
-
-    public static ContactDto convert(Contact contact) {
-        ContactDto dto = new ContactDto();
-        dto.setId(contact.getId());
-        dto.setFirstName(contact.getFirstName());
-        dto.setLastName(contact.getLastName());
-        dto.setEmail(contact.getEmail());
-        dto.setAddress(contact.getAddress());
-        return dto;
-    }
-
-    public static Contact convert(ContactDto dto) {
-        Contact contact = new Contact();
-        contact.setId(dto.getId());
-        contact.setFirstName(dto.getFirstName());
-        contact.setLastName(dto.getLastName());
-        contact.setEmail(dto.getEmail());
-        contact.setAddress(dto.getAddress());
-        return contact;
-    }
-
-    public static Set<OrderDto> convertOrders(Set<Order> orders) {
-        if (CollectionUtils.isEmpty(orders)) {
-            return Collections.emptySet();
-        }
-        return orders.stream().map(Converter::convert).collect(Collectors.toSet());
-    }
-
-    public static OrderDto convert(Order order) {
-        OrderDto dto = new OrderDto();
-        dto.setId(order.getId());
-        dto.setProduct(order.getProduct());
-        dto.setCount(order.getCount());
-        dto.setPrice(order.getPrice());
-        return dto;
-    }
-
     public static Set<Permission> convert(AclEntryDto aclEntry) {
         Set<Permission> permissions = new HashSet<>();
         if (aclEntry.isCanRead()) permissions.add(READ);
@@ -374,5 +330,41 @@ public class Converter {
             return Collections.emptyList();
         }
         return acls.stream().map(Converter::convert).collect(toList());
+    }
+
+    public static Attachment convert(AttachmentDto dto) {
+        Attachment attachment = new Attachment();
+        attachment.setId(dto.getId());
+        attachment.setName(dto.getName());
+        attachment.setComment(dto.getComment());
+        Contact contact = new Contact();
+        contact.setId(dto.getContactId());
+        attachment.setContact(contact);
+        attachment.setDateUpload(dto.getUploadDate());
+        return attachment;
+    }
+
+    public static AttachmentDto convert(Attachment attachment) {
+        AttachmentDto dto = new AttachmentDto();
+        dto.setId(attachment.getId());
+        dto.setName(attachment.getName());
+        dto.setComment(attachment.getComment());
+        dto.setContactId(attachment.getContact().getId());
+        dto.setUploadDate(attachment.getDateUpload());
+        return dto;
+    }
+
+    public static List<AttachmentDto> convertAttachments(List<Attachment> attachments) {
+        if (CollectionUtils.isEmpty(attachments)) {
+            return Collections.emptyList();
+        }
+        return attachments.stream().map(Converter::convert).collect(toList());
+    }
+
+    public static List<Attachment> convertAttachmentDtos(List<AttachmentDto> attachmentsDto) {
+        if (CollectionUtils.isEmpty(attachmentsDto)) {
+            return Collections.emptyList();
+        }
+        return attachmentsDto.stream().map(Converter::convert).collect(toList());
     }
 }
