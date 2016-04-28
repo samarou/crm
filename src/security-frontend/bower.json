@@ -1,5 +1,5 @@
 {
-  "name": "securityFrontend",
+  "name": "crn",
   "version": "0.0.0",
   "dependencies": {
     "angular-resource": "~1.5.3",
