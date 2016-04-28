@@ -1,0 +1,9 @@
+<div class="form-group">
+    <label for="attachmentFileName">File name</label>
+    <input type="text" id="attachmentFileName" class="form-control" placeholder="Type name of the file here" ng-model="attachment.name">
+    <span ng-show="attachment.name.$dirty && attachment.name.$error.required" class="help-block">File name is required</span>
+</div>
+<div class="form-group">
+    <label for="attachmentComment">Comment</label>
+    <input type="text" id="attachmentComment" class="form-control" placeholder="Type your comment here" ng-model="attachment.comment">
+</div>
