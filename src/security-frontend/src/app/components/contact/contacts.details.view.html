@@ -121,14 +121,6 @@
                 </tr>
                 </tbody>
             </table>
-            <div class="form-group">
-                <ul>
-                    <li ng-repeat="item in vm.uploader.queue">
-                        Name: <span ng-bind="item.file.name"></span><br/>
-                        <button ng-click="item.upload()">upload</button>
-                    </li>
-                </ul>
-            </div>
         </uib-tab>
     </uib-tabset>
     <div class="row">
