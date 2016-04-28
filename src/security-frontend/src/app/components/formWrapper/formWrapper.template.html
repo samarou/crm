@@ -7,7 +7,7 @@
 <div ng-class="$ctrl.modal ? 'modal-body' : ''" uib-modal-transclude></div>
 <div ng-class="$ctrl.modal ? 'modal-footer' : 'row'">
     <div class="col-xs-6 col-md-4 pull-right">
-        <div class="btn-group btn-group-justified">
+        <div class="btn-group btn-group-justified" ng-class="$ctrl.modal ? '' : 'form-group'">
             <a class="btn btn-default" ng-click="$ctrl.cancelBtn()">
                 {{$ctrl.cancelText ? $ctrl.cancelText : 'Cancel'}}
             </a>
