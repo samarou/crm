@@ -50,6 +50,7 @@
     "lodash": "~3.10.1",
     "main-bower-files": "~2.9.0",
     "phantomjs": "~1.9.18",
+    "protractor-jasmine2-screenshot-reporter": "^0.3.1",
     "uglify-save-license": "~0.4.1",
     "wiredep": "~2.2.2",
     "wrench": "~1.5.8"
