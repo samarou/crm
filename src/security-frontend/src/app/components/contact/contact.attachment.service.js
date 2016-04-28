@@ -35,7 +35,7 @@
                 model.attachment.file = scope.uploader.queue[scope.uploader.queue.length - 1]._file;
                 model.attachment.uploadDate = new Date();
                 scope.attachments.push(model.attachment);
-                scope.attachment = {};
+                vm.tempAttachment = {};
             });
         };
 
