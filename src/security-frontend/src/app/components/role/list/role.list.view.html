@@ -1,3 +1,13 @@
+<div class="page-header">
+    <h4>Roles
+        <ul class="list-inline pull-right">
+            <li><span class="glyphicon glyphicon-plus hover--pointer" title="New Role"
+                      ng-click="vm.add()"></span></li>
+            <li><span class="glyphicon glyphicon-minus hover--pointer" title="Remove Role"
+                      ng-click="vm.remove()"></span></li>
+        </ul>
+    </h4>
+</div>
 <div class="row">
     <div class="form-group">
         <div class="col-md-7">
@@ -9,15 +19,6 @@
 </div>
 <div class="table--fixed__wrapper">
     <table class="table table--fixed  text--unselectable">
-        <caption>
-            Roles
-            <ul class="list-inline pull-right">
-                <li><span class="glyphicon glyphicon-plus hover--pointer" title="New Role"
-                          ng-click="vm.add()"></span></li>
-                <li><span class="glyphicon glyphicon-minus hover--pointer" title="Remove Role"
-                          ng-click="vm.remove()"></span></li>
-            </ul>
-        </caption>
         <thead>
         <tr>
             <td class="block--narrow"><input type="checkbox" ng-model="vm.isSelectedAll"

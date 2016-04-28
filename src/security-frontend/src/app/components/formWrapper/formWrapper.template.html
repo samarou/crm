@@ -2,7 +2,7 @@
     <button ng-show="$ctrl.modal" type="button" class="close" aria-label="Close" ng-click="$ctrl.cancelBtn()">
         <span aria-hidden="true">&times;</span>
     </button>
-    <h4 class="modal-title" id="group-modal-view-label">{{$ctrl.formTitle ? $ctrl.formTitle : 'Dialog'}}</h4>
+    <h4 ng-class="$ctrl.modal ? 'modal-title': ''">{{$ctrl.formTitle ? $ctrl.formTitle : 'Dialog'}}</h4>
 </div>
 <div ng-class="$ctrl.modal ? 'modal-body' : ''" uib-modal-transclude></div>
 <div ng-class="$ctrl.modal ? 'modal-footer' : 'row'">

@@ -1,3 +1,15 @@
+<div class="page-header">
+    <h4 >Users
+        <ul class="list-inline pull-right">
+            <li><span ng-click="vm.add()" title="Add New User"
+                      class="hover--pointer glyphicon glyphicon-plus"></span></li>
+            <li><span ng-click="vm.activate(true)" title="Activate User(s)"
+                      class="hover--pointer glyphicon glyphicon-thumbs-up"></span></li>
+            <li><span ng-click="vm.activate(false)" title="Deactivate User(s)"
+                      class="hover--pointer glyphicon glyphicon-thumbs-down"></span></li>
+        </ul>
+    </h4>
+</div>
 <div class="row">
     <div class="form-group">
         <div class="col-md-7">
@@ -29,17 +41,6 @@
 </div>
 <div class="table--fixed__wrapper">
     <table class="table table--fixed text--unselectable">
-        <caption>
-            Users
-            <ul class="list-inline pull-right">
-                <li><span ng-click="vm.add()" title="Add New User"
-                          class="hover--pointer glyphicon glyphicon-plus"></span></li>
-                <li><span ng-click="vm.activate(true)" title="Activate User(s)"
-                          class="hover--pointer glyphicon glyphicon-thumbs-up"></span></li>
-                <li><span ng-click="vm.activate(false)" title="Deactivate User(s)"
-                          class="hover--pointer glyphicon glyphicon-thumbs-down"></span></li>
-            </ul>
-        </caption>
         <thead>
         <tr>
             <td class="block--narrow"><input type="checkbox" ng-model="vm.bundle.isSelectedAll"

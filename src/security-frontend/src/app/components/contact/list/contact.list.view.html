@@ -1,17 +1,18 @@
+<div class="page-header">
+    <h4>Contacts
+        <ul class="list-inline pull-right">
+            <li ng-show="vm.isManager"><span ng-click="vm.add()" title="Add New Contact"
+                                             class="hover--pointer glyphicon glyphicon-plus"></span></li>
+            <li><span ng-click="vm.remove()" title="Remove Contact"
+                      class="hover--pointer glyphicon glyphicon-minus"></span></li>
+        </ul>
+    </h4>
+</div>
 <input ng-model="vm.searchContactBundle.filter.text" ng-keyup="vm.searchContactBundle.typing.keyUp()"
        ng-keydown="vm.searchContactBundle.typing.keyDown()" class="form-control"
        placeholder="Search by first name, last name, email, address...">
 <div class="table--fixed__wrapper">
     <table class="table table--fixed text--unselectable">
-        <caption>
-            Contacts
-            <ul class="list-inline pull-right">
-                <li ng-show="vm.isManager"><span ng-click="vm.add()" title="Add New Contact"
-                                                 class="hover--pointer glyphicon glyphicon-plus"></span></li>
-                <li><span ng-click="vm.remove()" title="Remove Contact"
-                          class="hover--pointer glyphicon glyphicon-minus"></span></li>
-            </ul>
-        </caption>
         <thead>
         <tr>
             <td class="block--narrow"></td>
