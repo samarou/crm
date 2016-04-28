@@ -76,9 +76,8 @@
 
         function addAttachment(id, attachment) {
             var formData = new FormData();
-            formData.append('attachment', JSON.stringify(attachment));
+            formData.append('attachment', angular.toJson(attachment));
             formData.append('file', attachment.file);
-            console.log('attach in JSON', JSON.stringify(attachment));
             return $http.post('rest/contacts/' + id + '/attachments',
                 formData,
                 {

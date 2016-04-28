@@ -6,19 +6,31 @@
         .service('ContactAttachmentService', ContactAttachmentService);
 
     /** @ngInject */
-    function ContactAttachmentService(ContactService, $q, DialogService) {
+    function ContactAttachmentService(ContactService, $q, DialogService, FileUploader) {
         var vm = this;
+        vm.tempAttachment = {};
+
+        vm.getUploader = function () {
+            return new FileUploader(
+                {
+                    onBeforeUploadItem: function (item) {
+                        item.url = vm.uploader.url;
+                    },
+                    onAfterAddingFile: function (item) {
+                        vm.tempAttachment.name = item._file.name;
+                    },
+                    withCredentials: true
+                });
+        };
 
         vm.addAttachments = function (scope) {
-            console.log(scope.uploader);
-            console.log(typeof scope.uploader);
             DialogService.custom('app/components/contact/attachment/add/contact.attachments.add.view.html', {
                 title: 'Add Attachments',
                 size: 'modal--group-table',
                 cancelTitle: 'Cancel',
                 okTitle: 'Add',
                 uploader: scope.uploader,
-                attachment: scope.attachment
+                attachment: vm.tempAttachment
             }).result.then(function (model) {
                 model.attachment.file = scope.uploader.queue[scope.uploader.queue.length - 1]._file;
                 model.attachment.uploadDate = new Date();
@@ -46,11 +58,11 @@
                 if (attachment.checked) {
                     DialogService.confirm('Do you really want to delete attachment ' + attachment.name + '?')
                         .result.then(function () {
-                            if (attachment.id) {
-                                tasks.push(ContactService.removeAttachment(attachment.contactId, attachment.id));
-                            }
-                            var index = scope.attachments.indexOf(attachment);
-                            scope.attachments.splice(index, 1);
+                        if (attachment.id) {
+                            tasks.push(ContactService.removeAttachment(attachment.contactId, attachment.id));
+                        }
+                        var index = scope.attachments.indexOf(attachment);
+                        scope.attachments.splice(index, 1);
                     })
                 }
             });
@@ -63,7 +75,6 @@
                     newAttachments.push(attachment);
                 }
             });
-            console.log('new attachments', newAttachments);
             return newAttachments;
         };
 
@@ -74,8 +85,22 @@
                     updatedAttachments.push(attachment);
                 }
             });
-            console.log('updated attachments', updatedAttachments);
             return updatedAttachments;
         };
+
+        vm.updateAdditionalValues = function (contactId, scope) {
+            return ContactService.updatePermissions(contactId, scope.permissions).then(function () {
+                var tasks = [];
+                var newAttachments = vm.getNewAttachments(scope.attachments);
+                var updatedAttachments = vm.getUpdatedAttachments(scope.attachments);
+                newAttachments.forEach(function (attachment) {
+                    tasks.push(ContactService.addAttachment(contactId, attachment));
+                });
+                if (updatedAttachments.length > 0) {
+                    tasks.push(ContactService.updateAttachments(contactId, updatedAttachments));
+                }
+                return $q.all(tasks);
+            })
+        }
     }
 })();

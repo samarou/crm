@@ -9,7 +9,7 @@
         .controller('ContactsAddController', ContactsAddController);
 
     /** @ngInject */
-    function ContactsAddController(ContactService, ContactPermissionsService, ContactAttachmentService, $state, FileUploader) {
+    function ContactsAddController(ContactService, ContactPermissionsService, ContactAttachmentService, $state) {
         'use strict';
         var vm = this;
         vm.canEdit = true;
@@ -23,13 +23,13 @@
         vm.submitText = 'Add';
         vm.cancelText = 'Cancel';
         vm.title = 'Add contact';
-        vm.uploader = new FileUploader();
+        vm.uploader = ContactAttachmentService.getUploader();
 
 
         vm.submit = function () {
             ContactService.create(vm.contact).then(function (response) {
                 var id = response.data;
-                updateAdditionalValues(id).then(
+                ContactAttachmentService.updateAdditionalValues(id, vm).then(
                     function () {
                         $state.go('contacts.list');
                     }
@@ -41,13 +41,5 @@
         vm.cancel = function () {
             $state.go('contacts.list');
         };
-
-        function updateAdditionalValues(id) {
-            return ContactService.updatePermissions(id, vm.permissions).then(function () {
-                return ContactService.addAttachments(id, ContactAttachmentService.getNewAttachments(vm.attachments)).then(function () {
-                    return ContactService.updateAttachments(id, ContactAttachmentService.getUpdatedAttachments(vm.attachments))
-                });
-            })
-        }
     }
 })();
