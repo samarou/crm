@@ -45,10 +45,13 @@
                 size: 'modal--group-table',
                 cancelTitle: 'Cancel',
                 okTitle: 'Save',
-                attachment: attachment
+                attachment: {name:attachment.name, comment:attachment.comment}
             }).result.then(function (model) {
-                attachment = model.attachment;
-                attachment.updated = true;
+                attachment.name = model.attachment.name;
+                attachment.comment = model.attachment.comment;
+                if (attachment.contactId) {
+                    ContactService.updateAttachment(attachment.contactId, attachment)
+                }
             });
         };
 
@@ -68,6 +71,7 @@
             });
             return $q.all(tasks);
         };
+
         vm.getNewAttachments = function (attachments) {
             var newAttachments = [];
             attachments.forEach(function (attachment) {
@@ -78,29 +82,15 @@
             return newAttachments;
         };
 
-        vm.getUpdatedAttachments = function (attachments) {
-            var updatedAttachments = [];
-            attachments.forEach(function (attachment) {
-                if (attachment.updated) {
-                    updatedAttachments.push(attachment);
-                }
-            });
-            return updatedAttachments;
-        };
-
         vm.updateAdditionalValues = function (contactId, scope) {
             return ContactService.updatePermissions(contactId, scope.permissions).then(function () {
                 var tasks = [];
                 var newAttachments = vm.getNewAttachments(scope.attachments);
-                var updatedAttachments = vm.getUpdatedAttachments(scope.attachments);
                 newAttachments.forEach(function (attachment) {
                     tasks.push(ContactService.addAttachment(contactId, attachment));
                 });
-                if (updatedAttachments.length > 0) {
-                    tasks.push(ContactService.updateAttachments(contactId, updatedAttachments));
-                }
                 return $q.all(tasks);
             })
-        }
+        };
     }
 })();

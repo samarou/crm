@@ -14,6 +14,7 @@
     <jndi:jndi-lookup id="mailSession" jndi-name="${mail.session.jndi}"/>
 
     <sec:http pattern="/rest/login" security="none"/>
+    <sec:http pattern="/rest/files/**" security="none"/>
 
     <sec:http pattern="/rest/**" create-session="stateless" auto-config="false"
               entry-point-ref="unauthorizedEntryPoint">
@@ -109,6 +110,10 @@
     </bean>
 
     <bean id="uploadController" class="com.itechart.security.web.controller.ContactAttachmentsController">
+
+    </bean>
+
+    <bean id="contactAttachmentService" class="com.itechart.security.web.service.impl.ContactAttachmentServiceImpl">
         <property name="uploadHome" value="${upload.home}"/>
     </bean>
 

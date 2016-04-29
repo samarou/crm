@@ -20,6 +20,7 @@
         vm.attachmentService = ContactAttachmentService;
         vm.uploader = ContactAttachmentService.getUploader();
         vm.isManager = AuthService.isManager();
+        vm.getAttachment = ContactService.getAttachment;
 
         var permissions = {
             read: 'read',
@@ -40,7 +41,6 @@
                         vm.submitText = null;
                         vm.cancelText = 'Ok'
                     }
-
                 }),
                 ContactService.getPermissions($stateParams.id).then(function (response) {
                     vm.permissions = response.data;

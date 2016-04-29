@@ -10,7 +10,7 @@ import java.util.Set;
 public interface AttachmentService {
     List<Attachment> loadAll();
 
-    Long saveAttachment(Attachment attachment);
+    Long insertAttachment(Attachment attachment);
 
     Attachment get(Long id);
 
