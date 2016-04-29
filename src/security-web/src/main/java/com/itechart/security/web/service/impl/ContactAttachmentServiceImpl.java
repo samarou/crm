@@ -36,7 +36,7 @@ public class ContactAttachmentServiceImpl implements ContactAttachmentService {
     private ContactService contactService;
 
     @Override
-    public void addAttachmentToResponse(Long contactId, Long attachmentId, HttpServletResponse response) {
+    public void download(Long contactId, Long attachmentId, HttpServletResponse response) {
         if (attachmentId != 0L) {
             Attachment attachment = attachmentService.get(attachmentId);
             response.setHeader("Cache-Control", "no-cache");
@@ -55,7 +55,7 @@ public class ContactAttachmentServiceImpl implements ContactAttachmentService {
                         FileCopyUtils.copy(is, os);
                         response.flushBuffer();
                     } finally {
-                        closeStreams(is, os);
+                        closeInputOutputStreams(is, os);
                     }
                 } else {
                     logger.error("cannot find attachment {} with id {} for contact {} in {}", attachment.getName(), attachmentId, contactId, uploadHome);
@@ -69,11 +69,11 @@ public class ContactAttachmentServiceImpl implements ContactAttachmentService {
     }
 
     @Override
-    public void saveAttachment(Long contactId, MultipartFile file, String attachmentDto) {
+    public void save(Long contactId, MultipartFile file, String attachmentDto) {
         if (!file.isEmpty()) {
             try {
-                Long attachmentId = saveAttachmentInformation(attachmentDto, contactId);
-                saveMultipartFile(contactId, file, attachmentId);
+                Long attachmentId = saveDetails(attachmentDto, contactId);
+                saveFile(contactId, file, attachmentId);
             } catch (IOException ex){
                 logger.error("can't save attachment",ex);
             }
@@ -82,7 +82,7 @@ public class ContactAttachmentServiceImpl implements ContactAttachmentService {
         }
     }
 
-    private Long saveAttachmentInformation(String attachmentDtoString, Long contactId) throws IOException {
+    private Long saveDetails(String attachmentDtoString, Long contactId) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         AttachmentDto attachmentDto = mapper.readValue(attachmentDtoString, AttachmentDto.class);
         Attachment att = convert(attachmentDto);
@@ -92,7 +92,7 @@ public class ContactAttachmentServiceImpl implements ContactAttachmentService {
         return attachmentService.insertAttachment(att);
     }
 
-    private void saveMultipartFile(Long contactId, MultipartFile file, Long attachmentId) {
+    private void saveFile(Long contactId, MultipartFile file, Long attachmentId) {
         BufferedOutputStream outputStream = null;
         InputStream inputStream = null;
         String savingPath = getPathToFile(contactId, attachmentId, "." + FilenameUtils.getExtension(file.getOriginalFilename()));
@@ -103,7 +103,7 @@ public class ContactAttachmentServiceImpl implements ContactAttachmentService {
                         new FileOutputStream(new File(savingPath)));
                 FileCopyUtils.copy(inputStream, outputStream);
             } finally {
-                closeStreams(inputStream, outputStream);
+                closeInputOutputStreams(inputStream, outputStream);
             }
         } catch (IOException ex) {
             logger.error("file upload failed, deleting attachment info from database", ex);
@@ -143,21 +143,18 @@ public class ContactAttachmentServiceImpl implements ContactAttachmentService {
         return null;
     }
 
-    private void closeStreams(InputStream inputStream, OutputStream outputStream) {
+    private <T extends Closeable> void closeStream(T stream){
+        if(stream != null){
+            try {
+                stream.close();
+            }catch (IOException e){
+                logger.error("can't close stream", e);
+            }
+        }
+    }
+    private void closeInputOutputStreams(InputStream inputStream, OutputStream outputStream) {
         logger.debug("closing streams");
-        try {
-            if (inputStream != null) {
-                inputStream.close();
-            }
-        } catch (IOException e) {
-            logger.error("can't close fileInputStream");
-        }
-        try {
-            if (outputStream != null) {
-                outputStream.close();
-            }
-        } catch (IOException e) {
-            logger.error("can't close output stream");
-        }
+        closeStream(inputStream);
+        closeStream(outputStream);
     }
 }
