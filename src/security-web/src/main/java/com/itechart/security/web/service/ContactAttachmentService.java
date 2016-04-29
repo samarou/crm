@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public interface ContactAttachmentService {
 
-    public void addAttachmentToResponse(Long contactId, Long attachmentId, HttpServletResponse response);
+    public void download(Long contactId, Long attachmentId, HttpServletResponse response);
 
-    public void saveAttachment(Long contactId, MultipartFile file, String attachmentDto);
+    public void save(Long contactId, MultipartFile file, String attachmentDto);
 }
