@@ -24,7 +24,7 @@
         vm.cancelText = 'Cancel';
         vm.title = 'Add contact';
         vm.uploader = ContactAttachmentService.getUploader();
-
+        vm.getAttachment = ContactService.getAttachment;
 
         vm.submit = function () {
             ContactService.create(vm.contact).then(function (response) {
