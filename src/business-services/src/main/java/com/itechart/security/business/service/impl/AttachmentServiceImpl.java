@@ -22,7 +22,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 
     @Override
     @Transactional
-    public Long saveAttachment(Attachment attachment) {
+    public Long insertAttachment(Attachment attachment) {
         return attachmentDao.save(attachment);
     }
 
