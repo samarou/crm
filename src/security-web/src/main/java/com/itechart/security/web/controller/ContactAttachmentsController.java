@@ -1,24 +1,17 @@
 package com.itechart.security.web.controller;
 
 import com.itechart.security.business.model.persistent.Attachment;
-import com.itechart.security.business.model.persistent.Contact;
 import com.itechart.security.business.service.AttachmentService;
-import com.itechart.security.business.service.ContactService;
 import com.itechart.security.web.model.dto.AttachmentDto;
 import com.itechart.security.web.service.ContactAttachmentService;
-import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.nio.file.Files;
 import java.util.List;
 
 import static com.itechart.security.web.model.dto.Converter.convert;
@@ -52,13 +45,13 @@ public class ContactAttachmentsController {
     @ResponseStatus(HttpStatus.OK)
     public void addAttachment(@PathVariable Long contactId, @RequestParam("file") MultipartFile file, @RequestParam("attachment") String attachment) {
         logger.debug("uploading file {} from contact {}, attachment {}", file.getOriginalFilename(), contactId, attachment);
-        contactAttachmentService.saveAttachment(contactId, file, attachment);
+        contactAttachmentService.save(contactId, file, attachment);
     }
 
     @RequestMapping(value = "/files/contacts/{contactId}/attachments/{attachmentId}", method = RequestMethod.GET)
     public void downloadFile(@PathVariable Long contactId, @PathVariable Long attachmentId, HttpServletResponse response) {
         logger.debug("downloading attachment {} from contact {}", attachmentId, contactId);
-        contactAttachmentService.addAttachmentToResponse(contactId, attachmentId, response);
+        contactAttachmentService.download(contactId, attachmentId, response);
     }
 
 
