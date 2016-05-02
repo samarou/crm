@@ -1,0 +1,62 @@
+<div id="filter-panel" class="collapse filter-panel">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form class="form-inline" role="form">
+                <div class="form-group crm-filter-col">
+                    <label for="group">Group:</label>
+                    <select id="group" class="form-control" ng-change="$ctrl.scope.bundle.find()"
+                            ng-model="$ctrl.scope.bundle.filter.groupId">
+                        <option value="">Any</option>
+                        <option ng-repeat="group in $ctrl.scope.groups" value="{{group.id}}">{{group.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group crm-filter-col">
+                    <label for="role">Role:</label>
+                    <select id="role" class="form-control" ng-change="$ctrl.scope.bundle.find()"
+                            ng-model="$ctrl.scope.bundle.filter.groupId">
+                        <option value="">Any</option>
+                        <option ng-repeat="group in $ctrl.scope.groups" value="{{group.id}}">{{group.name}}</option>
+                    </select>
+                </div>
+                <div class="checkbox crm-filter-col">
+                    <label for="active"><input id="active" type="checkbox"
+                                               ng-change="$ctrl.scope.bundle.find()"
+                                               ng-model="$ctrl.scope.bundle.filter.active"
+                                               ng-checked="$ctrl.scope.bundle.filter.active">
+                        Active</label>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row crm-bottom-buffer">
+    <div class="col-xs-12 col-sm-6 col-md-8">
+        <div class="input-group form-group">
+            <input type="text" class="form-control" ng-model="$ctrl.scope.bundle.filter.text"
+                   ng-keyup="$ctrl.scope.bundle.typing.keyUp()"
+                   ng-keydown="$ctrl.scope.bundle.typing.keyDown()"
+                   placeholder="Search by first name, last name, username, email..."/>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" data-toggle="collapse" aria-hidden="true"
+                            data-target="#filter-panel">
+                        <span class="glyphicon glyphicon-cog"></span>
+                    </button>
+                </span>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-4">
+        <div class="btn-group btn-group-justified pull-right">
+            <a class="btn btn-default" ng-click="$ctrl.scope.add()">
+                Add
+            </a>
+            <a class="btn btn-default" ng-click="$ctrl.scope.activate(true)">
+                Activate
+            </a>
+            <a class="btn btn-default" ng-click="$ctrl.scope.activate(false)">
+                Deactivate
+            </a>
+        </div>
+    </div>
+</div>
+
+

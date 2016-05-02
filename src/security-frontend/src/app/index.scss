@@ -2,16 +2,27 @@
  *  If you want to override some bootstrap variables, you have to change values here.
  *  The list of variables are listed here bower_components/bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss
  */
+$line-height-base: 1.42857;
+
 $icon-font-path: "../../bower_components/bootstrap-sass/assets/fonts/bootstrap/";
 $navbar-height: 70px;
 $navbar-default-bg: white;
-$navbar-default-link-color: #777;
-$navbar-default-link-hover-color: #333;
+$navbar-default-link-color:                #777 !default;
+$navbar-default-link-hover-color:          #333 !default;
+$navbar-default-link-hover-bg:             transparent !default;
+$navbar-default-link-active-color:         #555 !default;
+$navbar-default-link-active-bg:            darken($navbar-default-bg, 6.5%) !default;
+$navbar-margin-bottom: 0px;
 
-/**
- *  Do not remove the comments below. It's the markers used by wiredep to inject
- *  sass dependencies when defined in the bower.json of your dependencies
- */
+$brand-primary: #00BAF2;
+$btn-primary-bg: $brand-primary;
+$btn-primary-border: $brand-primary;
+
+
+  /**
+   *  Do not remove the comments below. It's the markers used by wiredep to inject
+   *  sass dependencies when defined in the bower.json of your dependencies
+   */
 // bower:scss
 // endbower
 
@@ -29,15 +40,6 @@ $navbar-default-link-hover-color: #333;
   padding: 0.2em 0;
 }
 
-.hover--pointer:hover {
-  cursor: pointer;
-}
-
-.hover--highlight:hover {
-  cursor: pointer;
-  background-color: #eeeeee;
-}
-
 .block--narrow {
   margin: 2px 15px;
   width: 50px;
@@ -46,33 +48,6 @@ $navbar-default-link-hover-color: #333;
 .block--center {
   margin-left: auto;
   margin-right: auto;
-}
-
-.table--fixed__wrapper {
-  min-height: 250px;
-  margin-top: 30px;
-}
-
-.table--fixed {
-  table-layout: fixed;
-  word-wrap: break-word;
-}
-
-.table__row--inactive {
-  background-color: #fff6f4;
-}
-
-.table__row--inactive:hover {
-  background-color: #bebebe;
-  cursor: pointer;
-}
-
-.modal--user-table {
-  width: 850px;
-}
-
-.modal--group-table {
-  width: 650px;
 }
 
 .list--compact {
@@ -131,45 +106,6 @@ $navbar-default-link-hover-color: #333;
   user-select: none; /* non-prefixed version, currently not supported by any browser */
 }
 
-.text--center {
-  text-align: center;
-}
-
-.text--summary {
-  float: right;
-  color: #777;
-}
-
-.icon--small {
-  display: inline-block;
-  width: 32px;
-  height: 32px;
-}
-
-.icon--user {
-  background: url("../assets/icons/user.svg");
-}
-
-.icon--remove {
-  background: url("../assets/icons/remove.svg");
-}
-
-.icon--user-add {
-  background: url("../assets/icons/user-add.svg");
-}
-
-.icon--user-group {
-  background: url("../assets/icons/group.svg");
-}
-
-.icon--user-group-add {
-  background: url("../assets/icons/group-add.svg");
-}
-
-.navbar-default .navbar-brand:hover,
-.navbar-default .navbar-brand:focus {
-  color: #777;
-}
 
 /* fix for bootstrap modal dialog (issue 9886) */
 body.modal-open {
@@ -177,4 +113,37 @@ body.modal-open {
   padding-right: inherit !important;
 }
 
+.crm-hover:hover {
+  cursor: pointer;
+  background-color: #eeeeee;
+}
 
+.crm-user-inactive {
+  background-color: #fff6f4;
+}
+
+.crm-user-inactive:hover {
+  background-color: #bebebe;
+}
+
+.pagination > .active > a {
+  background-color: $brand-primary;
+  border-color: $brand-primary;
+}
+.pagination > .active > a:hover, .btn-primary:hover {
+  background-color: darken($brand-primary, 5%);
+  border-color: darken($brand-primary, 5%);
+  cursor: pointer;
+}
+
+.crm-bottom-buffer {
+  margin-bottom: 19px;
+}
+
+.crm-top-buffer {
+  margin-top: 19px;
+}
+
+.crm-text-center{
+  text-align: center;
+}
