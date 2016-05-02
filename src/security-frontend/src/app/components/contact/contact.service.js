@@ -6,7 +6,7 @@
         .factory('contactService', contactService);
 
     /** @ngInject */
-    function contactService($http) {
+    function contactService($http, $window) {
         return {
             getAll: getAll,
             create: create,
@@ -69,37 +69,12 @@
 
         function getAttachment(attachment) {
             if (attachment.contactId) {
-                // return $window.open('rest/contacts/' + attachment.contactId + '/attachments/' + attachment.id, '_blank');
-                return $http({
-                    method: 'GET',
-                    url: 'rest/contacts/' + attachment.contactId + '/attachments/' + attachment.id
-                })
-                    .then(function (response) {
-                        // return $http.get('rest/contacts/' + attachment.contactId + '/attachments/' + attachment.id).then(function (response) {
-                        var data = new Blob([response.data], {type: response.headers('content-type')});
-                        FileSaver.saveAs(data, attachment.name);
-                        // saveData(response.data, attachment.name, response.headers('content-type'));
-                    });
+                var url = 'rest/files/contacts/' + attachment.contactId + '/attachments/' + attachment.id;
+                return $http.get(url).then(function () {
+                    $window.open(url);
+                });
             }
         }
-
-        var saveData = (function () {
-            var a = document.createElement('a');
-            document.body.appendChild(a);
-            a.style = 'display: none';
-            return function (data, fileName, type) {
-                // var json = JSON.stringify(data);
-                console.log(data);
-                var file = new File([data], fileName, {type: type});
-                console.log(file);
-                var url = window.URL.createObjectURL(file);
-                a.href = url;
-                a.target = '_blank';
-                // a.download = fileName;
-                a.click();
-                window.URL.revokeObjectURL(url);
-            };
-        }());
 
         function getAttachments(id) {
             return $http.get('rest/contacts/' + id + '/attachments');

@@ -2,9 +2,7 @@ package com.itechart.security.web.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itechart.security.business.model.persistent.Attachment;
-import com.itechart.security.business.model.persistent.Contact;
 import com.itechart.security.business.service.AttachmentService;
-import com.itechart.security.business.service.ContactService;
 import com.itechart.security.web.model.dto.AttachmentDto;
 import com.itechart.security.web.service.ContactAttachmentService;
 import org.apache.commons.io.FilenameUtils;
@@ -32,40 +30,41 @@ public class ContactAttachmentServiceImpl implements ContactAttachmentService {
     @Autowired
     private AttachmentService attachmentService;
 
-    @Autowired
-    private ContactService contactService;
-
     @Override
     public void download(Long contactId, Long attachmentId, HttpServletResponse response) {
         if (attachmentId != 0L) {
             Attachment attachment = attachmentService.get(attachmentId);
-            response.setHeader("Cache-Control", "no-cache");
-            response.setHeader("Content-Disposition", "inline;filename*=UTF-8''" + attachment.getName() + ";");
-            logger.debug("filename is {}", attachment.getName());
+            setHeaders(response, attachment.getName());
             try {
-                BufferedInputStream is = null;
-                ServletOutputStream os = null;
                 File file = getFile(contactId, attachmentId);
                 if (file != null) {
+                    BufferedInputStream inputStream = null;
+                    ServletOutputStream outputStream = null;
                     String mimeType = Files.probeContentType(file.toPath());
                     response.setContentType(mimeType);
                     try {
-                        is = new BufferedInputStream(new FileInputStream(file));
-                        os = response.getOutputStream();
-                        FileCopyUtils.copy(is, os);
+                        inputStream = new BufferedInputStream(new FileInputStream(file));
+                        outputStream = response.getOutputStream();
+                        FileCopyUtils.copy(inputStream, outputStream);
                         response.flushBuffer();
                     } finally {
-                        closeInputOutputStreams(is, os);
+                        closeStream(inputStream);
+                        closeStream(outputStream);
                     }
                 } else {
-                    logger.error("cannot find attachment {} with id {} for contact {} in {}", attachment.getName(), attachmentId, contactId, uploadHome);
+                    logger.error("can't find attachment {} with id {} for contact {} in {}", attachment.getName(), attachmentId, contactId, uploadHome);
+                    throw new RuntimeException("file is not on server");
                 }
-            } catch (FileNotFoundException e) {
-                logger.error("cannot find attachment {} with id {} for contact {} in {}", attachment.getName(), attachmentId, contactId, uploadHome, e);
             } catch (IOException ex) {
-                logger.error("cannot download attachment {} with id {} for contact {} in {}", attachment.getName(), attachmentId, contactId, uploadHome, ex);
+                logger.error("can't download attachment {} with id {} for contact {} in {}", attachment.getName(), attachmentId, contactId, uploadHome, ex);
+                throw new RuntimeException("error happened during file download");
             }
         }
+    }
+
+    private void setHeaders(HttpServletResponse response, String attachmentName){
+        response.setHeader("Cache-Control", "no-cache");
+        response.setHeader("Content-Disposition", "inline;filename*=UTF-8''" + attachmentName + ";");
     }
 
     @Override
@@ -74,42 +73,44 @@ public class ContactAttachmentServiceImpl implements ContactAttachmentService {
             try {
                 Long attachmentId = saveDetails(attachmentDto, contactId);
                 saveFile(contactId, file, attachmentId);
-            } catch (IOException ex){
-                logger.error("can't save attachment",ex);
+            } catch (IOException ex) {
+                logger.error("can't save attachment", ex);
+                throw new RuntimeException("can't save attachment");
             }
         } else {
             logger.warn("attachment wasn't added, because file is not present");
+            throw new RuntimeException("Expected a file, but no file was found.");
         }
     }
 
     private Long saveDetails(String attachmentDtoString, Long contactId) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         AttachmentDto attachmentDto = mapper.readValue(attachmentDtoString, AttachmentDto.class);
+        attachmentDto.setContactId(contactId);
         Attachment att = convert(attachmentDto);
-        Contact contact = contactService.get(contactId);
-        att.setContact(contact);
         att.setDateUpload(new Date());
         return attachmentService.insertAttachment(att);
     }
 
     private void saveFile(Long contactId, MultipartFile file, Long attachmentId) {
-        BufferedOutputStream outputStream = null;
-        InputStream inputStream = null;
-        String savingPath = getPathToFile(contactId, attachmentId, "." + FilenameUtils.getExtension(file.getOriginalFilename()));
         try {
+            BufferedOutputStream outputStream = null;
+            InputStream inputStream = null;
             try {
+                String savingPath = getPathToFile(contactId, attachmentId, "." + FilenameUtils.getExtension(file.getOriginalFilename()));
                 inputStream = file.getInputStream();
-                outputStream = new BufferedOutputStream(
-                        new FileOutputStream(new File(savingPath)));
+                outputStream = new BufferedOutputStream(new FileOutputStream(new File(savingPath)));
                 FileCopyUtils.copy(inputStream, outputStream);
             } finally {
-                closeInputOutputStreams(inputStream, outputStream);
+                closeStream(inputStream);
+                closeStream(outputStream);
             }
         } catch (IOException ex) {
             logger.error("file upload failed, deleting attachment info from database", ex);
             if (attachmentId != 0) {
                 attachmentService.deleteById(attachmentId);
             }
+            throw new RuntimeException("file upload failed");
         }
     }
 
@@ -143,18 +144,13 @@ public class ContactAttachmentServiceImpl implements ContactAttachmentService {
         return null;
     }
 
-    private <T extends Closeable> void closeStream(T stream){
-        if(stream != null){
+    private <T extends Closeable> void closeStream(T stream) {
+        if (stream != null) {
             try {
                 stream.close();
-            }catch (IOException e){
+            } catch (IOException e) {
                 logger.error("can't close stream", e);
             }
         }
-    }
-    private void closeInputOutputStreams(InputStream inputStream, OutputStream outputStream) {
-        logger.debug("closing streams");
-        closeStream(inputStream);
-        closeStream(outputStream);
     }
 }
