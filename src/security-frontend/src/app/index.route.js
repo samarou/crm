@@ -97,19 +97,19 @@
 				})
 				.state('contacts.list', {
 					url: '/list',
-					controller: 'ContactsListController',
+					controller: 'contactListController',
 					templateUrl: 'app/components/contact/list/contact.list.view.html',
 					controllerAs: 'vm'
 				})
 				.state('contacts.add', {
 					url: '/add',
-					controller: 'ContactsAddController',
+					controller: 'contactAddController',
 					templateUrl: 'app/components/contact/contact.details.view.html',
 					controllerAs: 'vm'
 				})
 				.state('contacts.edit', {
 					url: '/:id',
-					controller: 'ContactsEditController',
+					controller: 'contactEditController',
 					templateUrl: 'app/components/contact/contact.details.view.html',
 					controllerAs: 'vm'
 				});
