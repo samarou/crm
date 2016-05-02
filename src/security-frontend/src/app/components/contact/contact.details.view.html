@@ -50,6 +50,38 @@
             <uib-tab index="1" heading="Access">
                 <acl-form handler="vm.aclHandler"></acl-form>
             </uib-tab>
+            <uib-tab index="2" heading="Attachments">
+                <table class="table table-hover">
+                    <caption>
+                        Attachments
+                        <ul class="list-inline pull-right">
+                            <li><span role="button" class="glyphicon glyphicon-plus" title="New Attachment"
+                                      ng-click="vm.attachmentService.addAttachments(vm)"></span></li>
+                            <li><span role="button" class="glyphicon glyphicon-minus" title="Remove Attachment"
+                                      ng-click="vm.attachmentService.removeAttachments(vm)"></span></li>
+                        </ul>
+                    </caption>
+                    <thead>
+                    <tr>
+                        <td></td>
+                        <td>#</td>
+                        <td>File</td>
+                        <td>Date of upload</td>
+                        <td>Comment</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="attachment in vm.attachments" ng-dblclick="vm.attachmentService.updateAttachment(attachment)">
+                        <td><input type="checkbox" ng-model="attachment.checked"
+                                   title="select attachment"></td>
+                        <td>{{$index + 1}}</td>
+                        <td><a class="btn" target="_blank" ng-click="vm.attachmentService.getAttachment(attachment)">{{attachment.name}}</a></td>
+                        <td>{{attachment.uploadDate | date:'yyyy-MM-dd'}}</td>
+                        <td>{{attachment.comment}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </uib-tab>
         </uib-tabset>
     </form>
 </crm-form-wrapper>
