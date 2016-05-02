@@ -5,13 +5,22 @@
 $icon-font-path: "../../bower_components/bootstrap-sass/assets/fonts/bootstrap/";
 $navbar-height: 70px;
 $navbar-default-bg: white;
-$navbar-default-link-color: #777;
-$navbar-default-link-hover-color: #333;
+$navbar-default-link-color:                #777 !default;
+$navbar-default-link-hover-color:          #333 !default;
+$navbar-default-link-hover-bg:             transparent !default;
+$navbar-default-link-active-color:         #555 !default;
+$navbar-default-link-active-bg:            darken($navbar-default-bg, 6.5%) !default;
+$navbar-margin-bottom: 0px;
 
-/**
- *  Do not remove the comments below. It's the markers used by wiredep to inject
- *  sass dependencies when defined in the bower.json of your dependencies
- */
+$brand-primary: #00BAF2;
+$btn-primary-bg: $brand-primary;
+$btn-primary-border: $brand-primary;
+
+
+  /**
+   *  Do not remove the comments below. It's the markers used by wiredep to inject
+   *  sass dependencies when defined in the bower.json of your dependencies
+   */
 // bower:scss
 // endbower
 
@@ -166,15 +175,39 @@ $navbar-default-link-hover-color: #333;
   background: url("../assets/icons/group-add.svg");
 }
 
-.navbar-default .navbar-brand:hover,
-.navbar-default .navbar-brand:focus {
-  color: #777;
-}
-
 /* fix for bootstrap modal dialog (issue 9886) */
 body.modal-open {
   overflow: inherit;
   padding-right: inherit !important;
 }
 
+.crm-hover:hover {
+  cursor: pointer;
+  background-color: #eeeeee;
+}
 
+.crm-user-inactive {
+  background-color: #fff6f4;
+}
+
+.crm-user-inactive:hover {
+  background-color: #bebebe;
+}
+
+.pagination > .active > a {
+  background-color: $brand-primary;
+  border-color: $brand-primary;
+}
+.pagination > .active > a:hover, .btn-primary:hover {
+  background-color: darken($brand-primary, 5%);
+  border-color: darken($brand-primary, 5%);
+  cursor: pointer;
+}
+
+.crm-bottom-buffer {
+  margin-bottom: 20px;
+}
+
+.crm-text-center{
+  text-align: center;
+}

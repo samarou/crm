@@ -1,99 +1,60 @@
 <div class="page-header">
-    <h4 >Users
-        <ul class="list-inline pull-right">
-            <li><span ng-click="vm.add()" title="Add New User"
-                      class="hover--pointer glyphicon glyphicon-plus"></span></li>
-            <li><span ng-click="vm.activate(true)" title="Activate User(s)"
-                      class="hover--pointer glyphicon glyphicon-thumbs-up"></span></li>
-            <li><span ng-click="vm.activate(false)" title="Deactivate User(s)"
-                      class="hover--pointer glyphicon glyphicon-thumbs-down"></span></li>
-        </ul>
-    </h4>
+    <h4>Users</h4>
 </div>
-<div class="row">
-    <div class="form-group">
-        <div class="col-md-7">
-            <span>&nbsp;</span>
-            <input class="form-control" ng-model="vm.bundle.filter.text" ng-keyup="vm.bundle.typing.keyUp()"
-                   ng-keydown="vm.bundle.typing.keyDown()"
-                   placeholder="Search by first name, last name, username, email...">
-        </div>
-        <div class="col-md-2">
-            <span class="text-info">Group</span>
-            <select class="form-control" ng-change="vm.bundle.find()" ng-model="vm.bundle.filter.groupId">
-                <option value="">Any</option>
-                <option ng-repeat="group in vm.groups" value="{{group.id}}">{{group.name}}</option>
-            </select>
-        </div>
-        <div class="col-md-2">
-            <span class="text-info">Role</span>
-            <select class="form-control" ng-change="vm.bundle.find()" ng-model="vm.bundle.filter.roleId">
-                <option value="">Any</option>
-                <option ng-repeat="role in vm.roles" value="{{role.id}}">{{role.name}}</option>
-            </select>
-        </div>
-        <div class="col-md-1">
-            <span class="text-info">Active</span>
-            <input type="checkbox" class="form-control" ng-change="vm.bundle.find()"
-                   ng-model="vm.bundle.filter.active" ng-checked="vm.bundle.filter.active">
-        </div>
+<crm-search scope="vm"></crm-search>
+<div class="row help">
+    <div class="col-md-12">
+        <table class="table table-condensed">
+            <thead>
+            <tr>
+                <th><input type="checkbox" ng-model="vm.bundle.isSelectedAll"
+                           ng-click="vm.bundle.selectAll(vm.bundle.isSelectedAll)"></th>
+                <th class="crm-hover" ng-click="vm.bundle.sortBy(vm.bundle.sortProperties.userName)">
+                    Username
+                    <div class="pull-left col-md-3" ng-show="vm.bundle.sortProperties.userName.enabled">
+                        <span class="glyphicon"
+                              ng-class="vm.bundle.sortProperties.userName.asc ? 'glyphicon-sort-by-attributes' : 'glyphicon-sort-by-attributes-alt' ">
+
+                        </span>
+                    </div>
+                </th>
+                <th class="crm-hover" ng-click="vm.bundle.sortBy(vm.bundle.sortProperties.firstName)">
+                    Full Name
+                    <div class="pull-left col-md-3" ng-show="vm.bundle.sortProperties.firstName.enabled">
+                        <span class="glyphicon"
+                              ng-class="vm.bundle.sortProperties.firstName.asc ? 'glyphicon-sort-by-attributes' : 'glyphicon-sort-by-attributes-alt' ">
+
+                        </span>
+                    </div>
+                </th>
+                <th class="crm-hover hidden-xs" ng-click="vm.bundle.sortBy(vm.bundle.sortProperties.email)">
+                    Email
+                    <div class="pull-left col-md-3" ng-show="vm.bundle.sortProperties.email.enabled">
+                        <span class="glyphicon"
+                              ng-class="vm.bundle.sortProperties.email.asc ? 'glyphicon-sort-by-attributes' : 'glyphicon-sort-by-attributes-alt' ">
+
+                        </span>
+                    </div>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-class="{'crm-hover' : user.active, 'crm-user-inactive' : !user.active}"
+                ng-repeat="user in vm.bundle.itemsList" ng-click="vm.edit(user)">
+                <td><input type="checkbox" ng-model="user.checked"
+                           ng-click="vm.bundle.selectOne(); $event.stopPropagation()">
+                </td>
+                <td>{{user.userName}}</td>
+                <td data-title="name">{{user.firstName + ' ' + user.lastName}}</td>
+                <td class="hidden-xs">{{user.email}}</td>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
-<div class="table--fixed__wrapper">
-    <table class="table table--fixed text--unselectable">
-        <thead>
-        <tr>
-            <td class="block--narrow"><input type="checkbox" ng-model="vm.bundle.isSelectedAll"
-                                             ng-click="vm.bundle.selectAll(vm.bundle.isSelectedAll)"></td>
-            <td class="block--narrow">#</td>
-            <td class="hover--highlight a" ng-click="vm.bundle.sortBy(vm.bundle.sortProperties.firstName)">
-                <div class="pull-left col-md-3"><span ng-show="vm.bundle.sortProperties.firstName.enabled"
-                                                      class="glyphicon"
-                                                      ng-class="{'glyphicon-sort-by-attributes' : vm.bundle.sortProperties.firstName.asc, 'glyphicon-sort-by-attributes-alt' : !vm.bundle.sortProperties.firstName.asc}"></span>
-                </div>
-                First name
-            </td>
-            <td class="hover--highlight" ng-click="vm.bundle.sortBy(vm.bundle.sortProperties.lastName)">
-                <div class="pull-left col-md-3"><span ng-show="vm.bundle.sortProperties.lastName.enabled"
-                                                      class="glyphicon"
-                                                      ng-class="{'glyphicon-sort-by-attributes' :  vm.bundle.sortProperties.lastName.asc, 'glyphicon-sort-by-attributes-alt' : !vm.bundle.sortProperties.lastName.asc}"></span>
-                </div>
-                Last name
-            </td>
-            <td class="hover--highlight" ng-click="vm.bundle.sortBy(vm.bundle.sortProperties.userName)">
-                <div class="pull-left col-md-3"><span ng-show="vm.bundle.sortProperties.userName.enabled"
-                                                      class="glyphicon"
-                                                      ng-class="{'glyphicon-sort-by-attributes' : vm.bundle.sortProperties.userName.asc, 'glyphicon-sort-by-attributes-alt' : !vm.bundle.sortProperties.userName.asc}"></span>
-                </div>
-                Username
-            </td>
-            <td class="hover--highlight" ng-click="vm.bundle.sortBy(vm.bundle.sortProperties.email)">
-                <div class="pull-left col-md-3"><span ng-show="vm.bundle.sortProperties.email.enabled" class="glyphicon"
-                                                      ng-class="{'glyphicon-sort-by-attributes' : vm.bundle.sortProperties.email.asc, 'glyphicon-sort-by-attributes-alt' : !vm.bundle.sortProperties.email.asc}"></span>
-                </div>
-                Email
-            </td>
-            <td class="block--narrow"></td>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-class="{'hover--highlight' : user.active, 'table__row--inactive' : !user.active}"
-            ng-repeat="user in vm.bundle.itemsList" ng-dblclick="vm.edit(user)">
-            <td><input type="checkbox" ng-model="user.checked" ng-click="vm.bundle.selectOne()"
-                       ng-dblclick="$event.stopPropagation()"></td>
-            <td>{{vm.bundle.filter.from + ($index + 1)}}</td>
-            <td>{{user.firstName}}</td>
-            <td>{{user.lastName}}</td>
-            <td>{{user.userName}}</td>
-            <td>{{user.email}}</td>
-            <td><span title="Edit user" class="hover--pointer glyphicon glyphicon-edit" ng-click="vm.edit(user)"></span>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-<span class="text--summary" ng-hide="vm.bundle.paging.totalCount === 0">Total: {{vm.bundle.paging.totalCount}}</span>
-<div class="text--center">
+<span class="pull-right" ng-hide="vm.bundle.paging.totalCount === 0">Total: {{vm.bundle.paging.totalCount}}</span>
+<div class="crm-text-center">
     <uib-pagination class="pagination-sm block--center" ng-change="vm.bundle.paging.onPageChanged()"
                     ng-model="vm.bundle.paging.currentPage"
                     total-items="vm.bundle.paging.totalCount" items-per-page="vm.bundle.paging.itemsPerPage"
