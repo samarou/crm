@@ -2,7 +2,7 @@
     <h4>Users</h4>
 </div>
 <crm-search scope="vm"></crm-search>
-<div class="row help">
+<div class="row">
     <div class="col-md-12">
         <table class="table table-condensed">
             <thead>
@@ -10,31 +10,25 @@
                 <th><input type="checkbox" ng-model="vm.bundle.isSelectedAll"
                            ng-click="vm.bundle.selectAll(vm.bundle.isSelectedAll)"></th>
                 <th class="crm-hover" ng-click="vm.bundle.sortBy(vm.bundle.sortProperties.userName)">
-                    Username
-                    <div class="pull-left col-md-3" ng-show="vm.bundle.sortProperties.userName.enabled">
-                        <span class="glyphicon"
+                        <span class="glyphicon" ng-show="vm.bundle.sortProperties.userName.enabled"
                               ng-class="vm.bundle.sortProperties.userName.asc ? 'glyphicon-sort-by-attributes' : 'glyphicon-sort-by-attributes-alt' ">
 
                         </span>
-                    </div>
+                    Username
                 </th>
                 <th class="crm-hover" ng-click="vm.bundle.sortBy(vm.bundle.sortProperties.firstName)">
-                    Full Name
-                    <div class="pull-left col-md-3" ng-show="vm.bundle.sortProperties.firstName.enabled">
-                        <span class="glyphicon"
+                        <span class="glyphicon" ng-show="vm.bundle.sortProperties.firstName.enabled"
                               ng-class="vm.bundle.sortProperties.firstName.asc ? 'glyphicon-sort-by-attributes' : 'glyphicon-sort-by-attributes-alt' ">
 
                         </span>
-                    </div>
+                    Full Name
                 </th>
                 <th class="crm-hover hidden-xs" ng-click="vm.bundle.sortBy(vm.bundle.sortProperties.email)">
-                    Email
-                    <div class="pull-left col-md-3" ng-show="vm.bundle.sortProperties.email.enabled">
-                        <span class="glyphicon"
+                        <span class="glyphicon" ng-show="vm.bundle.sortProperties.email.enabled"
                               ng-class="vm.bundle.sortProperties.email.asc ? 'glyphicon-sort-by-attributes' : 'glyphicon-sort-by-attributes-alt' ">
 
                         </span>
-                    </div>
+                    Email
                 </th>
             </tr>
             </thead>

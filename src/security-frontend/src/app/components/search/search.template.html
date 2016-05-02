@@ -28,12 +28,12 @@
             </form>
         </div>
     </div>
-    </div>
 </div>
-<div class="row">
-    <div class="col-xs-12 col-sm-6 col-md-8 crm-bottom-buffer">
-        <div class="input-group">
-            <input type="text" class="form-control" ng-model="$ctrl.scope.bundle.filter.text" ng-keyup="$ctrl.scope.bundle.typing.keyUp()"
+<div class="row crm-bottom-buffer">
+    <div class="col-xs-12 col-sm-6 col-md-8">
+        <div class="input-group form-group">
+            <input type="text" class="form-control" ng-model="$ctrl.scope.bundle.filter.text"
+                   ng-keyup="$ctrl.scope.bundle.typing.keyUp()"
                    ng-keydown="$ctrl.scope.bundle.typing.keyDown()"
                    placeholder="Search by first name, last name, username, email..."/>
                 <span class="input-group-btn">
@@ -47,7 +47,7 @@
     <div class="col-xs-12 col-sm-6 col-md-4">
         <div class="btn-group btn-group-justified pull-right">
             <a class="btn btn-default" ng-click="$ctrl.scope.add()">
-               Add
+                Add
             </a>
             <a class="btn btn-default" ng-click="$ctrl.scope.activate(true)">
                 Activate

@@ -1,58 +1,58 @@
 <div class="page-header">
-    <h4>Groups
-        <ul class="list-inline pull-right">
-            <li><span class="glyphicon glyphicon-plus hover--pointer" title="New Group"
-                      ng-click="vm.add()"></span></li>
-            <li><span class="glyphicon glyphicon-minus hover--pointer" title="Remove Group"
-                      ng-click="vm.remove()"></span></li>
-        </ul>
-    </h4>
+    <h4>Groups</h4>
 </div>
-<div class="row">
-    <div class="form-group">
-        <div class="col-md-7">
-            <span>&nbsp;</span>
-            <input class="form-control" ng-model="vm.bundle.pagingFilterConfig.filterObject.$" placeholder="Search...">
+<div class="row crm-bottom-buffer">
+    <div class="col-xs-12 col-sm-8 col-md-9">
+        <div class="form-group">
+            <input type="text" class="form-control" ng-model="vm.bundle.pagingFilterConfig.filterObject.$"
+                   placeholder="Search...">
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-4 col-md-3">
+        <div class="btn-group btn-group-justified pull-right">
+            <a class="btn btn-default" ng-click="vm.add()">
+                Add
+            </a>
+            <a class="btn btn-default" ng-click="vm.remove()">
+                Remove
+            </a>
         </div>
     </div>
 </div>
-<div class="table--fixed__wrapper">
-    <table class="table table--fixed  text--unselectable">
-        <thead>
-        <tr>
-            <td class="block--narrow"><input type="checkbox" ng-model="vm.bundle.isSelectedAll"
-                                             ng-click="vm.bundle.selectAll(vm.bundle.isSelectedAll)"></td>
-            <td class="block--narrow">#</td>
-            <td class="hover--highlight"
-                ng-click="vm.bundle.pagingFilterConfig.sortAsc = !vm.bundle.pagingFilterConfig.sortAsc">
-                <div class="pull-left col-md-3"><span class="glyphicon"
-                                                      ng-class="{'glyphicon-sort-by-attributes' :  vm.bundle.pagingFilterConfig.sortAsc, 'glyphicon-sort-by-attributes-alt' : !vm.bundle.pagingFilterConfig.sortAsc}"></span>
-                </div>
-                Name
-            </td>
-            <td class="hover--highlight">
-                Description
-            </td>
-            <td class="block--narrow"></td>
-        </tr>
-        </thead>
-        <tbody>
-        <tr class="hover--highlight" ng-dblclick="vm.edit(group)"
-            ng-repeat="group in (vm.bundle.pageGroups = (vm.bundle.groupList | pagingFilter:vm.bundle.pagingFilterConfig))">
-            <td><input type="checkbox" ng-model="group.checked" ng-click="vm.bundle.selectOne()"
-                       ng-dblclick="$event.stopPropagation()"></td>
-            <td>{{vm.bundle.pagingFilterConfig.itemsPerPage * (vm.bundle.pagingFilterConfig.currentPage - 1) + ($index +
-                1)}}
-            </td>
-            <td>{{group.name}}</td>
-            <td>{{group.description}}</td>
-            <td><span class="glyphicon glyphicon-edit hover--pointer" title="Edit Group"
-                      ng-click="vm.edit(group)"></span></td>
-        </tr>
-        </tbody>
-    </table>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-condensed">
+            <thead>
+            <tr>
+                <th><input type="checkbox" ng-model="vm. bundle.isSelectedAll"
+                           ng-click="vm.bundle.selectAll(vm.bundle.isSelectedAll)"></th>
+                <th class="crm-hover"
+                    ng-click="vm.bundle.pagingFilterConfig.sortAsc = !vm.bundle.pagingFilterConfig.sortAsc">
+                        <span class="glyphicon"
+                              ng-class="vm.bundle.pagingFilterConfig.sortAsc ? 'glyphicon-sort-by-attributes' : 'glyphicon-sort-by-attributes-alt' ">
+                        </span>
+                    Name
+                </th>
+                <th>
+                    Description
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="crm-hover" ng-click="vm.edit(group)"
+                ng-repeat="group in (vm.bundle.pageGroups = (vm.bundle.groupList | pagingFilter:vm.bundle.pagingFilterConfig))">
+                <td><input type="checkbox" ng-model="group.checked"
+                           ng-click="vm.bundle.selectOne(); $event.stopPropagation()">
+                </td>
+                </td>
+                <td>{{group.name}}</td>
+                <td>{{group.description}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
-<div class="text--center">
+<div class="crm-text-center">
     <uib-pagination class="pagination-sm" ng-model="vm.bundle.pagingFilterConfig.currentPage"
                     ng-change="vm.bundle.isSelectedAll = false; vm.bundle.selectAll(vm.bundle.isSelectedAll)"
                     total-items="vm.bundle.pagingFilterConfig.totalCount"
