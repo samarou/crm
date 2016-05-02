@@ -40,15 +40,6 @@ $btn-primary-border: $brand-primary;
   padding: 0.2em 0;
 }
 
-.hover--pointer:hover {
-  cursor: pointer;
-}
-
-.hover--highlight:hover {
-  cursor: pointer;
-  background-color: #eeeeee;
-}
-
 .block--narrow {
   margin: 2px 15px;
   width: 50px;
@@ -57,33 +48,6 @@ $btn-primary-border: $brand-primary;
 .block--center {
   margin-left: auto;
   margin-right: auto;
-}
-
-.table--fixed__wrapper {
-  min-height: 250px;
-  margin-top: 30px;
-}
-
-.table--fixed {
-  table-layout: fixed;
-  word-wrap: break-word;
-}
-
-.table__row--inactive {
-  background-color: #fff6f4;
-}
-
-.table__row--inactive:hover {
-  background-color: #bebebe;
-  cursor: pointer;
-}
-
-.modal--user-table {
-  width: 850px;
-}
-
-.modal--group-table {
-  width: 650px;
 }
 
 .list--compact {
@@ -142,40 +106,6 @@ $btn-primary-border: $brand-primary;
   user-select: none; /* non-prefixed version, currently not supported by any browser */
 }
 
-.text--center {
-  text-align: center;
-}
-
-.text--summary {
-  float: right;
-  color: #777;
-}
-
-.icon--small {
-  display: inline-block;
-  width: 32px;
-  height: 32px;
-}
-
-.icon--user {
-  background: url("../assets/icons/user.svg");
-}
-
-.icon--remove {
-  background: url("../assets/icons/remove.svg");
-}
-
-.icon--user-add {
-  background: url("../assets/icons/user-add.svg");
-}
-
-.icon--user-group {
-  background: url("../assets/icons/group.svg");
-}
-
-.icon--user-group-add {
-  background: url("../assets/icons/group-add.svg");
-}
 
 /* fix for bootstrap modal dialog (issue 9886) */
 body.modal-open {
@@ -207,7 +137,11 @@ body.modal-open {
 }
 
 .crm-bottom-buffer {
-  margin-bottom: 20px;
+  margin-bottom: 19px;
+}
+
+.crm-top-buffer {
+  margin-top: 19px;
 }
 
 .crm-text-center{
