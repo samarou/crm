@@ -15,7 +15,7 @@
 		$uibModalProvider.options = {backdrop: 'static', keyboard: false};
 
 		toastrConfig.positionClass = 'toast-top-right';
-		toastrConfig.preventDuplicates = true;
+		toastrConfig.preventDuplicates = false;
 		toastrConfig.closeButton = true;
 	}
 

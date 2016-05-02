@@ -115,7 +115,7 @@
                     <td><input type="checkbox" ng-model="attachment.checked"
                                title="select attachment"></td>
                     <td>{{$index + 1}}</td>
-                    <td><a target="_blank" ng-href="{{'rest/files/contacts/' + attachment.contactId + '/attachments/' + attachment.id}}">{{attachment.name}}</a></td>
+                    <td><a class="btn" target="_blank" ng-click="vm.getAttachment(attachment)">{{attachment.name}}</a></td>
                     <td>{{attachment.uploadDate | date:'yyyy-MM-dd'}}</td>
                     <td>{{attachment.comment}}</td>
                 </tr>
