@@ -22,11 +22,11 @@ public class Address extends SecuredEntity {
     @Column(name = "address_line_2")
     private String addressLine2;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "contact_id", nullable = false)
     private Contact contact;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "country_id", nullable = false)
     private Country country;
 

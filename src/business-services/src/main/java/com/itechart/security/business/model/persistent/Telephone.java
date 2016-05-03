@@ -18,11 +18,11 @@ public class Telephone extends SecuredEntity {
     @Column(nullable = false, length = 100)
     private String number;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "contact_id", nullable = false)
     private Contact contact;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "telephone_type_id", nullable = false)
     private TelephoneType type;
 

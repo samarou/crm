@@ -32,7 +32,7 @@ public class Workplace extends SecuredEntity{
     @Type(type="text")
     private String comment;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "contact_id", nullable = false)
     private Contact contact;
 

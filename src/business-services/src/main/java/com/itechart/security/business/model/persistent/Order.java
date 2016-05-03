@@ -33,7 +33,7 @@ public class Order extends SecuredEntity {
     @Column(name = "price", nullable = false)
     private BigDecimal price;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "contact_id", nullable = false)
     private Contact contact;
 
