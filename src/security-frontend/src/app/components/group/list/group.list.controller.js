@@ -28,47 +28,20 @@
 		}
 
     vm.remove = function () {
-      var checkedGroups = vm.bundle.pageGroups.filter(function (group) {
-        return group.checked;
-      });
-      ifAllGroupsAreEmpty(checkedGroups).then(function () {
-          removeAll(checkedGroups);
-      }, function () {
-        dialogService.notify('Allowed remove only empty groups!');
-      });
-    };
-
-    function ifAllGroupsAreEmpty(groups) {
-      var allGroupsAreEmpty = true;
-      var resultDefer = $q.defer();
-      $q.all(
-        groups.map(function (group) {
-          if (!allGroupsAreEmpty) {
-            return;
-          }
-          return groupService.get(group.id).then(function (response) {
-            var group = response.data;
-            if (group.members.length > 0) {
-              allGroupsAreEmpty = false;
-            }
-          });
-        })
-      ).then(function () {
-        if (allGroupsAreEmpty) {
-          resultDefer.resolve();
-        } else {
-          resultDefer.reject();
+      dialogService.confirm('You sure want to delete this group?').result.then(function (answer) {
+        var checkedGroups = vm.bundle.pageGroups.filter(function (group) {
+          return group.checked;
+        });
+        if (answer) {
+          $q.all(
+            checkedGroups.map(function (group) {
+              return groupService.remove(group.id);
+            })
+          ).then(vm.bundle.find, function () {
+              dialogService.error('Occurred an error during removing groups');
+            });
         }
       });
-      return resultDefer.promise;
-    }
-
-    function removeAll(groups) {
-      $q.all(
-        groups.map(function (group) {
-          return groupService.remove(group.id);
-        })
-      ).then(vm.bundle.find);
-    }
-	}
+    };
+  }
 })();
