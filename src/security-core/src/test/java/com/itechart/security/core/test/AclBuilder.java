@@ -22,7 +22,7 @@ public class AclBuilder {
         this.key = new AclObjectKey(objectTypeId, objectId);
     }
 
-    public static AclBuilder create(Long objectTypeId, Long objectId) {
+    public static AclBuilder createAcl(Long objectTypeId, Long objectId) {
         return new AclBuilder(objectTypeId, objectId);
     }
 

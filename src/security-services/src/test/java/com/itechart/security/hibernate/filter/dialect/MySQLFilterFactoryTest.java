@@ -37,7 +37,7 @@ public class MySQLFilterFactoryTest {
         when(persistentClass.getIdentifier()).thenReturn(keyValue);
 
         FilterCondition filterCondition = filterFactory.buildCondition(persistentClass, FilterType.ACL_PLAIN);
-        assertEquals("(select ifnull(min(if(aoi.owner_id = :userId, 1, ae.permission_mask >= :permissionMask)), :hasPrivilege) " +
+        assertEquals("(select min(if(aoi.owner_id = :userId, 1, ae.permission_mask >= :permissionMask)) and :hasPrivilege " +
                         "from acl_object_identity aoi left join acl_entry ae on ae.object_identity_id = aoi.id and ae.principal_id " +
                         "in (:principleIds) where aoi.object_type_id = :objectTypeId and aoi.object_id = {alias}.id) > 0",
                 filterCondition.getSqlCondition());
