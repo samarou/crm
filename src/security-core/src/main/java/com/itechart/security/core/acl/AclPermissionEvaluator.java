@@ -53,26 +53,28 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
 
     private boolean checkPermission(Authentication authentication, ObjectIdentity oid, Object permissionObject) {
         List<Permission> requiredPermissions = resolvePermission(permissionObject);
-        boolean isGrantedWithAcl = checkAclPermission(authentication, oid, requiredPermissions);
-        boolean isGrantedWithRolePrivilege = checkRolePrivilegePermission(authentication, oid, requiredPermissions);
-        boolean decision = isGrantedWithAcl && isGrantedWithRolePrivilege;
-        logger.debug("permissions on {} for {}: with acl: {}, with role-privileges: {}, decision: {}",
-                oid, permissionObject, isGrantedWithRolePrivilege, isGrantedWithAcl, decision ? "allow" : "denied");
-        return decision;
+        if (isGrantedWithAcl(authentication, oid, requiredPermissions)) {
+            if (isGrantedWithPrivilege(authentication, oid, requiredPermissions)) {
+                logger.debug("{} on {} is granted", permissionObject, oid);
+                return true;
+            }
+        }
+        logger.debug("{} on {} is not granted", permissionObject, oid);
+        return false;
     }
 
-    private boolean checkRolePrivilegePermission(Authentication authentication, ObjectIdentity oid, List<Permission> requiredPermissions) {
-        boolean isGranted = true;
+    private boolean isGrantedWithPrivilege(Authentication authentication, ObjectIdentity oid, List<Permission> requiredPermissions) {
+        boolean granted = true;
         SecurityOperations securityOperations = new SecurityOperations(authentication);
         securityOperations.setRoleHierarchy(roleHierarchy);
         for (Permission requiredPermission : requiredPermissions) {
             // todo нужен маппинг привилегий на роли
-            isGranted &= securityOperations.hasPrivilege(oid.getObjectType(), requiredPermission.name());
+            granted &= securityOperations.hasPrivilege(oid.getObjectType(), requiredPermission.name());
         }
-        return isGranted;
+        return granted;
     }
 
-    private boolean checkAclPermission(Authentication authentication, ObjectIdentity oid, List<Permission> requiredPermissions) {
+    private boolean isGrantedWithAcl(Authentication authentication, ObjectIdentity oid, List<Permission> requiredPermissions) {
         boolean permissionsFound = false;
         List<SecurityAcl> acls = securityRepository.findAcls(oid);
         if (!CollectionUtils.isEmpty(acls)) {
