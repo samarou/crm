@@ -5,6 +5,7 @@ import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
@@ -152,5 +153,15 @@ public class User extends Principal implements SecurityUser {
 
     private boolean removeDefaultAcl(UserDefaultAclEntry defaultAcl) {
         return acls.remove(defaultAcl);
+    }
+
+    public boolean leaveGroup(Group removableGroup) {
+        if (groups != null) {
+            Optional<Group> optionalGroup = groups.stream().filter(g -> g.equals(removableGroup)).findFirst();
+            if (optionalGroup.isPresent() && groups.contains(optionalGroup.get())) {
+                return groups.remove(optionalGroup.get());
+            }
+        }
+        return false;
     }
 }
