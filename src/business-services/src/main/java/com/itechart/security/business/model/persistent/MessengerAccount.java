@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -27,6 +28,9 @@ public class MessengerAccount extends SecuredEntity{
 
     @Column(name = "username", nullable = false)
     private String username;
+
+    @Column(name = "date_deleted")
+    private Date dateDeleted;
 
     @Override
     public Long getId() {

@@ -59,6 +59,9 @@ public class Contact extends SecuredEntity {
     private Set<Workplace> workplaces;
 
     @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY)
+    private Set<Email> emails;
+
+    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY)
     private Set<Attachment> attachments;
 
     @Override
@@ -70,4 +73,7 @@ public class Contact extends SecuredEntity {
     public String getObjectType() {
         return ObjectTypes.CONTACT.getName();
     }
+
+    @Column(name = "date_deleted")
+    private Date dateDeleted;
 }

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -34,4 +35,7 @@ public class Address extends SecuredEntity {
     public Long getId() {
         return id;
     }
+
+    @Column(name = "date_deleted")
+    private Date dateDeleted;
 }

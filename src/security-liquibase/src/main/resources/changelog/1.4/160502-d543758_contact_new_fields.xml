@@ -9,6 +9,7 @@
             <column name="is_male" remarks="Sex is male" type="BOOLEAN"/>
             <column name="nationality" remarks="Nationality" type="VARCHAR(255)"/>
             <column name="photo_url" remarks="url of contact photo" type="VARCHAR(255)"/>
+            <column name="date_deleted" remarks="Date of contact deletion" type="DATETIME"/>
         </addColumn>
         <dropColumn tableName="contact">
             <column name="email"/>
@@ -27,6 +28,7 @@
                 <column name="is_male"/>
                 <column name="nationality"/>
                 <column name="photo_url"/>
+                <column name="date_deleted"/>
             </dropColumn>
         </rollback>
     </changeSet>
@@ -56,6 +58,7 @@
             <column name="contact_id" remarks="Contact identifier" type="BIGINT UNSIGNED">
                 <constraints nullable="false"/>
             </column>
+            <column name="date_deleted" remarks="Date of address deletion" type="DATETIME"/>
         </createTable>
         <createIndex tableName="address" indexName="fk_address_contact_id">
             <column name="contact_id"/>
@@ -103,6 +106,7 @@
             <column name="url" remarks="URL to contact's profile page" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
+            <column name="date_deleted" remarks="Date of social network account deletion" type="DATETIME"/>
         </createTable>
         <createIndex tableName="social_network_account" indexName="fk_sna_social_network_id">
             <column name="social_network_id"/>
@@ -153,6 +157,7 @@
             <column name="contact_id" remarks="Contact identifier" type="BIGINT UNSIGNED">
                 <constraints nullable="false"/>
             </column>
+            <column name="date_deleted" remarks="Date of telephone deletion" type="DATETIME"/>
         </createTable>
         <createIndex tableName="telephone" indexName="fk_telephone_telephone_type_id">
             <column name="telephone_type_id"/>
@@ -199,6 +204,7 @@
             <column name="username" remarks="Username of contact's profile" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
+            <column name="date_deleted" remarks="Date of messenger account deletion" type="DATETIME"/>
         </createTable>
         <createIndex tableName="messenger_account" indexName="fk_messenger_account_messenger_id">
             <column name="messenger_id"/>
@@ -226,7 +232,7 @@
     </changeSet>
 
     <changeSet id="010" author="maksim.kalenik">
-        <createTable tableName="workplace" remarks="Workplaces of user (previous and current)">
+        <createTable tableName="workplace" remarks="Contact's workplace (previous or current)">
             <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
@@ -240,9 +246,48 @@
             <column name="contact_id" remarks="Contact identifier" type="BIGINT UNSIGNED">
                 <constraints nullable="false"/>
             </column>
+            <column name="date_deleted" remarks="Date of workplace deletion" type="DATETIME"/>
         </createTable>
+        <createIndex tableName="workplace" indexName="fk_workplace_contact_id">
+            <column name="contact_id"/>
+        </createIndex>
+        <addForeignKeyConstraint baseTableName="workplace" baseColumnNames="contact_id"
+                                 constraintName="fk_workplace_contact_id"
+                                 referencedTableName="contact"
+                                 referencedColumnNames="id"/>
         <rollback>
+            <dropIndex tableName="workplace" indexName="fk_workplace_contact_id"/>
+            <dropForeignKeyConstraint baseTableName="workplace"
+                                      constraintName="fk_workplace_contact_id"/>
             <dropTable tableName="workplace"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="011" author="maksim.kalenik">
+        <createTable tableName="email" remarks="Contact email address">
+            <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" remarks="Company name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="contact_id" remarks="Contact identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_deleted" remarks="Date of email deletion" type="DATETIME"/>
+        </createTable>
+        <createIndex tableName="email" indexName="fk_email_contact_id">
+            <column name="contact_id"/>
+        </createIndex>
+        <addForeignKeyConstraint baseTableName="email" baseColumnNames="contact_id"
+                                 constraintName="fk_email_contact_id"
+                                 referencedTableName="contact"
+                                 referencedColumnNames="id"/>
+        <rollback>
+            <dropIndex tableName="email" indexName="fk_email_contact_id"/>
+            <dropForeignKeyConstraint baseTableName="email"
+                                      constraintName="fk_email_contact_id"/>
+            <dropTable tableName="email"/>
         </rollback>
     </changeSet>
 </databaseChangeLog>
