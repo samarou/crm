@@ -15,7 +15,7 @@ public class AttachmentServiceImpl implements AttachmentService {
     private AttachmentDao attachmentDao;
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Attachment> loadAll() {
         return attachmentDao.loadAll();
     }
@@ -27,13 +27,13 @@ public class AttachmentServiceImpl implements AttachmentService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Attachment get(Long id) {
         return attachmentDao.get(id);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Attachment> getAttachments(Long contactId) {
         return attachmentDao.getAttachments(contactId);
     }

@@ -21,7 +21,7 @@ public class Attachment extends SecuredEntity {
     @Column(name = "date_upload", nullable = false)
     private Date dateUpload;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "contact_id", nullable = false)
     private Contact contact;
 
