@@ -1,6 +1,9 @@
 package com.itechart.security.business.model.persistent;
 
 import com.itechart.security.business.model.enums.ObjectTypes;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -11,6 +14,9 @@ import java.math.BigDecimal;
  * @author andrei.samarou
  */
 @Entity
+@Getter
+@Setter
+@EqualsAndHashCode
 @Table(name = "`order`")
 public class Order extends SecuredEntity {
 
@@ -34,42 +40,6 @@ public class Order extends SecuredEntity {
     @Override
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getProduct() {
-        return product;
-    }
-
-    public void setProduct(String product) {
-        this.product = product;
-    }
-
-    public Integer getCount() {
-        return count;
-    }
-
-    public void setCount(Integer count) {
-        this.count = count;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public Contact getContact() {
-        return contact;
-    }
-
-    public void setContact(Contact contact) {
-        this.contact = contact;
     }
 
     @Override
