@@ -46,7 +46,7 @@ public class AttachmentDaoImpl extends AbstractHibernateDao<Attachment> implemen
 
     @Override
     public List<Attachment> getAttachments(Long contactId) {
-        String query = "from Attachment a where a.contact.id = :contactId and a.dateDeleted is null";
+        String query = "from Attachment a left join fetch a.contact where a.contact.id = :contactId and a.dateDeleted is null";
         return (List<Attachment>) getHibernateTemplate().findByNamedParam(query,"contactId",contactId);
     }
 }
