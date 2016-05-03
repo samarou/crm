@@ -7,6 +7,8 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -20,6 +22,9 @@ public class Messenger extends SecuredEntity{
 
     @Column(nullable = false, length = 100)
     private String name;
+
+    @OneToMany(mappedBy = "messenger")
+    private Set<MessengerAccount> messengerAccounts;
 
     @Override
     public Long getId() {

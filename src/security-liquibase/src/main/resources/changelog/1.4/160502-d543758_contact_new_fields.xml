@@ -90,7 +90,7 @@
         </createTable>
     </changeSet>
     <changeSet id="005" author="maksim.kalenik">
-        <createTable tableName="contact_social_network" remarks="Contact's page in social network">
+        <createTable tableName="social_network_account" remarks="Contact's page in social network">
             <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
@@ -104,26 +104,26 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <createIndex tableName="contact_social_network" indexName="fk_csn_social_network_id">
+        <createIndex tableName="social_network_account" indexName="fk_sna_social_network_id">
             <column name="social_network_id"/>
         </createIndex>
-        <createIndex tableName="contact_social_network" indexName="fk_csn_contact_id">
+        <createIndex tableName="social_network_account" indexName="fk_sna_contact_id">
             <column name="contact_id"/>
         </createIndex>
-        <addForeignKeyConstraint baseTableName="contact_social_network" baseColumnNames="social_network_id"
-                                 constraintName="fk_csn_social_network_id"
+        <addForeignKeyConstraint baseTableName="social_network_account" baseColumnNames="social_network_id"
+                                 constraintName="fk_sna_social_network_id"
                                  referencedTableName="social_network"
                                  referencedColumnNames="id"/>
-        <addForeignKeyConstraint baseTableName="contact_social_network" baseColumnNames="contact_id"
-                                 constraintName="fk_csn_contact_id"
+        <addForeignKeyConstraint baseTableName="social_network_account" baseColumnNames="contact_id"
+                                 constraintName="fk_sna_contact_id"
                                  referencedTableName="contact"
                                  referencedColumnNames="id"/>
         <rollback>
-            <dropForeignKeyConstraint baseTableName="contact_social_network" constraintName="fk_csn_contact_id"/>
-            <dropForeignKeyConstraint baseTableName="contact_social_network" constraintName="fk_csn_social_network_id"/>
-            <dropIndex tableName="contact_social_network" indexName="fk_csn_contact_id"/>
-            <dropIndex tableName="contact_social_network" indexName="fk_csn_social_network_id"/>
-            <dropTable tableName="contact_social_network"/>
+            <dropForeignKeyConstraint baseTableName="social_network_account" constraintName="fk_sna_contact_id"/>
+            <dropForeignKeyConstraint baseTableName="social_network_account" constraintName="fk_sna_social_network_id"/>
+            <dropIndex tableName="social_network_account" indexName="fk_sna_contact_id"/>
+            <dropIndex tableName="social_network_account" indexName="fk_sna_social_network_id"/>
+            <dropTable tableName="social_network_account"/>
         </rollback>
     </changeSet>
     <changeSet id="006" author="maksim.kalenik">
@@ -184,8 +184,9 @@
             <dropTable tableName="messenger"/>
         </rollback>
     </changeSet>
+
     <changeSet id="009" author="maksim.kalenik">
-        <createTable tableName="contact_messenger" remarks="Messenger, that contact uses">
+        <createTable tableName="messenger_account" remarks="Contact's account in messenger">
             <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
@@ -199,30 +200,31 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <createIndex tableName="contact_messenger" indexName="fk_contact_messenger_messenger_id">
+        <createIndex tableName="messenger_account" indexName="fk_messenger_account_messenger_id">
             <column name="messenger_id"/>
         </createIndex>
-        <createIndex tableName="contact_messenger" indexName="fk_contact_messenger_contact_id">
+        <createIndex tableName="messenger_account" indexName="fk_messenger_account_contact_id">
             <column name="contact_id"/>
         </createIndex>
-        <addForeignKeyConstraint baseTableName="contact_messenger" baseColumnNames="messenger_id"
-                                 constraintName="fk_contact_messenger_messenger_id"
+        <addForeignKeyConstraint baseTableName="messenger_account" baseColumnNames="messenger_id"
+                                 constraintName="fk_messenger_account_messenger_id"
                                  referencedTableName="messenger"
                                  referencedColumnNames="id"/>
-        <addForeignKeyConstraint baseTableName="contact_messenger" baseColumnNames="contact_id"
-                                 constraintName="fk_contact_messenger_contact_id"
+        <addForeignKeyConstraint baseTableName="messenger_account" baseColumnNames="contact_id"
+                                 constraintName="fk_messenger_account_contact_id"
                                  referencedTableName="contact"
                                  referencedColumnNames="id"/>
         <rollback>
-            <dropForeignKeyConstraint baseTableName="contact_messenger"
-                                      constraintName="fk_contact_messenger_contact_id"/>
-            <dropForeignKeyConstraint baseTableName="contact_messenger"
-                                      constraintName="fk_contact_messenger_messenger_id"/>
-            <dropIndex tableName="contact_messenger" indexName="fk_contact_messenger_contact_id"/>
-            <dropIndex tableName="contact_messenger" indexName="fk_contact_messenger_messenger_id"/>
-            <dropTable tableName="contact_messenger"/>
+            <dropForeignKeyConstraint baseTableName="messenger_account"
+                                      constraintName="fk_messenger_account_contact_id"/>
+            <dropForeignKeyConstraint baseTableName="messenger_account"
+                                      constraintName="fk_messenger_account_messenger_id"/>
+            <dropIndex tableName="messenger_account" indexName="fk_messenger_account_contact_id"/>
+            <dropIndex tableName="messenger_account" indexName="fk_messenger_account_messenger_id"/>
+            <dropTable tableName="messenger_account"/>
         </rollback>
     </changeSet>
+
     <changeSet id="010" author="maksim.kalenik">
         <createTable tableName="workplace" remarks="Workplaces of user (previous and current)">
             <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">

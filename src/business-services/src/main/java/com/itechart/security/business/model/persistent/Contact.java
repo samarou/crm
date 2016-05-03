@@ -26,12 +26,6 @@ public class Contact extends SecuredEntity {
     @Column(name = "lastName", nullable = false, length = 50)
     private String lastName;
 
-    @OneToMany(orphanRemoval = true, mappedBy = "contact")
-    private Set<Order> orders;
-
-    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY)
-    private Set<Attachment> attachments;
-
     @Column(length = 50)
     private String patronymic;
 
@@ -46,6 +40,26 @@ public class Contact extends SecuredEntity {
     @Column(name = "photo_url")
     private String photoUrl;
 
+    @OneToMany(orphanRemoval = true, mappedBy = "contact")
+    private Set<Order> orders;
+
+    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY)
+    private Set<MessengerAccount> messengers;
+
+    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY)
+    private Set<SocialNetworkAccount> socialNetworks;
+
+    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY)
+    private Set<Telephone> telephones;
+
+    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY)
+    private Set<Address> addresses;
+
+    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY)
+    private Set<Workplace> workplaces;
+
+    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY)
+    private Set<Attachment> attachments;
 
     @Override
     public Long getId() {
