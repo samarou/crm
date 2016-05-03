@@ -24,7 +24,7 @@ public class MySQLFilterFactory extends AbstractFilterFactory {
         String idColumn = getIdentifierColumn(persistentClass);
         if (filterType == FilterType.ACL_PLAIN) {
             condition.setSqlCondition(
-                "(select ifnull(min(if(aoi.owner_id = :userId, 1, ae.permission_mask >= :permissionMask)), :hasPrivilege)" +
+                "(select min(if(aoi.owner_id = :userId, 1, ae.permission_mask >= :permissionMask)) and :hasPrivilege" +
                 " from acl_object_identity aoi left join acl_entry ae on ae.object_identity_id = aoi.id and ae.principal_id in (:principleIds)" +
                 " where aoi.object_type_id = :objectTypeId and aoi.object_id = {alias}." + idColumn + ") > 0");
         } else if (filterType == FilterType.ACL_HIERARCHY) {
