@@ -84,20 +84,26 @@
             <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="name" remarks="Name of social network" type="VARCHAR(100)"/>
+            <column name="name" remarks="Name of social network" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
     <changeSet id="005" author="maksim.kalenik">
-        <createTable tableName="contact_social_network" remarks="Social network, that contact has">
+        <createTable tableName="contact_social_network" remarks="Contact's page in social network">
+            <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
             <column name="social_network_id" remarks="Social network identifier" type="BIGINT UNSIGNED">
                 <constraints nullable="false"/>
             </column>
             <column name="contact_id" remarks="Contact identifier" type="BIGINT UNSIGNED">
                 <constraints nullable="false"/>
             </column>
+            <column name="url" remarks="URL to contact's profile page" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
-        <addPrimaryKey tableName="contact_social_network" columnNames="social_network_id, contact_id"
-                       constraintName="PRIMARY"/>
         <createIndex tableName="contact_social_network" indexName="fk_csn_social_network_id">
             <column name="social_network_id"/>
         </createIndex>
@@ -125,7 +131,9 @@
             <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="name" remarks="Telephone type name" type="VARCHAR(100)"/>
+            <column name="name" remarks="Telephone type name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
         <rollback>
             <dropTable tableName="telephone_type"/>
@@ -136,8 +144,15 @@
             <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="number" remarks="Telephone number" type="VARCHAR(100)"/>
-            <column name="telephone_type_id" remarks="Telephone type identifier" type="BIGINT UNSIGNED"/>
+            <column name="number" remarks="Telephone number" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="telephone_type_id" remarks="Telephone type identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="contact_id" remarks="Contact identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
         <createIndex tableName="telephone" indexName="fk_telephone_telephone_type_id">
             <column name="telephone_type_id"/>
@@ -145,6 +160,10 @@
         <addForeignKeyConstraint baseTableName="telephone" baseColumnNames="telephone_type_id"
                                  constraintName="fk_telephone_telephone_type_id"
                                  referencedTableName="telephone_type"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="telephone" baseColumnNames="contact_id"
+                                 constraintName="fk_telephone_contact_id"
+                                 referencedTableName="contact"
                                  referencedColumnNames="id"/>
         <rollback>
             <dropForeignKeyConstraint baseTableName="telephone" constraintName="fk_telephone_telephone_type_id"/>
@@ -157,7 +176,9 @@
             <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="name" remarks="Name of messenger" type="VARCHAR(100)"/>
+            <column name="name" remarks="Name of messenger" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
         <rollback>
             <dropTable tableName="messenger"/>
@@ -165,15 +186,19 @@
     </changeSet>
     <changeSet id="009" author="maksim.kalenik">
         <createTable tableName="contact_messenger" remarks="Messenger, that contact uses">
+            <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
             <column name="messenger_id" remarks="Messenger identifier" type="BIGINT UNSIGNED">
                 <constraints nullable="false"/>
             </column>
             <column name="contact_id" remarks="Contact identifier" type="BIGINT UNSIGNED">
                 <constraints nullable="false"/>
             </column>
+            <column name="username" remarks="Username of contact's profile" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
-        <addPrimaryKey tableName="contact_messenger" columnNames="messenger_id, contact_id"
-                       constraintName="PRIMARY"/>
         <createIndex tableName="contact_messenger" indexName="fk_contact_messenger_messenger_id">
             <column name="messenger_id"/>
         </createIndex>
@@ -189,8 +214,10 @@
                                  referencedTableName="contact"
                                  referencedColumnNames="id"/>
         <rollback>
-            <dropForeignKeyConstraint baseTableName="contact_messenger" constraintName="fk_contact_messenger_contact_id"/>
-            <dropForeignKeyConstraint baseTableName="contact_messenger" constraintName="fk_contact_messenger_messenger_id"/>
+            <dropForeignKeyConstraint baseTableName="contact_messenger"
+                                      constraintName="fk_contact_messenger_contact_id"/>
+            <dropForeignKeyConstraint baseTableName="contact_messenger"
+                                      constraintName="fk_contact_messenger_messenger_id"/>
             <dropIndex tableName="contact_messenger" indexName="fk_contact_messenger_contact_id"/>
             <dropIndex tableName="contact_messenger" indexName="fk_contact_messenger_messenger_id"/>
             <dropTable tableName="contact_messenger"/>
@@ -201,11 +228,16 @@
             <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="name" remarks="Company name" type="VARCHAR(255)"/>
+            <column name="name" remarks="Company name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
             <column name="position" remarks="Position in company" type="VARCHAR(255)"/>
             <column name="start_date" remarks="First day of work" type="DATE"/>
             <column name="end_date" remarks="Last day at work" type="DATE"/>
             <column name="comment" remarks="Workplace comment" type="MEDIUMTEXT"/>
+            <column name="contact_id" remarks="Contact identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
         <rollback>
             <dropTable tableName="workplace"/>
