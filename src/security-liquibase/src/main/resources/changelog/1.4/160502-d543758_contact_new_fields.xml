@@ -32,6 +32,7 @@
             </dropColumn>
         </rollback>
     </changeSet>
+
     <changeSet id="002" author="maksim.kalenik">
         <createTable tableName="country" remarks="Country">
             <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
@@ -45,6 +46,7 @@
             <dropTable tableName="country"/>
         </rollback>
     </changeSet>
+
     <changeSet id="003" author="maksim.kalenik">
         <createTable tableName="address" remarks="Address of contact">
             <column name="id" autoIncrement="true" remarks="Identifier" type="BIGINT UNSIGNED">
@@ -82,6 +84,7 @@
             <dropTable tableName="address"/>
         </rollback>
     </changeSet>
+
     <changeSet id="004" author="maksim.kalenik">
         <createTable tableName="social_network">
             <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
@@ -92,6 +95,7 @@
             </column>
         </createTable>
     </changeSet>
+
     <changeSet id="005" author="maksim.kalenik">
         <createTable tableName="social_network_account" remarks="Contact's page in social network">
             <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
@@ -130,20 +134,8 @@
             <dropTable tableName="social_network_account"/>
         </rollback>
     </changeSet>
+
     <changeSet id="006" author="maksim.kalenik">
-        <createTable tableName="telephone_type" remarks="Type of telephone">
-            <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
-            <column name="name" remarks="Telephone type name" type="VARCHAR(100)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-        <rollback>
-            <dropTable tableName="telephone_type"/>
-        </rollback>
-    </changeSet>
-    <changeSet id="007" author="maksim.kalenik">
         <createTable tableName="telephone" remarks="Telephone for contact">
             <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
                 <constraints nullable="false" primaryKey="true"/>
@@ -151,7 +143,7 @@
             <column name="number" remarks="Telephone number" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
-            <column name="telephone_type_id" remarks="Telephone type identifier" type="BIGINT UNSIGNED">
+            <column name="telephone_type" remarks="Telephone type" type="ENUM('MOBILE', 'WORK', 'HOME', 'FAX', 'PAGER', 'OTHER')">
                 <constraints nullable="false"/>
             </column>
             <column name="contact_id" remarks="Contact identifier" type="BIGINT UNSIGNED">
@@ -159,13 +151,9 @@
             </column>
             <column name="date_deleted" remarks="Date of telephone deletion" type="DATETIME"/>
         </createTable>
-        <createIndex tableName="telephone" indexName="fk_telephone_telephone_type_id">
-            <column name="telephone_type_id"/>
+        <createIndex tableName="telephone" indexName="fk_telephone_contact_id">
+            <column name="contact_id"/>
         </createIndex>
-        <addForeignKeyConstraint baseTableName="telephone" baseColumnNames="telephone_type_id"
-                                 constraintName="fk_telephone_telephone_type_id"
-                                 referencedTableName="telephone_type"
-                                 referencedColumnNames="id"/>
         <addForeignKeyConstraint baseTableName="telephone" baseColumnNames="contact_id"
                                  constraintName="fk_telephone_contact_id"
                                  referencedTableName="contact"
@@ -176,7 +164,8 @@
             <dropTable tableName="telephone"/>
         </rollback>
     </changeSet>
-    <changeSet id="008" author="maksim.kalenik">
+
+    <changeSet id="007" author="maksim.kalenik">
         <createTable tableName="messenger" remarks="Messenger">
             <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
                 <constraints nullable="false" primaryKey="true"/>
@@ -190,7 +179,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="009" author="maksim.kalenik">
+    <changeSet id="008" author="maksim.kalenik">
         <createTable tableName="messenger_account" remarks="Contact's account in messenger">
             <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
                 <constraints nullable="false" primaryKey="true"/>
@@ -231,7 +220,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="010" author="maksim.kalenik">
+    <changeSet id="009" author="maksim.kalenik">
         <createTable tableName="workplace" remarks="Contact's workplace (previous or current)">
             <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
                 <constraints nullable="false" primaryKey="true"/>
@@ -263,7 +252,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="011" author="maksim.kalenik">
+    <changeSet id="010" author="maksim.kalenik">
         <createTable tableName="email" remarks="Contact email address">
             <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
                 <constraints nullable="false" primaryKey="true"/>
@@ -271,6 +260,7 @@
             <column name="name" remarks="Company name" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
+            <column name="type" remarks="Type of email" type="ENUM('WORK','HOME','OTHER')"/>
             <column name="contact_id" remarks="Contact identifier" type="BIGINT UNSIGNED">
                 <constraints nullable="false"/>
             </column>

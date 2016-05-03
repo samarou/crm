@@ -1,5 +1,6 @@
 package com.itechart.security.business.model.persistent;
 
+import com.itechart.security.business.model.enums.EmailType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +20,9 @@ public class Email extends SecuredEntity{
 
     @Column(nullable = false)
     private String name;
+
+    @Enumerated(EnumType.STRING)
+    private EmailType type;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "contact_id", nullable = false)

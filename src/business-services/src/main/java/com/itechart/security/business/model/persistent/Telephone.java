@@ -1,5 +1,6 @@
 package com.itechart.security.business.model.persistent;
 
+import com.itechart.security.business.model.enums.TelephoneType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,12 +24,11 @@ public class Telephone extends SecuredEntity {
     @JoinColumn(name = "contact_id", nullable = false)
     private Contact contact;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "telephone_type_id", nullable = false)
-    private TelephoneType type;
-
     @Column(name = "date_deleted")
     private Date dateDeleted;
+
+    @Enumerated(EnumType.STRING)
+    private TelephoneType type;
 
     @Override
     public Long getId() {
