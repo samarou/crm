@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet id="001" author="maksim.kalenik">
+        <addColumn tableName="contact">
+            <column name="patronymic" remarks="Patronymic name" type="VARCHAR(50)"/>
+            <column name="date_of_birth" remarks="Date of birth" type="DATE"/>
+            <column name="is_male" remarks="Sex is male" type="BOOLEAN"/>
+            <column name="nationality" remarks="Nationality" type="VARCHAR(255)"/>
+            <column name="photo_url" remarks="url of contact photo" type="VARCHAR(255)"/>
+        </addColumn>
+        <dropColumn tableName="contact">
+            <column name="email"/>
+            <column name="address"/>
+        </dropColumn>
+        <rollback>
+            <addColumn tableName="contact">
+                <column name="email" type="VARCHAR(100)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="address" type="VARCHAR(250)"/>
+            </addColumn>
+            <dropColumn tableName="contact">
+                <column name="patronymic"/>
+                <column name="date_of_birth"/>
+                <column name="is_male"/>
+                <column name="nationality"/>
+                <column name="photo_url"/>
+            </dropColumn>
+        </rollback>
+    </changeSet>
+    <changeSet id="002" author="maksim.kalenik">
+        <createTable tableName="country" remarks="Country">
+            <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" remarks="Country name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="country"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="003" author="maksim.kalenik">
+        <createTable tableName="address" remarks="Address of contact">
+            <column name="id" autoIncrement="true" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="address_line_1" remarks="Street, building, apartment" type="VARCHAR(255)"/>
+            <column name="address_line_2" remarks="Zip code, City, region" type="VARCHAR(255)"/>
+            <column name="country_id" remarks="Country identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="contact_id" remarks="Contact identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createIndex tableName="address" indexName="fk_address_contact_id">
+            <column name="contact_id"/>
+        </createIndex>
+        <createIndex tableName="address" indexName="fk_address_country_id">
+            <column name="country_id"/>
+        </createIndex>
+        <addForeignKeyConstraint baseTableName="address" baseColumnNames="contact_id"
+                                 constraintName="fk_address_contact_id"
+                                 referencedTableName="contact"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="address" baseColumnNames="country_id"
+                                 constraintName="fk_address_country_id"
+                                 referencedTableName="country"
+                                 referencedColumnNames="id"/>
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="address" constraintName="fk_address_country_id"/>
+            <dropForeignKeyConstraint baseTableName="address" constraintName="fk_address_contact_id"/>
+            <dropIndex tableName="address" indexName="fk_address_country_id"/>
+            <dropIndex tableName="address" indexName="fk_address_contact_id"/>
+            <dropTable tableName="address"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="004" author="maksim.kalenik">
+        <createTable tableName="social_network">
+            <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" remarks="Name of social network" type="VARCHAR(100)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="005" author="maksim.kalenik">
+        <createTable tableName="contact_social_network" remarks="Social network, that contact has">
+            <column name="social_network_id" remarks="Social network identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="contact_id" remarks="Contact identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="contact_social_network" columnNames="social_network_id, contact_id"
+                       constraintName="PRIMARY"/>
+        <createIndex tableName="contact_social_network" indexName="fk_csn_social_network_id">
+            <column name="social_network_id"/>
+        </createIndex>
+        <createIndex tableName="contact_social_network" indexName="fk_csn_contact_id">
+            <column name="contact_id"/>
+        </createIndex>
+        <addForeignKeyConstraint baseTableName="contact_social_network" baseColumnNames="social_network_id"
+                                 constraintName="fk_csn_social_network_id"
+                                 referencedTableName="social_network"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="contact_social_network" baseColumnNames="contact_id"
+                                 constraintName="fk_csn_contact_id"
+                                 referencedTableName="contact"
+                                 referencedColumnNames="id"/>
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="contact_social_network" constraintName="fk_csn_contact_id"/>
+            <dropForeignKeyConstraint baseTableName="contact_social_network" constraintName="fk_csn_social_network_id"/>
+            <dropIndex tableName="contact_social_network" indexName="fk_csn_contact_id"/>
+            <dropIndex tableName="contact_social_network" indexName="fk_csn_social_network_id"/>
+            <dropTable tableName="contact_social_network"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="006" author="maksim.kalenik">
+        <createTable tableName="telephone_type" remarks="Type of telephone">
+            <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" remarks="Telephone type name" type="VARCHAR(100)"/>
+        </createTable>
+        <rollback>
+            <dropTable tableName="telephone_type"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="007" author="maksim.kalenik">
+        <createTable tableName="telephone" remarks="Telephone for contact">
+            <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="number" remarks="Telephone number" type="VARCHAR(100)"/>
+            <column name="telephone_type_id" remarks="Telephone type identifier" type="BIGINT UNSIGNED"/>
+        </createTable>
+        <createIndex tableName="telephone" indexName="fk_telephone_telephone_type_id">
+            <column name="telephone_type_id"/>
+        </createIndex>
+        <addForeignKeyConstraint baseTableName="telephone" baseColumnNames="telephone_type_id"
+                                 constraintName="fk_telephone_telephone_type_id"
+                                 referencedTableName="telephone_type"
+                                 referencedColumnNames="id"/>
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="telephone" constraintName="fk_telephone_telephone_type_id"/>
+            <dropIndex tableName="telephone" indexName="fk_telephone_telephone_type_id"/>
+            <dropTable tableName="telephone"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="008" author="maksim.kalenik">
+        <createTable tableName="messenger" remarks="Messenger">
+            <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" remarks="Name of messenger" type="VARCHAR(100)"/>
+        </createTable>
+        <rollback>
+            <dropTable tableName="messenger"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="009" author="maksim.kalenik">
+        <createTable tableName="contact_messenger" remarks="Messenger, that contact uses">
+            <column name="messenger_id" remarks="Messenger identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="contact_id" remarks="Contact identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="contact_messenger" columnNames="messenger_id, contact_id"
+                       constraintName="PRIMARY"/>
+        <createIndex tableName="contact_messenger" indexName="fk_contact_messenger_messenger_id">
+            <column name="messenger_id"/>
+        </createIndex>
+        <createIndex tableName="contact_messenger" indexName="fk_contact_messenger_contact_id">
+            <column name="contact_id"/>
+        </createIndex>
+        <addForeignKeyConstraint baseTableName="contact_messenger" baseColumnNames="messenger_id"
+                                 constraintName="fk_contact_messenger_messenger_id"
+                                 referencedTableName="messenger"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="contact_messenger" baseColumnNames="contact_id"
+                                 constraintName="fk_contact_messenger_contact_id"
+                                 referencedTableName="contact"
+                                 referencedColumnNames="id"/>
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="contact_messenger" constraintName="fk_contact_messenger_contact_id"/>
+            <dropForeignKeyConstraint baseTableName="contact_messenger" constraintName="fk_contact_messenger_messenger_id"/>
+            <dropIndex tableName="contact_messenger" indexName="fk_contact_messenger_contact_id"/>
+            <dropIndex tableName="contact_messenger" indexName="fk_contact_messenger_messenger_id"/>
+            <dropTable tableName="contact_messenger"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="010" author="maksim.kalenik">
+        <createTable tableName="workplace" remarks="Workplaces of user (previous and current)">
+            <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" remarks="Company name" type="VARCHAR(255)"/>
+            <column name="position" remarks="Position in company" type="VARCHAR(255)"/>
+            <column name="start_date" remarks="First day of work" type="DATE"/>
+            <column name="end_date" remarks="Last day at work" type="DATE"/>
+            <column name="comment" remarks="Workplace comment" type="MEDIUMTEXT"/>
+        </createTable>
+        <rollback>
+            <dropTable tableName="workplace"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
