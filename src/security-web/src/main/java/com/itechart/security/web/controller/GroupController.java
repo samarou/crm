@@ -63,10 +63,10 @@ public class GroupController {
     public void delete(@PathVariable Long id) {
         Group deletableGroup = groupService.get(id);
         Set<User> users = deletableGroup.getUsers();
-        groupService.deleteById(id);
         users.forEach(user -> {
             user.leaveGroup(deletableGroup);
             userService.updateUser(user);
         });
+        groupService.deleteById(id);
     }
 }
