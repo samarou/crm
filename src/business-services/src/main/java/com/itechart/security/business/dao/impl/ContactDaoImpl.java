@@ -14,6 +14,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,7 +47,9 @@ public class ContactDaoImpl extends AbstractHibernateDao<Contact> implements Con
     @Override
     public void deleteById(Long id) {
         Contact contact = getHibernateTemplate().get(Contact.class, id);
-        if (contact != null) getHibernateTemplate().delete(contact);
+        if (contact != null) {
+            contact.setDateDeleted(new Date());
+            getHibernateTemplate().update(contact);}
     }
 
     @Override
