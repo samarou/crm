@@ -21,6 +21,12 @@ import com.itechart.security.business.filter.CompanyFilter;
 import com.itechart.security.business.filter.ContactFilter;
 import com.itechart.security.core.model.acl.Permission;
 import com.itechart.security.business.model.enums.EmailType;
+<<<<<<< 56b5f0a64ae10f5fb4f8170161d285546dc9d6cf
+=======
+import com.itechart.security.business.model.enums.TelephoneType;
+import com.itechart.security.business.model.persistent.*;
+>>>>>>> d543758 email and address dto-s added
+>>>>>>> d543758 telephone dto added
 import com.itechart.security.model.filter.UserFilter;
 import com.itechart.security.model.persistent.Action;
 import com.itechart.security.model.persistent.Group;
