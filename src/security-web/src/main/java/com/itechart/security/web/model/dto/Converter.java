@@ -20,6 +20,7 @@ import org.springframework.util.CollectionUtils;
 import com.itechart.security.business.filter.CompanyFilter;
 import com.itechart.security.business.filter.ContactFilter;
 import com.itechart.security.core.model.acl.Permission;
+import com.itechart.security.business.model.enums.EmailType;
 import com.itechart.security.model.filter.UserFilter;
 import com.itechart.security.model.persistent.Action;
 import com.itechart.security.model.persistent.Group;
@@ -32,9 +33,7 @@ import com.itechart.security.model.persistent.UserDefaultAclEntry;
 import com.itechart.security.web.model.PrincipalTypes;
 
 /**
- * Provides usefully methods to convert model to dto and vice versa.
- *
- * @author yauheni.putsykovich
+ * Provides useful methods to convert model to dto and vice versa.
  */
 public class Converter {
     public static List<SecuredUserDto> convert(List<User> users) {

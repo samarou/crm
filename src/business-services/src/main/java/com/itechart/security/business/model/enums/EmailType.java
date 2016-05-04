@@ -7,9 +7,9 @@ public enum EmailType {
     WORK("Work"),
     HOME("Home"),
     OTHER("Other");
-    private String name;
+    private String value;
 
-    public EmailType findByName(String emailType) {
+    public static EmailType findByName(String emailType) {
         for (EmailType tel : EmailType.values()) {
             if (tel.name().equals(emailType)) {
                 return tel;
@@ -18,7 +18,7 @@ public enum EmailType {
         throw new RuntimeException("EmailType was not found for name: " + emailType);
     }
 
-    EmailType(String name) {
-        this.name = name;
+    EmailType(String value) {
+        this.value = value;
     }
 }

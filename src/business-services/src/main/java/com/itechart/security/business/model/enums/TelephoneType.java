@@ -10,7 +10,7 @@ public enum TelephoneType {
 
     private String name;
 
-    public TelephoneType findByName(String typeName) {
+    public static TelephoneType findByName(String typeName) {
         for (TelephoneType tel : TelephoneType.values()) {
             if (tel.name().equals(typeName)) {
                 return tel;

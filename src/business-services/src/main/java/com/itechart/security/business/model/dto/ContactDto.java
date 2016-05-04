@@ -1,52 +1,22 @@
 package com.itechart.security.business.model.dto;
 
-/**
- * @author yauheni.putsykovich
- */
+import com.itechart.security.business.model.persistent.Address;
+import com.itechart.security.business.model.persistent.Email;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.Set;
+
+@Getter
+@Setter
 public class ContactDto {
     private Long id;
+
     private String firstName;
+
     private String lastName;
-    private String email;
-    private String address;
 
-    public Long getId() {
-        return id;
-    }
+    private Set<Email> emails;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
+    private Set<Address> addresses;
 }
