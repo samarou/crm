@@ -3,6 +3,7 @@ package com.itechart.security.business.service;
 
 
 import com.itechart.security.business.filter.ContactFilter;
+import com.itechart.security.business.model.dto.ContactDto;
 import com.itechart.security.business.model.persistent.Contact;
 
 import java.util.List;
@@ -12,15 +13,15 @@ import java.util.List;
  */
 public interface ContactService {
 
-    List<Contact> findContacts(ContactFilter filter);
+    List<ContactDto> findContacts(ContactFilter filter);
 
-    Long saveContact(Contact contact);
+    Long saveContact(ContactDto contact);
 
-    Contact get(Long id);
+    ContactDto get(Long id);
 
-    List<Contact> getContacts();
+    List<ContactDto> getContacts();
 
-    void updateContact(Contact contact);
+    void updateContact(ContactDto contact);
 
     void deleteById(Long id);
 
