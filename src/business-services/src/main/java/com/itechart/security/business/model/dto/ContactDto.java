@@ -1,4 +1,4 @@
-package com.itechart.security.web.model.dto;
+package com.itechart.security.business.model.dto;
 
 /**
  * @author yauheni.putsykovich

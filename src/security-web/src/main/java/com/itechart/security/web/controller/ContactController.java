@@ -16,7 +16,7 @@ import com.itechart.security.service.AclService;
 import com.itechart.security.service.PrincipalService;
 import com.itechart.security.web.model.PrincipalTypes;
 import com.itechart.security.web.model.dto.AclEntryDto;
-import com.itechart.security.web.model.dto.ContactDto;
+import com.itechart.security.business.model.dto.ContactDto;
 import com.itechart.security.web.model.dto.ContactFilterDto;
 import com.itechart.security.web.model.dto.DataPageDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,32 +58,32 @@ public class ContactController {
 
     @RequestMapping("/contacts")
     public List<ContactDto> getContacts() {
-        return convertContacts(contactService.getContacts());
+        return contactService.getContacts();
     }
 
     @RequestMapping(value = "/contacts/{contactId}", method = RequestMethod.GET)
     public ContactDto get(@PathVariable Long contactId) {
-        return convert(contactService.get(contactId));
+        return contactService.get(contactId);
     }
 
     @PreAuthorize("hasPermission(#dto.getId(), 'sample.Contact', 'WRITE')")
     @RequestMapping(value = "/contacts", method = PUT)
     public void update(@RequestBody ContactDto dto) {
-        contactService.updateContact(covert(dto));
+        contactService.updateContact(dto);
     }
 
     @RequestMapping("/contacts/find")
     public DataPageDto find(ContactFilterDto filterDto) {
         ContactFilter filter = convert(filterDto);
         DataPageDto<ContactDto> page = new DataPageDto<>();
-        page.setData(convertContacts(contactService.findContacts(filter)));
+        page.setData(contactService.findContacts(filter));
         page.setTotalCount(contactService.countContacts(filter));
         return page;
     }
 
     @RequestMapping(value = "/contacts", method = POST)
     public Long create(@RequestBody ContactDto dto) {
-        Long contactId = contactService.saveContact(covert(dto));
+        Long contactId = contactService.saveContact(dto);
         Long userId = SecurityUtils.getAuthenticatedUserId();
         aclService.createAcl(new ObjectIdentityImpl(contactId, ObjectTypes.CONTACT.getName()), null, userId);
         return contactId;

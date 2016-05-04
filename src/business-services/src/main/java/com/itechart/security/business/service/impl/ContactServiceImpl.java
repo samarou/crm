@@ -2,13 +2,16 @@ package com.itechart.security.business.service.impl;
 
 import com.itechart.security.business.dao.ContactDao;
 import com.itechart.security.business.filter.ContactFilter;
-import com.itechart.security.business.model.persistent.Contact;
+import com.itechart.security.business.model.dto.ContactDto;
 import com.itechart.security.business.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.itechart.security.business.model.dto.DtoConverter.convert;
+import static com.itechart.security.business.model.dto.DtoConverter.convertContacts;
 
 /**
  * @author andrei.samarou
@@ -21,20 +24,20 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     @Transactional
-    public List<Contact> findContacts(ContactFilter filter) {
-        return contactDao.findContacts(filter);
+    public List<ContactDto> findContacts(ContactFilter filter) {
+        return convertContacts(contactDao.findContacts(filter));
     }
 
     @Override
     @Transactional
-    public Long saveContact(Contact contact) {
-        return contactDao.save(contact);
+    public Long saveContact(ContactDto contactDto) {
+        return contactDao.save(convert(contactDto));
     }
 
     @Override
     @Transactional
-    public Contact get(Long id) {
-        return contactDao.get(id);
+    public ContactDto get(Long id) {
+        return convert(contactDao.get(id));
     }
 
     @Override
@@ -45,14 +48,14 @@ public class ContactServiceImpl implements ContactService {
     //@PreFilter("filterObject.property == authentication.name")
     //@PostFilter ("filterObject.owner == authentication.name")
     //@PostFilter("hasPermission(filterObject, 'READ')")
-    public List<Contact> getContacts() {
-        return contactDao.loadAll();
+    public List<ContactDto> getContacts() {
+        return convertContacts(contactDao.loadAll());
     }
 
     @Override
     @Transactional
-    public void updateContact(Contact contact) {
-        contactDao.update(contact);
+    public void updateContact(ContactDto contactDto) {
+        contactDao.update(convert(contactDto));
     }
 
     @Override
