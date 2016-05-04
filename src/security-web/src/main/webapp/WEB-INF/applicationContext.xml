@@ -114,7 +114,7 @@
     </bean>
 
     <bean id="contactAttachmentService" class="com.itechart.security.web.service.impl.ContactAttachmentServiceImpl">
-        <property name="uploadHome" value="${upload.home}"/>
+        <property name="uploadDir" value="${upload.directory}"/>
     </bean>
 
     <context:property-placeholder location="classpath:datasource.properties,classpath:application.properties"

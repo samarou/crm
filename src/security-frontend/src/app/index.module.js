@@ -16,7 +16,6 @@
         .module('crm.core', [
             'ngResource',
             'ui.router',
-            'ui.bootstrap',
-            'angularFileUpload'
+            'ui.bootstrap'
         ])
 })();

@@ -5,6 +5,7 @@ import com.itechart.security.business.model.persistent.Attachment;
 import com.itechart.security.business.service.AttachmentService;
 import com.itechart.security.web.model.dto.AttachmentDto;
 import com.itechart.security.web.service.ContactAttachmentService;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +26,7 @@ public class ContactAttachmentServiceImpl implements ContactAttachmentService {
 
     private static final Logger logger = LoggerFactory.getLogger(ContactAttachmentServiceImpl.class);
 
-    private static String uploadHome;
+    private static File uploadDir;
 
     @Autowired
     private AttachmentService attachmentService;
@@ -52,17 +53,17 @@ public class ContactAttachmentServiceImpl implements ContactAttachmentService {
                         closeStream(outputStream);
                     }
                 } else {
-                    logger.error("can't find attachment {} with id {} for contact {} in {}", attachment.getName(), attachmentId, contactId, uploadHome);
+                    logger.error("can't find attachment {} with id {} for contact {} in {}", attachment.getName(), attachmentId, contactId, uploadDir);
                     throw new RuntimeException("file is not on server");
                 }
             } catch (IOException ex) {
-                logger.error("can't download attachment {} with id {} for contact {} in {}", attachment.getName(), attachmentId, contactId, uploadHome, ex);
+                logger.error("can't download attachment {} with id {} for contact {} in {}", attachment.getName(), attachmentId, contactId, uploadDir, ex);
                 throw new RuntimeException("error happened during file download");
             }
         }
     }
 
-    private void setHeaders(HttpServletResponse response, String attachmentName){
+    private void setHeaders(HttpServletResponse response, String attachmentName) {
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Content-Disposition", "inline;filename*=UTF-8''" + attachmentName + ";");
     }
@@ -97,9 +98,9 @@ public class ContactAttachmentServiceImpl implements ContactAttachmentService {
             BufferedOutputStream outputStream = null;
             InputStream inputStream = null;
             try {
-                String savingPath = getPathToFile(contactId, attachmentId, "." + FilenameUtils.getExtension(file.getOriginalFilename()));
+                File filePath = getPathToFile(contactId, attachmentId, "." + FilenameUtils.getExtension(file.getOriginalFilename()));
                 inputStream = file.getInputStream();
-                outputStream = new BufferedOutputStream(new FileOutputStream(new File(savingPath)));
+                outputStream = new BufferedOutputStream(new FileOutputStream(filePath));
                 FileCopyUtils.copy(inputStream, outputStream);
             } finally {
                 closeStream(inputStream);
@@ -114,27 +115,24 @@ public class ContactAttachmentServiceImpl implements ContactAttachmentService {
         }
     }
 
-    public void setUploadHome(String uploadHome) {
-        this.uploadHome = uploadHome;
-        File dir = new File(this.uploadHome);
-        if (!this.uploadHome.isEmpty()) {
-            if (dir.mkdirs()) {
-                logger.debug("directory created: {}", dir);
-            } else {
-                logger.debug("can't create directory {}", this.uploadHome);
-            }
+    public void setUploadDir(String uploadDir) {
+        this.uploadDir = new File(uploadDir);
+        if (ContactAttachmentServiceImpl.uploadDir.mkdirs()) {
+            logger.debug("directory created: {}", ContactAttachmentServiceImpl.uploadDir);
+        } else {
+            logger.debug("can't create directory {}", this.uploadDir);
         }
     }
 
-    private String getPathToFile(Long contactId, Long attachmentId, String extension) {
-        File f = new File(uploadHome + File.separator + contactId);
-        return f.getPath() + File.separator + attachmentId + extension;
+    private File getPathToFile(Long contactId, Long attachmentId, String extension) {
+        File contactFilesDir = new File(uploadDir, File.separator + contactId);
+        return new File(contactFilesDir, File.separator + attachmentId + extension);
     }
 
     private File getFile(Long contactId, Long attachmentId) {
-        File dir = new File(uploadHome + File.separator + contactId);
+        File dir  = FileUtils.getFile(uploadDir, "" + contactId, "" + attachmentId);
         File[] listOfFiles = dir.listFiles();
-        if (attachmentId != 0 && listOfFiles != null) {
+        if (listOfFiles != null) {
             for (File f : listOfFiles) {
                 if (f.getName().startsWith("" + attachmentId)) {
                     return f;
