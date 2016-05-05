@@ -38,9 +38,17 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Group get(Long id) {
         return groupDao.get(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Group getGroupWithUsers(Long id) {
+        Group group = groupDao.get(id);
+        group.getUsers().size();
+        return group;
     }
 
     @Override

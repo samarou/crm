@@ -136,8 +136,12 @@ public class Converter {
         dto.setId(group.getId());
         dto.setName(group.getName());
         dto.setDescription(group.getDescription());
-        dto.setMembers(convertToPublicUsers(new ArrayList<>(group.getUsers())));
+        return dto;
+    }
 
+    public static GroupDto convertGroupWithUsers(Group group) {
+        GroupDto dto = convert(group);
+        dto.setMembers(convertToPublicUsers(new ArrayList<>(group.getUsers())));
         return dto;
     }
 
