@@ -17,15 +17,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static com.itechart.security.web.model.dto.Converter.convert;
-import static com.itechart.security.web.model.dto.Converter.convertToDefaultAclDtos;
-import static com.itechart.security.web.model.dto.Converter.convertToPublicUsers;
+import static com.itechart.security.web.model.dto.Converter.*;
 import static java.util.stream.Collectors.toList;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
-import static org.springframework.web.bind.annotation.RequestMethod.PUT;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 /**
  * @author andrei.samarou
@@ -87,14 +82,7 @@ public class UserController {
         }
         List<Long> principalIds = dtos.stream().map(AclEntryDto::getPrincipalId).collect(toList());
         List<Principal> principals = principalService.getByIds(principalIds);
-        return dtos.stream().map(dto -> {
-            UserDefaultAclEntry defaultAcl = new UserDefaultAclEntry();
-            defaultAcl.setId(dto.getId());
-            defaultAcl.setUser(user);
-            defaultAcl.setPrincipal(findPrincipalById(principals, dto.getPrincipalId()));
-            defaultAcl.setPermissions(convert(dto));
-            return defaultAcl;
-        }).collect(toList());
+        return convert(user, dtos, principals);
     }
 
     private Principal findPrincipalById(List<Principal> principals, Long id) {
