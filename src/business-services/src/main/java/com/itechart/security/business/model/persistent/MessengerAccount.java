@@ -10,8 +10,8 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
-@EqualsAndHashCode
-@Table(name = "contact_messenger")
+@EqualsAndHashCode(callSuper = true)
+@Table(name = "messenger_account")
 public class MessengerAccount extends SecuredEntity{
 
     @Id

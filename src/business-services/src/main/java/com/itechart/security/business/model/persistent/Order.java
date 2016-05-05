@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 @Entity
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "`order`")
 public class Order extends SecuredEntity {
 

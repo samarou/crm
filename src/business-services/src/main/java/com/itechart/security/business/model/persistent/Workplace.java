@@ -11,7 +11,8 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
+@Table(name = "workplace")
 public class Workplace extends SecuredEntity{
 
     @Id

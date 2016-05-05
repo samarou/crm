@@ -10,7 +10,8 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
+@Table(name = "address")
 public class Address extends SecuredEntity {
     @Id
     @Column(name = "id", nullable = false)

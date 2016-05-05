@@ -11,7 +11,8 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
+@Table(name = "email")
 public class Email extends SecuredEntity{
     @Id
     @Column(name = "id", nullable = false)
@@ -30,4 +31,9 @@ public class Email extends SecuredEntity{
 
     @Column(name = "date_deleted")
     private Date dateDeleted;
+
+    @Override
+    public Long getId() {
+        return id;
+    }
 }
