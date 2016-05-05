@@ -349,6 +349,26 @@ public class Converter {
         });
     }
 
+    public static List<UserDefaultAclEntry> convert(User user, List<UserDefaultAclEntryDto> dtos, List<Principal> principals) {
+        return dtos.stream().map(dto -> {
+            UserDefaultAclEntry defaultAcl = new UserDefaultAclEntry();
+            defaultAcl.setId(dto.getId());
+            defaultAcl.setUser(user);
+            defaultAcl.setPrincipal(findPrincipalById(principals, dto.getPrincipalId()));
+            defaultAcl.setPermissions(convert(dto));
+            return defaultAcl;
+        }).collect(toList());
+    }
+
+    private static Principal findPrincipalById(List<Principal> principals, Long id) {
+        for (Principal principal : principals) {
+            if (principal.getId().equals(id)) {
+                return principal;
+            }
+        }
+        return null;
+    }
+
     public static List<UserDefaultAclEntryDto> convertToDefaultAclDtos(List<UserDefaultAclEntry> acls) {
         if (CollectionUtils.isEmpty(acls)) {
             return Collections.emptyList();
