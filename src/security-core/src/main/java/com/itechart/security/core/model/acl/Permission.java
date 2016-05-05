@@ -1,8 +1,5 @@
 package com.itechart.security.core.model.acl;
 
-import java.util.EnumSet;
-import java.util.Set;
-
 /**
  * ACL permission
  *
