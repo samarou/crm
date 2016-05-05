@@ -9,7 +9,7 @@
     .controller('ContactsAddController', ContactsAddController);
 
   /** @ngInject */
-  function ContactsAddController(UserService, ContactService, AclDialogServiceBuilder, AclServiceBuilder, $state) {
+  function ContactsAddController(UserService, ContactService, AclServiceBuilder, $state) {
     'use strict';
     var vm = this;
     vm.contact = {};
@@ -21,7 +21,7 @@
     vm.aclHandler = {
       canEdit: true,
       acls: [],
-      actions: AclDialogServiceBuilder(AclServiceBuilder(getId, ContactService))
+      actions: AclServiceBuilder(getId, ContactService)
     };
 
     vm.submitText = 'Add';
