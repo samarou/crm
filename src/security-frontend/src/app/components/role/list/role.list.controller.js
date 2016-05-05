@@ -6,7 +6,7 @@
 			.controller('RolesListController', RolesListController);
 
 	/** @ngInject */
-	function RolesListController($q, roleService, rolePrivilegeService, pagingFilter, $state) {
+	function RolesListController($q, roleService, rolePrivilegeService, pagingFilter, dialogService, $state) {
 		var vm = this;
 
 		vm.searchText = '';
@@ -59,14 +59,25 @@
 		}
 
 		function remove() {
-			var tasks = [];
-			vm.pageRoles.forEach(function (role) {
-				if (role.checked) {
-					tasks.push(roleService.remove(role.id))
-				}
-			});
-			$q.all(tasks).then(fetchAllRoles);
-			vm.isSelectedAll = false;
+			if (vm.pageRoles.some(function (role) {
+				return role.checked
+			})) {
+				openRemoveDialog().then(function () {
+					var tasks = [];
+					vm.pageRoles.forEach(function (role) {
+						if (role.checked) {
+							tasks.push(roleService.remove(role.id))
+						}
+					});
+					$q.all(tasks).then(fetchAllRoles);
+					vm.isSelectedAll = false;
+				});
+			}
+		}
+
+		function openRemoveDialog() {
+			return dialogService.confirm('Do you want to delete the selected roles? <br/>' +
+					'They will be removed from all the users they are currently assigned to.').result;
 		}
 
 		function fetchAllRoles() {

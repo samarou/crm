@@ -41,7 +41,7 @@
             <tbody>
             <tr class="crm-hover" ng-click="vm.edit(role)"
                 ng-repeat="role in (vm.pageRoles = (vm.roleList | pagingFilter:vm.pagingFilterConfig))">
-                <td><input type="checkbox" ng-model="group.checked"
+                <td><input type="checkbox" ng-model="role.checked"
                            ng-click="vm.bundle.selectOne(); $event.stopPropagation()">
                 </td>
                 </td>
