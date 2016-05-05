@@ -59,7 +59,7 @@
 			vm.objectTypes = Collections.sort(Object.keys(objectTypeList)).map(function (objectTypeName) {
 				return {
 					objectTypeName: objectTypeName,
-					actions: Collections.sort(objectTypeList[objectTypeName], true, Collections.byProperty('id'))
+					actions: Collections.sort(objectTypeList[objectTypeName], true, Collections.propertyComparator('id'))
 				};
 			});
 		});

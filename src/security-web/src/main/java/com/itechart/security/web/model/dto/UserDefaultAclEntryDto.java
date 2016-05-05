@@ -4,17 +4,13 @@ package com.itechart.security.web.model.dto;
  * @author yauheni.putsykovich
  */
 public class UserDefaultAclEntryDto extends AclEntryDto {
-    /*
-    * represent user-default-acl-entry's id
-    * need, because acl-entry-dto's property id represent the principal-id
-    * */
-    private Long recordId;
+    private Long id;
 
-    public Long getRecordId() {
-        return recordId;
+    public Long getId() {
+        return id;
     }
 
-    public void setRecordId(Long recordId) {
-        this.recordId = recordId;
+    public void setId(Long id) {
+        this.id = id;
     }
 }

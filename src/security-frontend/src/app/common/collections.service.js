@@ -13,7 +13,7 @@
 		self.compareTo = function (a, b) {
 			return a > b ? 1 : a === b ? 0 : -1;
 		};
-		self.byProperty = function (propertyName) {
+		self.propertyComparator = function (propertyName) {
 			return function (a, b) {
 				return self.compareTo(a[propertyName], b[propertyName]);
 			}
@@ -36,7 +36,7 @@
 
 		self.sort = function sort(collection, asc, comparator) {
 			asc = asc || true;
-			comparator = comparator || self.compareTo;
+			comparator = comparator || self.byId;
 			collection.sort(function (a, b) {
 				return (asc ? 1 : -1) * comparator(a, b);
 			});
