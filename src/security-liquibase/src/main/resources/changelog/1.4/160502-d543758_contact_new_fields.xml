@@ -143,7 +143,7 @@
             <column name="number" remarks="Telephone number" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
-            <column name="telephone_type" remarks="Telephone type" type="ENUM('MOBILE', 'WORK', 'HOME', 'FAX', 'PAGER', 'OTHER')">
+            <column name="type" remarks="Telephone type" type="ENUM('MOBILE', 'WORK', 'HOME', 'FAX', 'PAGER', 'OTHER')">
                 <constraints nullable="false"/>
             </column>
             <column name="contact_id" remarks="Contact identifier" type="BIGINT UNSIGNED">
