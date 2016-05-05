@@ -9,7 +9,7 @@
     .controller('ContactsEditController', ContactsEditController);
 
   /** @ngInject */
-  function ContactsEditController($q, $state, AuthService, ContactService, AclDialogServiceBuilder, AclServiceBuilder, $stateParams) {
+  function ContactsEditController($q, $state, AuthService, ContactService, AclServiceBuilder, $stateParams) {
     'use strict';
     var vm = this;
     var permissions = {
@@ -34,7 +34,7 @@
     vm.aclHandler = {
       canEdit: false,
       permissions: [],
-      actions: AclDialogServiceBuilder(AclServiceBuilder(getId, ContactService))
+      actions: AclServiceBuilder(getId, ContactService)
     };
 
     $q.all(

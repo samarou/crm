@@ -10,7 +10,7 @@
 
 
   /** @ngInject */
-  function UserEditController(UserService, GroupService, RoleService, AclDialogServiceBuilder, AclServiceBuilder, $state, Collections, $stateParams, $q) {
+  function UserEditController(UserService, GroupService, RoleService, AclServiceBuilder, $state, Collections, $stateParams, $q) {
     'use strict';
     var vm = this;
 
@@ -25,7 +25,7 @@
     vm.aclHandler = {
       canEdit: true,
       acls: [],
-      actions: AclDialogServiceBuilder(AclServiceBuilder(getId, UserService))
+      actions: AclServiceBuilder(getId, UserService)
     };
 
     $q.all(

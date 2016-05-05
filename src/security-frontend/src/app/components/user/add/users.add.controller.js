@@ -7,7 +7,7 @@
 
 
 	/** @ngInject */
-	function UserAddController(UserService, GroupService, RoleService, AclDialogServiceBuilder, AclServiceBuilder, $state) {
+	function UserAddController(UserService, GroupService, RoleService, AclServiceBuilder, $state) {
 		'use strict';
 		var vm = this;
 
@@ -22,7 +22,7 @@
     vm.aclHandler = {
       canEdit: true,
       acls:[],
-      actions: AclDialogServiceBuilder(AclServiceBuilder(getId, UserService))
+      actions: AclServiceBuilder(getId, UserService)
     };
 
 		GroupService.getAll().then(function (response) {
