@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.itechart.security.business.model.dto.DtoConverter.convert;
-import static com.itechart.security.business.model.dto.DtoConverter.convertContacts;
+import static com.itechart.security.business.model.dto.utils.DtoConverter.convert;
+import static com.itechart.security.business.model.dto.utils.DtoConverter.convertContacts;
 
 /**
  * @author andrei.samarou

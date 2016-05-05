@@ -1,13 +1,9 @@
 package com.itechart.security.business.model.dto;
 
-import com.itechart.security.business.model.persistent.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import java.sql.Date;
+import java.util.Date;
 import java.util.Set;
 
 @Getter
