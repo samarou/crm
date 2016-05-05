@@ -4,7 +4,7 @@ package com.itechart.security.web.model.dto;
  * @author yauheni.putsykovich
  */
 public class AclEntryDto {
-    private Long id;
+    private Long principalId;
     private String name;
     private String principalTypeName;
     private boolean canRead;
@@ -13,12 +13,12 @@ public class AclEntryDto {
     private boolean canDelete;
     private boolean canAdmin;
 
-    public Long getId() {
-        return id;
+    public Long getPrincipalId() {
+        return principalId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setPrincipalId(Long principalId) {
+        this.principalId = principalId;
     }
 
     public String getName() {

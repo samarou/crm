@@ -85,13 +85,13 @@ public class UserController {
         if (CollectionUtils.isEmpty(dtos)) {
             return Collections.emptyList();
         }
-        List<Long> principalIds = dtos.stream().map(AclEntryDto::getId).collect(toList());
+        List<Long> principalIds = dtos.stream().map(AclEntryDto::getPrincipalId).collect(toList());
         List<Principal> principals = principalService.getByIds(principalIds);
         return dtos.stream().map(dto -> {
             UserDefaultAclEntry defaultAcl = new UserDefaultAclEntry();
-            defaultAcl.setId(dto.getRecordId());
+            defaultAcl.setId(dto.getId());
             defaultAcl.setUser(user);
-            defaultAcl.setPrincipal(findPrincipalById(principals, dto.getId()));
+            defaultAcl.setPrincipal(findPrincipalById(principals, dto.getPrincipalId()));
             defaultAcl.setPermissions(convert(dto));
             return defaultAcl;
         }).collect(toList());

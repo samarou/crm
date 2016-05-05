@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.itechart.security.web.model.dto.Converter.convert;
-import static com.itechart.security.web.model.dto.Converter.convertToAclEntryDto;
 import static java.util.stream.Collectors.toList;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
@@ -102,13 +101,13 @@ public class ContactController {
         Acl acl = getAcl(contactId);
         Map<Long, Set<Permission>> allPermissions = acl.getPermissions();
         List<Principal> principals = principalService.getByIds(new ArrayList<>(allPermissions.keySet()));
-        return principals.stream().map(principal -> convertToAclEntryDto(principal, allPermissions.get(principal.getId()))).collect(toList());
+        return principals.stream().map(principal -> convert(principal, allPermissions.get(principal.getId()))).collect(toList());
     }
 
     @RequestMapping(value = "/contacts/{contactId}/acls", method = PUT)
-    public void createOrUpdateAcls(@PathVariable Long contactId, @RequestBody List<AclEntryDto> permissions) {
+    public void createOrUpdateAcls(@PathVariable Long contactId, @RequestBody List<AclEntryDto> aclEntries) {
         Acl acl = getAcl(contactId);
-        permissions.forEach(permission -> acl.addPermissions(permission.getId(), convert(permission)));
+        aclEntries.forEach(aclEntry -> acl.setPermissions(aclEntry.getPrincipalId(), convert(aclEntry)));
         aclService.updateAcl(acl);
     }
 

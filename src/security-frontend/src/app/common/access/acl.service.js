@@ -21,6 +21,14 @@
         addAclsForGroup: addAclsForGroup,
         removeAcls: createRemoveAclsAction(getid, aclService)
       }
+    };
+
+    function principalAclComparator(principal, acl) {
+      return principal.id === acl.principalId;
+    }
+
+    function aclComparator(acl1, acl2) {
+      return acl1.principalId === acl2.principalId;
     }
 
     function createRemoveAclsAction(getid, service) {
@@ -39,7 +47,7 @@
               })
             });
         } else {
-          scope.acls = collections.difference(scope.acls, checkedAcls);
+          scope.acls = collections.difference(scope.acls, checkedAcls, aclComparator);
         }
       }
     }
@@ -54,7 +62,7 @@
 				okTitle: 'Ok'
 			}).result.then(function (model) {
 				model.bundle.itemsList.forEach(function (user) {
-					var stillNotPresent = !collections.find(user, scope.acls);
+					var stillNotPresent = !collections.find(user, scope.acls, principalAclComparator);
 					if (stillNotPresent && user.checked) {
 						addDefaultAcl(user.id, user.userName, 'user', scope);
 					}
@@ -72,7 +80,7 @@
 				okTitle: 'Ok'
 			}).result.then(function (model) {
 				model.bundle.groupList.forEach(function (group) {
-          var stillNotPresent = !collections.find(group, scope.acls);
+          var stillNotPresent = !collections.find(group, scope.acls, principalAclComparator);
 					if (stillNotPresent && group.checked) {
 						addDefaultAcl(group.id, group.name, 'group', scope);
 					}
@@ -80,9 +88,10 @@
 			});
 		}
 
-		function addDefaultAcl(id, name, principalTypeName, scope) {
+		function addDefaultAcl(principalId, name, principalTypeName, scope) {
 			var defaultAcl = {
-				id: id,
+        id: null,
+				principalId: principalId,
 				name: name,
 				principalTypeName: principalTypeName,
 				canRead: false,

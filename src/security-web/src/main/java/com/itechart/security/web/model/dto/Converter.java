@@ -319,22 +319,21 @@ public class Converter {
         return permissions;
     }
 
-    public static AclEntryDto convertToAclEntryDto(Principal principal, Set<Permission> permissions) {
+    public static AclEntryDto convert(Principal principal, Set<Permission> permissions) {
         AclEntryDto dto = new AclEntryDto();
-        dto.setId(principal.getId());
-        initAclDto(dto, principal, permissions);
+        initAcl(dto, principal, permissions);
         return dto;
     }
 
     public static UserDefaultAclEntryDto convert(UserDefaultAclEntry acl) {
         UserDefaultAclEntryDto dto = new UserDefaultAclEntryDto();
-        dto.setId(acl.getPrincipal().getId());
-        dto.setRecordId((Long) acl.getId());
-        initAclDto(dto, acl.getPrincipal(), acl.getPermissions());
+        dto.setId((Long) acl.getId());
+        initAcl(dto, acl.getPrincipal(), acl.getPermissions());
         return dto;
     }
 
-    private static void initAclDto(AclEntryDto dto, Principal principal, Set<Permission> permissions) {
+    private static void initAcl(AclEntryDto dto, Principal principal, Set<Permission> permissions) {
+        dto.setPrincipalId(principal.getId());
         dto.setName(principal.getName());
         if (principal instanceof User) {
             dto.setPrincipalTypeName(PrincipalTypes.USER.getObjectType());

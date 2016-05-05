@@ -10,7 +10,7 @@
 		return {
 			byId: byId,
 			compareTo: compareTo,
-			byProperty: byProperty,
+      propertyComparator: propertyComparator,
 			difference: difference,
 			sort: sort,
 			find: find
@@ -24,14 +24,14 @@
 			return a > b ? 1 : a === b ? 0 : -1;
 		}
 
-		function byProperty(propertyName) {
+		function propertyComparator(propertyName) {
 			return function (a, b) {
 				return compareTo(a[propertyName], b[propertyName]);
 			}
 		}
 
 		function difference(from, what, comparator) {
-			comparator = comparator || self.byId;
+			comparator = comparator || byId;
 			if (!from) {
 				return what;
 			}
@@ -46,8 +46,7 @@
 		}
 
 		function sort(collection, asc, comparator) {
-			asc = asc || true;
-			comparator = comparator || compareTo;
+			comparator = comparator || propertyComparator('id');
 			collection.sort(function (a, b) {
 				return (asc ? 1 : -1) * comparator(a, b);
 			});
