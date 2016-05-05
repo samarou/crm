@@ -1,15 +1,14 @@
-package com.itechart.security.web.model.dto;
-
+package com.itechart.security.business.model.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class EmailDto {
+public class TelephoneDto {
     private Long id;
 
-    private String name;
+    private String number;
 
     private String type;
 }

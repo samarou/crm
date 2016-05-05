@@ -1,4 +1,4 @@
-package com.itechart.security.web.model.dto;
+package com.itechart.security.business.model.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,5 +12,5 @@ public class AddressDto {
 
     private String addressLine2;
 
-    private Long countryId;
+    private CountryDto country;
 }
