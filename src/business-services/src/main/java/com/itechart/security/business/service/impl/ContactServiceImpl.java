@@ -3,6 +3,7 @@ package com.itechart.security.business.service.impl;
 import com.itechart.security.business.dao.ContactDao;
 import com.itechart.security.business.filter.ContactFilter;
 import com.itechart.security.business.model.dto.ContactDto;
+import com.itechart.security.business.model.persistent.Contact;
 import com.itechart.security.business.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
