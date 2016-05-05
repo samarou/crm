@@ -61,10 +61,10 @@ public class GroupController {
 
     @RequestMapping(value = "/groups/{id}", method = DELETE)
     public void delete(@PathVariable Long id) {
-        Group deletableGroup = groupService.getGroupWithUsers(id);
-        Set<User> users = deletableGroup.getUsers();
+        Group group = groupService.getGroupWithUsers(id);
+        Set<User> users = group.getUsers();
         users.forEach(user -> {
-            user.removeFromGroup(deletableGroup);
+            user.removeFromGroup(group);
             userService.updateUser(user);
         });
         groupService.deleteById(id);
