@@ -22,6 +22,6 @@
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_default_acl" referencedColumnNames="id" referencedTableName="user" constraintName="fk_user_default_acl_user_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
     <changeSet author="yauheni.putsykovich" id="3">
-        <addForeignKeyConstraint baseColumnNames="principal_id" baseTableName="acl_entry" referencedColumnNames="id" referencedTableName="principal" constraintName="fk_user_default_acl_principal_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+        <addForeignKeyConstraint baseColumnNames="principal_id" baseTableName="user_default_acl" referencedColumnNames="id" referencedTableName="principal" constraintName="fk_user_default_acl_principal_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
 </databaseChangeLog>
