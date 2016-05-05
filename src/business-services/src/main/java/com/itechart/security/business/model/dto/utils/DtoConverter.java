@@ -16,26 +16,31 @@ public class DtoConverter {
         if (CollectionUtils.isEmpty(contacts)) {
             return Collections.emptyList();
         }
-        return contacts.stream().map(DtoConverter::convert).collect(Collectors.toList());
+        return contacts.stream().map(DtoConverter::convertMainFields).collect(Collectors.toList());
     }
 
     public static ContactDto convert(Contact contact) {
-        ContactDto dto = new ContactDto();
-        dto.setId(contact.getId());
-        dto.setFirstName(contact.getFirstName());
-        dto.setLastName(contact.getLastName());
-        dto.setPatronymic(contact.getPatronymic());
+        ContactDto dto = convertMainFields(contact);
         dto.setDateOfBirth(contact.getDateOfBirth());
         dto.setIsMale(contact.getIsMale());
         dto.setNationality(contact.getNationality());
         dto.setPhotoUrl(contact.getPhotoUrl());
 //        dto.setOrders(convertOrders(contact.getOrders()));
-        dto.setAddresses(convertAddresses(contact.getAddresses()));
-        dto.setTelephones(convertTelephones(contact.getTelephones()));
-        dto.setEmails(convertEmails(contact.getEmails()));
         dto.setMessengers(convertMessengerAccounts(contact.getMessengers()));
         dto.setSocialNetworks(convertSocialNetworkAccounts(contact.getSocialNetworks()));
         dto.setWorkplaces(convertWorkplaces(contact.getWorkplaces()));
+        return dto;
+    }
+
+    public static ContactDto convertMainFields(Contact contact) {
+        ContactDto dto = new ContactDto();
+        dto.setId(contact.getId());
+        dto.setFirstName(contact.getFirstName());
+        dto.setLastName(contact.getLastName());
+        dto.setPatronymic(contact.getPatronymic());
+        dto.setAddresses(convertAddresses(contact.getAddresses()));
+        dto.setTelephones(convertTelephones(contact.getTelephones()));
+        dto.setEmails(convertEmails(contact.getEmails()));
         return dto;
     }
 
