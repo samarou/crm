@@ -155,7 +155,7 @@ public class User extends Principal implements SecurityUser {
         return acls.remove(defaultAcl);
     }
 
-    public boolean leaveGroup(Group removableGroup) {
+    public boolean removeFromGroup(Group removableGroup) {
         if (groups != null) {
             Optional<Group> optionalGroup = groups.stream().filter(g -> g.equals(removableGroup)).findFirst();
             if (optionalGroup.isPresent() && groups.contains(optionalGroup.get())) {
