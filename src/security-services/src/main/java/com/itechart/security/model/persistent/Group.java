@@ -5,8 +5,6 @@ import com.itechart.security.core.model.SecurityGroup;
 import javax.persistence.*;
 import java.util.Set;
 
-import static javax.persistence.FetchType.EAGER;
-
 /**
  * Group of users
  *
@@ -23,7 +21,7 @@ public class Group extends Principal implements SecurityGroup {
     @Column(name = "description", length = 250)
     private String description;
 
-    @ManyToMany(mappedBy = "groups", fetch = EAGER)
+    @ManyToMany(mappedBy = "groups")
     private Set<User> users;
 
     @Override

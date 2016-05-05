@@ -40,7 +40,7 @@ public class GroupController {
 
     @RequestMapping(value = "/groups/{id}", method = GET)
     public GroupDto  get(@PathVariable Long id) {
-        return convert(groupService.get(id));
+        return convertGroupWithUsers(groupService.getGroupWithUsers(id));
     }
 
     @PreAuthorize("hasRole('USER')")
@@ -61,7 +61,7 @@ public class GroupController {
 
     @RequestMapping(value = "/groups/{id}", method = DELETE)
     public void delete(@PathVariable Long id) {
-        Group deletableGroup = groupService.get(id);
+        Group deletableGroup = groupService.getGroupWithUsers(id);
         Set<User> users = deletableGroup.getUsers();
         users.forEach(user -> {
             user.leaveGroup(deletableGroup);
