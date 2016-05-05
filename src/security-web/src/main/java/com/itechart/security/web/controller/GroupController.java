@@ -64,7 +64,7 @@ public class GroupController {
         Group deletableGroup = groupService.getGroupWithUsers(id);
         Set<User> users = deletableGroup.getUsers();
         users.forEach(user -> {
-            user.leaveGroup(deletableGroup);
+            user.removeFromGroup(deletableGroup);
             userService.updateUser(user);
         });
         groupService.deleteById(id);
