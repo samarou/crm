@@ -1,15 +1,18 @@
 package com.itechart.security.business.service.impl;
 
 import com.itechart.security.business.dao.ContactDao;
+import com.itechart.security.business.dao.EmailDao;
 import com.itechart.security.business.filter.ContactFilter;
 import com.itechart.security.business.model.dto.ContactDto;
 import com.itechart.security.business.model.persistent.Contact;
+import com.itechart.security.business.model.persistent.Email;
 import com.itechart.security.business.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 import static com.itechart.security.business.model.dto.utils.DtoConverter.convert;
 import static com.itechart.security.business.model.dto.utils.DtoConverter.convertContacts;
@@ -23,10 +26,14 @@ public class ContactServiceImpl implements ContactService {
     @Autowired
     private ContactDao contactDao;
 
+    @Autowired
+    private EmailDao emailDao;
+
     @Override
     @Transactional
     public List<ContactDto> findContacts(ContactFilter filter) {
-        return convertContacts(contactDao.findContacts(filter));
+        List<Contact> contacts = contactDao.findContacts(filter);
+        return convertContacts(contacts);
     }
 
     @Override
@@ -63,6 +70,12 @@ public class ContactServiceImpl implements ContactService {
     @Transactional
     public void deleteById(Long id) {
         contactDao.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public void deleteEmail(Long id) {
+        emailDao.delete(id);
     }
 
     @Override

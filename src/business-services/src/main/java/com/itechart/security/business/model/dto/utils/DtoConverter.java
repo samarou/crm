@@ -6,6 +6,7 @@ import com.itechart.security.business.model.enums.TelephoneType;
 import com.itechart.security.business.model.persistent.*;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -65,7 +66,7 @@ public class DtoConverter {
     }
 
 
-    public static OrderDto convert(Order order){
+    public static OrderDto convert(Order order) {
         OrderDto dto = new OrderDto();
         dto.setId(order.getId());
         dto.setProduct(order.getProduct());
@@ -74,7 +75,7 @@ public class DtoConverter {
         return dto;
     }
 
-    public static Order convert(OrderDto dto){
+    public static Order convert(OrderDto dto) {
         Order order = new Order();
         order.setId(dto.getId());
         order.setProduct(dto.getProduct());
@@ -98,7 +99,7 @@ public class DtoConverter {
     }
 
 
-    public static EmailDto convert(Email email){
+    public static EmailDto convert(Email email) {
         EmailDto dto = new EmailDto();
         dto.setId(email.getId());
         dto.setName(email.getName());
@@ -106,7 +107,7 @@ public class DtoConverter {
         return dto;
     }
 
-    public static Email convert(EmailDto dto){
+    public static Email convert(EmailDto dto) {
         Email email = new Email();
         email.setId(dto.getId());
         email.setName(dto.getName());
@@ -114,14 +115,14 @@ public class DtoConverter {
         return email;
     }
 
-    public static Set<EmailDto> convertEmails(Set<Email> emails){
+    public static Set<EmailDto> convertEmails(Set<Email> emails) {
         if (CollectionUtils.isEmpty(emails)) {
             return Collections.emptySet();
         }
         return emails.stream().map(DtoConverter::convert).collect(Collectors.toSet());
     }
 
-    public static Set<Email> convertEmailDtos(Set<EmailDto> dtos){
+    public static Set<Email> convertEmailDtos(Set<EmailDto> dtos) {
         if (CollectionUtils.isEmpty(dtos)) {
             return Collections.emptySet();
         }
@@ -129,21 +130,21 @@ public class DtoConverter {
     }
 
 
-    public static CountryDto convert(Country country){
+    public static CountryDto convert(Country country) {
         CountryDto dto = new CountryDto();
         dto.setId(country.getId());
         dto.setName(country.getName());
         return dto;
     }
 
-    public static Country convert(CountryDto dto){
+    public static Country convert(CountryDto dto) {
         Country country = new Country();
         country.setId(dto.getId());
         country.setName(dto.getName());
         return country;
     }
 
-    public static AddressDto convert(Address address){
+    public static AddressDto convert(Address address) {
         AddressDto dto = new AddressDto();
         dto.setId(address.getId());
         dto.setAddressLine1(address.getAddressLine1());
@@ -152,7 +153,7 @@ public class DtoConverter {
         return dto;
     }
 
-    public static Address convert(AddressDto dto){
+    public static Address convert(AddressDto dto) {
         Address address = new Address();
         address.setId(dto.getId());
         address.setAddressLine1(dto.getAddressLine1());
@@ -161,14 +162,14 @@ public class DtoConverter {
         return address;
     }
 
-    public static Set<AddressDto> convertAddresses(Set<Address> addresses){
+    public static Set<AddressDto> convertAddresses(Set<Address> addresses) {
         if (CollectionUtils.isEmpty(addresses)) {
             return Collections.emptySet();
         }
         return addresses.stream().map(DtoConverter::convert).collect(Collectors.toSet());
     }
 
-    public static Set<Address> convertAddressDtos(Set<AddressDto> dtos){
+    public static Set<Address> convertAddressDtos(Set<AddressDto> dtos) {
         if (CollectionUtils.isEmpty(dtos)) {
             return Collections.emptySet();
         }
@@ -176,7 +177,7 @@ public class DtoConverter {
     }
 
 
-    public static TelephoneDto convert(Telephone telephone){
+    public static TelephoneDto convert(Telephone telephone) {
         TelephoneDto dto = new TelephoneDto();
         dto.setId(telephone.getId());
         dto.setNumber(telephone.getNumber());
@@ -184,7 +185,7 @@ public class DtoConverter {
         return dto;
     }
 
-    public static Telephone convert(TelephoneDto dto){
+    public static Telephone convert(TelephoneDto dto) {
         Telephone telephone = new Telephone();
         telephone.setId(dto.getId());
         telephone.setNumber(dto.getNumber());
@@ -207,21 +208,21 @@ public class DtoConverter {
     }
 
 
-    public static MessengerDto convert(Messenger messenger){
+    public static MessengerDto convert(Messenger messenger) {
         MessengerDto dto = new MessengerDto();
         dto.setId(messenger.getId());
         dto.setName(messenger.getName());
         return dto;
     }
 
-    public static Messenger convert(MessengerDto dto){
+    public static Messenger convert(MessengerDto dto) {
         Messenger messenger = new Messenger();
         messenger.setId(dto.getId());
         messenger.setName(dto.getName());
         return messenger;
     }
 
-    public static MessengerAccountDto convert(MessengerAccount messengerAccount){
+    public static MessengerAccountDto convert(MessengerAccount messengerAccount) {
         MessengerAccountDto dto = new MessengerAccountDto();
         dto.setId(messengerAccount.getId());
         dto.setMessenger(convert(messengerAccount.getMessenger()));
@@ -229,7 +230,7 @@ public class DtoConverter {
         return dto;
     }
 
-    public static MessengerAccount convert(MessengerAccountDto dto){
+    public static MessengerAccount convert(MessengerAccountDto dto) {
         MessengerAccount messengerAccount = new MessengerAccount();
         messengerAccount.setId(dto.getId());
         messengerAccount.setMessenger(convert(dto.getMessenger()));
@@ -252,21 +253,21 @@ public class DtoConverter {
     }
 
 
-    public static SocialNetworkDto convert(SocialNetwork socialNetwork){
+    public static SocialNetworkDto convert(SocialNetwork socialNetwork) {
         SocialNetworkDto dto = new SocialNetworkDto();
         dto.setId(socialNetwork.getId());
         dto.setName(socialNetwork.getName());
         return dto;
     }
 
-    public static SocialNetwork convert(SocialNetworkDto dto){
+    public static SocialNetwork convert(SocialNetworkDto dto) {
         SocialNetwork socialNetwork = new SocialNetwork();
         socialNetwork.setId(dto.getId());
         socialNetwork.setName(dto.getName());
         return socialNetwork;
     }
 
-    public static SocialNetworkAccountDto convert(SocialNetworkAccount socialNetworkAccount){
+    public static SocialNetworkAccountDto convert(SocialNetworkAccount socialNetworkAccount) {
         SocialNetworkAccountDto dto = new SocialNetworkAccountDto();
         dto.setId(socialNetworkAccount.getId());
         dto.setSocialNetwork(convert(socialNetworkAccount.getSocialNetwork()));
@@ -274,7 +275,7 @@ public class DtoConverter {
         return dto;
     }
 
-    public static SocialNetworkAccount convert(SocialNetworkAccountDto dto){
+    public static SocialNetworkAccount convert(SocialNetworkAccountDto dto) {
         SocialNetworkAccount socialNetworkAccount = new SocialNetworkAccount();
         socialNetworkAccount.setId(dto.getId());
         socialNetworkAccount.setSocialNetwork(convert(dto.getSocialNetwork()));
@@ -297,7 +298,7 @@ public class DtoConverter {
     }
 
 
-    public static WorkplaceDto convert(Workplace workplace){
+    public static WorkplaceDto convert(Workplace workplace) {
         WorkplaceDto dto = new WorkplaceDto();
         dto.setId(workplace.getId());
         dto.setName(workplace.getName());
@@ -308,7 +309,7 @@ public class DtoConverter {
         return dto;
     }
 
-    public static Workplace convert(WorkplaceDto dto){
+    public static Workplace convert(WorkplaceDto dto) {
         Workplace workplace = new Workplace();
         workplace.setId(dto.getId());
         workplace.setName(dto.getName());
@@ -333,9 +334,7 @@ public class DtoConverter {
         return workplaces.stream().map(DtoConverter::convert).collect(Collectors.toSet());
     }
 
-
-
-    public static Attachment convert(AttachmentDto dto){
+    public static Attachment convert(AttachmentDto dto) {
         Attachment attachment = new Attachment();
         attachment.setId(dto.getId());
         attachment.setName(dto.getName());
@@ -347,7 +346,7 @@ public class DtoConverter {
         return attachment;
     }
 
-    public static AttachmentDto convert(Attachment attachment){
+    public static AttachmentDto convert(Attachment attachment) {
         AttachmentDto dto = new AttachmentDto();
         dto.setId(attachment.getId());
         dto.setName(attachment.getName());
@@ -369,5 +368,34 @@ public class DtoConverter {
             return Collections.emptyList();
         }
         return attachmentsDto.stream().map(DtoConverter::convert).collect(Collectors.toList());
+    }
+
+    public static EmailTypeDto convert(EmailType type) {
+        EmailTypeDto dto = new EmailTypeDto();
+        dto.setName(type.name());
+        dto.setValue(type.getValue());
+        return dto;
+    }
+
+    public static List<EmailTypeDto> convertEmailTypes(EmailType[] types) {
+        if (types.length == 0) {
+            return Collections.emptyList();
+        }
+        return Arrays.asList(types).stream().map(DtoConverter::convert).collect(Collectors.toList());
+    }
+
+
+    public static TelephoneTypeDto convert(TelephoneType type) {
+        TelephoneTypeDto dto = new TelephoneTypeDto();
+        dto.setName(type.name());
+        dto.setValue(type.getValue());
+        return dto;
+    }
+
+    public static List<TelephoneTypeDto> convertTelephoneTypes(TelephoneType[] types) {
+        if (types.length == 0) {
+            return Collections.emptyList();
+        }
+        return Arrays.asList(types).stream().map(DtoConverter::convert).collect(Collectors.toList());
     }
 }

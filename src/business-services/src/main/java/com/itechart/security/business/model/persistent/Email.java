@@ -1,5 +1,6 @@
 package com.itechart.security.business.model.persistent;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.itechart.security.business.model.enums.EmailType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -25,8 +26,8 @@ public class Email extends SecuredEntity{
     @Enumerated(EnumType.STRING)
     private EmailType type;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "contact_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "contact_id", referencedColumnName = "id")
     private Contact contact;
 
     @Column(name = "date_deleted")

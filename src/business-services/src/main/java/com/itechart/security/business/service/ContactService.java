@@ -25,5 +25,7 @@ public interface ContactService {
 
     void deleteById(Long id);
 
+    void deleteEmail(Long id);
+
     int countContacts(ContactFilter filter);
 }

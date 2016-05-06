@@ -13,10 +13,13 @@
         vm.contact = {};
         vm.attachments = [];
         vm.attachmentService = contactAttachmentService;
+        vm.options = {};
+        vm.actions = contactPermissionsService;
         vm.isManager = authService.isManager();
         vm.submitText = 'Save';
         vm.title = 'Edit contact';
         vm.submit = submit;
+        vm.details = contactDetailsService;
         vm.cancel = contactDetailsService.cancel;
         vm.aclHandler = contactDetailsService.createAclHandler(function () {
             return vm.contact.id;
@@ -27,11 +30,19 @@
         function init() {
             $q.all(
                 [
+                    initOptions(),
                     isEditable(),
                     getAcls(),
                     getAttachments()
                 ]
             ).then(getContact);
+        }
+
+        function initOptions() {
+            return vm.details.init().then(function (response) {
+                vm.options = response;
+                console.log(vm.options);
+            });
         }
 
         function submit() {

@@ -2,7 +2,11 @@ package com.itechart.security.web.controller;
 
 import com.itechart.security.business.filter.ContactFilter;
 import com.itechart.security.business.model.dto.ContactDto;
+import com.itechart.security.business.model.dto.EmailTypeDto;
+import com.itechart.security.business.model.dto.TelephoneTypeDto;
+import com.itechart.security.business.model.enums.EmailType;
 import com.itechart.security.business.model.enums.ObjectTypes;
+import com.itechart.security.business.model.enums.TelephoneType;
 import com.itechart.security.business.service.ContactService;
 import com.itechart.security.core.SecurityUtils;
 import com.itechart.security.core.acl.AclPermissionEvaluator;
@@ -27,6 +31,9 @@ import java.util.Set;
 
 import static com.itechart.security.web.model.dto.Converter.convert;
 import static java.util.stream.Collectors.toList;
+import static com.itechart.security.business.model.dto.utils.DtoConverter.convertEmailTypes;
+import static com.itechart.security.business.model.dto.utils.DtoConverter.convertTelephoneTypes;
+
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
@@ -75,7 +82,8 @@ public class ContactController {
     public DataPageDto find(ContactFilterDto filterDto) {
         ContactFilter filter = convert(filterDto);
         DataPageDto<ContactDto> page = new DataPageDto<>();
-        page.setData(contactService.findContacts(filter));
+        List<ContactDto> contactDtos = contactService.findContacts(filter);
+        page.setData(contactDtos);
         page.setTotalCount(contactService.countContacts(filter));
         return page;
     }
@@ -116,6 +124,21 @@ public class ContactController {
         Acl acl = getAcl(contactId);
         acl.removePrincipal(principalId);
         aclService.updateAcl(acl);
+    }
+
+    @RequestMapping(value = "/contacts/{contactId}/emails/{emailId}", method = RequestMethod.DELETE)
+    public void deleteEmail(@PathVariable Long contactId, @PathVariable Long emailId) {
+        contactService.deleteEmail(emailId);
+    }
+
+    @RequestMapping(value = "/emails/types", method = RequestMethod.GET)
+    public List<EmailTypeDto> getEmailTypes(){
+        return convertEmailTypes(EmailType.values());
+    }
+
+    @RequestMapping(value = "/telephones/types", method = RequestMethod.GET)
+    public List<TelephoneTypeDto> getTelephoneTypes(){
+        return convertTelephoneTypes(TelephoneType.values());
     }
 
     private Acl getAcl(Long contactId) {

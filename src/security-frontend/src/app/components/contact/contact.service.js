@@ -23,7 +23,10 @@
             addAttachment: addAttachment,
             updateAttachment: updateAttachment,
             removeAttachment: removeAttachment,
-            getAttachment: getAttachment
+            getAttachment: getAttachment,
+            getEmailTypes: getEmailTypes,
+            removeEmail: removeEmail,
+            getTelephoneTypes: getTelephoneTypes
         };
 
         function getAll() {
@@ -89,14 +92,25 @@
                 filePath: attachment.filePath
             });
         }
-
-
+        
         function updateAttachment(id, attachment) {
             return $http.put('rest/contacts/' + id + '/attachments', attachment);
         }
 
         function removeAttachment(id, attachmentId) {
             return $http.delete('rest/contacts/' + id + '/attachments/' + attachmentId);
+        }
+        
+        function getEmailTypes() {
+            return $http.get('rest/emails/types');
+        }
+
+        function removeEmail(id, emailId) {
+            return $http.delete('rest/contacts/' + id + '/emails/' + emailId)
+        }
+
+        function getTelephoneTypes() {
+            return $http.get('rest/telephones/types');
         }
     }
 })();

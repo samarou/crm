@@ -18,6 +18,7 @@
         vm.submit = submit;
         vm.cancel = contactDetailsService.cancel;
         vm.attachmentService = contactAttachmentService;
+        vm.details = contactDetailsService;
         vm.aclHandler = contactDetailsService.createAclHandler(function () {
             return vm.contact.id;
         });
@@ -25,8 +26,18 @@
         init();
 
         function init() {
-            userService.getDefaultAcls().then(function (response) {
+            return initAcls().then(initOptions);
+        }
+
+        function initAcls() {
+            return userService.getDefaultAcls().then(function (response) {
                 vm.aclHandler.acls = response.data;
+            });
+        }
+
+        function initOptions() {
+            return vm.details.init().then(function (response) {
+                vm.options = response;
             });
         }
 

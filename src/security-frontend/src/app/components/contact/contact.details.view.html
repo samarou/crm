@@ -3,48 +3,121 @@
                   cancel-btn="vm.cancel()" crm-form-validation="contactForm">
     <form name="contactForm" class="form-group">
         <uib-tabset active="active">
-            <uib-tab heading="Personal Info">
+            <uib-tab heading="General Info">
                 <div class="row crm-top-buffer">
-                    <div class="col-md-6">
-                        <div class="form-group" crm-input-validation>
-                            <label for="contact-first-name">First name</label>
-                            <input ng-disabled="!vm.canEdit" id="contact-first-name" class="form-control"
-                                   name="firstName"
-                                   ng-model="vm.contact.firstName" required>
+                    <div class="col-md-10">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group" crm-input-validation>
+                                    <label for="contact-first-name">First name</label>
+                                    <input ng-disabled="!vm.canEdit" id="contact-first-name" class="form-control"
+                                           name="firstName"
+                                           ng-model="vm.contact.firstName" required>
                         <span ng-show="contactForm.firstName.$dirty && contactForm.firstName.$error.required"
                               class="help-block">First name is required</span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group" crm-input-validation>
-                            <label for="contact-last-name">Last name</label>
-                            <input ng-disabled="!vm.canEdit" id="contact-last-name" class="form-control" name="lastName"
-                                   ng-model="vm.contact.lastName" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" crm-input-validation>
+                                    <label for="contact-last-name">Last name</label>
+                                    <input ng-disabled="!vm.canEdit" id="contact-last-name" class="form-control"
+                                           name="lastName"
+                                           ng-model="vm.contact.lastName" required>
                             <span ng-show="contactForm.lastName.$dirty && contactForm.lastName.$error.required"
                                   class="help-block">Last name is required</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" crm-input-validation>
+                                    <label for="contact-patronymic">Patronymic</label>
+                                    <input ng-disabled="!vm.canEdit" id="contact-patronymic" class="form-control"
+                                           name="patronymic"
+                                           ng-model="vm.contact.patronymic">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-4">
+                                <div class="form-group" crm-input-validation>
+                                    <label for="contact-date-of-birth">Date of birth</label>
+                                    <input ng-disabled="!vm.canEdit" id="contact-date-of-birth"
+                                           placeholder="yyyy-MM-dd" min="1900-01-01"
+                                           max="{{vm.details.now|date:'yyyy-MM-dd'}}"
+                                           class="form-control"
+                                           name="dateOfBirth"
+                                           ng-model="vm.contact.dateOfBirth">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" crm-input-validation>
+                                    <label for="contact-is-male">Gender</label>
+                                    <select ng-disabled="!vm.canEdit" id="contact-is-male" class="form-control"
+                                            name="isMale" ng-model="vm.contact.isMale"
+                                            ng-options="o.v as o.n for o in [{n:'Please, select',v:null},{n:'Female',v:false},{n:'Male', v:true}]">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" crm-input-validation>
+                                    <label for="contact-nationality">Nationality</label>
+                                    <input ng-disabled="!vm.canEdit" id="contact-nationality" class="form-control"
+                                           name="nationality" ng-model="vm.contact.nationality">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="row"><img class="img-responsive" ng-src="{{vm.contact.photoUrl}}"></div>
+                        <div class="row">
+                            <div class="form-group" crm-input-validation>
+                                <label for="contact-photo">Photo URL</label>
+                                <input ng-disabled="!vm.canEdit" id="contact-photo" class="form-control"
+                                       name="photoUrl" ng-model="vm.contact.photoUrl">
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group" crm-input-validation>
-                            <label for="contact-email">Email</label>
-                            <input type="email" ng-disabled="!vm.canEdit" id="contact-email" class="form-control"
-                                   name="email"
-                                   ng-model="vm.contact.email" required>
-                    <span ng-show="contactForm.email.$dirty">
-                        <span ng-show="contactForm.email.$error.required" class="help-block">Email is required</span>
-                        <span ng-show="contactForm.email.$error.email" class="help-block">Enter valid email</span>
-                    </span>
+                <div class="row crm-top-buffer">
+                    <div class="col-md-12"><h4>Emails</h4></div>
+                    <div class="col-md-12">
+                        <div class="btn-group btn-group-justified pull-right">
+                            <a class="btn btn-default" ng-click="vm.details.addEmail(vm)"
+                               ng-show="vm.canEdit">
+                                Add
+                            </a>
+                            <a class="btn btn-default" ng-click="vm.details.removeEmails(vm)"
+                               ng-show="vm.canEdit">
+                                Remove
+                            </a>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group" crm-input-validation>
-                            <label for="contact-address">Address</label>
-                            <input ng-disabled="!vm.canEdit" id="contact-address" class="form-control" name="address"
-                                   ng-model="vm.contact.address">
-                        </div>
-                    </div>
+                    <table class="table table-condensed">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th>Email</th>
+                            <th>Type</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="email in vm.contact.emails">
+                            <td><input ng-show="vm.canEdit" type="checkbox" ng-model="email.checked"></td>
+                            <td>{{$index + 1}}</td>
+                            <td><input ng-disabled="!vm.canEdit" class="form-control"
+                                       name="email" ng-model="email.name"></td>
+                            <td><select ng-disabled="!vm.canEdit" ng-model="email.type"
+                                        ng-options="option.name as option.value for option in vm.options.emailTypes"
+                                        class="form-control" crm-input-validation required>
+                                <option value="">Please, select</option>
+                            </select>
+                                <span ng-show="email.type.$dirty && email.type.$error.required"
+                                      class="help-block">Email type is required</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </uib-tab>
             <uib-tab heading="Attachments">
