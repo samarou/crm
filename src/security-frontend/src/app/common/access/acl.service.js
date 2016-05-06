@@ -62,7 +62,7 @@
 				okTitle: 'Ok'
 			}).result.then(function (model) {
 				model.bundle.itemsList.forEach(function (user) {
-					var stillNotPresent = !collections.find(user, scope.acls, principalAclComparator);
+					var stillNotPresent = !Collections.find(user, scope.acls, principalAclComparator);
 					if (stillNotPresent && user.checked) {
 						addDefaultAcl(user.id, user.userName, 'user', scope);
 					}
