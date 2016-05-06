@@ -1,28 +1,31 @@
-<table class="table">
-  <caption>
-    Permissions
-    <ul ng-show="handler.canEdit" class="list-inline pull-right">
-      <li><span ng-click="handler.actions.addAclsForUser(handler)" class="hover--pointer icon--user-add"></span></li>
-      <li><span ng-click="handler.actions.addAclsForGroup(handler)" class="hover--pointer icon--user-group-add"></span></li>
-      <li><span ng-click="handler.actions.removeAcls(handler)" class="hover--pointer icon--remove"></span></li>
-    </ul>
-  </caption>
+<span>
+  <div class="row crm-top-buffer">
+    <div class="col-xs-12 col-sm-6"><h4>Permissions</h4></div>
+    <div class="col-xs-12 col-sm-6 pull-right">
+      <div class="btn-group btn-group-justified pull-right">
+        <a class="btn btn-default" ng-click="handler.actions.addAclsForUser(handler)" ng-show="handler.canEdit"> Add user </a>
+        <a class="btn btn-default" ng-click="handler.actions.addAclsForGroup(handler)" ng-show="handler.canEdit"> Add group </a>
+        <a class="btn btn-default" ng-click="handler.actions.removeAcls(handler)" ng-show="handler.canEdit"> Remove </a>
+      </div>
+    </div>
+  </div>
+<table class="table table-condensed">
   <thead>
   <tr>
-    <td></td>
-    <td></td>
-    <td>Name</td>
-    <td>Read</td>
-    <td>Write</td>
-    <td>Create</td>
-    <td>Delete</td>
-    <td>Admin</td>
+    <th></th>
+    <th></th>
+    <th>Name</th>
+    <th>Read</th>
+    <th>Write</th>
+    <th>Create</th>
+    <th>Delete</th>
+    <th>Admin</th>
   </tr>
   </thead>
   <tbody>
   <tr ng-repeat="p in handler.acls">
     <td><input ng-show="handler.canEdit" type="checkbox" ng-model="p.checked"></td>
-    <td><span title="{{p.principalTypeName}}" class="icon--small hover--pointer"
+    <td><span title="{{p.principalTypeName}}" class="icon crm-hover"
               ng-class="{'icon--user': p.principalTypeName === 'user', 'icon--user-group': p.principalTypeName === 'group'}"></span>
     </td>
     <td>{{p.name}}</td>
@@ -34,3 +37,4 @@
   </tr>
   </tbody>
 </table>
+</span>

@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-			.module('crm.user', ['crm.common',
+			.module('crm.user', ['crm.acl', 'crm.common',
 				'crm.role',
 				'crm.group',
 				'crm.validation',

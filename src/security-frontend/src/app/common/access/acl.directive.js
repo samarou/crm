@@ -6,7 +6,7 @@
   'use strict';
 
   angular
-    .module('securityManagement')
+    .module('crm.acl')
     .directive('aclForm', aclForm);
 
   /** @ngInject */

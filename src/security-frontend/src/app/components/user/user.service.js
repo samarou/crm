@@ -20,7 +20,7 @@
       deactivate: deactivate,
       removeAcl: removeAcl,
       getAcls: getAcls,
-      getAclsOfCurrentUser: getAclsOfCurrentUser
+      getDefaultAcls: getDefaultAcls
     };
 
     function getPublicUsers() {
@@ -71,7 +71,7 @@
       return $http.get('rest/users/' + id + '/acls');
     }
 
-    function getDefaultAcls(){
+    function getDefaultAcls() {
       return $http.get('rest/users/current/acls');
     }
   }

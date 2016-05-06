@@ -104,6 +104,22 @@ $btn-primary-border: $brand-primary;
 }
 
 
+.icon {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+}
+
+.icon--user {
+  @extend .icon;
+  background: url("../assets/icons/user.svg");
+}
+
+.icon--user-group {
+  @extend .icon;
+  background: url("../assets/icons/group.svg");
+}
+
 /* fix for bootstrap modal dialog (issue 9886) */
 body.modal-open {
   overflow: inherit;

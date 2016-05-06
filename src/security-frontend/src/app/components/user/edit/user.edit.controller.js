@@ -16,6 +16,9 @@
 		vm.title = 'Edit user';
 		vm.submit = submit;
 		vm.cancel = userDetailsService.cancel;
+    vm.aclHandler = userDetailsService.createAclHandler(function () {
+      return vm.user.id;
+    });
 
 		init();
 
@@ -24,6 +27,7 @@
 		}
 
 		function submit() {
+      vm.user.acls = vm.aclHandler.acls;
 			userDetailsService.save(vm.user, vm.roles, vm.groups, false);
 		}
 
@@ -33,7 +37,10 @@
 			return userService.getById($stateParams.id).then(function (response) {
 				vm.user = response.data;
 				checkGroupsAndRolesWhichUserHas(vm.user);
-			});
+        userService.getAcls(vm.user.id).then(function (response) {
+          vm.aclHandler.acls = response.data;
+        });
+      });
 		}
 
 		function checkGroupsAndRolesWhichUserHas(user) {

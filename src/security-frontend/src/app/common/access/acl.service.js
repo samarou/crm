@@ -5,11 +5,11 @@
   'use strict';
 
   angular
-    .module('securityManagement')
-    .service('AclServiceBuilder', AclServiceBuilder);
+    .module('crm.acl')
+    .service('aclServiceBuilder', aclServiceBuilder);
 
 	/** @ngInject */
-	function AclServiceBuilder(collections, dialogService, groupSearch, searchService, $q) {
+	function aclServiceBuilder(collections, dialogService, groupSearch, searchService, $q) {
 		var vm = {};
 
 		vm.groupBundle = groupSearch.publicMode();
@@ -39,7 +39,7 @@
         if (getid()) {
           $q.all(
             ([].concat(checkedAcls)).map(function (acl) {
-              return service.removeAcl(getid(), acl.id);
+              return service.removeAcl(getid(), acl.principalId);
             })
           ).then(function () {
               service.getAcls(getid()).then(function (response) {
@@ -89,7 +89,7 @@
 		}
 
 		function addDefaultAcl(principalId, name, principalTypeName, scope) {
-			var defaultAcl = {
+			var initialAcl = {
         id: null,
 				principalId: principalId,
 				name: name,
@@ -100,7 +100,7 @@
 				canDelete: false,
 				canAdmin: false
 			};
-			scope.acls.push(defaultAcl);
+			scope.acls.push(initialAcl);
 		}
 	}
 })();

@@ -27,8 +27,10 @@
 			$state.go('groups.edit', {id: group.id});
 		}
 
-    vm.remove = function () {
-      dialogService.confirm('You sure want to delete this group?').result.then(function (answer) {
+    function remove() {
+      dialogService.confirm('Do you want to delete the selected roles? <br/>' +
+        'They will be removed from all the users they are currently assigned to.')
+      .result.then(function (answer) {
         var checkedGroups = vm.bundle.pageGroups.filter(function (group) {
           return group.checked;
         });
@@ -42,6 +44,6 @@
             });
         }
       });
-    };
+    }
   }
 })();
