@@ -62,7 +62,7 @@
 				okTitle: 'Ok'
 			}).result.then(function (model) {
 				model.bundle.itemsList.forEach(function (user) {
-					var stillNotPresent = !Collections.find(user, scope.acls, principalAclComparator);
+					var stillNotPresent = !collections.find(user, scope.acls, principalAclComparator);
 					if (stillNotPresent && user.checked) {
 						addDefaultAcl(user.id, user.userName, 'user', scope);
 					}
@@ -89,7 +89,7 @@
 		}
 
 		function addDefaultAcl(principalId, name, principalTypeName, scope) {
-			var initialAcl = {
+			var defaultAcl = {
         id: null,
 				principalId: principalId,
 				name: name,
@@ -100,7 +100,7 @@
 				canDelete: false,
 				canAdmin: false
 			};
-			scope.acls.push(initialAcl);
+			scope.acls.push(defaultAcl);
 		}
 	}
 })();

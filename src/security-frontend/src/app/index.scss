@@ -50,27 +50,6 @@ $btn-primary-border: $brand-primary;
   margin-right: auto;
 }
 
-<<<<<<< HEAD
-=======
-.table--fixed__wrapper {
-  min-height: 250px;
-  margin-top: 30px;
-}
-
-.table--fixed {
-  table-layout: fixed;
-  word-wrap: break-word;
-}
-
-.table__row--inactive {
-  background-color: #fff6f4;
-  &:hover {
-    background-color: #bebebe;
-    cursor: pointer;
-  }
-}
-
->>>>>>> origin/bugfix/541627
 .list--compact {
   margin: 0;
   li ul {

@@ -7,6 +7,7 @@
 
   angular
     .module('crm.acl')
+    .directive('aclForm', aclForm);
 
   /** @ngInject */
   function aclForm() {

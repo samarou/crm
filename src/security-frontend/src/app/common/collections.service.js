@@ -9,7 +9,7 @@
 	function collections() {
 		return {
 			byId: byId,
-			compareTo: compareTo,
+			compare: compare,
       propertyComparator: propertyComparator,
 			difference: difference,
 			sort: sort,
@@ -20,13 +20,13 @@
 			return a.id === b.id;
 		}
 
-		function compareTo(a, b) {
+		function compare(a, b) {
 			return a > b ? 1 : a === b ? 0 : -1;
 		}
 
 		function propertyComparator(propertyName) {
 			return function (a, b) {
-				return compareTo(a[propertyName], b[propertyName]);
+				return compare(a[propertyName], b[propertyName]);
 			}
 		}
 
