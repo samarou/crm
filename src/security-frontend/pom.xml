@@ -3,6 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>security-frontend</artifactId>
+    <packaging>war</packaging>
     <parent>
         <groupId>com.itechart.security</groupId>
         <artifactId>security-project</artifactId>
@@ -24,6 +25,7 @@
                 <executions>
                     <execution>
                         <id>install node and npm</id>
+                        <phase>process-sources</phase>
                         <goals>
                             <goal>install-node-and-npm</goal>
                         </goals>
@@ -34,6 +36,7 @@
                     </execution>
                     <execution>
                         <id>npm install</id>
+                        <phase>process-sources</phase>
                         <goals>
                             <goal>npm</goal>
                         </goals>
@@ -45,6 +48,7 @@
 
                     <execution>
                         <id>bower install</id>
+                        <phase>process-sources</phase>
                         <goals>
                             <goal>bower</goal>
                         </goals>
@@ -55,6 +59,7 @@
 
                     <execution>
                         <id>gulp clean</id>
+                        <phase>process-sources</phase>
                         <goals>
                             <goal>gulp</goal>
                         </goals>
@@ -65,16 +70,42 @@
 
                     <execution>
                         <id>gulp build</id>
+                        <phase>process-sources</phase>
                         <goals>
                             <goal>gulp</goal>
                         </goals>
                         <configuration>
-                            <arguments>build:tomcat --buildDir ../security-web/target/${finalName}</arguments>
+                            <arguments>build</arguments>
                         </configuration>
                     </execution>
-
                 </executions>
             </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>2.6</version>
+                    <configuration>
+                        <failOnMissingWebXml>false</failOnMissingWebXml>
+                        <webResources>
+                            <resource>
+                                <directory>./dist</directory>
+                                <filtering>true</filtering>
+                                <excludes>
+                                    <exclude>**/fonts/*</exclude>
+                                    <exclude>**/assets/*</exclude>
+                                </excludes>
+                            </resource>
+                            <resource>
+                                <directory>./dist</directory>
+                                <filtering>false</filtering>
+                                <includes>
+                                    <include>**/fonts/*</include>
+                                    <include>**/assets/*</include>
+                                </includes>
+                            </resource>
+                        </webResources>
+                    </configuration>
+                </plugin>
         </plugins>
     </build>
 </project>
