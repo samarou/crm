@@ -31,7 +31,7 @@
         function addAttachments(scope) {
             openAddAttachmentDialog().then(function (model) {
                 model.attachment.file = service.tempAttachment.file;
-                model.attachment.uploadDate = new Date();
+                model.attachment.dateUpload = new Date();
                 scope.attachments.push(model.attachment);
                 service.tempAttachment = {};
             });

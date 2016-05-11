@@ -1,9 +1,6 @@
 package com.itechart.security.web.model.dto;
 
 import com.itechart.security.business.filter.ContactFilter;
-import com.itechart.security.business.model.persistent.Attachment;
-import com.itechart.security.business.model.persistent.Contact;
-import com.itechart.security.business.model.persistent.Order;
 import com.itechart.security.core.model.acl.Permission;
 import com.itechart.security.model.filter.UserFilter;
 import com.itechart.security.model.persistent.*;
@@ -14,7 +11,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.itechart.security.core.model.acl.Permission.*;
-import static com.itechart.security.core.model.acl.Permission.ADMIN;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -330,41 +326,5 @@ public class Converter {
             return Collections.emptyList();
         }
         return acls.stream().map(Converter::convert).collect(toList());
-    }
-
-    public static Attachment convert(AttachmentDto dto) {
-        Attachment attachment = new Attachment();
-        attachment.setId(dto.getId());
-        attachment.setName(dto.getName());
-        attachment.setComment(dto.getComment());
-        Contact contact = new Contact();
-        contact.setId(dto.getContactId());
-        attachment.setContact(contact);
-        attachment.setDateUpload(dto.getUploadDate());
-        return attachment;
-    }
-
-    public static AttachmentDto convert(Attachment attachment) {
-        AttachmentDto dto = new AttachmentDto();
-        dto.setId(attachment.getId());
-        dto.setName(attachment.getName());
-        dto.setComment(attachment.getComment());
-        dto.setContactId(attachment.getContact().getId());
-        dto.setUploadDate(attachment.getDateUpload());
-        return dto;
-    }
-
-    public static List<AttachmentDto> convertAttachments(List<Attachment> attachments) {
-        if (CollectionUtils.isEmpty(attachments)) {
-            return Collections.emptyList();
-        }
-        return attachments.stream().map(Converter::convert).collect(toList());
-    }
-
-    public static List<Attachment> convertAttachmentDtos(List<AttachmentDto> attachmentsDto) {
-        if (CollectionUtils.isEmpty(attachmentsDto)) {
-            return Collections.emptyList();
-        }
-        return attachmentsDto.stream().map(Converter::convert).collect(toList());
     }
 }

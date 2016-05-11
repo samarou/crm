@@ -1,22 +1,19 @@
 package com.itechart.security.business.service;
 
-import com.itechart.security.business.filter.ContactFilter;
-import com.itechart.security.business.model.persistent.Attachment;
-import com.itechart.security.business.model.persistent.Contact;
+import com.itechart.security.business.model.dto.AttachmentDto;
 
 import java.util.List;
-import java.util.Set;
 
 public interface AttachmentService {
-    List<Attachment> loadAll();
+    List<AttachmentDto> loadAll();
 
-    Long insertAttachment(Attachment attachment);
+    Long insertAttachment(AttachmentDto attachment);
 
-    Attachment get(Long id);
+    AttachmentDto get(Long id);
 
-    List<Attachment> getAttachments(Long contactId);
+    List<AttachmentDto> getAttachments(Long contactId);
 
-    void updateAttachment(Attachment attachment);
+    void updateAttachment(AttachmentDto attachmentDto);
 
     void deleteById(Long id);
 }

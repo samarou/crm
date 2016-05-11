@@ -76,7 +76,7 @@
                                    title="select attachment"></td>
                         <td>{{$index + 1}}</td>
                         <td><a class="btn" target="_blank" ng-click="vm.attachmentService.getAttachment(attachment)">{{attachment.name}}</a></td>
-                        <td>{{attachment.uploadDate | date:'yyyy-MM-dd'}}</td>
+                        <td>{{attachment.dateUpload | date:'yyyy-MM-dd'}}</td>
                         <td>{{attachment.comment}}</td>
                     </tr>
                     </tbody>

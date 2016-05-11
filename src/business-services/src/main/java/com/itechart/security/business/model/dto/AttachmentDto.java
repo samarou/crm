@@ -1,4 +1,4 @@
-package com.itechart.security.web.model.dto;
+package com.itechart.security.business.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -10,7 +10,7 @@ public class AttachmentDto {
     private Long contactId;
     private String name;
     private String comment;
-    private Date uploadDate;
+    private Date dateUpload;
 
     public Long getId() {
         return this.id;
@@ -44,11 +44,11 @@ public class AttachmentDto {
         this.comment = comment;
     }
 
-    public Date getUploadDate() {
-        return this.uploadDate;
+    public Date getDateUpload() {
+        return this.dateUpload;
     }
 
-    public void setUploadDate(Date uploadDate) {
-        this.uploadDate = uploadDate;
+    public void setDateUpload(Date dateUpload) {
+        this.dateUpload = dateUpload;
     }
 }
