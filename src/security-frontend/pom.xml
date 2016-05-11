@@ -90,18 +90,16 @@
                             <resource>
                                 <directory>./dist</directory>
                                 <filtering>true</filtering>
-                                <excludes>
-                                    <exclude>**/fonts/*</exclude>
-                                    <exclude>**/assets/*</exclude>
-                                </excludes>
+                                <includes>
+                                    <include>**/scripts/app*</include>
+                                </includes>
                             </resource>
                             <resource>
                                 <directory>./dist</directory>
                                 <filtering>false</filtering>
-                                <includes>
-                                    <include>**/fonts/*</include>
-                                    <include>**/assets/*</include>
-                                </includes>
+                                <excludes>
+                                    <exclude>**/scripts/app*</exclude>
+                                </excludes>
                             </resource>
                         </webResources>
                     </configuration>
