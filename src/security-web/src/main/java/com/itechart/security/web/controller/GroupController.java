@@ -1,6 +1,9 @@
 package com.itechart.security.web.controller;
 
+import com.itechart.security.model.persistent.Group;
+import com.itechart.security.model.persistent.User;
 import com.itechart.security.service.GroupService;
+import com.itechart.security.service.UserService;
 import com.itechart.security.web.model.dto.GroupDto;
 import com.itechart.security.web.model.dto.PublicGroupDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 import static com.itechart.security.web.model.dto.Converter.*;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
@@ -26,6 +30,9 @@ public class GroupController {
     @Autowired
     private GroupService groupService;
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping("/groups")
     public List<GroupDto> getGroups() {
         return convertGroups(groupService.getGroups());
@@ -33,7 +40,7 @@ public class GroupController {
 
     @RequestMapping(value = "/groups/{id}", method = GET)
     public GroupDto  get(@PathVariable Long id) {
-        return convert(groupService.get(id));
+        return convertGroupWithUsers(groupService.getGroupWithUsers(id));
     }
 
     @PreAuthorize("hasRole('USER')")
@@ -54,6 +61,12 @@ public class GroupController {
 
     @RequestMapping(value = "/groups/{id}", method = DELETE)
     public void delete(@PathVariable Long id) {
+        Group group = groupService.getGroupWithUsers(id);
+        Set<User> users = group.getUsers();
+        users.forEach(user -> {
+            user.removeFromGroup(group);
+            userService.updateUser(user);
+        });
         groupService.deleteById(id);
     }
 }

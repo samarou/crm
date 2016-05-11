@@ -1,0 +1,40 @@
+<span>
+  <div class="row crm-top-buffer">
+    <div class="col-xs-12 col-sm-6"><h4>Permissions</h4></div>
+    <div class="col-xs-12 col-sm-6 pull-right">
+      <div class="btn-group btn-group-justified pull-right">
+        <a class="btn btn-default" ng-click="handler.actions.addAclsForUser(handler)" ng-show="handler.canEdit"> Add user </a>
+        <a class="btn btn-default" ng-click="handler.actions.addAclsForGroup(handler)" ng-show="handler.canEdit"> Add group </a>
+        <a class="btn btn-default" ng-click="handler.actions.removeAcls(handler)" ng-show="handler.canEdit"> Remove </a>
+      </div>
+    </div>
+  </div>
+<table class="table table-condensed">
+  <thead>
+  <tr>
+    <th></th>
+    <th></th>
+    <th>Name</th>
+    <th>Read</th>
+    <th>Write</th>
+    <th>Create</th>
+    <th>Delete</th>
+    <th>Admin</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="p in handler.acls">
+    <td><input ng-show="handler.canEdit" type="checkbox" ng-model="p.checked"></td>
+    <td><span title="{{p.principalTypeName}}" class="crm-hover"
+              ng-class="{'icon--user': p.principalTypeName === 'user', 'icon--user-group': p.principalTypeName === 'group'}"></span>
+    </td>
+    <td>{{p.name}}</td>
+    <td><input ng-disabled="!handler.canEdit" type="checkbox" ng-model="p.canRead"></td>
+    <td><input ng-disabled="!handler.canEdit" type="checkbox" ng-model="p.canWrite"></td>
+    <td><input ng-disabled="!handler.canEdit" type="checkbox" ng-model="p.canCreate"></td>
+    <td><input ng-disabled="!handler.canEdit" type="checkbox" ng-model="p.canDelete"></td>
+    <td><input ng-disabled="!handler.canEdit" type="checkbox" ng-model="p.canAdmin"></td>
+  </tr>
+  </tbody>
+</table>
+</span>

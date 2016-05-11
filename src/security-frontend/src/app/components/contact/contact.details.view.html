@@ -48,53 +48,7 @@
                 </div>
             </uib-tab>
             <uib-tab index="1" heading="Access">
-                <div class="row crm-top-buffer">
-                    <div class="col-xs-12 col-sm-6"><h4>Permissions</h4></div>
-                    <div class="col-xs-12 col-sm-6 pull-right">
-                        <div class="btn-group btn-group-justified pull-right">
-                            <a class="btn btn-default" ng-click="vm.actions.addPermissionsForUser(vm)"
-                               ng-show="vm.canEdit">
-                                Add user
-                            </a>
-                            <a class="btn btn-default" ng-click="vm.actions.addPermissionsForGroup(vm)"
-                               ng-show="vm.canEdit">
-                                Add group
-                            </a>
-                            <a class="btn btn-default" ng-click="vm.actions.removePermissions(vm)"
-                               ng-show="vm.canEdit">
-                                Remove
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <table class="table table-condensed">
-                    <thead>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                        <th>Name</th>
-                        <th>Read</th>
-                        <th>Write</th>
-                        <th>Create</th>
-                        <th>Delete</th>
-                        <th>Admin</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="p in vm.permissions">
-                        <td><input ng-show="vm.canEdit" type="checkbox" ng-model="p.checked"></td>
-                        <td><span title="{{p.principalTypeName}}" class="icon--small crm-hover"
-                                  ng-class="{'icon--user': p.principalTypeName === 'user', 'icon--user-group': p.principalTypeName === 'group'}"></span>
-                        </td>
-                        <td>{{p.name}}</td>
-                        <td><input ng-disabled="!vm.canEdit" type="checkbox" ng-model="p.canRead"></td>
-                        <td><input ng-disabled="!vm.canEdit" type="checkbox" ng-model="p.canWrite"></td>
-                        <td><input ng-disabled="!vm.canEdit" type="checkbox" ng-model="p.canCreate"></td>
-                        <td><input ng-disabled="!vm.canEdit" type="checkbox" ng-model="p.canDelete"></td>
-                        <td><input ng-disabled="!vm.canEdit" type="checkbox" ng-model="p.canAdmin"></td>
-                    </tr>
-                    </tbody>
-                </table>
+                <acl-form handler="vm.aclHandler"></acl-form>
             </uib-tab>
         </uib-tabset>
     </form>

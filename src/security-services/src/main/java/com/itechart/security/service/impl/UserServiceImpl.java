@@ -33,6 +33,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
+    public User getUserWithAcls(Long userId) {
+        User user = userDao.get(userId);
+        user.getAcls().size();
+        return user;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<User> getUsers() {
         return userDao.loadAll();
     }
@@ -65,7 +73,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void updateUser(User user) {
-        userDao.update(user);
+        //todo: try resolve saving user by using 'update'
+//        userDao.update(user);
+        userDao.merge(user);
     }
 
     @Override

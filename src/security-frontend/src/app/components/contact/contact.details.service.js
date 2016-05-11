@@ -6,21 +6,30 @@
 			.factory('contactDetailsService', contactDetailsService);
 
 	/** @ngInject */
-	function contactDetailsService(contactService, $state) {
+	function contactDetailsService(contactService, aclServiceBuilder, $state) {
 		return {
 			submit: submit,
-			cancel: goToList
+			cancel: goToList,
+      createAclHandler: createAclHandler
 		};
 
-		function submit(contact, permissions, isNew) {
+    function createAclHandler(getId) {
+      return {
+        canEdit: true,
+        acls: [],
+        actions: aclServiceBuilder(getId, contactService)
+      }
+    }
+
+		function submit(contact, acls, isNew) {
 			if (isNew) {
 				contactService.create(contact).then(function (response) {
 					var id = response.data;
-					contactService.updatePermissions(id, permissions).then(goToList);
+					contactService.updateAcls(id, acls).then(goToList);
 				});
 			} else {
 				contactService.update(contact).then(function () {
-					contactService.updatePermissions(contact.id, permissions).then(goToList);
+					contactService.updateAcls(contact.id, acls).then(goToList);
 				});
 			}
 		}

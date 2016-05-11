@@ -5,12 +5,18 @@ import com.itechart.security.business.model.dto.ContactDto;
 import com.itechart.security.business.model.dto.OrderDto;
 import com.itechart.security.business.model.persistent.Contact;
 import com.itechart.security.business.model.persistent.Order;
+import com.itechart.security.core.model.acl.Permission;
 import com.itechart.security.model.filter.UserFilter;
 import com.itechart.security.model.persistent.*;
+import com.itechart.security.web.model.PrincipalTypes;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.itechart.security.core.model.acl.Permission.*;
+import static com.itechart.security.core.model.acl.Permission.ADMIN;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Provides usefully methods to convert model to dto and vice versa.
@@ -22,7 +28,7 @@ public class Converter {
         if (CollectionUtils.isEmpty(users)) {
             return Collections.emptyList();
         }
-        return users.stream().map(Converter::convert).collect(Collectors.toList());
+        return users.stream().map(Converter::convert).collect(toList());
     }
 
     public static SecuredUserDto convert(User user) {
@@ -62,7 +68,7 @@ public class Converter {
         if (CollectionUtils.isEmpty(users)) {
             return Collections.emptyList();
         }
-        return users.stream().map(Converter::convertToPublicUser).collect(Collectors.toList());
+        return users.stream().map(Converter::convertToPublicUser).collect(toList());
     }
 
     private static PublicUserDto convertToPublicUser(User user) {
@@ -117,14 +123,14 @@ public class Converter {
         if (CollectionUtils.isEmpty(groups)) {
             return Collections.emptyList();
         }
-        return groups.stream().map(Converter::convert).collect(Collectors.toList());
+        return groups.stream().map(Converter::convert).collect(toList());
     }
 
     public static List<Group> convertGroupsDtos(List<GroupDto> dtos) {
         if (CollectionUtils.isEmpty(dtos)) {
             return Collections.emptyList();
         }
-        return dtos.stream().map(Converter::convert).collect(Collectors.toList());
+        return dtos.stream().map(Converter::convert).collect(toList());
     }
 
     public static GroupDto convert(Group group) {
@@ -132,7 +138,12 @@ public class Converter {
         dto.setId(group.getId());
         dto.setName(group.getName());
         dto.setDescription(group.getDescription());
+        return dto;
+    }
 
+    public static GroupDto convertGroupWithUsers(Group group) {
+        GroupDto dto = convert(group);
+        dto.setMembers(convertToPublicUsers(new ArrayList<>(group.getUsers())));
         return dto;
     }
 
@@ -149,7 +160,7 @@ public class Converter {
         if (CollectionUtils.isEmpty(groups)) {
             return Collections.emptyList();
         }
-        return groups.stream().map(Converter::convertToPublicGroup).collect(Collectors.toList());
+        return groups.stream().map(Converter::convertToPublicGroup).collect(toList());
     }
 
     public static PublicGroupDto convertToPublicGroup(Group group) {
@@ -165,14 +176,14 @@ public class Converter {
         if (CollectionUtils.isEmpty(roles)) {
             return Collections.emptyList();
         }
-        return roles.stream().map(Converter::convert).collect(Collectors.toList());
+        return roles.stream().map(Converter::convert).collect(toList());
     }
 
     public static List<Role> convertRolesDto(List<RoleDto> dtos) {
         if (CollectionUtils.isEmpty(dtos)) {
             return Collections.emptyList();
         }
-        return dtos.stream().map(Converter::convert).collect(Collectors.toList());
+        return dtos.stream().map(Converter::convert).collect(toList());
     }
 
     public static RoleDto convert(Role role) {
@@ -207,7 +218,7 @@ public class Converter {
             dto.setAction(convert(p.getAction()));
             dto.setObjectType(convert(p.getObjectType()));
             return dto;
-        }).collect(Collectors.toList());
+        }).collect(toList());
     }
 
     public static Set<Privilege> convertPrivilegesDto(Collection<PrivilegeDto> dtos) {
@@ -255,5 +266,113 @@ public class Converter {
         return objectType;
     }
 
+    public static List<ContactDto> convertContacts(List<Contact> contacts) {
+        if (CollectionUtils.isEmpty(contacts)) {
+            return Collections.emptyList();
+        }
+        return contacts.stream().map(Converter::convert).collect(toList());
+    }
 
+    public static ContactDto convert(Contact contact) {
+        ContactDto dto = new ContactDto();
+        dto.setId(contact.getId());
+        dto.setFirstName(contact.getFirstName());
+        dto.setLastName(contact.getLastName());
+        dto.setEmail(contact.getEmail());
+        dto.setAddress(contact.getAddress());
+        return dto;
+    }
+
+    public static Contact convert(ContactDto dto) {
+        Contact contact = new Contact();
+        contact.setId(dto.getId());
+        contact.setFirstName(dto.getFirstName());
+        contact.setLastName(dto.getLastName());
+        contact.setEmail(dto.getEmail());
+        contact.setAddress(dto.getAddress());
+        return contact;
+    }
+
+    public static Set<OrderDto> convertOrders(Set<Order> orders) {
+        if (CollectionUtils.isEmpty(orders)) {
+            return Collections.emptySet();
+        }
+        return orders.stream().map(Converter::convert).collect(Collectors.toSet());
+    }
+
+    public static OrderDto convert(Order order) {
+        OrderDto dto = new OrderDto();
+        dto.setId(order.getId());
+        dto.setProduct(order.getProduct());
+        dto.setCount(order.getCount());
+        dto.setPrice(order.getPrice());
+        return dto;
+    }
+
+    public static Set<Permission> convert(AclEntryDto aclEntry) {
+        Set<Permission> permissions = new HashSet<>();
+        if (aclEntry.isCanRead()) permissions.add(READ);
+        if (aclEntry.isCanWrite()) permissions.add(WRITE);
+        if (aclEntry.isCanCreate()) permissions.add(CREATE);
+        if (aclEntry.isCanDelete()) permissions.add(DELETE);
+        if (aclEntry.isCanAdmin()) permissions.add(ADMIN);
+        return permissions;
+    }
+
+    public static AclEntryDto convert(Principal principal, Set<Permission> permissions) {
+        AclEntryDto dto = new AclEntryDto();
+        initAcl(dto, principal, permissions);
+        return dto;
+    }
+
+    public static UserDefaultAclEntryDto convert(UserDefaultAclEntry acl) {
+        UserDefaultAclEntryDto dto = new UserDefaultAclEntryDto();
+        dto.setId((Long) acl.getId());
+        initAcl(dto, acl.getPrincipal(), acl.getPermissions());
+        return dto;
+    }
+
+    private static void initAcl(AclEntryDto dto, Principal principal, Set<Permission> permissions) {
+        dto.setPrincipalId(principal.getId());
+        dto.setName(principal.getName());
+        if (principal instanceof User) {
+            dto.setPrincipalTypeName(PrincipalTypes.USER.getObjectType());
+        } else if (principal instanceof Group) {
+            dto.setPrincipalTypeName(PrincipalTypes.GROUP.getObjectType());
+        }
+        permissions.forEach(permission -> {
+            if (permission == READ) dto.setCanRead(true);
+            if (permission == WRITE) dto.setCanWrite(true);
+            if (permission == CREATE) dto.setCanCreate(true);
+            if (permission == DELETE) dto.setCanDelete(true);
+            if (permission == ADMIN) dto.setCanAdmin(true);
+        });
+    }
+
+    public static List<UserDefaultAclEntry> convert(User user, List<UserDefaultAclEntryDto> dtos, List<Principal> principals) {
+        return dtos.stream().map(dto -> {
+            UserDefaultAclEntry defaultAcl = new UserDefaultAclEntry();
+            defaultAcl.setId(dto.getId());
+            defaultAcl.setUser(user);
+            defaultAcl.setPrincipal(findPrincipalById(principals, dto.getPrincipalId()));
+            defaultAcl.setPermissions(convert(dto));
+            return defaultAcl;
+        }).collect(toList());
+    }
+
+    private static Principal findPrincipalById(List<Principal> principals, Long id) {
+        for (Principal principal : principals) {
+            if (principal.getId().equals(id)) {
+                return principal;
+            }
+        }
+        return null;
+    }
+
+    public static List<UserDefaultAclEntryDto> convertToDefaultAclDtos(List<UserDefaultAclEntry> acls) {
+        if (CollectionUtils.isEmpty(acls)) {
+            return Collections.emptyList();
+        }
+        return acls.stream().map(Converter::convert).collect(toList());
+    }
 }

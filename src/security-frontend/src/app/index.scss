@@ -52,25 +52,22 @@ $btn-primary-border: $brand-primary;
 
 .list--compact {
   margin: 0;
+  li ul {
+    margin-top: 0;
+    padding-top: 0;
+    li {
+      background-color: #f6f6f6;
+      &:hover {
+        cursor: pointer;
+        background-color: #eeeeee;
+      }
+    }
+  }
 }
 
 .list--compact__collapse {
   cursor: pointer;
   background-color: #eeeeee;
-}
-
-.list--compact li ul li {
-  background-color: #f6f6f6;
-}
-
-.list--compact li ul li:hover {
-  cursor: pointer;
-  background-color: #eeeeee;
-}
-
-.list--compact li ul {
-  margin-top: 0;
-  padding-top: 0;
 }
 
 .block--scrollable {
@@ -91,10 +88,10 @@ $btn-primary-border: $brand-primary;
   min-height: 156px;
   max-height: 156px;
   overflow-y: auto;
-}
 
-.list--scrollable li {
-  line-height: 25px;
+  li {
+    line-height: 25px;
+  }
 }
 
 .text--unselectable {
@@ -106,6 +103,22 @@ $btn-primary-border: $brand-primary;
   user-select: none; /* non-prefixed version, currently not supported by any browser */
 }
 
+
+.icon {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+}
+
+.icon--user {
+  @extend .icon;
+  background: url("../assets/icons/user.svg");
+}
+
+.icon--user-group {
+  @extend .icon;
+  background: url("../assets/icons/group.svg");
+}
 
 /* fix for bootstrap modal dialog (issue 9886) */
 body.modal-open {

@@ -1,0 +1,36 @@
+<form-panel title="vm.title" submit-text="vm.submitText" cancel-text="vm.cancelText" submit-btn="vm.submit()"
+            cancel-btn="vm.cancel()">
+<form class="form">
+    <uib-tabset active="active">
+        <uib-tab index="0" heading="Personal Info">
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label for="contact-first-name">First name</label>
+                    <input ng-disabled="!vm.aclHandler.canEdit" id="contact-first-name" class="form-control"
+                           ng-model="vm.contact.firstName">
+                </div>
+                <div class="col-md-6 form-group">
+                    <label for="contact-last-name">Last name</label>
+                    <input ng-disabled="!vm.aclHandler.canEdit" id="contact-last-name" class="form-control"
+                           ng-model="vm.contact.lastName">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label for="contact-email">Email</label>
+                    <input ng-disabled="!vm.aclHandler.canEdit" id="contact-email" class="form-control"
+                           ng-model="vm.contact.email">
+                </div>
+                <div class="col-md-6 form-group">
+                    <label for="contact-address">Address</label>
+                    <input ng-disabled="!vm.aclHandler.canEdit" id="contact-address" class="form-control"
+                           ng-model="vm.contact.address">
+                </div>
+            </div>
+        </uib-tab>
+        <uib-tab index="1" heading="Access">
+          <acl-form handler="vm.aclHandler"></acl-form>
+        </uib-tab>
+    </uib-tabset>
+</form>
+</form-panel>
