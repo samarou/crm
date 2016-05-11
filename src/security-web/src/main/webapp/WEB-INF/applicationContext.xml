@@ -103,19 +103,13 @@
         <property name="acceptExisting" value="true"/>
     </bean>
 
-    <bean id="multipartResolver"
-          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <property name="maxUploadSize" value="${multipart.maxFileSize}"/>
-        <property name="defaultEncoding" value="UTF-8" />
-    </bean>
 
-    <bean id="uploadController" class="com.itechart.security.web.controller.ContactAttachmentsController">
-
-    </bean>
-
-    <bean id="contactAttachmentService" class="com.itechart.security.web.service.impl.ContactAttachmentServiceImpl">
+    <bean id="fileUtil" class="com.itechart.security.web.util.FileUtil">
         <property name="uploadDir" value="${upload.directory}"/>
     </bean>
+
+    <bean id="contactAttachmentService" class="com.itechart.security.web.service.impl.ContactAttachmentServiceImpl"/>
+
 
     <context:property-placeholder location="classpath:datasource.properties,classpath:application.properties"
                                   order="-1"/>
