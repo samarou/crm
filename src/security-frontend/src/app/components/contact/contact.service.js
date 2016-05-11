@@ -70,7 +70,7 @@
         function getAttachment(attachment) {
             if (attachment.contactId) {
                 var url = 'rest/files/contacts/' + attachment.contactId + '/attachments/' + attachment.id;
-                return $http.get(url).then(function () {
+                return $http.get(url + '/check').then(function () {
                     $window.open(url);
                 });
             }
