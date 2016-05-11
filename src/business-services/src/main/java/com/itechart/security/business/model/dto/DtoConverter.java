@@ -1,5 +1,6 @@
 package com.itechart.security.business.model.dto;
 
+import com.itechart.security.business.model.persistent.Attachment;
 import com.itechart.security.business.model.persistent.Contact;
 import com.itechart.security.business.model.persistent.Order;
 import org.springframework.util.CollectionUtils;
@@ -51,5 +52,42 @@ public class DtoConverter {
         dto.setCount(order.getCount());
         dto.setPrice(order.getPrice());
         return dto;
+    }
+
+
+    public static Attachment convert(AttachmentDto dto){
+        Attachment attachment = new Attachment();
+        attachment.setId(dto.getId());
+        attachment.setName(dto.getName());
+        attachment.setComment(dto.getComment());
+        Contact contact = new Contact();
+        contact.setId(dto.getContactId());
+        attachment.setContact(contact);
+        attachment.setDateUpload(dto.getDateUpload());
+        return attachment;
+    }
+
+    public static AttachmentDto convert(Attachment attachment){
+        AttachmentDto dto = new AttachmentDto();
+        dto.setId(attachment.getId());
+        dto.setName(attachment.getName());
+        dto.setComment(attachment.getComment());
+        dto.setContactId(attachment.getContact().getId());
+        dto.setDateUpload(attachment.getDateUpload());
+        return dto;
+    }
+
+    public static List<AttachmentDto> convertAttachments(List<Attachment> attachments) {
+        if (CollectionUtils.isEmpty(attachments)) {
+            return Collections.emptyList();
+        }
+        return attachments.stream().map(DtoConverter::convert).collect(Collectors.toList());
+    }
+
+    public static List<Attachment> convertAttachmentDtos(List<AttachmentDto> attachmentsDto) {
+        if (CollectionUtils.isEmpty(attachmentsDto)) {
+            return Collections.emptyList();
+        }
+        return attachmentsDto.stream().map(DtoConverter::convert).collect(Collectors.toList());
     }
 }

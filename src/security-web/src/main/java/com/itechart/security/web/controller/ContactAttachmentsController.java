@@ -2,7 +2,7 @@ package com.itechart.security.web.controller;
 
 import com.itechart.security.business.model.persistent.Attachment;
 import com.itechart.security.business.service.AttachmentService;
-import com.itechart.security.web.model.dto.AttachmentDto;
+import com.itechart.security.business.model.dto.AttachmentDto;
 import com.itechart.security.web.service.ContactAttachmentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,9 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-
-import static com.itechart.security.web.model.dto.Converter.convert;
-import static com.itechart.security.web.model.dto.Converter.convertAttachments;
 
 @RestController
 public class ContactAttachmentsController {
@@ -31,14 +28,14 @@ public class ContactAttachmentsController {
     @RequestMapping(value = "/contacts/{contactId}/attachments", method = RequestMethod.PUT)
     public void updateAttachment(@PathVariable Long contactId, @RequestBody AttachmentDto attachmentDto) {
         logger.debug("update attachments for contact: {}, attachment: {}", contactId, attachmentDto.getId());
-        attachmentService.updateAttachment(convert(attachmentDto));
+        attachmentService.updateAttachment(attachmentDto);
     }
 
     @RequestMapping(value = "/contacts/{contactId}/attachments", method = RequestMethod.GET)
     public List<AttachmentDto> getAttachments(@PathVariable Long contactId) {
         logger.debug("getting attachments for contact {}", contactId);
-        List<Attachment> attachments = attachmentService.getAttachments(contactId);
-        return convertAttachments(attachments);
+        List<AttachmentDto> attachments = attachmentService.getAttachments(contactId);
+        return attachments;
     }
 
     @RequestMapping(value = "/contacts/{contactId}/attachments", method = RequestMethod.POST)

@@ -3,10 +3,9 @@ package com.itechart.security.web.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itechart.security.business.model.persistent.Attachment;
 import com.itechart.security.business.service.AttachmentService;
-import com.itechart.security.web.model.dto.AttachmentDto;
+import com.itechart.security.business.model.dto.AttachmentDto;
 import com.itechart.security.web.service.ContactAttachmentService;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,7 @@ public class ContactAttachmentServiceImpl implements ContactAttachmentService {
     @Override
     public void download(Long contactId, Long attachmentId, HttpServletResponse response) {
         if (attachmentId != 0L) {
-            Attachment attachment = attachmentService.get(attachmentId);
+            AttachmentDto attachment = attachmentService.get(attachmentId);
             setHeaders(response, attachment.getName());
             try {
                 File file = getFile(contactId, attachmentId);
@@ -88,9 +87,8 @@ public class ContactAttachmentServiceImpl implements ContactAttachmentService {
         ObjectMapper mapper = new ObjectMapper();
         AttachmentDto attachmentDto = mapper.readValue(attachmentDtoString, AttachmentDto.class);
         attachmentDto.setContactId(contactId);
-        Attachment att = convert(attachmentDto);
-        att.setDateUpload(new Date());
-        return attachmentService.insertAttachment(att);
+        attachmentDto.setDateUpload(new Date());
+        return attachmentService.insertAttachment(attachmentDto);
     }
 
     private void saveFile(Long contactId, MultipartFile file, Long attachmentId) {
@@ -98,7 +96,7 @@ public class ContactAttachmentServiceImpl implements ContactAttachmentService {
             BufferedOutputStream outputStream = null;
             InputStream inputStream = null;
             try {
-                File filePath = getPathToFile(contactId, attachmentId, "." + FilenameUtils.getExtension(file.getOriginalFilename()));
+                File filePath = getPathToFile(contactId, attachmentId);
                 inputStream = file.getInputStream();
                 outputStream = new BufferedOutputStream(new FileOutputStream(filePath));
                 FileCopyUtils.copy(inputStream, outputStream);
@@ -111,7 +109,7 @@ public class ContactAttachmentServiceImpl implements ContactAttachmentService {
             if (attachmentId != 0) {
                 attachmentService.deleteById(attachmentId);
             }
-            throw new RuntimeException("file upload failed");
+            throw new RuntimeException("file upload failed", ex);
         }
     }
 
@@ -124,22 +122,18 @@ public class ContactAttachmentServiceImpl implements ContactAttachmentService {
         }
     }
 
-    private File getPathToFile(Long contactId, Long attachmentId, String extension) {
-        File contactFilesDir = new File(uploadDir, File.separator + contactId);
-        return new File(contactFilesDir, File.separator + attachmentId + extension);
+    private File getPathToFile(Long contactId, Long attachmentId) {
+        File contactFilesDir = new File(uploadDir, contactId.toString());
+        if (contactFilesDir.mkdirs()) {
+            logger.debug("directory for contact created: {}", contactFilesDir);
+        } else {
+            logger.debug("can't create directory for contact: {}", contactFilesDir);
+        }
+        return new File(contactFilesDir, attachmentId.toString());
     }
 
     private File getFile(Long contactId, Long attachmentId) {
-        File dir  = FileUtils.getFile(uploadDir, "" + contactId, "" + attachmentId);
-        File[] listOfFiles = dir.listFiles();
-        if (listOfFiles != null) {
-            for (File f : listOfFiles) {
-                if (f.getName().startsWith("" + attachmentId)) {
-                    return f;
-                }
-            }
-        }
-        return null;
+        return FileUtils.getFile(uploadDir, contactId.toString(), attachmentId.toString());
     }
 
     private <T extends Closeable> void closeStream(T stream) {

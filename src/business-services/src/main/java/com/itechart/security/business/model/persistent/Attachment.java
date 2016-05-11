@@ -65,8 +65,8 @@ public class Attachment extends SecuredEntity {
         return dateUpload;
     }
 
-    public void setDateUpload(Date uploadDate) {
-        this.dateUpload = uploadDate;
+    public void setDateUpload(Date dateUpload) {
+        this.dateUpload = dateUpload;
     }
 
     public Contact getContact() {

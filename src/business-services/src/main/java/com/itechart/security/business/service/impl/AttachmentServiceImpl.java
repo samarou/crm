@@ -1,13 +1,15 @@
 package com.itechart.security.business.service.impl;
 
 import com.itechart.security.business.dao.AttachmentDao;
-import com.itechart.security.business.model.persistent.Attachment;
+import com.itechart.security.business.model.dto.AttachmentDto;
 import com.itechart.security.business.service.AttachmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
+
+import static com.itechart.security.business.model.dto.DtoConverter.convert;
+import static com.itechart.security.business.model.dto.DtoConverter.convertAttachments;
 
 public class AttachmentServiceImpl implements AttachmentService {
 
@@ -16,32 +18,32 @@ public class AttachmentServiceImpl implements AttachmentService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Attachment> loadAll() {
-        return attachmentDao.loadAll();
+    public List<AttachmentDto> loadAll() {
+        return convertAttachments(attachmentDao.loadAll());
     }
 
     @Override
     @Transactional
-    public Long insertAttachment(Attachment attachment) {
-        return attachmentDao.save(attachment);
+    public Long insertAttachment(AttachmentDto attachmentDto) {
+        return attachmentDao.save(convert(attachmentDto));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Attachment get(Long id) {
-        return attachmentDao.get(id);
+    public AttachmentDto get(Long id) {
+        return convert(attachmentDao.get(id));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Attachment> getAttachments(Long contactId) {
-        return attachmentDao.getAttachments(contactId);
+    public List<AttachmentDto> getAttachments(Long contactId) {
+        return convertAttachments(attachmentDao.getAttachments(contactId));
     }
 
     @Override
     @Transactional
-    public void updateAttachment(Attachment attachment) {
-        attachmentDao.update(attachment);
+    public void updateAttachment(AttachmentDto attachmentDto) {
+        attachmentDao.update(convert(attachmentDto));
     }
 
     @Override
