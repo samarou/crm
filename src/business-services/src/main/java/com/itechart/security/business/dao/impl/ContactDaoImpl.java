@@ -14,7 +14,6 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -89,17 +88,13 @@ public class ContactDaoImpl extends AbstractHibernateDao<Contact> implements Con
 
     private Criteria createFilterCriteria(Session session, ContactFilter filter) {
         Criteria criteria = session.createCriteria(Contact.class, "u");
-        criteria.createAlias("emails", "e");
         if (StringUtils.hasText(filter.getText())) {
             criteria.add(
-                Restrictions.conjunction(
-                    Restrictions.disjunction(
-                        Restrictions.ilike("u.address.name", filter.getText(), MatchMode.ANYWHERE),
-                        Restrictions.ilike("u.firstName", filter.getText(), MatchMode.ANYWHERE),
-                        Restrictions.ilike("u.lastName", filter.getText(), MatchMode.ANYWHERE),
-                        Restrictions.ilike("u.email.name", filter.getText(), MatchMode.ANYWHERE)
-                    ),
-                    Restrictions.isNull("e.dateDeleted")
+                Restrictions.disjunction(
+                    Restrictions.ilike("u.address.name", filter.getText(), MatchMode.ANYWHERE),
+                    Restrictions.ilike("u.firstName", filter.getText(), MatchMode.ANYWHERE),
+                    Restrictions.ilike("u.lastName", filter.getText(), MatchMode.ANYWHERE),
+                    Restrictions.ilike("u.email.name", filter.getText(), MatchMode.ANYWHERE)
                 )
             );
         }

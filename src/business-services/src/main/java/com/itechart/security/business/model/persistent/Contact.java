@@ -1,7 +1,6 @@
 package com.itechart.security.business.model.persistent;
 
 import com.itechart.security.business.model.enums.ObjectTypes;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 

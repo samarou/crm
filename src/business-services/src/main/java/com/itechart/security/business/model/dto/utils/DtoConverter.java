@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.emptySet;
+import static java.util.stream.Collectors.toSet;
+
 public class DtoConverter {
     public static List<ContactDto> convertContacts(List<Contact> contacts) {
         if (CollectionUtils.isEmpty(contacts)) {
@@ -86,16 +89,22 @@ public class DtoConverter {
 
     public static Set<OrderDto> convertOrders(Set<Order> orders) {
         if (CollectionUtils.isEmpty(orders)) {
-            return Collections.emptySet();
+            return emptySet();
         }
-        return orders.stream().map(DtoConverter::convert).collect(Collectors.toSet());
+        return orders
+            .stream()
+            .map(DtoConverter::convert)
+            .collect(toSet());
     }
 
     public static Set<Order> convertOrderDtos(Set<OrderDto> orderDtos) {
         if (CollectionUtils.isEmpty(orderDtos)) {
-            return Collections.emptySet();
+            return emptySet();
         }
-        return orderDtos.stream().map(DtoConverter::convert).collect(Collectors.toSet());
+        return orderDtos
+            .stream()
+            .map(DtoConverter::convert)
+            .collect(toSet());
     }
 
 
@@ -117,16 +126,23 @@ public class DtoConverter {
 
     public static Set<EmailDto> convertEmails(Set<Email> emails) {
         if (CollectionUtils.isEmpty(emails)) {
-            return Collections.emptySet();
+            return emptySet();
         }
-        return emails.stream().map(DtoConverter::convert).collect(Collectors.toSet());
+        return emails
+            .stream()
+            .filter(email -> email.getDateDeleted() == null)
+            .map(DtoConverter::convert)
+            .collect(toSet());
     }
 
     public static Set<Email> convertEmailDtos(Set<EmailDto> dtos) {
         if (CollectionUtils.isEmpty(dtos)) {
-            return Collections.emptySet();
+            return emptySet();
         }
-        return dtos.stream().map(DtoConverter::convert).collect(Collectors.toSet());
+        return dtos
+            .stream()
+            .map(DtoConverter::convert)
+            .collect(toSet());
     }
 
 
@@ -164,16 +180,23 @@ public class DtoConverter {
 
     public static Set<AddressDto> convertAddresses(Set<Address> addresses) {
         if (CollectionUtils.isEmpty(addresses)) {
-            return Collections.emptySet();
+            return emptySet();
         }
-        return addresses.stream().map(DtoConverter::convert).collect(Collectors.toSet());
+        return addresses
+            .stream()
+            .filter(address -> address.getDateDeleted() == null)
+            .map(DtoConverter::convert)
+            .collect(toSet());
     }
 
     public static Set<Address> convertAddressDtos(Set<AddressDto> dtos) {
         if (CollectionUtils.isEmpty(dtos)) {
-            return Collections.emptySet();
+            return emptySet();
         }
-        return dtos.stream().map(DtoConverter::convert).collect(Collectors.toSet());
+        return dtos
+            .stream()
+            .map(DtoConverter::convert)
+            .collect(toSet());
     }
 
 
@@ -195,16 +218,23 @@ public class DtoConverter {
 
     public static Set<TelephoneDto> convertTelephones(Set<Telephone> telephones) {
         if (CollectionUtils.isEmpty(telephones)) {
-            return Collections.emptySet();
+            return emptySet();
         }
-        return telephones.stream().map(DtoConverter::convert).collect(Collectors.toSet());
+        return telephones
+            .stream()
+            .filter(telephone -> telephone.getDateDeleted() == null)
+            .map(DtoConverter::convert)
+            .collect(toSet());
     }
 
     public static Set<Telephone> convertTelephoneDtos(Set<TelephoneDto> telephones) {
         if (CollectionUtils.isEmpty(telephones)) {
-            return Collections.emptySet();
+            return emptySet();
         }
-        return telephones.stream().map(DtoConverter::convert).collect(Collectors.toSet());
+        return telephones
+            .stream()
+            .map(DtoConverter::convert)
+            .collect(toSet());
     }
 
 
@@ -240,16 +270,23 @@ public class DtoConverter {
 
     public static Set<MessengerAccountDto> convertMessengerAccounts(Set<MessengerAccount> messengers) {
         if (CollectionUtils.isEmpty(messengers)) {
-            return Collections.emptySet();
+            return emptySet();
         }
-        return messengers.stream().map(DtoConverter::convert).collect(Collectors.toSet());
+        return messengers
+            .stream()
+            .filter(messengerAccount -> messengerAccount.getDateDeleted() == null)
+            .map(DtoConverter::convert)
+            .collect(toSet());
     }
 
     public static Set<MessengerAccount> convertMessengerAccountDtos(Set<MessengerAccountDto> messengers) {
         if (CollectionUtils.isEmpty(messengers)) {
-            return Collections.emptySet();
+            return emptySet();
         }
-        return messengers.stream().map(DtoConverter::convert).collect(Collectors.toSet());
+        return messengers
+            .stream()
+            .map(DtoConverter::convert)
+            .collect(toSet());
     }
 
 
@@ -285,16 +322,23 @@ public class DtoConverter {
 
     public static Set<SocialNetworkAccountDto> convertSocialNetworkAccounts(Set<SocialNetworkAccount> socialNetworks) {
         if (CollectionUtils.isEmpty(socialNetworks)) {
-            return Collections.emptySet();
+            return emptySet();
         }
-        return socialNetworks.stream().map(DtoConverter::convert).collect(Collectors.toSet());
+        return socialNetworks
+            .stream()
+            .filter(s -> s.getDateDeleted() == null)
+            .map(DtoConverter::convert)
+            .collect(toSet());
     }
 
     public static Set<SocialNetworkAccount> convertSocialNetworkAccountDtos(Set<SocialNetworkAccountDto> socialNetworks) {
         if (CollectionUtils.isEmpty(socialNetworks)) {
-            return Collections.emptySet();
+            return emptySet();
         }
-        return socialNetworks.stream().map(DtoConverter::convert).collect(Collectors.toSet());
+        return socialNetworks
+            .stream()
+            .map(DtoConverter::convert)
+            .collect(toSet());
     }
 
 
@@ -322,16 +366,23 @@ public class DtoConverter {
 
     public static Set<WorkplaceDto> convertWorkplaces(Set<Workplace> workplaces) {
         if (CollectionUtils.isEmpty(workplaces)) {
-            return Collections.emptySet();
+            return emptySet();
         }
-        return workplaces.stream().map(DtoConverter::convert).collect(Collectors.toSet());
+        return workplaces
+            .stream()
+            .filter(workplace -> workplace.getDateDeleted() == null)
+            .map(DtoConverter::convert)
+            .collect(toSet());
     }
 
     public static Set<Workplace> convertWorkplaceDtos(Set<WorkplaceDto> workplaces) {
         if (CollectionUtils.isEmpty(workplaces)) {
-            return Collections.emptySet();
+            return emptySet();
         }
-        return workplaces.stream().map(DtoConverter::convert).collect(Collectors.toSet());
+        return workplaces
+            .stream()
+            .map(DtoConverter::convert)
+            .collect(toSet());
     }
 
     public static Attachment convert(AttachmentDto dto) {
@@ -381,7 +432,10 @@ public class DtoConverter {
         if (types.length == 0) {
             return Collections.emptyList();
         }
-        return Arrays.asList(types).stream().map(DtoConverter::convert).collect(Collectors.toList());
+        return Arrays.asList(types)
+            .stream()
+            .map(DtoConverter::convert)
+            .collect(Collectors.toList());
     }
 
 
@@ -396,6 +450,9 @@ public class DtoConverter {
         if (types.length == 0) {
             return Collections.emptyList();
         }
-        return Arrays.asList(types).stream().map(DtoConverter::convert).collect(Collectors.toList());
+        return Arrays.asList(types)
+            .stream()
+            .map(DtoConverter::convert)
+            .collect(Collectors.toList());
     }
 }
