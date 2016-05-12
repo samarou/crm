@@ -14,7 +14,6 @@
         vm.attachments = [];
         vm.attachmentService = contactAttachmentService;
         vm.options = {};
-        vm.actions = contactPermissionsService;
         vm.isManager = authService.isManager();
         vm.submitText = 'Save';
         vm.title = 'Edit contact';
@@ -41,7 +40,6 @@
         function initOptions() {
             return vm.details.init().then(function (response) {
                 vm.options = response;
-                console.log(vm.options);
             });
         }
 
