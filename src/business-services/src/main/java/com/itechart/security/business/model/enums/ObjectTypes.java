@@ -8,7 +8,8 @@ package com.itechart.security.business.model.enums;
 public enum ObjectTypes {
 
     CONTACT("sample.Contact"),
-    ORDER("sample.Order");
+    ORDER("sample.Order"),
+    COMPANY("sample.Company");
 
     private String name;
 

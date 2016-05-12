@@ -8,4 +8,5 @@
     <include file="changelog/1.0/160414-initial_schema.xml" relativeToChangelogFile="true"/>
     <include file="changelog/1.0/160414-initial_data.xml" relativeToChangelogFile="true"/>
     <include file="changelog/1.3/160504-fk_user_role_role_id-on-delete-cascade.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/1.3/160506-company-entity.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

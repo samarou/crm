@@ -1,5 +1,6 @@
 package com.itechart.security.web.model.dto;
 
+import com.itechart.security.business.filter.CompanyFilter;
 import com.itechart.security.business.filter.ContactFilter;
 import com.itechart.security.business.model.dto.ContactDto;
 import com.itechart.security.business.model.dto.OrderDto;
@@ -7,6 +8,7 @@ import com.itechart.security.business.model.persistent.Contact;
 import com.itechart.security.business.model.persistent.Order;
 import com.itechart.security.model.filter.UserFilter;
 import com.itechart.security.model.persistent.*;
+
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
@@ -104,6 +106,16 @@ public class Converter {
     public static ContactFilter convert(ContactFilterDto dto) {
         ContactFilter filter = new ContactFilter();
         filter.setText(dto.getText());
+        filter.setFrom(dto.getFrom());
+        filter.setCount(dto.getCount());
+        filter.setSortProperty(dto.getSortProperty());
+        filter.setSortAsc(dto.isSortAsc());
+        return filter;
+    }
+    
+    public static CompanyFilter convert(CompanyFilterDto dto) {
+    	CompanyFilter filter = new CompanyFilter();
+    	filter.setName(dto.getName());
         filter.setFrom(dto.getFrom());
         filter.setCount(dto.getCount());
         filter.setSortProperty(dto.getSortProperty());

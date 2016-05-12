@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="alexander.tolstoy" id="1">
+        <createTable tableName="company">
+            <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" remarks="Company name" type="VARCHAR(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="assignee_id" type="BIGINT UNSIGNED"/>
+            <column name="logo_url" remarks="Company logo (URL)" type="VARCHAR(255)"/>
+            <column name="company_type_id" type="BIGINT UNSIGNED"/>
+            <column name="business_sphere_id" type="BIGINT UNSIGNED"/>
+            <column name="emp_number_category_id" remarks="Cathegory by number of employees" type="BIGINT UNSIGNED"/>
+            <column name="commentary" type="VARCHAR(1000)"/>
+            <column name="address_id" type="BIGINT UNSIGNED"/>
+        </createTable>
+        
+        <createTable tableName="company_type">
+            <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="description" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="business_sphere">
+            <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="description" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="emp_number_category">
+            <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="description" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <createIndex indexName="fk_company_type_id" tableName="company">
+            <column name="company_type_id"/>
+        </createIndex>
+
+        <createIndex indexName="fk_company_assignee_id" tableName="company">
+            <column name="assignee_id"/>
+        </createIndex>
+        
+        <createIndex indexName="fk_company_business_sphere_id" tableName="company">
+            <column name="business_sphere_id"/>
+        </createIndex>
+
+        <createIndex indexName="fk_company_emp_number_category_id" tableName="company">
+            <column name="emp_number_category_id"/>
+        </createIndex>
+        
+        <createIndex indexName="fk_company_address_id" tableName="company">
+            <column name="address_id"/>
+        </createIndex>
+        
+        <addForeignKeyConstraint constraintName="fk_company_type_id" 
+                                 baseTableName="company"
+                                 baseColumnNames="company_type_id"  
+                                 referencedTableName="company_type" 
+                                 referencedColumnNames="id"
+                                 onDelete="SET NULL" 
+                                 onUpdate="NO ACTION"/>
+
+        <addForeignKeyConstraint constraintName="fk_company_assignee_id" 
+                                 baseTableName="company"
+                                 baseColumnNames="assignee_id"  
+                                 referencedTableName="user" 
+                                 referencedColumnNames="id"
+                                 onDelete="SET NULL" 
+                                 onUpdate="NO ACTION"/>
+
+         <addForeignKeyConstraint constraintName="fk_company_business_sphere_id" 
+                                 baseTableName="company"
+                                 baseColumnNames="business_sphere_id"  
+                                 referencedTableName="business_sphere" 
+                                 referencedColumnNames="id"
+                                 onDelete="SET NULL" 
+                                 onUpdate="NO ACTION"/>
+
+         <addForeignKeyConstraint constraintName="fk_company_emp_number_category_id" 
+                                 baseTableName="company"
+                                 baseColumnNames="emp_number_category_id"  
+                                 referencedTableName="emp_number_category" 
+                                 referencedColumnNames="id"
+                                 onDelete="SET NULL" 
+                                 onUpdate="NO ACTION"/>
+         
+         <addForeignKeyConstraint constraintName="fk_company_address_id" 
+                                 baseTableName="company"
+                                 baseColumnNames="address_id"  
+                                 referencedTableName="address" 
+                                 referencedColumnNames="id"
+                                 onDelete="NO ACTION" 
+                                 onUpdate="NO ACTION"/>
+    </changeSet>
+</databaseChangeLog>
