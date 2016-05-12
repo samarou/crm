@@ -13,10 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.util.List;
 
@@ -58,7 +56,11 @@ public class ContactAttachmentsController {
         logger.debug("downloading attachment {} from contact {}", attachmentId, contactId);
         String fileName = contactAttachmentService.getNameOfAttachment(attachmentId);
         response.setHeader("Cache-Control", "no-cache");
-        response.setHeader("Content-Disposition", "inline;filename*=UTF-8''" + fileName + ";");
+        try {
+            response.setHeader("Content-Disposition", "inline;filename*=UTF-8''" + URLEncoder.encode(fileName, "utf-8").replaceAll("\\+", "%20") + ";");
+        } catch (UnsupportedEncodingException e) {
+            logger.error("error while getting encoded filename", e);
+        }
         try {
             String mimeType = Files.probeContentType(new File(fileName).toPath());
             response.setContentType(mimeType);
