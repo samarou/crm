@@ -24,11 +24,11 @@
             if (isNew) {
                 contactService.create(contact).then(function (response) {
                     var id = response.data;
-                    updateAclsAndAttachments(id, acls, attachments).then(goToList);
+                    updateAclsAndAttachments(id, acls, contact.attachments).then(goToList);
                 });
             } else {
                 contactService.update(contact).then(function () {
-                    updateAclsAndAttachments(contact.id, acls, attachments).then(goToList);
+                    updateAclsAndAttachments(contact.id, acls, contact.attachments).then(goToList);
                 });
             }
         }

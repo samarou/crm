@@ -137,7 +137,9 @@
                                     <type>war</type>
                                 </artifactItem>
                             </artifactItems>
-                            <overWrite>true</overWrite>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                            <overWriteReleases>true</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
                             <outputDirectory>target/${finalName}</outputDirectory>
                         </configuration>
                     </execution>
