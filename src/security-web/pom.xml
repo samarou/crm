@@ -25,6 +25,7 @@
             <groupId>com.itechart.security</groupId>
             <artifactId>security-frontend</artifactId>
             <version>${project.version}</version>
+            <type>war</type>
         </dependency>
 
         <!-- Spring -->
