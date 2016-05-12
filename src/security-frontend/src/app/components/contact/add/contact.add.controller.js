@@ -1,34 +1,37 @@
 (function () {
-	'use strict';
+    'use strict';
 
-	angular
-			.module('crm.contact')
-			.controller('ContactsAddController', ContactsAddController);
+    angular
+        .module('crm.contact')
+        .controller('contactAddController', contactAddController);
 
-	/** @ngInject */
-	function ContactsAddController(contactDetailsService, userService) {
-		var vm = this;
+    /** @ngInject */
+    function contactAddController(contactDetailsService, userService, contactAttachmentService) {
+        var vm = this;
 
-		vm.canEdit = true;
-		vm.contact = {};
-		vm.title = 'Add contact';
-		vm.submitText = 'Add';
-		vm.submit = submit;
-		vm.cancel = contactDetailsService.cancel;
-    vm.aclHandler = contactDetailsService.createAclHandler(function () {
-      return vm.contact.id;
-    });
+        vm.canEdit = true;
+        vm.contact = {};
 
-    init();
+        vm.attachments = [];
+        vm.title = 'Add contact';
+        vm.submitText = 'Add';
+        vm.submit = submit;
+        vm.cancel = contactDetailsService.cancel;
+        vm.attachmentService = contactAttachmentService;
+        vm.aclHandler = contactDetailsService.createAclHandler(function () {
+            return vm.contact.id;
+        });
 
-    function init() {
-      userService.getDefaultAcls().then(function (response) {
-        vm.aclHandler.acls = response.data;
-      });
+        init();
+
+        function init() {
+            userService.getDefaultAcls().then(function (response) {
+                vm.aclHandler.acls = response.data;
+            });
+        }
+
+        function submit() {
+            contactDetailsService.submit(vm.contact, vm.aclHandler.acls, vm.attachments, true);
+        }
     }
-
-		function submit() {
-			contactDetailsService.submit(vm.contact, vm.aclHandler.acls, true);
-		}
-	}
 })();
