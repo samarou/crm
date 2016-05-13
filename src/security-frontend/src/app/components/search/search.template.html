@@ -13,9 +13,9 @@
                 <div class="form-group crm-filter-col">
                     <label for="role">Role:</label>
                     <select id="role" class="form-control" ng-change="$ctrl.scope.bundle.find()"
-                            ng-model="$ctrl.scope.bundle.filter.groupId">
+                            ng-model="$ctrl.scope.bundle.filter.roleId">
                         <option value="">Any</option>
-                        <option ng-repeat="group in $ctrl.scope.groups" value="{{group.id}}">{{group.name}}</option>
+                        <option ng-repeat="role in $ctrl.scope.roles" value="{{role.id}}">{{role.name}}</option>
                     </select>
                 </div>
                 <div class="checkbox crm-filter-col">
