@@ -1,9 +1,14 @@
 package com.itechart.security.model.persistent;
 
 import com.itechart.security.core.model.SecurityUser;
+import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+
+import static javax.persistence.CascadeType.ALL;
 
 /**
  * User
@@ -12,7 +17,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "user")
-@PrimaryKeyJoinColumn(name="id")
+@PrimaryKeyJoinColumn(name = "id")
 public class User extends Principal implements SecurityUser {
 
     @Column(name = "user_name", updatable = false, unique = true, nullable = false, length = 50)
@@ -32,6 +37,9 @@ public class User extends Principal implements SecurityUser {
 
     @Column(name = "active", nullable = false)
     private boolean active;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = ALL, orphanRemoval = true)
+    private List<UserDefaultAclEntry> acls;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
@@ -101,6 +109,14 @@ public class User extends Principal implements SecurityUser {
         this.active = active;
     }
 
+    public List<UserDefaultAclEntry> getAcls() {
+        return acls;
+    }
+
+    public void setAcls(List<UserDefaultAclEntry> acls) {
+        this.acls = acls;
+    }
+
     @Override
     public Set<Role> getRoles() {
         return roles;
@@ -117,5 +133,35 @@ public class User extends Principal implements SecurityUser {
 
     public void setGroups(Set<Group> groups) {
         this.groups = groups;
+    }
+
+    public boolean removeDefaultAcl(Long principalId) {
+        UserDefaultAclEntry defaultAcl = findDefaultAcl(principalId);
+        return defaultAcl != null && removeDefaultAcl(defaultAcl);
+    }
+
+    private UserDefaultAclEntry findDefaultAcl(Long principalId) {
+        if (!CollectionUtils.isEmpty(acls)) {
+            for (UserDefaultAclEntry acl : acls) {
+                if (acl.getPrincipal().getId().equals(principalId)) {
+                    return acl;
+                }
+            }
+        }
+        return null;
+    }
+
+    private boolean removeDefaultAcl(UserDefaultAclEntry defaultAcl) {
+        return acls.remove(defaultAcl);
+    }
+
+    public boolean removeFromGroup(Group removableGroup) {
+        if (groups != null) {
+            Optional<Group> optionalGroup = groups.stream().filter(g -> g.equals(removableGroup)).findFirst();
+            if (optionalGroup.isPresent() && groups.contains(optionalGroup.get())) {
+                return groups.remove(optionalGroup.get());
+            }
+        }
+        return false;
     }
 }

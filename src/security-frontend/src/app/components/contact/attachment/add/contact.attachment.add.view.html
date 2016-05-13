@@ -1,0 +1,17 @@
+<crm-form-wrapper form-title="vm.title" submit-text="Ok" cancel-text="Cancel" submit-btn="vm.ok()"
+                  cancel-btn="vm.cancel()" modal="true">
+    <div class="form-group">
+        <label for="attachmentFile">File input</label>
+        <input type="file" nv-file-select uploader="vm.uploader" id="attachmentFile" ng-disabled="vm.attachment.file">
+    </div>
+    <div class="form-group">
+        <label for="attachmentFileName">File name</label>
+        <input type="text" id="attachmentFileName" class="form-control" placeholder="Type name of the file here"
+               ng-model="vm.attachment.name">
+    </div>
+    <div class="form-group">
+        <label for="attachmentComment">Comment</label>
+        <input type="text" id="attachmentComment" class="form-control" placeholder="Type your comment here"
+               ng-model="vm.attachment.comment">
+    </div>
+</crm-form-wrapper>

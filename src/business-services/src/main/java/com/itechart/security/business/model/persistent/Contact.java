@@ -33,6 +33,9 @@ public class Contact extends SecuredEntity {
     @OneToMany(orphanRemoval = true, mappedBy = "contact")
     private Set<Order> orders;
 
+    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY)
+    private Set<Attachment> attachments;
+
     public Set<Order> getOrders() {
         return orders;
     }
@@ -85,5 +88,13 @@ public class Contact extends SecuredEntity {
     @Override
     public String getObjectType() {
         return ObjectTypes.CONTACT.getName();
+    }
+
+    public Set<Attachment> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(Set<Attachment> attachments) {
+        this.attachments = attachments;
     }
 }

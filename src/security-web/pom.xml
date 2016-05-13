@@ -21,6 +21,12 @@
             <artifactId>business-services</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.itechart.security</groupId>
+            <artifactId>security-frontend</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+        </dependency>
 
         <!-- Spring -->
         <dependency>
@@ -98,6 +104,11 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>${commons-fileupload.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>${finalName}</finalName>
@@ -108,64 +119,30 @@
         </resources>
         <plugins>
             <plugin>
-                <groupId>com.github.eirslett</groupId>
-                <artifactId>frontend-maven-plugin</artifactId>
-                <version>${frontend.plugin.version}</version>
-                <configuration>
-                    <workingDirectory>../security-frontend</workingDirectory>
-                </configuration>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.10</version>
                 <executions>
                     <execution>
-                        <id>install node and npm</id>
+                        <id>unpack frontend</id>
+                        <phase>prepare-package</phase>
                         <goals>
-                            <goal>install-node-and-npm</goal>
+                            <goal>unpack</goal>
                         </goals>
                         <configuration>
-                            <nodeVersion>${node.version}</nodeVersion>
-                            <npmVersion>${npm.version}</npmVersion>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.itechart.security</groupId>
+                                    <artifactId>security-frontend</artifactId>
+                                    <type>war</type>
+                                </artifactItem>
+                            </artifactItems>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                            <overWriteReleases>true</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                            <outputDirectory>target/${finalName}</outputDirectory>
                         </configuration>
                     </execution>
-                    <execution>
-                        <id>npm install</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <!-- Optional configuration which provides for running any npm command -->
-                        <configuration>
-                            <arguments>install</arguments>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>bower install</id>
-                        <goals>
-                            <goal>bower</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>install</arguments>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>gulp clean</id>
-                        <goals>
-                            <goal>gulp</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>clean</arguments>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>gulp build</id>
-                        <goals>
-                            <goal>gulp</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>build:tomcat --buildDir ../security-web/target/${finalName}</arguments>
-                        </configuration>
-                    </execution>
-
                 </executions>
             </plugin>
         </plugins>

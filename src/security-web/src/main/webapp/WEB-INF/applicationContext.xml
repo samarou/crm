@@ -14,6 +14,7 @@
     <jndi:jndi-lookup id="mailSession" jndi-name="${mail.session.jndi}"/>
 
     <sec:http pattern="/rest/login" security="none"/>
+    <sec:http pattern="/rest/files/**" security="none"/>
 
     <sec:http pattern="/rest/**" create-session="stateless" auto-config="false"
               entry-point-ref="unauthorizedEntryPoint">
@@ -101,6 +102,14 @@
         <property name="cacheManagerName" value="appCacheManager"/>
         <property name="acceptExisting" value="true"/>
     </bean>
+
+
+    <bean id="fileUtil" class="com.itechart.security.web.util.FileUtil">
+        <property name="uploadDir" value="${upload.directory}"/>
+    </bean>
+
+    <bean id="contactAttachmentService" class="com.itechart.security.web.service.impl.ContactAttachmentServiceImpl"/>
+
 
     <context:property-placeholder location="classpath:datasource.properties,classpath:application.properties"
                                   order="-1"/>

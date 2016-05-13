@@ -25,7 +25,7 @@
 			return collections.sort(Object.keys(objectTypeList)).map(function (objectTypeName) {
 				return {
 					objectTypeName: objectTypeName,
-					actions: collections.sort(objectTypeList[objectTypeName], true, collections.byProperty('id'))
+					actions: collections.sort(objectTypeList[objectTypeName], true, collections.propertyComparator('id'))
 				};
 			});
 		}

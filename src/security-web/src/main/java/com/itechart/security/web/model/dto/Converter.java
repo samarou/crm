@@ -1,18 +1,35 @@
 package com.itechart.security.web.model.dto;
 
-import com.itechart.security.business.filter.CompanyFilter;
-import com.itechart.security.business.filter.ContactFilter;
-import com.itechart.security.business.model.dto.ContactDto;
-import com.itechart.security.business.model.dto.OrderDto;
-import com.itechart.security.business.model.persistent.Contact;
-import com.itechart.security.business.model.persistent.Order;
-import com.itechart.security.model.filter.UserFilter;
-import com.itechart.security.model.persistent.*;
+import static com.itechart.security.core.model.acl.Permission.ADMIN;
+import static com.itechart.security.core.model.acl.Permission.CREATE;
+import static com.itechart.security.core.model.acl.Permission.DELETE;
+import static com.itechart.security.core.model.acl.Permission.READ;
+import static com.itechart.security.core.model.acl.Permission.WRITE;
+import static java.util.stream.Collectors.toList;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.util.CollectionUtils;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import com.itechart.security.business.filter.CompanyFilter;
+import com.itechart.security.business.filter.ContactFilter;
+import com.itechart.security.core.model.acl.Permission;
+import com.itechart.security.model.filter.UserFilter;
+import com.itechart.security.model.persistent.Action;
+import com.itechart.security.model.persistent.Group;
+import com.itechart.security.model.persistent.ObjectType;
+import com.itechart.security.model.persistent.Principal;
+import com.itechart.security.model.persistent.Privilege;
+import com.itechart.security.model.persistent.Role;
+import com.itechart.security.model.persistent.User;
+import com.itechart.security.model.persistent.UserDefaultAclEntry;
+import com.itechart.security.web.model.PrincipalTypes;
 
 /**
  * Provides usefully methods to convert model to dto and vice versa.
@@ -267,5 +284,70 @@ public class Converter {
         return objectType;
     }
 
+    public static Set<Permission> convert(AclEntryDto aclEntry) {
+        Set<Permission> permissions = new HashSet<>();
+        if (aclEntry.isCanRead()) permissions.add(READ);
+        if (aclEntry.isCanWrite()) permissions.add(WRITE);
+        if (aclEntry.isCanCreate()) permissions.add(CREATE);
+        if (aclEntry.isCanDelete()) permissions.add(DELETE);
+        if (aclEntry.isCanAdmin()) permissions.add(ADMIN);
+        return permissions;
+    }
 
+    public static AclEntryDto convert(Principal principal, Set<Permission> permissions) {
+        AclEntryDto dto = new AclEntryDto();
+        initAcl(dto, principal, permissions);
+        return dto;
+    }
+
+    public static UserDefaultAclEntryDto convert(UserDefaultAclEntry acl) {
+        UserDefaultAclEntryDto dto = new UserDefaultAclEntryDto();
+        dto.setId((Long) acl.getId());
+        initAcl(dto, acl.getPrincipal(), acl.getPermissions());
+        return dto;
+    }
+
+    private static void initAcl(AclEntryDto dto, Principal principal, Set<Permission> permissions) {
+        dto.setPrincipalId(principal.getId());
+        dto.setName(principal.getName());
+        if (principal instanceof User) {
+            dto.setPrincipalTypeName(PrincipalTypes.USER.getObjectType());
+        } else if (principal instanceof Group) {
+            dto.setPrincipalTypeName(PrincipalTypes.GROUP.getObjectType());
+        }
+        permissions.forEach(permission -> {
+            if (permission == READ) dto.setCanRead(true);
+            if (permission == WRITE) dto.setCanWrite(true);
+            if (permission == CREATE) dto.setCanCreate(true);
+            if (permission == DELETE) dto.setCanDelete(true);
+            if (permission == ADMIN) dto.setCanAdmin(true);
+        });
+    }
+
+    public static List<UserDefaultAclEntry> convert(User user, List<UserDefaultAclEntryDto> dtos, List<Principal> principals) {
+        return dtos.stream().map(dto -> {
+            UserDefaultAclEntry defaultAcl = new UserDefaultAclEntry();
+            defaultAcl.setId(dto.getId());
+            defaultAcl.setUser(user);
+            defaultAcl.setPrincipal(findPrincipalById(principals, dto.getPrincipalId()));
+            defaultAcl.setPermissions(convert(dto));
+            return defaultAcl;
+        }).collect(toList());
+    }
+
+    private static Principal findPrincipalById(List<Principal> principals, Long id) {
+        for (Principal principal : principals) {
+            if (principal.getId().equals(id)) {
+                return principal;
+            }
+        }
+        return null;
+    }
+
+    public static List<UserDefaultAclEntryDto> convertToDefaultAclDtos(List<UserDefaultAclEntry> acls) {
+        if (CollectionUtils.isEmpty(acls)) {
+            return Collections.emptyList();
+        }
+        return acls.stream().map(Converter::convert).collect(toList());
+    }
 }

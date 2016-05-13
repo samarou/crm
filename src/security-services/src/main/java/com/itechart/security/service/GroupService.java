@@ -18,5 +18,7 @@ public interface GroupService {
 
     Group get(Long id);
 
+    Group getGroupWithUsers(Long id);
+
     void deleteById(Long id);
 }

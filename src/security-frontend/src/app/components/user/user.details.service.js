@@ -6,12 +6,21 @@
 			.factory('userDetailsService', userDetailsService);
 
 	/** @ngInject */
-	function userDetailsService(userService, groupService, roleService, $state, $q) {
+	function userDetailsService(userService, groupService, roleService, aclServiceBuilder, $state, $q) {
 		return {
 			save: save,
 			cancel: goToList,
-			getGroupsAndRoles: getGroupsAndRoles
+			getGroupsAndRoles: getGroupsAndRoles,
+      createAclHandler: createAclHandler
 		};
+
+    function createAclHandler(getId) {
+      return {
+        canEdit: true,
+        acls: [],
+        actions: aclServiceBuilder(getId, userService)
+      }
+    }
 
 		function save(user, roles, groups, isNew) {
 			checkGroups(user, groups);

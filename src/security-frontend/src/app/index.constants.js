@@ -2,6 +2,7 @@
 	'use strict';
 
 	angular
-			.module('crm')
+		.module('crm')
+		.constant('version', '${project.version}');
 
 })();
