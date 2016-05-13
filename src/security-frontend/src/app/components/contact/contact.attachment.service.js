@@ -30,9 +30,13 @@
 
         function addAttachments(scope) {
             openAddAttachmentDialog().then(function (model) {
-                model.attachment.file = service.tempAttachment.file;
-                model.attachment.dateUpload = new Date();
-                scope.attachments.push(model.attachment);
+                if (service.tempAttachment.file.size < 104857600) {
+                    model.attachment.file = service.tempAttachment.file;
+                    model.attachment.dateUpload = new Date();
+                    scope.attachments.push(model.attachment);
+                } else {
+                    dialogService.notify('File size is too large. It should not exceed 100MB');
+                }
                 service.tempAttachment = {};
             });
         }
