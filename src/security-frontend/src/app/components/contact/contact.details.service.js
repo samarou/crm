@@ -48,16 +48,26 @@
 
         function removeEmails(scope) {
             var tasks = [];
-            scope.contact.emails.forEach(function (email) {
-                if (email.checked) {
+            var emails = scope.contact.emails;
+            getCheckedEmails(emails)
+                .forEach(function (email) {
                     if (email.id) {
                         tasks.push(contactService.removeEmail(scope.contact.id, email.id));
                     }
-                    var index = scope.contact.emails.indexOf(email);
-                    scope.contact.emails.splice(index, 1);
-                }
-            });
+                    var index = emails.indexOf(email);
+                    emails.splice(index, 1);
+                });
             return $q.all(tasks);
+        }
+
+        function getCheckedEmails(emails) {
+            var checkedEmails = [];
+            emails.forEach(function (email) {
+                if (email.checked) {
+                    checkedEmails.push(email);
+                }
+            })
+            return checkedEmails;
         }
 
         function createAclHandler(getId) {
