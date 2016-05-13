@@ -68,12 +68,18 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <div class="row"><img class="img-responsive" ng-src="{{vm.contact.photoUrl}}"></div>
                         <div class="row">
-                            <div class="form-group" crm-input-validation>
+                            <div class="col-md-12 col-md-offset-0 col-sm-4 col-sm-offset-4 ">
+                                <img class="img-responsive center-block" ng-src="{{vm.contact.photoUrl}}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" >
+                                <div class="form-group" crm-input-validation>
                                 <label for="contact-photo">Photo URL</label>
                                 <input ng-disabled="!vm.canEdit" id="contact-photo" class="form-control"
                                        name="photoUrl" ng-model="vm.contact.photoUrl">
+                                </div>
                             </div>
                         </div>
                     </div>
