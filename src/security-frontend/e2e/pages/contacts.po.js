@@ -6,10 +6,10 @@ var GroupsPage = function () {
 	self.contactRows = element(by.repeater('contact in vm.searchContactBundle.itemsList'));
 	self.table = element(by.css('table.table'));
 	self.tableName = function () {
-		return self.table.element(by.tagName('caption')).getText();
+		return element(by.tagName('h4')).getText();
 	};
-	self.addButton = element(by.css('span[ng-click="vm.add()"]'));
-	self.deleteButton = element(by.css('span[ng-click="vm.remove()"]'));
+	self.addButton = element(by.css('a[ng-click="vm.add()"]'));
+	self.deleteButton = element(by.css('a[ng-click="vm.remove()"]'));
 	self.nextPageButton = element(by.css('li.pagination-next'));
 	self.pageList = function () {
 		return element.all(

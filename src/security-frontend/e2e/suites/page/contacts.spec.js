@@ -50,7 +50,7 @@ describe('Users under role Manager', function () {
 	});
 
 	function checkContact(contact) {
-		contact.element(by.css('span[ng-click="vm.edit(contact)"]')).click();
+		contact.element(by.binding('contact.email')).click();
 		expect(contactFormPO.getFirstName().getAttribute('value')).toBe(CONTACT_FIRST_NAME);
 		expect(contactFormPO.getLastName().getAttribute('value')).toBe(CONTACT_SECOND_NAME);
 		expect(contactFormPO.getEmail().getAttribute('value')).toBe(CONTACT_EMAIL);

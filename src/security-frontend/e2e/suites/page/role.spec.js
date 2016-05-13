@@ -45,7 +45,7 @@ describe('Users under role ADMIN', function () {
 	});
 
 	function checkRole(roles) {
-		roles.element(by.css('span[ng-click="vm.edit(role)"]')).click();
+		roles.element(by.binding('role.name')).click();
 		expect(rolesFormPO.getName().getAttribute('value')).toBe(ROLE_NAME);
 		expect(rolesFormPO.getDescription().getAttribute('value')).toBe(ROLE_DESCRIPTION);
 		rolesFormPO.submitButton.click();
@@ -55,6 +55,7 @@ describe('Users under role ADMIN', function () {
 		searchService.search(rolesPO, ROLE_NAME, by.binding('role.name')).then(function (role) {
 			role.element(by.model('role.checked')).click();
 			rolesPO.deleteButton.click();
+			rolesPO.getConfirmButton().click();
 		});
 	}
 });

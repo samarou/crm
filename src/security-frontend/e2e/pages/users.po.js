@@ -2,22 +2,23 @@ var UsersPage = function () {
   'use strict';
 
   var self = this;
-  self.searchTab = element(by.model('vm.bundle.filter.text'));
-  self.groupSelector = element(by.model('vm.bundle.filter.groupId'));
-  self.roleSelector = element(by.model('vm.bundle.filter.roleId'));
-  self.activeUserFlag = element(by.model('vm.bundle.filter.active'));
+  self.searchTab = element(by.model('$ctrl.scope.bundle.filter.text'));
+  self.groupSelector = element(by.model('$ctrl.scope.bundle.filter.groupId'));
+  self.roleSelector = element(by.model('$ctrl.scope.bundle.filter.roleId'));
+  self.activeUserFlag = element(by.model('$ctrl.scope.bundle.filter.active'));
   self.pageList = function () {
     return element.all(
       by.repeater('user in vm.bundle.itemsList'));
   };
   self.table = element(by.css('table.table'));
   self.tableRows = element.all(by.css('tr[ng-repeat="user in vm.bundle.itemsList"]'));
-  self.userDeactivation = element(by.css('span[ng-click="vm.activate(false)"]'));
-  self.userActivation = element(by.css('span[ng-click="vm.activate(true)"]'));
+  self.userDeactivation = element(by.css('a[ng-click="$ctrl.scope.activate(false)"]'));
+  self.userActivation = element(by.css('a[ng-click="$ctrl.scope.activate(true)"]'));
   self.nextPageButton = element(by.css('li.pagination-next'));// element(by.linkText('Next'));
+  self.searchOptionsButton = element(by.css('button[data-target="#filter-panel"]'));
 
   self.tableName = function () {
-    return self.table.element(by.tagName('caption')).getText();
+    return element(by.tagName('h4')).getText();
   };
 
   self.getUserNamesInTable = function () {
@@ -35,7 +36,7 @@ var UsersPage = function () {
 
   self.editUserClick = function (userName) {
     return self.getUserRow(userName)
-      .element(by.css('span[ng-click="vm.edit(user)"]'))
+      .element(by.binding('user.userName'))
       .click();
   };
 
