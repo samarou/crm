@@ -10,4 +10,5 @@
     <include file="changelog/1.0/160426-create_default_acl_table.xml" relativeToChangelogFile="true"/>
     <include file="changelog/1.3/160504-fk_user_role_role_id-on-delete-cascade.xml" relativeToChangelogFile="true"/>
     <include file="changelog/1.3/160425-d545216_adding_attachments.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/1.4/250414-add_privileges_for_specialist.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

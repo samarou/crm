@@ -32,10 +32,7 @@ import org.springframework.test.context.ContextConfiguration;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static com.itechart.security.core.test.util.ThrowableAssert.assertThrown;
 import static org.junit.Assert.*;
@@ -258,7 +255,7 @@ public class SpringSecurityAnnotationsTest {
 
     @WithUser("userRoleManager")
     @PreAuthorize("hasPermission(999, 'TestObject', 'WRITE')")
-    @Test
+    @Test(expected = AccessDeniedException.class)
     public void testHasPermission11() {
     }
 
@@ -286,12 +283,18 @@ public class SpringSecurityAnnotationsTest {
     @Test
     public void testPreAuthorizeByReadObjectId() {
         setAuthentication("userRoleManager");
+        assertThrown(AccessDeniedException.class, () -> securedService.doPreAuthorizeByReadObjectId(999L));
+
+        SecurityAcl acl = AclBuilder.create(1L, 999L).privilege("userRoleManager", Permission.READ).build();
+        when(securityRepositoryMock.findAcls(new ObjectIdentityImpl(999L, "TestObject")))
+                .thenReturn(Collections.singletonList(acl));
         securedService.doPreAuthorizeByReadObjectId(999L);
 
         setAuthentication("userRoleOther");
         assertThrown(AccessDeniedException.class, () -> securedService.doPreAuthorizeByReadObjectId(999L));
 
-        SecurityAcl acl = AclBuilder.create(1L, 999L).privilege("userRoleOther", Permission.READ).build();
+        setAuthentication("userRoleManager");
+        acl = AclBuilder.create(1L, 999L).privilege("userRoleManager", Permission.READ).build();
         when(securityRepositoryMock.findAcls(new ObjectIdentityImpl(999L, "TestObject")))
                 .thenReturn(Collections.singletonList(acl));
 
@@ -348,18 +351,19 @@ public class SpringSecurityAnnotationsTest {
                 () -> securedServiceSpy.doPreFilterByPermissionRead(nonSecuredObjects));
 
         TestObject object = new TestObject(999L);
-        List<TestObject> objects = Collections.singletonList(object);
+        List<TestObject> objects = new LinkedList<>(Collections.singletonList(object));
 
         reset(unwrap(securedServiceSpy));
-        assertEquals(objects, securedServiceSpy.doPreFilterByPermissionRead(objects));
+        assertEquals(0, securedServiceSpy.doPreFilterByPermissionRead(objects).size());
         verify(unwrap(securedServiceSpy)).doPreFilterByPermissionRead(objects);
 
         setAuthentication("userRoleManager");
-        assertEquals(objects, securedServiceSpy.doPreFilterByPermissionRead(new ArrayList<>(objects)));
+        objects = new LinkedList<>(Collections.singletonList(object));
+        assertEquals(0, securedServiceSpy.doPreFilterByPermissionRead(new ArrayList<>(objects)).size());
 
         setAuthentication("userRoleOther");
         assertThrown(UnsupportedOperationException.class,
-                () -> securedServiceSpy.doPreFilterByPermissionRead(objects));
+                () -> securedServiceSpy.doPreFilterByPermissionRead(Collections.singletonList(object)));
     }
 
     @Test
@@ -374,21 +378,25 @@ public class SpringSecurityAnnotationsTest {
         List<TestObject> objects = Collections.singletonList(object);
 
         reset(unwrap(securedServiceSpy));
-        assertEquals(objects, securedServiceSpy.doPostFilterByPermissionRead(objects));
+        assertEquals(0, securedServiceSpy.doPostFilterByPermissionRead(objects).size());
         verify(unwrap(securedServiceSpy)).doPostFilterByPermissionRead(objects);
 
         setAuthentication("userRoleManager");
+        SecurityAcl acl = AclBuilder.create(1L, 999L).privilege("userRoleManager", Permission.READ).build();
+        when(securityRepositoryMock.findAcls(object)).thenReturn(Collections.singletonList(acl));
         assertEquals(objects, securedServiceSpy.doPreFilterByPermissionRead(new ArrayList<>(objects)));
 
         setAuthentication("userRoleOther");
-        SecurityAcl acl = AclBuilder.create(1L, 999L).privilege("userRoleOther", Permission.READ).build();
+        acl = AclBuilder.create(1L, 999L).privilege("userRoleOther", Permission.READ).build();
         when(securityRepositoryMock.findAcls(object)).thenReturn(Collections.singletonList(acl));
-        assertEquals(objects, securedServiceSpy.doPostFilterByPermissionRead(new ArrayList<>(objects)));
+        assertEquals(0, securedServiceSpy.doPostFilterByPermissionRead(new ArrayList<>(objects)).size());
 
         reset(aclServiceMock);
         reset(securityRepositoryMock);
+        setAuthentication("userRoleManager");
+        initAuthData();
         // 'write' permission includes lower permission 'read'
-        acl = AclBuilder.create(1L, 999L).privilege("userRoleOther", Permission.WRITE).build();
+        acl = AclBuilder.create(1L, 999L).privilege("userRoleManager", Permission.WRITE).build();
         when(securityRepositoryMock.findAcls(object)).thenReturn(Collections.singletonList(acl));
         assertEquals(objects, securedServiceSpy.doPostFilterByPermissionRead(new ArrayList<>(objects)));
         // check findAcls was invoked while batch caching and findAcls from evaluator
@@ -412,18 +420,22 @@ public class SpringSecurityAnnotationsTest {
         assertEquals(0, securedService.doPostFilterByPermissionWrite(objects).length);
 
         setAuthentication("userRoleManager");
+        SecurityAcl acl = AclBuilder.create(1L, 999L).privilege("userRoleManager", Permission.WRITE).build();
+        when(securityRepositoryMock.findAcls(object)).thenReturn(Collections.singletonList(acl));
         assertArrayEquals(objects, securedService.doPostFilterByPermissionWrite(objects));
 
         setAuthentication("userRoleOther");
         assertEquals(0, securedService.doPostFilterByPermissionWrite(objects).length);
 
-        SecurityAcl acl = AclBuilder.create(1L, 999L).privilege("userRoleOther", Permission.READ).build();
+        acl = AclBuilder.create(1L, 999L).privilege("userRoleOther", Permission.READ).build();
         when(securityRepositoryMock.findAcls(object)).thenReturn(Collections.singletonList(acl));
         assertEquals(0, securedService.doPostFilterByPermissionWrite(objects).length);
 
         reset(aclServiceMock);
         reset(securityRepositoryMock);
-        acl = AclBuilder.create(1L, 999L).privilege("userRoleOther", Permission.WRITE).build();
+        initAuthData();
+        setAuthentication("userRoleManager");
+        acl = AclBuilder.create(1L, 999L).privilege("userRoleManager", Permission.WRITE).build();
         when(securityRepositoryMock.findAcls(object)).thenReturn(Collections.singletonList(acl));
         assertArrayEquals(objects, securedService.doPostFilterByPermissionWrite(objects));
         // check findAcls was invoked while batch caching and findAcls from evaluator
@@ -443,19 +455,21 @@ public class SpringSecurityAnnotationsTest {
         when(securityRepositoryMock.findAcls(object)).thenReturn(Collections.singletonList(objAcl));
         assertEquals(0, securedService.doPostFilterByPermissionWrite(objects).length);
 
-        objAcl = AclBuilder.create(1L, 999L).owner("userRoleOther").privilege("userRoleOther", Permission.READ).build();
+        setAuthentication("userRoleManager");
+        objAcl = AclBuilder.create(1L, 999L).owner("userRoleManager").privilege("userRoleManager", Permission.READ).build();
         when(securityRepositoryMock.findAcls(object)).thenReturn(Collections.singletonList(objAcl));
         assertArrayEquals(objects, securedService.doPostFilterByPermissionWrite(objects));
 
-        objAcl = AclBuilder.create(1L, 999L).owner("userRoleOther").build();
+        objAcl = AclBuilder.create(1L, 999L).owner("userRoleManager").build();
         when(securityRepositoryMock.findAcls(object)).thenReturn(Collections.singletonList(objAcl));
         assertArrayEquals(objects, securedService.doPostFilterByPermissionWrite(objects));
 
-        SecurityAcl parentAcl = AclBuilder.create(1L, 888L).owner("userRoleOther").build();
+        SecurityAcl parentAcl = AclBuilder.create(1L, 888L).owner("userRoleManager").build();
         objAcl = AclBuilder.create(1L, 999L).build();
         when(securityRepositoryMock.findAcls(object)).thenReturn(Arrays.asList(objAcl, parentAcl));
         assertArrayEquals(objects, securedService.doPostFilterByPermissionWrite(objects));
 
+        setAuthentication("userRoleOther");
         parentAcl = AclBuilder.create(1L, 888L).owner("userRoleOther").build();
         objAcl = AclBuilder.create(1L, 999L).privilege("userRoleOther", Permission.READ).build();
         when(securityRepositoryMock.findAcls(object)).thenReturn(Arrays.asList(objAcl, parentAcl));
@@ -467,35 +481,40 @@ public class SpringSecurityAnnotationsTest {
         when(securityRepositoryMock.findAcls(object)).thenReturn(Arrays.asList(objAcl, parentAcl1, parentAcl2));
         assertEquals(0, securedService.doPostFilterByPermissionWrite(objects).length);
 
-        parentAcl1 = AclBuilder.create(1L, 777L).owner("userRoleOther").build();
+        setAuthentication("userRoleManager");
+        parentAcl1 = AclBuilder.create(1L, 777L).owner("userRoleManager").build();
         parentAcl2 = AclBuilder.create(1L, 888L).build();
         objAcl = AclBuilder.create(1L, 999L).build();
         when(securityRepositoryMock.findAcls(object)).thenReturn(Arrays.asList(objAcl, parentAcl1, parentAcl2));
         assertArrayEquals(objects, securedService.doPostFilterByPermissionWrite(objects));
 
+        setAuthentication("userRoleOther");
         parentAcl = AclBuilder.create(1L, 888L).privilege("userRoleOther", Permission.WRITE).build();
         objAcl = AclBuilder.create(1L, 999L).privilege("userRoleOther", Permission.READ).build();
         when(securityRepositoryMock.findAcls(object)).thenReturn(Arrays.asList(objAcl, parentAcl));
         assertEquals(0, securedService.doPostFilterByPermissionWrite(objects).length);
 
-        parentAcl = AclBuilder.create(1L, 888L).privilege("userRoleOther", Permission.WRITE).build();
+        setAuthentication("userRoleManager");
+        parentAcl = AclBuilder.create(1L, 888L).privilege("userRoleManager", Permission.WRITE).build();
         objAcl = AclBuilder.create(1L, 999L).build();
         when(securityRepositoryMock.findAcls(object)).thenReturn(Arrays.asList(objAcl, parentAcl));
         assertArrayEquals(objects, securedService.doPostFilterByPermissionWrite(objects));
 
-        parentAcl1 = AclBuilder.create(1L, 777L).privilege("userRoleOther", Permission.WRITE).build();
-        parentAcl2 = AclBuilder.create(1L, 888L).privilege("userRoleOther", Permission.WRITE).build();
+        parentAcl1 = AclBuilder.create(1L, 777L).privilege("userRoleManager", Permission.WRITE).build();
+        parentAcl2 = AclBuilder.create(1L, 888L).privilege("userRoleManager", Permission.WRITE).build();
         objAcl = AclBuilder.create(1L, 999L).build();
         when(securityRepositoryMock.findAcls(object)).thenReturn(Arrays.asList(objAcl, parentAcl1, parentAcl2));
         assertArrayEquals(objects, securedService.doPostFilterByPermissionWrite(objects));
 
+        setAuthentication("userRoleOther");
         parentAcl1 = AclBuilder.create(1L, 777L).privilege("userRoleOther", Permission.WRITE).build();
         parentAcl2 = AclBuilder.create(1L, 888L).privilege("userRoleOther", Permission.READ).build();
         objAcl = AclBuilder.create(1L, 999L).build();
         when(securityRepositoryMock.findAcls(object)).thenReturn(Arrays.asList(objAcl, parentAcl1, parentAcl2));
         assertEquals(0, securedService.doPostFilterByPermissionWrite(objects).length);
 
-        parentAcl1 = AclBuilder.create(1L, 777L).privilege("userRoleOther", Permission.WRITE).build();
+        setAuthentication("userRoleManager");
+        parentAcl1 = AclBuilder.create(1L, 777L).privilege("userRoleManager", Permission.WRITE).build();
         parentAcl2 = AclBuilder.create(1L, 888L).build();
         objAcl = AclBuilder.create(1L, 999L).build();
         when(securityRepositoryMock.findAcls(object)).thenReturn(Arrays.asList(objAcl, parentAcl1, parentAcl2));
