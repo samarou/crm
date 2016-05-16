@@ -75,7 +75,7 @@
                         <td><input type="checkbox" ng-model="attachment.checked" ng-show="vm.canEdit"
                                    title="select attachment"></td>
                         <td>{{$index + 1}}</td>
-                        <td><a class="btn" target="_blank" ng-click="vm.attachmentService.getAttachment(attachment)">{{attachment.name}}</a></td>
+                        <td><a class="crm-hover" ng-click="vm.attachmentService.getAttachment(attachment)">{{attachment.name}}</a></td>
                         <td>{{attachment.dateUpload | date:'yyyy-MM-dd'}}</td>
                         <td>{{attachment.comment}}</td>
                     </tr>
