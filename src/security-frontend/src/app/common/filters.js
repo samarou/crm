@@ -3,6 +3,7 @@
 
 	angular.module('crm.common')
 			.filter('pagingFilter', pagingFilter)
+			.filter('excludeMe', excludeMe)
 			.filter('html', html);
 
 	/** @ngInject */
@@ -49,4 +50,25 @@
 			return $sce.trustAsHtml(val);
 		};
 	}
+
+    /* @ngInject */
+    function excludeMe(authService) {
+        /*
+         * Excludes current user from collection of users
+         * */
+        'use strict';
+        return function (users) {
+            if (!users || users.length === 0) {
+                return users;
+            }
+            var auth = authService.getAuthentication();
+            var name = auth ? auth.username : null;
+            if (name) {
+                return users.filter(function (user) {
+                    return user.userName !== name;
+                })
+            }
+            return users;
+        }
+    }
 })();

@@ -34,7 +34,7 @@
             </thead>
             <tbody>
             <tr ng-class="{'crm-hover' : user.active, 'crm-user-inactive' : !user.active}"
-                ng-repeat="user in vm.bundle.itemsList" ng-click="vm.edit(user)">
+                ng-repeat="user in vm.bundle.itemsList | excludeMe" ng-click="vm.edit(user)">
                 <td><input type="checkbox" ng-model="user.checked"
                            ng-click="vm.bundle.selectOne(); $event.stopPropagation()">
                 </td>
