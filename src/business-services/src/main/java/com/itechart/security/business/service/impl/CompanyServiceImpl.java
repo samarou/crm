@@ -9,6 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.itechart.security.business.dao.CompanyDao;
 import com.itechart.security.business.filter.CompanyFilter;
 import com.itechart.security.business.model.dto.company.CompanyDto;
+import com.itechart.security.business.model.persistent.company.BusinessSphere;
+import com.itechart.security.business.model.persistent.company.CompanyType;
+import com.itechart.security.business.model.persistent.company.EmployeeNumberCathegory;
 import com.itechart.security.business.service.CompanyService;
 
 import static com.itechart.security.business.model.dto.company.CompanyDtoConverter.convert;
@@ -53,6 +56,22 @@ public class CompanyServiceImpl implements CompanyService {
 	@Transactional
 	public int countCompanies(CompanyFilter filter) {
 		return companyDao.count(filter);
+	}
+
+	@Override
+	public List<CompanyType> loadCompanyTypes() {
+		return companyDao.loadCompanyTypes();
+	}
+
+	@Override
+	public List<BusinessSphere> loadBusinessSpheres() {
+		return companyDao.loadBusinessSpheres();
+	}
+
+	@Override
+	public List<EmployeeNumberCathegory> loadEmployeeNumberCathegories() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -10,15 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.itechart.security.business.model.enums.ObjectTypes;
 import com.itechart.security.business.service.CompanyService;
 import com.itechart.security.business.model.dto.company.CompanyDto;
-import com.itechart.security.core.SecurityUtils;
 import com.itechart.security.core.acl.AclPermissionEvaluator;
-import com.itechart.security.core.model.acl.ObjectIdentity;
-import com.itechart.security.core.model.acl.ObjectIdentityImpl;
-import com.itechart.security.core.model.acl.Permission;
-import com.itechart.security.model.persistent.acl.Acl;
 import com.itechart.security.service.AclService;
 import com.itechart.security.web.model.dto.CompanyFilterDto;
 
@@ -39,13 +33,6 @@ public class CompanyController {
     @Autowired
     private AclPermissionEvaluator aclPermissionEvaluator;
     
-    @RequestMapping("/companies/{companyId}/actions/{value}")
-    public boolean isAllowed(@PathVariable Long companyId, @PathVariable String value) {
-        Permission permission = Permission.valueOf(value.toUpperCase());
-        return aclPermissionEvaluator.hasPermission(SecurityUtils.getAuthentication(), createIdentity(companyId), 
-        		permission);
-    }
-    
     @RequestMapping("/companies")
     public List<CompanyDto> getCompanies(CompanyFilterDto filter) {
     	return companyService.findCompanies(convert(filter));
@@ -63,22 +50,12 @@ public class CompanyController {
     }
     
     @RequestMapping(value = "/companies", method = POST)
-    public Long create(CompanyDto company) {
+    public Long create(@RequestBody CompanyDto company) {
     	return companyService.saveCompany(company);
     }
     
     @RequestMapping(value = "/companies/{companyId}", method = RequestMethod.DELETE)
     public void delete(@PathVariable Long companyId) {
-    	Acl acl = getAcl(companyId);
-        aclService.deleteAcl(acl);
         companyService.deleteById(companyId);
-    }
-    
-    private Acl getAcl(Long companyId) {
-        return aclService.getAcl(createIdentity(companyId));
-    }
-    
-    private ObjectIdentity createIdentity(Long contactId) {
-        return new ObjectIdentityImpl(contactId, ObjectTypes.COMPANY.getName());
     }
 }

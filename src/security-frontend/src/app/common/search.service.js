@@ -33,8 +33,14 @@
 		function getContactBundle() {
 			var bundle = createCommonBundle();
 			bundle.performSeach = contactService.find;
-			bundle.sortProperties.address = {name: 'address', asc: true, enabled: false};
+			bundle.sortProperties = {name: 'name', asc: true, enabled: false};
 			return bundle;
+		}
+		
+		function getCompanyBundle() {
+			var bundle = createCommonBundle();
+			bundle.performSeach = companyService.find;
+			
 		}
 
 		function createCommonBundle() {

@@ -11,7 +11,10 @@ import org.springframework.util.StringUtils;
 
 import com.itechart.security.business.dao.CompanyDao;
 import com.itechart.security.business.filter.CompanyFilter;
+import com.itechart.security.business.model.persistent.company.BusinessSphere;
 import com.itechart.security.business.model.persistent.company.Company;
+import com.itechart.security.business.model.persistent.company.CompanyType;
+import com.itechart.security.business.model.persistent.company.EmployeeNumberCathegory;
 import com.itechart.security.core.annotation.AclFilter;
 import com.itechart.security.core.annotation.AclFilterRule;
 import com.itechart.security.core.model.acl.Permission;
@@ -45,6 +48,22 @@ public class CompanyDaoImpl extends BaseHibernateDao<Company> implements Company
 		});
 	}
 	
+
+	@Override
+	public List<CompanyType> loadCompanyTypes() {
+		return getHibernateTemplate().loadAll(CompanyType.class);
+	}
+
+	@Override
+	public List<BusinessSphere> loadBusinessSpheres() {
+		return getHibernateTemplate().loadAll(BusinessSphere.class);
+	}
+
+	@Override
+	public List<EmployeeNumberCathegory> loadEmployeeNumberCathegories() {
+		return getHibernateTemplate().loadAll(EmployeeNumberCathegory.class);
+	}
+	
 	@Override
 	@AclFilter(@AclFilterRule(type = Company.class, permissions = {Permission.READ}))
 	public List<Company> find(CompanyFilter filter) {
@@ -56,8 +75,8 @@ public class CompanyDaoImpl extends BaseHibernateDao<Company> implements Company
 	
 	private Criteria createFilterCriteria(Session session, CompanyFilter filter) {
 		Criteria criteria = session.createCriteria(Company.class, "company");
-		if (StringUtils.hasText(filter.getName())) {
-			criteria.add(Restrictions.ilike("company.name", filter.getName()));
+		if (StringUtils.hasText(filter.getText())) {
+			criteria.add(Restrictions.ilike("company.name", filter.getText()));
 		}
 		return criteria;
 	}

@@ -112,8 +112,32 @@
 					controller: 'contactEditController',
 					templateUrl: 'app/components/contact/contact.details.view.html',
 					controllerAs: 'vm'
+				})
+				/** Company routes */
+				.state('companies', {
+					abstract: true,
+					url: '/companies',
+					template: '<ui-view/>'
+				})
+				.state('companies.list', {
+					url: '/list',
+					controller: 'companyListController',
+					templateUrl: 'app/components/company/list/company.list.view.html',
+					controllerAs: 'vm'
+				})
+				.state('companies.add', {
+					url: '/add',
+					controller: 'companyAddController',
+					templateUrl: 'app/components/company/company.details.view.html',
+					controllerAs: 'vm'
+				})
+				.state('companies.edit', {
+					url: '/:id',
+					controller: 'companyEditController',
+					templateUrl: 'app/components/company/company.details.view.html',
+					controllerAs: 'vm'
 				});
-
+				
 		$urlRouterProvider.otherwise('/');
 	}
 

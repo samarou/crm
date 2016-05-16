@@ -62,10 +62,6 @@
             <column name="emp_number_category_id"/>
         </createIndex>
         
-        <createIndex indexName="fk_company_address_id" tableName="company">
-            <column name="address_id"/>
-        </createIndex>
-        
         <addForeignKeyConstraint constraintName="fk_company_type_id" 
                                  baseTableName="company"
                                  baseColumnNames="company_type_id"  
@@ -96,14 +92,6 @@
                                  referencedTableName="emp_number_category" 
                                  referencedColumnNames="id"
                                  onDelete="SET NULL" 
-                                 onUpdate="NO ACTION"/>
-         
-         <addForeignKeyConstraint constraintName="fk_company_address_id" 
-                                 baseTableName="company"
-                                 baseColumnNames="address_id"  
-                                 referencedTableName="address" 
-                                 referencedColumnNames="id"
-                                 onDelete="NO ACTION" 
                                  onUpdate="NO ACTION"/>
     </changeSet>
 </databaseChangeLog>

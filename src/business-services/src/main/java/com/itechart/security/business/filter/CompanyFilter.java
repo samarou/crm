@@ -2,13 +2,13 @@ package com.itechart.security.business.filter;
 
 public class CompanyFilter extends PagingFilter {
 	
-	private String name;
+	private String text;
 
-	public String getName() {
-		return name;
+	public String getText() {
+		return text;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setText(String name) {
+		this.text = name;
 	}
 }

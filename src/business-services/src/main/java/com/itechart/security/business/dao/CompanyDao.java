@@ -3,7 +3,10 @@ package com.itechart.security.business.dao;
 import java.util.List;
 
 import com.itechart.security.business.filter.CompanyFilter;
+import com.itechart.security.business.model.persistent.company.BusinessSphere;
 import com.itechart.security.business.model.persistent.company.Company;
+import com.itechart.security.business.model.persistent.company.CompanyType;
+import com.itechart.security.business.model.persistent.company.EmployeeNumberCathegory;
 
 public interface CompanyDao {
 	
@@ -20,4 +23,11 @@ public interface CompanyDao {
 	List<Company> find(CompanyFilter filter);
 	
 	int count(CompanyFilter filter);
+	
+	
+	List<CompanyType> loadCompanyTypes();
+	
+	List<BusinessSphere> loadBusinessSpheres();
+	
+	List<EmployeeNumberCathegory> loadEmployeeNumberCathegories();
 }
