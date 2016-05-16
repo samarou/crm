@@ -6,7 +6,7 @@
         .service('contactAttachmentService', contactAttachmentService);
 
     /** @ngInject */
-    function contactAttachmentService(contactService, $q, dialogService, FileUploader) {
+    function contactAttachmentService(contactService, $q, dialogService, FileUploader, MAX_FILE_SIZE) {
         var service = this;
         service.tempAttachment = {};
 
@@ -30,9 +30,13 @@
 
         function addAttachments(scope) {
             openAddAttachmentDialog().then(function (model) {
-                model.attachment.file = service.tempAttachment.file;
-                model.attachment.dateUpload = new Date();
-                scope.attachments.push(model.attachment);
+                if (service.tempAttachment.file.size < MAX_FILE_SIZE) {
+                    model.attachment.file = service.tempAttachment.file;
+                    model.attachment.dateUpload = new Date();
+                    scope.attachments.push(model.attachment);
+                } else {
+                    dialogService.notify('File size is too large. It should not exceed 100MB');
+                }
                 service.tempAttachment = {};
             });
         }
