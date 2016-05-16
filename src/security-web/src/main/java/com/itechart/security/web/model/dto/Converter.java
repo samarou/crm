@@ -174,6 +174,12 @@ public class Converter {
         return group;
     }
 
+    public static GroupDto convertGroupWithUsers(Group group) {
+        GroupDto dto = convert(group);
+        dto.setMembers(convertToPublicUsers(new ArrayList<>(group.getUsers())));
+        return dto;
+    }
+
     public static List<PublicGroupDto> convertToPublicGroups(List<Group> groups) {
         if (CollectionUtils.isEmpty(groups)) {
             return Collections.emptyList();
