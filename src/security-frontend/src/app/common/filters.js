@@ -3,7 +3,7 @@
 
 	angular.module('crm.common')
 			.filter('pagingFilter', pagingFilter)
-			.filter('excludeMe', excludeMe)
+			.filter('isCurrentUser', isCurrentUser)
 			.filter('html', html);
 
 	/** @ngInject */
@@ -52,23 +52,18 @@
 	}
 
     /* @ngInject */
-    function excludeMe(authService) {
+    function isCurrentUser(authService) {
         /*
-         * Excludes current user from collection of users
+         * It checks if user is a currently logged user
          * */
         'use strict';
-        return function (users) {
-            if (!users || users.length === 0) {
-                return users;
-            }
+        return function (user) {
             var auth = authService.getAuthentication();
             var name = auth ? auth.username : null;
             if (name) {
-                return users.filter(function (user) {
-                    return user.userName !== name;
-                })
+                return user.userName === name;
             }
-            return users;
+            return false;
         }
     }
 })();
