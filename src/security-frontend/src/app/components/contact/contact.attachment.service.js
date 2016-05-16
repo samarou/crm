@@ -6,7 +6,7 @@
         .service('contactAttachmentService', contactAttachmentService);
 
     /** @ngInject */
-    function contactAttachmentService(contactService, $q, dialogService, FileUploader) {
+    function contactAttachmentService(contactService, $q, dialogService, FileUploader, fileUpload) {
         var service = this;
         service.tempAttachment = {};
 
@@ -30,7 +30,7 @@
 
         function addAttachments(scope) {
             openAddAttachmentDialog().then(function (model) {
-                if (service.tempAttachment.file.size < 104857600) {
+                if (service.tempAttachment.file.size < fileUpload) {
                     model.attachment.file = service.tempAttachment.file;
                     model.attachment.dateUpload = new Date();
                     scope.attachments.push(model.attachment);

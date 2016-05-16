@@ -11,7 +11,6 @@
             responseError: catchError
         };
         function catchError(response) {
-            console.log(response);
             switch (response.status) {
                 case 401: {
                     catchAuthError();
@@ -20,7 +19,6 @@
                 default: {
                     catchDefaultError(response);
                 }
-
             }
             return $q.reject(response);
         }
