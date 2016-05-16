@@ -24,7 +24,7 @@ public class MySQLFilterFactory extends AbstractFilterFactory {
         String idColumn = getIdentifierColumn(persistentClass);
         if (filterType == FilterType.ACL_PLAIN) {
             condition.setSqlCondition(
-                "(select min(if(aoi.owner_id = :userId, 1, ae.permission_mask >= :permissionMask)) && hasPrivilege" +
+                "(select min(if(aoi.owner_id = :userId, 1, ae.permission_mask >= :permissionMask)) and :hasPrivilege" +
                 " from acl_object_identity aoi left join acl_entry ae on ae.object_identity_id = aoi.id and ae.principal_id in (:principleIds)" +
                 " where aoi.object_type_id = :objectTypeId and aoi.object_id = {alias}." + idColumn + ") > 0");
         } else if (filterType == FilterType.ACL_HIERARCHY) {
@@ -34,7 +34,7 @@ public class MySQLFilterFactory extends AbstractFilterFactory {
                 "   ifnull(if(aoi1.owner_id = :userId, 1, ae1.permission_mask >= :permissionMask), 2)," +
                 "   ifnull(if(aoi2.owner_id = :userId, 1, ae2.permission_mask >= :permissionMask), 2)," +
                 "   ifnull(if(aoi3.owner_id = :userId, 1, ae3.permission_mask >= :permissionMask), 2)" +
-                " )), 2) && hasPrivilege " +
+                " )), 2) and :hasPrivilege " +
                 " from acl_object_identity aoi1 " +
                 "   left join acl_object_identity aoi2 on aoi2.id = aoi1.parent_id and aoi1.inheriting = 1" +
                 "   left join acl_object_identity aoi3 on aoi3.id = aoi2.parent_id and aoi2.inheriting = 1" +
