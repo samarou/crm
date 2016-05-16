@@ -38,7 +38,7 @@ describe('Users under role ADMIN', function () {
 	});
 
 	function checkGroup(group) {
-		group.element(by.css('span[ng-click="vm.edit(group)"]')).click();
+		group.element(by.binding('group.name')).click();
 		expect(groupFormPO.getName().getAttribute('value')).toBe(GROUP_NAME);
 		expect(groupFormPO.getDescription().getAttribute('value')).toBe(GROUP_DESCRIPTION);
 		groupFormPO.submitButton.click();
@@ -50,6 +50,7 @@ describe('Users under role ADMIN', function () {
 		searchService.search(groupsPO, GROUP_NAME, by.binding('group.name')).then(function (group) {
 			group.element(by.model('group.checked')).click();
 			groupsPO.deleteButton.click();
+			groupsPO.getConfirmButton().click();
 		});
 	}
 

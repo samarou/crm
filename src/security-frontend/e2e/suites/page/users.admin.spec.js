@@ -23,12 +23,14 @@ describe('Users under role ADMIN', function () {
   });
 
   it('should be able to filter user records by roles', function () {
+    usersPO.searchOptionsButton.click();
     usersPO.getOption(ROLE_FILTERING_USER).click();
     searchService.search(usersPO, FILTERING_USER.username, by.binding('user.userName')).then(expectToBeTruthy);
   });
 
   it('should be able to block the user and check if it`s blocked', function () {
     var userToBlock = BLOCKING_USER.username;
+    usersPO.searchOptionsButton.click();
     usersPO.getOption(ROLE_BLOCKING_USER).click();
     searchService.search(usersPO, userToBlock, by.binding('user.userName')).then(expectToBeTruthy);
     activateUser(false, userToBlock);
@@ -42,6 +44,7 @@ describe('Users under role ADMIN', function () {
 
   it('should be able to add Manager role to admin and access contacts page', function () {
     var userChangingRole = CHANGING_ROLE_USER.username;
+    usersPO.searchOptionsButton.click();
     searchService.search(usersPO, userChangingRole, by.binding('user.userName')).then(expectToBeTruthy);
     usersPO.editUserClick(userChangingRole);
     usersFormPO.checkRole(ROLE_CHANGING_ROLE_USER);
