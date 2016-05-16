@@ -3,6 +3,7 @@
 
 	angular.module('crm.common')
 			.filter('pagingFilter', pagingFilter)
+			.filter('isCurrentUser', isCurrentUser)
 			.filter('html', html);
 
 	/** @ngInject */
@@ -49,4 +50,20 @@
 			return $sce.trustAsHtml(val);
 		};
 	}
+
+    /* @ngInject */
+    function isCurrentUser(authService) {
+        /*
+         * It checks if user is a currently logged user
+         * */
+        'use strict';
+        return function (user) {
+            var auth = authService.getAuthentication();
+            var name = auth ? auth.username : null;
+            if (name) {
+                return user.userName === name;
+            }
+            return false;
+        }
+    }
 })();
