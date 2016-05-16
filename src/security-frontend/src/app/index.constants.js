@@ -4,5 +4,5 @@
 	angular
 		.module('crm')
 		.constant('version', '${project.version}')
-        .constant('fileUpload', 104857600);
+        .constant('MAX_FILE_SIZE', 104857600);
 })();
