@@ -40,23 +40,21 @@
 		}
 	}
 
-	/*
-	 * Mark the html in 'val' as safe using the $sce.trustAsHtml function
-	 * */
-
 	/** @ngInject */
 	function html($sce) {
+        /*
+         * Mark the html in 'val' as safe using the $sce.trustAsHtml function
+         * */
 		return function (val) {
 			return $sce.trustAsHtml(val);
 		};
 	}
 
-    /* @ngInject */
+    /** @ngInject */
     function isCurrentUser(authService) {
         /*
          * It checks if user is a currently logged user
          * */
-        'use strict';
         return function (user) {
             var auth = authService.getAuthentication();
             var name = auth ? auth.username : null;
