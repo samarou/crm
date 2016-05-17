@@ -15,7 +15,7 @@
 
         function getPublicBundle() {
             var bundle = createCommonBundle();
-            bundle.selectAll = createSelectAllAction(bundle, userSkipPredicate);
+            bundle.selectAll = createSelectAllAction(bundle, userPredicate);
             bundle.performSeach = userService.findPublicUsers;
             bundle.sortProperties.userName = {name: 'userName', asc: true, enabled: false};
             return bundle;
@@ -23,7 +23,7 @@
 
         function getSecurityBundle() {
             var bundle = createCommonBundle();
-            bundle.selectAll = createSelectAllAction(bundle, userSkipPredicate);
+            bundle.selectAll = createSelectAllAction(bundle, userPredicate);
             bundle.performSeach = userService.find;
             bundle.sortProperties.userName = {name: 'userName', asc: true, enabled: false};
             bundle.filter.groupId = null;
@@ -32,7 +32,7 @@
             return bundle;
         }
 
-        function userSkipPredicate(user) {
+        function userPredicate(user) {
             return !$filter('isCurrentUser')(user);
         }
 
@@ -44,10 +44,10 @@
             return bundle;
         }
 
-        function createSelectAllAction(bundle, skipPredicate) {
+        function createSelectAllAction(bundle, predicate) {
             return function (checked) {
                 bundle.itemsList.forEach(function (item) {
-                    if (!skipPredicate || skipPredicate(item)) {
+                    if (!predicate || predicate(item)) {
                         item.checked = checked;
                     }
                 });
