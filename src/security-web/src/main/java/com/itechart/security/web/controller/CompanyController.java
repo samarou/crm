@@ -11,10 +11,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.itechart.security.business.service.CompanyService;
+import com.itechart.security.business.model.dto.company.BusinessSphereDto;
 import com.itechart.security.business.model.dto.company.CompanyDto;
+import com.itechart.security.business.model.dto.company.CompanyTypeDto;
+import com.itechart.security.business.model.dto.company.EmployeeNumberCathegoryDto;
+import com.itechart.security.business.model.persistent.company.BusinessSphere;
+import com.itechart.security.business.model.persistent.company.CompanyType;
+import com.itechart.security.business.model.persistent.company.EmployeeNumberCathegory;
 import com.itechart.security.core.acl.AclPermissionEvaluator;
 import com.itechart.security.service.AclService;
 import com.itechart.security.web.model.dto.CompanyFilterDto;
+import com.itechart.security.web.model.dto.DataPageDto;
 
 import static com.itechart.security.web.model.dto.Converter.convert;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -34,8 +41,12 @@ public class CompanyController {
     private AclPermissionEvaluator aclPermissionEvaluator;
     
     @RequestMapping("/companies")
-    public List<CompanyDto> getCompanies(CompanyFilterDto filter) {
-    	return companyService.findCompanies(convert(filter));
+    public DataPageDto<CompanyDto> getCompanies(CompanyFilterDto filter) {
+    	List<CompanyDto> companies = companyService.findCompanies(convert(filter));
+    	DataPageDto<CompanyDto> result = new DataPageDto<CompanyDto>();
+    	result.setData(companies);
+    	result.setTotalCount(companies.size());
+    	return result;
     }
     
     @RequestMapping(value ="/companies/{companyId}", method = RequestMethod.GET)
@@ -57,5 +68,20 @@ public class CompanyController {
     @RequestMapping(value = "/companies/{companyId}", method = RequestMethod.DELETE)
     public void delete(@PathVariable Long companyId) {
         companyService.deleteById(companyId);
+    }
+    
+    @RequestMapping("/companies/company_types")
+    public List<CompanyTypeDto> getCompanyTypes() {
+    	return companyService.loadCompanyTypes();
+    }
+    
+    @RequestMapping("/companies/business_spheres")
+    public List<BusinessSphereDto> getBusinessSpheres() {
+    	return companyService.loadBusinessSpheres();
+    }
+    
+    @RequestMapping("/companies/employee_number_cathegories")
+    public List<EmployeeNumberCathegoryDto> getEmployeeNumberCathegories() {
+    	return companyService.loadEmployeeNumberCathegories();
     }
 }

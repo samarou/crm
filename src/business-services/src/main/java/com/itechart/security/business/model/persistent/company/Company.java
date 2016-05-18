@@ -25,10 +25,6 @@ public class Company extends SecuredEntity  {
 	@Column(name = "name", nullable = false, length = 60)
 	private String name;
 	
-	@ManyToOne
-	@JoinColumn(name = "assignee_id", foreignKey = @ForeignKey(name = "fk_company_assignee_id"))
-	private User assignee;
-	
 	@Column(name = "logo_url", length = 255)
 	private String logoUrl;
 	
@@ -64,14 +60,6 @@ public class Company extends SecuredEntity  {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public User getAssignee() {
-		return assignee;
-	}
-
-	public void setAssignee(User assignee) {
-		this.assignee = assignee;
 	}
 
 	public String getLogoUrl() {

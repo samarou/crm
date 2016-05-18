@@ -3,10 +3,10 @@ package com.itechart.security.business.service;
 import java.util.List;
 
 import com.itechart.security.business.filter.CompanyFilter;
+import com.itechart.security.business.model.dto.company.BusinessSphereDto;
 import com.itechart.security.business.model.dto.company.CompanyDto;
-import com.itechart.security.business.model.persistent.company.BusinessSphere;
-import com.itechart.security.business.model.persistent.company.CompanyType;
-import com.itechart.security.business.model.persistent.company.EmployeeNumberCathegory;
+import com.itechart.security.business.model.dto.company.CompanyTypeDto;
+import com.itechart.security.business.model.dto.company.EmployeeNumberCathegoryDto;
 
 public interface CompanyService {
 	
@@ -23,9 +23,9 @@ public interface CompanyService {
 	int countCompanies(CompanyFilter filter);
 	
 	
-	List<CompanyType> loadCompanyTypes();
+	List<CompanyTypeDto> loadCompanyTypes();
 	
-	List<BusinessSphere> loadBusinessSpheres();
+	List<BusinessSphereDto> loadBusinessSpheres();
 	
-	List<EmployeeNumberCathegory> loadEmployeeNumberCathegories();
+	List<EmployeeNumberCathegoryDto> loadEmployeeNumberCathegories();
 }

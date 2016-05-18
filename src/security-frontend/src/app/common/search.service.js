@@ -6,11 +6,12 @@
 			.factory('searchService', searchService);
 
 	/** @ngInject */
-	function searchService(userService, contactService, util) {
+	function searchService(userService, contactService, util, companyService) {
 		return {
 			userPublicMode: getPublicBundle,
 			userSecurityMode: getSecurityBundle,
-			contactMode: getContactBundle
+			contactMode: getContactBundle,
+			companyMode: getCompanyBundle
 		};
 
 		function getPublicBundle() {
@@ -33,14 +34,20 @@
 		function getContactBundle() {
 			var bundle = createCommonBundle();
 			bundle.performSeach = contactService.find;
-			bundle.sortProperties = {name: 'name', asc: true, enabled: false};
+			bundle.sortProperties.address = {name: 'address', asc: true, enabled: false};
 			return bundle;
 		}
-		
+
 		function getCompanyBundle() {
 			var bundle = createCommonBundle();
 			bundle.performSeach = companyService.find;
-			
+			bundle.sortProperties = {
+				name: {name: 'name', asc: true, enabled: true},
+				employeeNumber: {name: 'employeeNumberCathegory.id', asc: true, enabled: true}
+			};
+			bundle.filter.sortProperty = bundle.sortProperties.name.name;
+			bundle.filter.sortAsc = bundle.sortProperties.name.asc;
+			return bundle;
 		}
 
 		function createCommonBundle() {

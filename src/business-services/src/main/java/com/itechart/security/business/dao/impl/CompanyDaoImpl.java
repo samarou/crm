@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -76,7 +77,11 @@ public class CompanyDaoImpl extends BaseHibernateDao<Company> implements Company
 	private Criteria createFilterCriteria(Session session, CompanyFilter filter) {
 		Criteria criteria = session.createCriteria(Company.class, "company");
 		if (StringUtils.hasText(filter.getText())) {
-			criteria.add(Restrictions.ilike("company.name", filter.getText()));
+			criteria.add(Restrictions.ilike("company.name", filter.getText(), MatchMode.ANYWHERE));
+		}
+		if (filter.getEmployeeNumberCathegoryId() != null) {
+			criteria.add(Restrictions.eq("company.employeeNumberCathegory.id", 
+					filter.getEmployeeNumberCathegoryId()));
 		}
 		return criteria;
 	}

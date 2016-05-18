@@ -8,7 +8,7 @@
             'crm.role',
             'crm.group',
             'crm.contact',
-            'crm.contact',
+            'crm.company',
             'crm.navbar',
             'crm.footer']);
 

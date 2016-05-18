@@ -137,7 +137,7 @@
 					templateUrl: 'app/components/company/company.details.view.html',
 					controllerAs: 'vm'
 				});
-				
+
 		$urlRouterProvider.otherwise('/');
 	}
 

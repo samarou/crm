@@ -25,11 +25,19 @@ public class CompanyDtoConverter {
 		return result;
 	}
 	
+	//TODO implement a single generic list processor
 	public static List<CompanyDto> convert(List<Company> companies) {
 		if (CollectionUtils.isEmpty(companies)) {
             return Collections.emptyList();
         }
 		return companies.stream().map(CompanyDtoConverter::convert).collect(Collectors.toList());
+	}
+	
+	public static List<BusinessSphereDto> convertBusinessSpheres(List<BusinessSphere> cathegories) {
+		if (CollectionUtils.isEmpty(cathegories)) {
+            return Collections.emptyList();
+        }
+		return cathegories.stream().map(CompanyDtoConverter::convert).collect(Collectors.toList());
 	}
 	
 	private static BusinessSphereDto convert(BusinessSphere businessSphere) {
@@ -42,6 +50,13 @@ public class CompanyDtoConverter {
 		return result;
 	}
 	
+	public static List<CompanyTypeDto> convertCompanyTypes(List<CompanyType> cathegories) {
+		if (CollectionUtils.isEmpty(cathegories)) {
+            return Collections.emptyList();
+        }
+		return cathegories.stream().map(CompanyDtoConverter::convert).collect(Collectors.toList());
+	}
+	
 	private static CompanyTypeDto convert(CompanyType companyType) {
 		if (companyType == null) {
 			return null;
@@ -50,6 +65,13 @@ public class CompanyDtoConverter {
 		result.setId(companyType.getId());
 		result.setDescription(companyType.getDescription());
 		return result;
+	}
+	
+	public static List<EmployeeNumberCathegoryDto> convertEmployeeNumberCathegories(List<EmployeeNumberCathegory> cathegories) {
+		if (CollectionUtils.isEmpty(cathegories)) {
+            return Collections.emptyList();
+        }
+		return cathegories.stream().map(CompanyDtoConverter::convert).collect(Collectors.toList());
 	}
 	
 	private static EmployeeNumberCathegoryDto convert(EmployeeNumberCathegory employeeNumberCathegory) {

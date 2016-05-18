@@ -132,11 +132,12 @@ public class Converter {
     
     public static CompanyFilter convert(CompanyFilterDto dto) {
     	CompanyFilter filter = new CompanyFilter();
-    	filter.setText(dto.getName());
+    	filter.setText(dto.getText());
         filter.setFrom(dto.getFrom());
         filter.setCount(dto.getCount());
         filter.setSortProperty(dto.getSortProperty());
         filter.setSortAsc(dto.isSortAsc());
+        filter.setEmployeeNumberCathegoryId(dto.getEmployeeNumberCathegoryId());
         return filter;
     }
 
