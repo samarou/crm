@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -58,18 +57,4 @@ public class ContactAttachmentServiceImpl implements ContactAttachmentService {
         Path tempFile = new File(tempFilePath).toPath();
         Files.move(tempFile, attachmentPath, StandardCopyOption.REPLACE_EXISTING);
     }
-
-    private void saveFile(Long contactId, InputStream fileInputStream, Long attachmentId) {
-        try {
-            FileUtil.saveFile(fileInputStream, FileUtil.getAttachmentPath(contactId, attachmentId));
-        } catch (IOException ex) {
-            logger.error("file upload failed, deleting attachment info from database", ex);
-            if (attachmentId != 0) {
-                attachmentService.deleteById(attachmentId);
-            }
-            throw new RuntimeException("file upload failed", ex);
-        }
-    }
-
-
 }

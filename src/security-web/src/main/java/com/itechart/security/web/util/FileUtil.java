@@ -25,7 +25,6 @@ public class FileUtil {
 
     public static String saveTempFile(InputStream fileInputStream) throws IOException {
         File temp = File.createTempFile("crm_project", ".tmp");
-        logger.debug("temp file created with path: {}", temp.getAbsolutePath());
         saveFile(fileInputStream, temp);
         return temp.getAbsolutePath();
     }
