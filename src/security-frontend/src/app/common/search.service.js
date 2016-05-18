@@ -6,7 +6,7 @@
 			.factory('searchService', searchService);
 
 	/** @ngInject */
-	function searchService(userService, contactService, util, $filter, companyService) {
+	function searchService(userService, contactService, companyService, util, $filter, $log) {
 		return {
 			userPublicMode: getPublicBundle,
 			userSecurityMode: getSecurityBundle,
@@ -48,6 +48,7 @@
 		function getCompanyBundle() {
 			var bundle = createCommonBundle();
 			bundle.performSeach = companyService.find;
+			bundle.selectAll = createSelectAllAction(bundle);
 			bundle.sortProperties = {
 				name: {name: 'name', asc: true, enabled: true},
 				employeeNumber: {name: 'employeeNumberCathegory.id', asc: true, enabled: true}

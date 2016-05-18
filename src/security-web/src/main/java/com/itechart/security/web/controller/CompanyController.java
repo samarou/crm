@@ -15,10 +15,15 @@ import com.itechart.security.business.model.dto.company.BusinessSphereDto;
 import com.itechart.security.business.model.dto.company.CompanyDto;
 import com.itechart.security.business.model.dto.company.CompanyTypeDto;
 import com.itechart.security.business.model.dto.company.EmployeeNumberCathegoryDto;
+import com.itechart.security.business.model.enums.ObjectTypes;
 import com.itechart.security.business.model.persistent.company.BusinessSphere;
 import com.itechart.security.business.model.persistent.company.CompanyType;
 import com.itechart.security.business.model.persistent.company.EmployeeNumberCathegory;
+import com.itechart.security.core.SecurityUtils;
 import com.itechart.security.core.acl.AclPermissionEvaluator;
+import com.itechart.security.core.model.acl.ObjectIdentity;
+import com.itechart.security.core.model.acl.ObjectIdentityImpl;
+import com.itechart.security.model.persistent.acl.Acl;
 import com.itechart.security.service.AclService;
 import com.itechart.security.web.model.dto.CompanyFilterDto;
 import com.itechart.security.web.model.dto.DataPageDto;
@@ -62,11 +67,16 @@ public class CompanyController {
     
     @RequestMapping(value = "/companies", method = POST)
     public Long create(@RequestBody CompanyDto company) {
-    	return companyService.saveCompany(company);
+    	Long companyId = companyService.saveCompany(company);
+    	Long userId = SecurityUtils.getAuthenticatedUserId();
+        aclService.createAcl(new ObjectIdentityImpl(companyId, ObjectTypes.COMPANY.getName()), null, userId);
+        return companyId;
     }
     
     @RequestMapping(value = "/companies/{companyId}", method = RequestMethod.DELETE)
     public void delete(@PathVariable Long companyId) {
+    	Acl acl = getAcl(companyId);
+        aclService.deleteAcl(acl);
         companyService.deleteById(companyId);
     }
     
@@ -83,5 +93,13 @@ public class CompanyController {
     @RequestMapping("/companies/employee_number_cathegories")
     public List<EmployeeNumberCathegoryDto> getEmployeeNumberCathegories() {
     	return companyService.loadEmployeeNumberCathegories();
+    }
+    
+    private Acl getAcl(Long companyId) {
+        return aclService.getAcl(createIdentity(companyId));
+    }
+    
+    private ObjectIdentity createIdentity(Long contactId) {
+        return new ObjectIdentityImpl(contactId, ObjectTypes.COMPANY.getName());
     }
 }
