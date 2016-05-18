@@ -19,7 +19,6 @@
                 default: {
                     catchDefaultError(response);
                 }
-
             }
             return $q.reject(response);
         }
@@ -35,7 +34,7 @@
 
         function catchDefaultError(response) {
             $log.error(response.status + ':' + response.data.type + ' ' + response.data.message);
-            toastr.error('Something goes wrong', 'Error');
+            toastr.error(response.data.message || 'Something goes wrong', 'Error');
         }
     }
 

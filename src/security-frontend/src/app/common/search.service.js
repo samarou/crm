@@ -6,7 +6,7 @@
 			.factory('searchService', searchService);
 
 	/** @ngInject */
-	function searchService(userService, contactService, util, companyService) {
+	function searchService(userService, contactService, util, $filter, companyService) {
 		return {
 			userPublicMode: getPublicBundle,
 			userSecurityMode: getSecurityBundle,
@@ -16,6 +16,7 @@
 
 		function getPublicBundle() {
 			var bundle = createCommonBundle();
+            bundle.selectAll = createSelectAllAction(bundle, userPredicate);
 			bundle.performSeach = userService.findPublicUsers;
 			bundle.sortProperties.userName = {name: 'userName', asc: true, enabled: false};
 			return bundle;
@@ -23,6 +24,7 @@
 
 		function getSecurityBundle() {
 			var bundle = createCommonBundle();
+            bundle.selectAll = createSelectAllAction(bundle, userPredicate);
 			bundle.performSeach = userService.find;
 			bundle.sortProperties.userName = {name: 'userName', asc: true, enabled: false};
 			bundle.filter.groupId = null;
@@ -31,8 +33,13 @@
 			return bundle;
 		}
 
+        function userPredicate(user) {
+            return !$filter('isCurrentUser')(user);
+        }
+
 		function getContactBundle() {
 			var bundle = createCommonBundle();
+            bundle.selectAll = createSelectAllAction(bundle);
 			bundle.performSeach = contactService.find;
 			bundle.sortProperties.address = {name: 'address', asc: true, enabled: false};
 			return bundle;
@@ -49,6 +56,16 @@
 			bundle.filter.sortAsc = bundle.sortProperties.name.asc;
 			return bundle;
 		}
+
+		function createSelectAllAction(bundle, predicate) {
+            return function (checked) {
+                bundle.itemsList.forEach(function (item) {
+                    if (!predicate || predicate(item)) {
+                        item.checked = checked;
+                    }
+                });
+            }
+        }
 
 		function createCommonBundle() {
 			var bundle = {};
@@ -119,13 +136,8 @@
 				bundle.find();
 			};
 
-			bundle.selectAll = function (checked) {
-				bundle.itemsList.forEach(function (user) {
-					user.checked = checked;
-				});
-			};
-
 			bundle.selectOne = function () {
+                $log.debug(' current user');
 				bundle.isSelectedAll = bundle.itemsList.every(function (user) {
 					return user.checked;
 				});

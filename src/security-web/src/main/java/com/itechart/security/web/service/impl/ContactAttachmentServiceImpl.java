@@ -37,17 +37,12 @@ public class ContactAttachmentServiceImpl implements ContactAttachmentService {
 
     @Override
     public void save(Long contactId, MultipartFile file, String attachmentDto) {
-        if (!file.isEmpty()) {
-            try {
-                Long attachmentId = saveDetails(attachmentDto, contactId);
-                saveFile(contactId, file.getInputStream(), attachmentId);
-            } catch (IOException ex) {
-                logger.error("can't save attachment", ex);
-                throw new RuntimeException("can't save attachment", ex);
-            }
-        } else {
-            logger.warn("attachment wasn't added, because file is not present");
-            throw new RuntimeException("Expected a file, but no file was found.");
+        try {
+            Long attachmentId = saveDetails(attachmentDto, contactId);
+            saveFile(contactId, file.getInputStream(), attachmentId);
+        } catch (IOException ex) {
+            logger.error("can't save attachment", ex);
+            throw new RuntimeException("can't save attachment", ex);
         }
     }
 
