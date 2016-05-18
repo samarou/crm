@@ -1,8 +1,13 @@
-<crm-form-wrapper form-title="vm.title" submit-text="Ok" cancel-text="Cancel" submit-btn="vm.ok()"
+<crm-form-wrapper form-title="vm.title" submit-text="{{vm.attachment.filePath ? 'OK':null}}" cancel-text="Cancel" submit-btn="vm.ok()"
                   cancel-btn="vm.cancel()" modal="true">
     <div class="form-group">
         <label for="attachmentFile">File input</label>
-        <input type="file" nv-file-select uploader="vm.uploader" id="attachmentFile" ng-disabled="vm.attachment.file">
+        <input type="file" nv-file-select uploader="vm.uploader" id="attachmentFile" ng-disabled="vm.attachment.name">
+    </div>
+    <div>
+        <div class="progress" style="">
+            <div class="progress-bar" role="progressbar" ng-style="{ 'width': vm.uploader.progress + '%' }"></div>
+        </div>
     </div>
     <div class="form-group">
         <label for="attachmentFileName">File name</label>

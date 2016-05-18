@@ -23,7 +23,6 @@
             addAttachment: addAttachment,
             updateAttachment: updateAttachment,
             removeAttachment: removeAttachment,
-            uploadAttachment: uploadAttachment,
             getAttachment: getAttachment
         };
 
@@ -85,15 +84,10 @@
         }
 
         function addAttachment(id, attachment) {
-            var formData = new FormData();
-            formData.append('attachment', angular.toJson(attachment));
-            formData.append('file', attachment.file);
-            return $http.post('rest/contacts/' + id + '/attachments',
-                formData,
-                {
-                    transformRequest: angular.identity,
-                    headers: {'Content-Type': undefined}
-                });
+            return $http.post('rest/contacts/' + id + '/attachments', {
+                attachment: attachment,
+                filePath: attachment.filePath
+            });
         }
 
 
@@ -103,10 +97,6 @@
 
         function removeAttachment(id, attachmentId) {
             return $http.delete('rest/contacts/' + id + '/attachments/' + attachmentId);
-        }
-
-        function uploadAttachment(id, attachment, file) {
-            return $http.delete('rest/contacts/' + id + '/attachments', attachment, file);
         }
     }
 })();

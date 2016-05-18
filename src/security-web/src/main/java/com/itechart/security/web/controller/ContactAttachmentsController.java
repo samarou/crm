@@ -1,8 +1,10 @@
 package com.itechart.security.web.controller;
 
 import com.itechart.security.business.model.dto.AttachmentDto;
+import com.itechart.security.business.model.dto.helper.AttachmentTempFileDto;
 import com.itechart.security.business.service.AttachmentService;
 import com.itechart.security.web.service.ContactAttachmentService;
+import com.itechart.security.web.util.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,16 @@ public class ContactAttachmentsController {
     @Autowired
     private ContactAttachmentService contactAttachmentService;
 
+    @RequestMapping(value = "/files", method = RequestMethod.POST)
+    public String uploadFile(@RequestParam("file") MultipartFile file){
+        try {
+            return FileUtil.saveTempFile(file.getInputStream());
+        } catch (IOException e) {
+            logger.error("can't upload file to server", e);
+            throw new RuntimeException("file upload failed", e);
+        }
+    }
+
     @RequestMapping(value = "/contacts/{contactId}/attachments", method = RequestMethod.PUT)
     public void updateAttachment(@PathVariable Long contactId, @RequestBody AttachmentDto attachmentDto) {
         logger.debug("update attachments for contact: {}, attachment: {}", contactId, attachmentDto.getId());
@@ -46,9 +58,11 @@ public class ContactAttachmentsController {
 
     @RequestMapping(value = "/contacts/{contactId}/attachments", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public void addAttachment(@PathVariable Long contactId, @RequestParam("file") MultipartFile file, @RequestParam("attachment") String attachment) {
-        logger.debug("uploading file {} from contact {}, attachment {}", file.getOriginalFilename(), contactId, attachment);
-        contactAttachmentService.save(contactId, file, attachment);
+    public void addAttachment(@PathVariable Long contactId,  @RequestBody AttachmentTempFileDto attachmentWithFilePath) {
+        AttachmentDto attachment = attachmentWithFilePath.getAttachment();
+        String filePath = attachmentWithFilePath.getFilePath();
+        logger.debug("adding attachment {} for contact {}, file for which is saved to {}", attachment.getName(), contactId, filePath);
+        contactAttachmentService.save(contactId, attachment, filePath);
     }
 
     @RequestMapping(value = "/files/contacts/{contactId}/attachments/{attachmentId}", method = RequestMethod.GET)
