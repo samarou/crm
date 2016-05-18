@@ -23,44 +23,65 @@ public class FileUtil {
         }
     }
 
+    public static String saveTempFile(InputStream fileInputStream) throws IOException {
+        File temp = File.createTempFile("crm_project", ".tmp");
+        logger.debug("temp file created with path: {}", temp.getAbsolutePath());
+        saveFile(fileInputStream, temp);
+        return temp.getAbsolutePath();
+    }
+
     public static void saveFile(InputStream fileInputStream, File path) throws IOException {
-            BufferedOutputStream outputStream = null;
-            try {
-                outputStream = new BufferedOutputStream(new FileOutputStream(path));
-                FileCopyUtils.copy(fileInputStream, outputStream);
-            } finally {
-                closeStream(fileInputStream);
-                closeStream(outputStream);
-            }
-    }
-
-    public static File getAttachmentPath(Long contactId, Long attachmentId) {
-        File contactFilesDir = getContactUploadDirectory(contactId);
-        return new File(contactFilesDir, attachmentId.toString());
-    }
-
-    public static File getContactUploadDirectory(Long contactId){
-        File contactFilesDir = new File(uploadDir, contactId.toString());
-        if (contactFilesDir.mkdirs()) {
-            logger.debug("directory for contact created: {}", contactFilesDir);
-        } else {
-            logger.debug("can't create directory for contact: {}", contactFilesDir);
-            // todo: throw exception
+        logger.debug("saving file to path: {}", path);
+        BufferedOutputStream outputStream = null;
+        try {
+            outputStream = new BufferedOutputStream(new FileOutputStream(path));
+            FileCopyUtils.copy(fileInputStream, outputStream);
+        } finally {
+            closeStream(fileInputStream);
+            closeStream(outputStream);
         }
-        return contactFilesDir;
     }
 
     public static File getAttachment(Long contactId, Long attachmentId) {
-        return  FileUtils.getFile(uploadDir, contactId.toString(), attachmentId.toString());
+        return FileUtils.getFile(getAttachmentPath(contactId, attachmentId));
+    }
+
+    public static File getAttachmentPath(Long contactId, Long attachmentId) {
+        File contactFilesDir = getContactDirectory(contactId);
+        return new File(contactFilesDir, attachmentId.toString());
+    }
+
+    private static File getContactDirectory(Long contactId) {
+        File contactFilesDir = new File(getContactsDirectory(), contactId.toString());
+        createDirectoryIfNotExists(contactFilesDir);
+        return contactFilesDir;
+    }
+
+    private static File getContactsDirectory() {
+        File contactsDir = new File(uploadDir, "contacts");
+        createDirectoryIfNotExists(contactsDir);
+        return contactsDir;
     }
 
     public void setUploadDir(String uploadDir) {
-        this.uploadDir = new File(uploadDir);
-        if (this.uploadDir.mkdirs()) {
-            logger.debug("directory created: {}", this.uploadDir);
+        FileUtil.uploadDir = new File(uploadDir);
+        createDirectoryIfNotExists(FileUtil.uploadDir);
+    }
+
+    private static void createDirectoryIfNotExists(File directory) {
+        if (!directory.exists()) {
+            createDirectory(directory);
+        }
+    }
+
+    private static void createDirectory(File directory) {
+        if (directory.mkdirs()) {
+            logger.debug("directory created: {}", directory);
         } else {
-            logger.debug("can't create directory {}", this.uploadDir);
-            // todo: throw exception
+            if (!directory.exists()) {
+                logger.debug("can't create directory: {}", directory);
+                throw new RuntimeException("problem with file system on server occurred");
+            }
         }
     }
 }

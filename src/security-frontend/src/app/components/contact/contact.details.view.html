@@ -55,12 +55,14 @@
                     <div class="col-xs-12 col-sm-6"><h4>Attachments</h4></div>
                     <div class="col-xs-12 col-sm-6 pull-right">
                         <div class="btn-group btn-group-justified pull-right">
-                            <a class="btn btn-default" ng-click="vm.attachmentService.addAttachments(vm)" ng-show="vm.canEdit"> Add </a>
-                            <a class="btn btn-default" ng-click="vm.attachmentService.removeAttachments(vm)" ng-show="vm.canEdit"> Remove </a>
+                            <a class="btn btn-default" ng-click="vm.attachmentService.addAttachments(vm)"
+                               ng-show="vm.canEdit"> Add </a>
+                            <a class="btn btn-default" ng-click="vm.attachmentService.removeAttachments(vm)"
+                               ng-show="vm.canEdit"> Remove </a>
                         </div>
                     </div>
                 </div>
-                <table class="table table-condensed table-hover">
+                <table class="table table-condensed">
                     <thead>
                     <tr>
                         <th></th>
@@ -71,11 +73,15 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="attachment in vm.attachments" ng-dblclick="vm.attachmentService.updateAttachment(attachment)">
+                    <tr ng-repeat="attachment in vm.attachments"
+                        ng-dblclick="vm.attachmentService.updateAttachment(attachment)" class="crm-hover">
                         <td><input type="checkbox" ng-model="attachment.checked" ng-show="vm.canEdit"
                                    title="select attachment"></td>
                         <td>{{$index + 1}}</td>
-                        <td><a class="crm-hover" ng-click="vm.attachmentService.getAttachment(attachment)">{{attachment.name}}</a></td>
+                        <td>
+                            <a ng-if="attachment.id" ng-click="vm.attachmentService.getAttachment(attachment)">{{attachment.name}}</a>
+                            <span ng-if="!attachment.id">{{attachment.name}}</span>
+                        </td>
                         <td>{{attachment.dateUpload | date:'yyyy-MM-dd'}}</td>
                         <td>{{attachment.comment}}</td>
                     </tr>

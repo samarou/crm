@@ -6,9 +6,7 @@
         .service('contactAttachmentService', contactAttachmentService);
 
     /** @ngInject */
-    function contactAttachmentService(contactService, $q, dialogService, FileUploader, MAX_FILE_SIZE) {
-        var service = this;
-        service.tempAttachment = {};
+    function contactAttachmentService(contactService, $q, dialogService, FileUploader, MAX_FILE_SIZE, authService) {
 
         return {
             getAttachment: getAttachment,
@@ -21,35 +19,45 @@
         function getFileUploader() {
             return new FileUploader(
                 {
+                    tempFile: {},
+                    withCredentials: true,
+                    url: 'rest/files',
                     onAfterAddingFile: function (item) {
-                        service.tempAttachment.name = item._file.name;
-                        service.tempAttachment.file = item._file;
+                        if (item._file.size < MAX_FILE_SIZE) {
+                            item.headers['X-Auth-Token'] = authService.getAuthentication().token;
+                            this.tempFile.name = item._file.name;
+                            this.uploadItem(item);
+                        } else {
+                            dialogService.notify('File size is too large. It should not exceed 100MB');
+                            this.clearQueue();
+                        }
+                    },
+                    onErrorItem: function (item, response) {
+                        dialogService.error('File hasn\'t been uploaded because error happened: ' + response);
+                        this.clearQueue();
+                    },
+                    onSuccessItem: function (item, response) {
+                        this.tempFile.filePath = response;
                     }
                 });
         }
 
         function addAttachments(scope) {
-            openAddAttachmentDialog().then(function (model) {
-                if (service.tempAttachment.file.size < MAX_FILE_SIZE) {
-                    model.attachment.file = service.tempAttachment.file;
-                    model.attachment.dateUpload = new Date();
-                    scope.attachments.push(model.attachment);
-                } else {
-                    dialogService.notify('File size is too large. It should not exceed 100MB');
-                }
-                service.tempAttachment = {};
+            var uploader = getFileUploader();
+            openAddAttachmentDialog(uploader).then(function (model) {
+                model.attachment.dateUpload = new Date();
+                scope.attachments.push(model.attachment);
             });
         }
 
-        function openAddAttachmentDialog() {
-            var uploader = getFileUploader();
+        function openAddAttachmentDialog(uploader) {
             return dialogService.custom('app/components/contact/attachment/add/contact.attachment.add.view.html', {
                 title: 'Add Attachments',
                 size: 'modal--user-table',
                 cancelTitle: 'Cancel',
                 okTitle: 'Add',
                 uploader: uploader,
-                attachment: service.tempAttachment
+                attachment: uploader.tempFile
             }).result;
         }
 
