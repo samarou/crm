@@ -16,5 +16,5 @@ public class AddressDto {
 
     private String region;
 
-    private CountryDto country;
+    private Long country;
 }

@@ -15,6 +15,8 @@
             createAclHandler: createAclHandler,
             addEmail: addEmail,
             removeEmails: removeEmails,
+            addAddress: addAddress,
+            removeAddresses: removeAddresses,
             now: new Date(),
             init: init
         };
@@ -23,7 +25,8 @@
             return $q.all(
                 [
                     getEmailTypes(),
-                    getTelephoneTypes()
+                    getTelephoneTypes(),
+                    getCountries()
                 ]
             ).then(function () {
                 return vm.options;
@@ -42,32 +45,51 @@
             })
         }
 
+        function getCountries() {
+            return contactService.getCountries().then(function (response) {
+                vm.options.countries = response.data;
+            })
+        }
+
         function addEmail(scope) {
             scope.contact.emails.push({});
         }
 
         function removeEmails(scope) {
+            var contact = scope.contact;
+            return removeCheckedElementsFromList(contact, contact.emails, contactService.removeEmails);
+        }
+
+        function addAddress(scope) {
+            scope.contact.addresses.push({});
+        }
+
+        function removeAddresses(scope) {
+            var contact = scope.contact;
+            return removeCheckedElementsFromList(contact, contact.addresses, contactService.removeAddress);
+        }
+
+        function removeCheckedElementsFromList(contact, elements, removingFunction) {
             var tasks = [];
-            var emails = scope.contact.emails;
-            getCheckedEmails(emails)
-                .forEach(function (email) {
-                    if (email.id) {
-                        tasks.push(contactService.removeEmail(scope.contact.id, email.id));
+            getCheckedElements(elements)
+                .forEach(function (element) {
+                    if (element.id) {
+                        tasks.push(removingFunction(contact.id, element.id));
                     }
-                    var index = emails.indexOf(email);
-                    emails.splice(index, 1);
+                    var index = elements.indexOf(element);
+                    elements.splice(index, 1);
                 });
             return $q.all(tasks);
         }
 
-        function getCheckedEmails(emails) {
-            var checkedEmails = [];
-            emails.forEach(function (email) {
-                if (email.checked) {
-                    checkedEmails.push(email);
+        function getCheckedElements(elements) {
+            var checkedElements = [];
+            elements.forEach(function (element) {
+                if (element.checked) {
+                    checkedElements.push(element);
                 }
-            })
-            return checkedEmails;
+            });
+            return checkedElements;
         }
 
         function createAclHandler(getId) {

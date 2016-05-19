@@ -37,7 +37,6 @@
                             </div>
                         </div>
                         <div class="row">
-
                             <div class="col-md-4">
                                 <div class="form-group" crm-input-validation>
                                     <label for="contact-date-of-birth">Date of birth</label>
@@ -74,28 +73,26 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-12" >
+                            <div class="col-md-12">
                                 <div class="form-group" crm-input-validation>
-                                <label for="contact-photo">Photo URL</label>
-                                <input ng-disabled="!vm.canEdit" id="contact-photo" class="form-control"
-                                       name="photoUrl" ng-model="vm.contact.photoUrl">
+                                    <label for="contact-photo">Photo URL</label>
+                                    <input ng-disabled="!vm.canEdit" id="contact-photo" class="form-control"
+                                           name="photoUrl" ng-model="vm.contact.photoUrl">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row crm-top-buffer">
-                    <div class="col-md-12"><h4>Emails</h4></div>
-                    <div class="col-md-12">
-                        <div class="btn-group btn-group-justified pull-right">
-                            <a class="btn btn-default" ng-click="vm.details.addEmail(vm)"
-                               ng-show="vm.canEdit">
-                                Add
-                            </a>
-                            <a class="btn btn-default" ng-click="vm.details.removeEmails(vm)"
-                               ng-show="vm.canEdit">
-                                Remove
-                            </a>
+                <div class="row">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6"><h4>Emails</h4></div>
+                        <div class="col-xs-12 col-sm-6 pull-right" ng-show="vm.canEdit">
+                            <div class="btn-group btn-group-justified pull-right">
+                                <a class="btn btn-default" ng-click="vm.details.addEmail(vm)">
+                                    Add </a>
+                                <a class="btn btn-default" ng-click="vm.details.removeEmails(vm)">
+                                    Remove </a>
+                            </div>
                         </div>
                     </div>
                     <table class="table table-condensed">
@@ -118,8 +115,54 @@
                                         class="form-control" crm-input-validation required>
                                 <option value="">Please, select</option>
                             </select>
-                                <span ng-show="email.type.$dirty && email.type.$error.required"
-                                      class="help-block">Email type is required</span>
+                                <!--TODO: add validation here-->
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </uib-tab>
+
+            <uib-tab heading="Contact Info">
+                <div class="row crm-top-buffer">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6"><h4>Addresses</h4></div>
+                        <div class="col-xs-12 col-sm-6 pull-right" ng-show="vm.canEdit">
+                            <div class="btn-group btn-group-justified pull-right">
+                                <a class="btn btn-default" ng-click="vm.details.addAddress(vm)">
+                                    Add </a>
+                                <a class="btn btn-default" ng-click="vm.details.removeAddresses(vm)">
+                                    Remove </a>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-condensed">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th>Address line</th>
+                            <th>Zipcode</th>
+                            <th>City</th>
+                            <th>Region</th>
+                            <th>Country</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="address in vm.contact.addresses" ng-disabled="!vm.canEdit">
+                            <td><input type="checkbox" ng-model="address.checked" ng-show="vm.canEdit"
+                                       title="select address"></td>
+                            <td>{{$index + 1}}</td>
+                            <td><input class="form-control" ng-model="address.addressLine"></td>
+                            <td><input class="form-control" ng-model="address.zipcode"></td>
+                            <td><input class="form-control" ng-model="address.city"></td>
+                            <td><input class="form-control" ng-model="address.region"></td>
+                            <td><select ng-disabled="!vm.canEdit" ng-model="address.country"
+                                        ng-options="option.id as option.name for option in vm.options.countries"
+                                        class="form-control" crm-input-validation required>
+                                <option value="">Please, select</option>
+                                <!--TODO: add validation here-->
+                            </select>
                             </td>
                         </tr>
                         </tbody>

@@ -34,7 +34,7 @@ public class Address extends SecuredEntity {
     @JoinColumn(name = "contact_id", nullable = false)
     private Contact contact;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "country_id", nullable = false)
     private Country country;
 

@@ -26,7 +26,9 @@
             getAttachment: getAttachment,
             getEmailTypes: getEmailTypes,
             removeEmail: removeEmail,
-            getTelephoneTypes: getTelephoneTypes
+            getTelephoneTypes: getTelephoneTypes,
+            removeAddress: removeAddress,
+            getCountries: getCountries
         };
 
         function getAll() {
@@ -111,6 +113,14 @@
 
         function getTelephoneTypes() {
             return $http.get('rest/telephones/types');
+        }
+
+        function removeAddress(id, addressId) {
+            return $http.delete('rest/contacts/' + id + '/addresses/' + addressId)
+        }
+
+        function getCountries() {
+            return $http.get('rest/countries');
         }
     }
 })();

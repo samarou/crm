@@ -1,9 +1,11 @@
 package com.itechart.security.business.service.impl;
 
+import com.itechart.security.business.dao.AddressDao;
 import com.itechart.security.business.dao.ContactDao;
 import com.itechart.security.business.dao.EmailDao;
 import com.itechart.security.business.filter.ContactFilter;
 import com.itechart.security.business.model.dto.ContactDto;
+import com.itechart.security.business.model.persistent.Address;
 import com.itechart.security.business.model.persistent.Contact;
 import com.itechart.security.business.model.persistent.Email;
 import com.itechart.security.business.service.ContactService;
@@ -12,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
 
 import static com.itechart.security.business.model.dto.utils.DtoConverter.convert;
 import static com.itechart.security.business.model.dto.utils.DtoConverter.convertContacts;
@@ -28,6 +29,9 @@ public class ContactServiceImpl implements ContactService {
 
     @Autowired
     private EmailDao emailDao;
+
+    @Autowired
+    private AddressDao addressDao;
 
     @Override
     @Transactional
@@ -63,7 +67,32 @@ public class ContactServiceImpl implements ContactService {
     @Override
     @Transactional
     public void updateContact(ContactDto contactDto) {
-        contactDao.update(convert(contactDto));
+        Contact contact = convert(contactDto);
+        saveOrUpdateEmailsForContact(contact);
+        saveOrUpdateAddressesForContact(contact);
+        contactDao.update(contact);
+    }
+
+    private void saveOrUpdateEmailsForContact(Contact contact){
+        for (Email email : contact.getEmails()) {
+            email.setContact(contact);
+            if (email.getId() == null) {
+                emailDao.save(email);
+            } else {
+                emailDao.update(email);
+            }
+        }
+    }
+
+    private void saveOrUpdateAddressesForContact(Contact contact){
+        for (Address address : contact.getAddresses()) {
+            address.setContact(contact);
+            if (address.getId() == null) {
+                addressDao.save(address);
+            } else {
+                addressDao.update(address);
+            }
+        }
     }
 
     @Override

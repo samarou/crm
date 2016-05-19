@@ -1,10 +1,8 @@
 package com.itechart.security.business.dao.impl;
 
 import com.itechart.security.business.dao.ContactDao;
-import com.itechart.security.business.dao.EmailDao;
 import com.itechart.security.business.filter.ContactFilter;
 import com.itechart.security.business.model.persistent.Contact;
-import com.itechart.security.business.model.persistent.Email;
 import com.itechart.security.core.annotation.AclFilter;
 import com.itechart.security.core.annotation.AclFilterRule;
 import com.itechart.security.core.model.acl.Permission;
@@ -13,7 +11,6 @@ import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -25,9 +22,6 @@ import java.util.List;
  */
 @Repository
 public class ContactDaoImpl extends AbstractHibernateDao<Contact> implements ContactDao {
-
-    @Autowired
-    private EmailDao emailDao;
 
     @Override
     public Long save(Contact contact) {
@@ -42,14 +36,6 @@ public class ContactDaoImpl extends AbstractHibernateDao<Contact> implements Con
 
     @Override
     public void update(Contact contact) {
-        for (Email email : contact.getEmails()) {
-            email.setContact(contact);
-            if (email.getId() == null) {
-                emailDao.save(email);
-            } else {
-                emailDao.update(email);
-            }
-        }
         getHibernateTemplate().update(contact);
     }
 

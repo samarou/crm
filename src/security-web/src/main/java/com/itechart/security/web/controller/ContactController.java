@@ -2,12 +2,14 @@ package com.itechart.security.web.controller;
 
 import com.itechart.security.business.filter.ContactFilter;
 import com.itechart.security.business.model.dto.ContactDto;
+import com.itechart.security.business.model.dto.CountryDto;
 import com.itechart.security.business.model.dto.EmailTypeDto;
 import com.itechart.security.business.model.dto.TelephoneTypeDto;
 import com.itechart.security.business.model.enums.EmailType;
 import com.itechart.security.business.model.enums.ObjectTypes;
 import com.itechart.security.business.model.enums.TelephoneType;
 import com.itechart.security.business.service.ContactService;
+import com.itechart.security.business.service.DictionaryService;
 import com.itechart.security.core.SecurityUtils;
 import com.itechart.security.core.acl.AclPermissionEvaluator;
 import com.itechart.security.core.model.acl.ObjectIdentity;
@@ -29,11 +31,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.itechart.security.web.model.dto.Converter.convert;
-import static java.util.stream.Collectors.toList;
 import static com.itechart.security.business.model.dto.utils.DtoConverter.convertEmailTypes;
 import static com.itechart.security.business.model.dto.utils.DtoConverter.convertTelephoneTypes;
-
+import static com.itechart.security.web.model.dto.Converter.convert;
+import static java.util.stream.Collectors.toList;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
@@ -52,6 +53,9 @@ public class ContactController {
 
     @Autowired
     private AclService aclService;
+
+    @Autowired
+    private DictionaryService dictionaryService;
 
     @Autowired
     private AclPermissionEvaluator aclPermissionEvaluator;
@@ -139,6 +143,11 @@ public class ContactController {
     @RequestMapping(value = "/telephones/types", method = RequestMethod.GET)
     public List<TelephoneTypeDto> getTelephoneTypes(){
         return convertTelephoneTypes(TelephoneType.values());
+    }
+
+    @RequestMapping(value = "/countries", method = RequestMethod.GET)
+    public List<CountryDto> getCountries() {
+        return dictionaryService.getCountries();
     }
 
     private Acl getAcl(Long contactId) {

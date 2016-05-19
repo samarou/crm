@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet id="001" author="maksim.kalenik">
+        <sql dbms="mysql">
+            insert into country(name) values('Afghanistan'),('Akrotiri'),('Albania'),
+            ('Algeria'),('American Samoa'),('Andorra'),('Angola'),('Anguilla'),('Antarctica'),('Argentina'),
+            ('Armenia'),('Aruba'),('Australia'),('Austria'),('Azerbaijan'),('Bahrain'),('Bangladesh'),
+            ('Barbados'),('Bassas da India'),('Belarus'),('Belgium'),('Belize'),('Benin'),('Bermuda'),
+            ('Cambodia'),('Cameroon'),('Canada'),('Cape Verde'),('Cayman Islands'),('Central African Republic'),
+            ('Chad'),('Chile'),('China'),('Christmas Island'),('Clipperton Island'),('Colombia'),('Comoros'),
+            ('Democratic Republic Congo'),('Cook Islands'),('Costa Rica'),('Croatia'),('Cuba'),('Cyprus'),
+            ('Czech Republic'),('Denmark'),('Dominican Republic'),('Ecuador'),('Egypt'),('El Salvador'),
+            ('Equatorial Guinea'),('Estonia'),('Ethiopia'),('Finland'),('France'),('Gabon'),('Gambia'),
+            ('Georgia'),('Germany'),('Ghana'),('Greece'),('Guatemala'),('Guinea'),('Haiti'),('Hong Kong'),
+            ('Iceland'),('India'),('Indonesia'),('Iran'),('Iraq'),('Israel'),('Italy'),('Jamaica'),('Japan'),
+            ('Jersey'),('Jordan'),('Kazakhstan'),('Kenya'),('North Korea'),('South Korea'),('Kyrgyzstan'),
+            ('Laos'),('Latvia'),('Liberia'),('Liechtenstein'),('Lithuania'),('Luxembourg'),('Macedonia'),
+            ('Madagascar'),('Malaysia'),('Maldives'),('Mali'),('Malta'),('Mexico'),('Moldova'),('Monaco'),
+            ('Mongolia'),('Morocco'),('Mozambique'),('Namibia'),('Nepal'),('New Caledonia'),('New Zealand'),
+            ('Nicaragua'),('Niger'),('Nigeria'),('Norway'),('Pakistan'),('Panama'),('Papua New Guinea'),
+            ('Paraguay'),('Peru'),('Philippines'),('Poland'),('Portugal'),('Puerto Rico'),('Romania'),('Russia'),
+            ('Rwanda'),('Saint Lucia'),('San Marino'),('Senegal'),('Serbia and Montenegro'),('Seychelles'),
+            ('Sierra Leone'),('Singapore'),('Slovakia'),('Slovenia'),('Spain'),('Sri Lanka'),('Sudan'),
+            ('Swaziland'),('Sweden'),('Switzerland'),('Syria'),('Taiwan'),('Tajikistan'),('Tanzania'),
+            ('Thailand'),('Tunisia'),('Turkey'),('Turkmenistan'),('Ukraine'),('United Arab Emirates'),
+            ('United Kingdom'),('United States'),('Uruguay'),('Uzbekistan'),('Venezuela'),('Vietnam'),('Zambia'),('Zimbabwe');
+        </sql>
+        <rollback>
+            <delete tableName="countries"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

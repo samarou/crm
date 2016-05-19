@@ -160,6 +160,13 @@ public class DtoConverter {
         return country;
     }
 
+    public static List<CountryDto> convertCountries(List<Country> countries) {
+        if (CollectionUtils.isEmpty(countries)) {
+            return Collections.emptyList();
+        }
+        return countries.stream().map(DtoConverter::convert).collect(Collectors.toList());
+    }
+
     public static AddressDto convert(Address address) {
         AddressDto dto = new AddressDto();
         dto.setId(address.getId());
@@ -167,7 +174,7 @@ public class DtoConverter {
         dto.setZipcode(address.getZipcode());
         dto.setCity(address.getCity());
         dto.setRegion(address.getRegion());
-        dto.setCountry(convert(address.getCountry()));
+        dto.setCountry(address.getCountry().getId());
         return dto;
     }
 
@@ -178,7 +185,9 @@ public class DtoConverter {
         address.setZipcode(dto.getZipcode());
         address.setCity(dto.getCity());
         address.setRegion(dto.getRegion());
-        address.setCountry(convert(dto.getCountry()));
+        Country country = new Country();
+        country.setId(dto.getCountry());
+        address.setCountry(country);
         return address;
     }
 
