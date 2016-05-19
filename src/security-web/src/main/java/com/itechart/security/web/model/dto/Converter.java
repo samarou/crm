@@ -1,17 +1,35 @@
 package com.itechart.security.web.model.dto;
 
+import static com.itechart.security.core.model.acl.Permission.ADMIN;
+import static com.itechart.security.core.model.acl.Permission.CREATE;
+import static com.itechart.security.core.model.acl.Permission.DELETE;
+import static com.itechart.security.core.model.acl.Permission.READ;
+import static com.itechart.security.core.model.acl.Permission.WRITE;
+import static java.util.stream.Collectors.toList;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.springframework.util.CollectionUtils;
+
+import com.itechart.security.business.filter.CompanyFilter;
 import com.itechart.security.business.filter.ContactFilter;
 import com.itechart.security.core.model.acl.Permission;
 import com.itechart.security.model.filter.UserFilter;
-import com.itechart.security.model.persistent.*;
+import com.itechart.security.model.persistent.Action;
+import com.itechart.security.model.persistent.Group;
+import com.itechart.security.model.persistent.ObjectType;
+import com.itechart.security.model.persistent.Principal;
+import com.itechart.security.model.persistent.Privilege;
+import com.itechart.security.model.persistent.Role;
+import com.itechart.security.model.persistent.User;
+import com.itechart.security.model.persistent.UserDefaultAclEntry;
 import com.itechart.security.web.model.PrincipalTypes;
-import org.springframework.util.CollectionUtils;
-
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static com.itechart.security.core.model.acl.Permission.*;
-import static java.util.stream.Collectors.toList;
 
 /**
  * Provides usefully methods to convert model to dto and vice versa.
@@ -23,7 +41,7 @@ public class Converter {
         if (CollectionUtils.isEmpty(users)) {
             return Collections.emptyList();
         }
-        return users.stream().map(Converter::convert).collect(toList());
+        return users.stream().map(Converter::convert).collect(Collectors.toList());
     }
 
     public static SecuredUserDto convert(User user) {
@@ -63,7 +81,7 @@ public class Converter {
         if (CollectionUtils.isEmpty(users)) {
             return Collections.emptyList();
         }
-        return users.stream().map(Converter::convertToPublicUser).collect(toList());
+        return users.stream().map(Converter::convertToPublicUser).collect(Collectors.toList());
     }
 
     private static PublicUserDto convertToPublicUser(User user) {
@@ -111,6 +129,17 @@ public class Converter {
         filter.setSortAsc(dto.isSortAsc());
         return filter;
     }
+    
+    public static CompanyFilter convert(CompanyFilterDto dto) {
+    	CompanyFilter filter = new CompanyFilter();
+    	filter.setText(dto.getText());
+        filter.setFrom(dto.getFrom());
+        filter.setCount(dto.getCount());
+        filter.setSortProperty(dto.getSortProperty());
+        filter.setSortAsc(dto.isSortAsc());
+        filter.setEmployeeNumberCategoryId(dto.getEmployeeNumberCategoryId());
+        return filter;
+    }
 
     //todo: have the same erasure with convert(List<User> groups) because of erase
     //maybe replace with Group... groups?
@@ -118,14 +147,14 @@ public class Converter {
         if (CollectionUtils.isEmpty(groups)) {
             return Collections.emptyList();
         }
-        return groups.stream().map(Converter::convert).collect(toList());
+        return groups.stream().map(Converter::convert).collect(Collectors.toList());
     }
 
     public static List<Group> convertGroupsDtos(List<GroupDto> dtos) {
         if (CollectionUtils.isEmpty(dtos)) {
             return Collections.emptyList();
         }
-        return dtos.stream().map(Converter::convert).collect(toList());
+        return dtos.stream().map(Converter::convert).collect(Collectors.toList());
     }
 
     public static GroupDto convert(Group group) {
@@ -133,12 +162,7 @@ public class Converter {
         dto.setId(group.getId());
         dto.setName(group.getName());
         dto.setDescription(group.getDescription());
-        return dto;
-    }
 
-    public static GroupDto convertGroupWithUsers(Group group) {
-        GroupDto dto = convert(group);
-        dto.setMembers(convertToPublicUsers(new ArrayList<>(group.getUsers())));
         return dto;
     }
 
@@ -151,11 +175,17 @@ public class Converter {
         return group;
     }
 
+    public static GroupDto convertGroupWithUsers(Group group) {
+        GroupDto dto = convert(group);
+        dto.setMembers(convertToPublicUsers(new ArrayList<>(group.getUsers())));
+        return dto;
+    }
+
     public static List<PublicGroupDto> convertToPublicGroups(List<Group> groups) {
         if (CollectionUtils.isEmpty(groups)) {
             return Collections.emptyList();
         }
-        return groups.stream().map(Converter::convertToPublicGroup).collect(toList());
+        return groups.stream().map(Converter::convertToPublicGroup).collect(Collectors.toList());
     }
 
     public static PublicGroupDto convertToPublicGroup(Group group) {
@@ -171,14 +201,14 @@ public class Converter {
         if (CollectionUtils.isEmpty(roles)) {
             return Collections.emptyList();
         }
-        return roles.stream().map(Converter::convert).collect(toList());
+        return roles.stream().map(Converter::convert).collect(Collectors.toList());
     }
 
     public static List<Role> convertRolesDto(List<RoleDto> dtos) {
         if (CollectionUtils.isEmpty(dtos)) {
             return Collections.emptyList();
         }
-        return dtos.stream().map(Converter::convert).collect(toList());
+        return dtos.stream().map(Converter::convert).collect(Collectors.toList());
     }
 
     public static RoleDto convert(Role role) {
@@ -213,7 +243,7 @@ public class Converter {
             dto.setAction(convert(p.getAction()));
             dto.setObjectType(convert(p.getObjectType()));
             return dto;
-        }).collect(toList());
+        }).collect(Collectors.toList());
     }
 
     public static Set<Privilege> convertPrivilegesDto(Collection<PrivilegeDto> dtos) {

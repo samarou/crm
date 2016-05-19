@@ -16,6 +16,9 @@
             <ul class="nav navbar-nav" ng-show="vm.isLoggedUser()">
                 <li ng-show="vm.isManager() || vm.isSpecialist()" ng-class="{'active' : vm.isActive('/contacts')}"><a
                         ui-sref="contacts.list">Contacts</a></li>
+                <li ng-show="vm.isManager() || vm.isSpecialist()" ng-class="{'active' : vm.isActive('/companies')}">
+                    <a ui-sref="companies.list">Companies</a></li>
+                </li>
                 <li ng-show="vm.isAdmin()" ng-class="{'active' : vm.isActive('/user')}"><a
                         ui-sref="users.list">Users</a></li>
                 <li ng-show="vm.isAdmin()" ng-class="{'active' : vm.isActive('/group')}"><a

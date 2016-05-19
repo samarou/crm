@@ -2,15 +2,16 @@
     'use strict';
 
     angular
-        .module('crm.common')
-        .factory('searchService', searchService);
+            .module('crm.common')
+            .factory('searchService', searchService);
 
     /** @ngInject */
-    function searchService(userService, contactService, util, $filter) {
+    function searchService(userService, contactService, companyService, util, $filter, $log) {
         return {
             userPublicMode: getPublicBundle,
             userSecurityMode: getSecurityBundle,
-            contactMode: getContactBundle
+            contactMode: getContactBundle,
+            companyMode: getCompanyBundle
         };
 
         function getPublicBundle() {
@@ -41,6 +42,19 @@
             bundle.selectAll = createSelectAllAction(bundle);
             bundle.performSeach = contactService.find;
             bundle.sortProperties.address = {name: 'address', asc: true, enabled: false};
+            return bundle;
+        }
+
+        function getCompanyBundle() {
+            var bundle = createCommonBundle();
+            bundle.performSeach = companyService.find;
+            bundle.selectAll = createSelectAllAction(bundle);
+            bundle.sortProperties = {
+                name: {name: 'name', asc: true, enabled: true},
+                employeeNumber: {name: 'employeeNumberCategory.id', asc: true, enabled: true}
+            };
+            bundle.filter.sortProperty = bundle.sortProperties.name.name;
+            bundle.filter.sortAsc = bundle.sortProperties.name.asc;
             return bundle;
         }
 

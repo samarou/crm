@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="alexander.tolstoy" id="1">
+        <createTable tableName="company">
+            <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" remarks="Company name" type="VARCHAR(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="assignee_id" type="BIGINT UNSIGNED"/>
+            <column name="logo_url" remarks="Company logo (URL)" type="VARCHAR(255)"/>
+            <column name="company_type_id" type="BIGINT UNSIGNED"/>
+            <column name="business_sphere_id" type="BIGINT UNSIGNED"/>
+            <column name="emp_number_category_id" remarks="Cathegory by number of employees" type="BIGINT UNSIGNED"/>
+            <column name="commentary" type="VARCHAR(1000)"/>
+            <column name="address_id" type="BIGINT UNSIGNED"/>
+        </createTable>
+        
+        <createTable tableName="company_type">
+            <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="description" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="business_sphere">
+            <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="description" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="emp_number_category">
+            <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="description" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <createIndex indexName="fk_company_type_id" tableName="company">
+            <column name="company_type_id"/>
+        </createIndex>
+
+        <createIndex indexName="fk_company_assignee_id" tableName="company">
+            <column name="assignee_id"/>
+        </createIndex>
+        
+        <createIndex indexName="fk_company_business_sphere_id" tableName="company">
+            <column name="business_sphere_id"/>
+        </createIndex>
+
+        <createIndex indexName="fk_company_emp_number_category_id" tableName="company">
+            <column name="emp_number_category_id"/>
+        </createIndex>
+        
+        <addForeignKeyConstraint constraintName="fk_company_type_id" 
+                                 baseTableName="company"
+                                 baseColumnNames="company_type_id"  
+                                 referencedTableName="company_type" 
+                                 referencedColumnNames="id"
+                                 onDelete="SET NULL" 
+                                 onUpdate="NO ACTION"/>
+
+        <addForeignKeyConstraint constraintName="fk_company_assignee_id" 
+                                 baseTableName="company"
+                                 baseColumnNames="assignee_id"  
+                                 referencedTableName="user" 
+                                 referencedColumnNames="id"
+                                 onDelete="SET NULL" 
+                                 onUpdate="NO ACTION"/>
+
+         <addForeignKeyConstraint constraintName="fk_company_business_sphere_id" 
+                                 baseTableName="company"
+                                 baseColumnNames="business_sphere_id"  
+                                 referencedTableName="business_sphere" 
+                                 referencedColumnNames="id"
+                                 onDelete="SET NULL" 
+                                 onUpdate="NO ACTION"/>
+
+         <addForeignKeyConstraint constraintName="fk_company_emp_number_category_id" 
+                                 baseTableName="company"
+                                 baseColumnNames="emp_number_category_id"  
+                                 referencedTableName="emp_number_category" 
+                                 referencedColumnNames="id"
+                                 onDelete="SET NULL" 
+                                 onUpdate="NO ACTION"/>
+    </changeSet>
+    
+    <changeSet author="alexander.tolstoy" id="2">
+        <insert tableName="object_type">
+            <column name="id" valueNumeric="3"/>
+            <column name="name" value="sample.Company"/>
+            <column name="description" value=""/>
+        </insert>
+        
+        <insert tableName="privilege">
+            <column name="id" valueNumeric="9"/>
+            <column name="object_type_id" valueNumeric="3"/>
+            <column name="action_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="privilege">
+            <column name="id" valueNumeric="10"/>
+            <column name="object_type_id" valueNumeric="3"/>
+            <column name="action_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="privilege">
+            <column name="id" valueNumeric="11"/>
+            <column name="object_type_id" valueNumeric="3"/>
+            <column name="action_id" valueNumeric="3"/>
+        </insert>
+        <insert tableName="privilege">
+            <column name="id" valueNumeric="12"/>
+            <column name="object_type_id" valueNumeric="3"/>
+            <column name="action_id" valueNumeric="4"/>
+        </insert>
+        
+        <insert tableName="role_privilege">
+            <column name="role_id" valueNumeric="3"/>
+            <column name="privilege_id" valueNumeric="9"/>
+        </insert>
+        <insert tableName="role_privilege">
+            <column name="role_id" valueNumeric="3"/>
+            <column name="privilege_id" valueNumeric="10"/>
+        </insert>
+        <insert tableName="role_privilege">
+            <column name="role_id" valueNumeric="3"/>
+            <column name="privilege_id" valueNumeric="11"/>
+        </insert>
+        <insert tableName="role_privilege">
+            <column name="role_id" valueNumeric="3"/>
+            <column name="privilege_id" valueNumeric="12"/>
+        </insert>
+    </changeSet>
+    
+    <changeSet author="alexander.tolstoy" id="3">
+        <insert tableName="company_type">
+            <column name="id" valueNumeric="1"/>
+            <column name="description" value="Client"/>
+        </insert>
+        <insert tableName="company_type">
+            <column name="id" valueNumeric="2"/>
+            <column name="description" value="Partner"/>
+        </insert>
+        <insert tableName="company_type">
+            <column name="id" valueNumeric="3"/>
+            <column name="description" value="Reseller"/>
+        </insert>
+        <insert tableName="company_type">
+            <column name="id" valueNumeric="4"/>
+            <column name="description" value="Concurrent"/>
+        </insert>
+        <insert tableName="company_type">
+            <column name="id" valueNumeric="5"/>
+            <column name="description" value="Investor"/>
+        </insert>
+        <insert tableName="company_type">
+            <column name="id" valueNumeric="6"/>
+            <column name="description" value="Integrator"/>
+        </insert>
+        <insert tableName="company_type">
+            <column name="id" valueNumeric="7"/>
+            <column name="description" value="Reseller"/>
+        </insert>
+        <insert tableName="company_type">
+            <column name="id" valueNumeric="8"/>
+            <column name="description" value="Perspective"/>
+        </insert>
+        <insert tableName="company_type">
+            <column name="id" valueNumeric="9"/>
+            <column name="description" value="Mass Media"/>
+        </insert>
+        <insert tableName="company_type">
+            <column name="id" valueNumeric="10"/>
+            <column name="description" value="Other"/>
+        </insert>
+    </changeSet>
+    <changeSet author="alexander.tolstoy" id="4">
+        <insert tableName="business_sphere">
+            <column name="id" valueNumeric="1"/>
+            <column name="description" value="Information Technologies"/>
+        </insert>
+        <insert tableName="business_sphere">
+            <column name="id" valueNumeric="2"/>
+            <column name="description" value="Telecommunications"/>
+        </insert>
+        <insert tableName="business_sphere">
+            <column name="id" valueNumeric="3"/>
+            <column name="description" value="Industry"/>
+        </insert>
+        <insert tableName="business_sphere">
+            <column name="id" valueNumeric="4"/>
+            <column name="description" value="Banking services"/>
+        </insert>
+        <insert tableName="business_sphere">
+            <column name="id" valueNumeric="5"/>
+            <column name="description" value="Consulting"/>
+        </insert>
+        <insert tableName="business_sphere">
+            <column name="id" valueNumeric="6"/>
+            <column name="description" value="Finances"/>
+        </insert>
+        <insert tableName="business_sphere">
+            <column name="id" valueNumeric="7"/>
+            <column name="description" value="Government"/>
+        </insert>
+        <insert tableName="business_sphere">
+            <column name="id" valueNumeric="8"/>
+            <column name="description" value="Delivery"/>
+        </insert>
+        <insert tableName="business_sphere">
+            <column name="id" valueNumeric="9"/>
+            <column name="description" value="Recreation"/>
+        </insert>
+        <insert tableName="business_sphere">
+            <column name="id" valueNumeric="10"/>
+            <column name="description" value="Other"/>
+        </insert>
+    </changeSet>
+    <changeSet author="alexander.tolstoy" id="5">
+        <insert tableName="emp_number_category">
+            <column name="id" valueNumeric="1"/>
+            <column name="description" value="Less than 50"/>
+        </insert>
+        <insert tableName="emp_number_category">
+            <column name="id" valueNumeric="2"/>
+            <column name="description" value="50 to 250"/>
+        </insert>
+        <insert tableName="emp_number_category">
+            <column name="id" valueNumeric="3"/>
+            <column name="description" value="250 to 500"/>
+        </insert>
+        <insert tableName="emp_number_category">
+            <column name="id" valueNumeric="4"/>
+            <column name="description" value="More than 500"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

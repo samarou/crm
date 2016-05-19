@@ -1,0 +1,74 @@
+<div class="page-header">
+    <h4>Companies</h4>
+</div>
+<div class="row crm-bottom-buffer">
+    <div class="row">
+        <div class="col-md-4">
+	        <div class="form-group">
+	            <input ng-model="vm.searchBundle.filter.text" ng-keyup="vm.searchBundle.typing.keyUp()"
+	                   ng-keydown="vm.searchBundle.typing.keyDown()" class="form-control"
+	                   placeholder="Search by name">
+	        </div>
+        </div>
+        <div class="col-md-4">
+            <select ng-model="vm.selectedEmployeeNumberCategory"
+                    ng-options="x.description for x in vm.staticData.employeeNumberCategories"
+                    ng-change="vm.filterUpdated()"
+                    class="form-control">
+                <option value="">Search by number of employees</option>
+            </select>
+        </div>
+        <div class="col-sm-4">
+	        <div class="btn-group btn-group-justified pull-right">
+	            <a class="btn btn-default" ng-click="vm.add()">
+	                Add
+	            </a>
+	            <a class="btn btn-default" ng-click="vm.remove()">
+	                Remove
+	            </a>
+	        </div>
+	    </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" ng-model="vm.searchBundle.isSelectedAll"
+                           ng-click="vm.searchBundle.selectAll(vm.searchBundle.isSelectedAll)">
+                        </th>
+                        <th class="crm-hover" ng-click="vm.searchBundle.sortBy(vm.searchBundle.sortProperties.name)">
+                            <span class="glyphicon" ng-show="vm.searchBundle.sortProperties.name.enabled"
+                                  ng-class="vm.searchBundle.sortProperties.name.asc ? 'glyphicon-sort-by-attributes' : 'glyphicon-sort-by-attributes-alt' ">
+                            </span>
+                            Name
+                        </th>
+                        <!--  
+                        <th class="crm-hover">
+                            Country
+                        </th>
+                        <th class="crm-hover">
+                            City
+                        </th>
+                        -->
+                        <th class="crm-hover" ng-click="vm.searchBundle.sortBy(vm.searchBundle.sortProperties.employeeNumber)">
+                            <span class="glyphicon" ng-show="vm.searchBundle.sortProperties.employeeNumber.enabled"
+                                  ng-class="vm.searchBundle.sortProperties.employeeNumber.asc ? 'glyphicon-sort-by-attributes' : 'glyphicon-sort-by-attributes-alt' ">
+                            </span>
+                            Number of Employees
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="crm-hover" ng-click="vm.edit(company)" ng-repeat="company in vm.searchBundle.itemsList">
+                        <td><input type="checkbox" ng-model="company.checked"
+                           ng-click="vm.searchBundle.selectOne();$event.stopPropagation()">
+                        </td>
+                        <td>{{company.name}}</td>
+                        <td>{{company.employeeNumberCategory.description}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
