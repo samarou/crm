@@ -11,7 +11,7 @@
 		var staticData = {};
 		staticData.companyTypes = [];
 		staticData.businessSpheres = [];
-		staticData.employeeNumberCathegories = [];
+		staticData.employeeNumberCategories = [];
 
 		init();
 
@@ -31,8 +31,8 @@
 			$http.get('rest/companies/business_spheres').then(function (response) {
 				staticData.businessSpheres = response.data;
 			});
-			$http.get('rest/companies/employee_number_cathegories').then(function (response) {
-				staticData.employeeNumberCathegories = response.data;
+			$http.get('rest/companies/employee_number_categories').then(function (response) {
+				staticData.employeeNumberCategories = response.data;
 			});
 		}
 

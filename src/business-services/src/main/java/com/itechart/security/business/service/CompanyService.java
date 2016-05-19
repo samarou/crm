@@ -6,7 +6,7 @@ import com.itechart.security.business.filter.CompanyFilter;
 import com.itechart.security.business.model.dto.company.BusinessSphereDto;
 import com.itechart.security.business.model.dto.company.CompanyDto;
 import com.itechart.security.business.model.dto.company.CompanyTypeDto;
-import com.itechart.security.business.model.dto.company.EmployeeNumberCathegoryDto;
+import com.itechart.security.business.model.dto.company.EmployeeNumberCategoryDto;
 
 public interface CompanyService {
 	
@@ -27,5 +27,5 @@ public interface CompanyService {
 	
 	List<BusinessSphereDto> loadBusinessSpheres();
 	
-	List<EmployeeNumberCathegoryDto> loadEmployeeNumberCathegories();
+	List<EmployeeNumberCategoryDto> loadEmployeeNumberCategories();
 }

@@ -12,28 +12,28 @@ import com.itechart.security.business.model.persistent.BaseEntity;
 @Entity
 @Table(name = "business_sphere")
 public class BusinessSphere extends BaseEntity {
-	
-	@Id
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-	
-	@Column(name = "description", nullable = false, length = 30)
+
+    @Column(name = "description", nullable = false, length = 30)
     private String description;
-	
-	@Override
-	public Long getId() {
-		return id;
-	}
-	
-	public void setId(Long id) {
-		this.id = id;
-	}
 
-	public String getDescription() {
-		return description;
-	}
+    @Override
+    public Long getId() {
+        return id;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

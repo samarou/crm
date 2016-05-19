@@ -14,11 +14,8 @@ import com.itechart.security.business.service.CompanyService;
 import com.itechart.security.business.model.dto.company.BusinessSphereDto;
 import com.itechart.security.business.model.dto.company.CompanyDto;
 import com.itechart.security.business.model.dto.company.CompanyTypeDto;
-import com.itechart.security.business.model.dto.company.EmployeeNumberCathegoryDto;
+import com.itechart.security.business.model.dto.company.EmployeeNumberCategoryDto;
 import com.itechart.security.business.model.enums.ObjectTypes;
-import com.itechart.security.business.model.persistent.company.BusinessSphere;
-import com.itechart.security.business.model.persistent.company.CompanyType;
-import com.itechart.security.business.model.persistent.company.EmployeeNumberCathegory;
 import com.itechart.security.core.SecurityUtils;
 import com.itechart.security.core.acl.AclPermissionEvaluator;
 import com.itechart.security.core.model.acl.ObjectIdentity;
@@ -36,69 +33,71 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 @PreAuthorize("hasAnyRole('MANAGER', 'SPECIALIST')")
 public class CompanyController {
 
-	@Autowired
-	private CompanyService companyService;
-	
+    @Autowired
+    private CompanyService companyService;
+
     @Autowired
     private AclService aclService;
 
     @Autowired
     private AclPermissionEvaluator aclPermissionEvaluator;
-    
+
     @RequestMapping("/companies")
     public DataPageDto<CompanyDto> getCompanies(CompanyFilterDto filter) {
-    	List<CompanyDto> companies = companyService.findCompanies(convert(filter));
-    	DataPageDto<CompanyDto> result = new DataPageDto<CompanyDto>();
-    	result.setData(companies);
-    	result.setTotalCount(companies.size());
-    	return result;
+        List<CompanyDto> companies = companyService.findCompanies(convert(filter));
+        DataPageDto<CompanyDto> result = new DataPageDto<CompanyDto>();
+        result.setData(companies);
+        result.setTotalCount(companies.size());
+        return result;
     }
-    
-    @RequestMapping(value ="/companies/{companyId}", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/companies/{companyId}", method = RequestMethod.GET)
     public CompanyDto get(@PathVariable Long companyId) {
-    	return companyService.get(companyId);
+        return companyService.get(companyId);
     }
-    
-    @PreAuthorize("hasPermission(#company.getId(), 'sample.Company', 'WRITE')")
+
     @RequestMapping(value = "/companies", method = PUT)
+    @PreAuthorize("hasPermission(#company.getId(), 'sample.Company', 'WRITE')")
     public void update(@RequestBody CompanyDto company) {
-    	companyService.updateCompany(company);
+        companyService.updateCompany(company);
     }
-    
+
     @RequestMapping(value = "/companies", method = POST)
     public Long create(@RequestBody CompanyDto company) {
-    	Long companyId = companyService.saveCompany(company);
-    	Long userId = SecurityUtils.getAuthenticatedUserId();
-        aclService.createAcl(new ObjectIdentityImpl(companyId, ObjectTypes.COMPANY.getName()), null, userId);
+        Long companyId = companyService.saveCompany(company);
+        Long userId = SecurityUtils.getAuthenticatedUserId();
+        aclService.createAcl(new ObjectIdentityImpl(companyId,
+                ObjectTypes.COMPANY.getName()), null, userId);
         return companyId;
     }
-    
+
     @RequestMapping(value = "/companies/{companyId}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasPermission(#companyId, 'sample.Company', 'DELETE')")
     public void delete(@PathVariable Long companyId) {
-    	Acl acl = getAcl(companyId);
+        Acl acl = getAcl(companyId);
         aclService.deleteAcl(acl);
         companyService.deleteById(companyId);
     }
-    
+
     @RequestMapping("/companies/company_types")
     public List<CompanyTypeDto> getCompanyTypes() {
-    	return companyService.loadCompanyTypes();
+        return companyService.loadCompanyTypes();
     }
-    
+
     @RequestMapping("/companies/business_spheres")
     public List<BusinessSphereDto> getBusinessSpheres() {
-    	return companyService.loadBusinessSpheres();
+        return companyService.loadBusinessSpheres();
     }
-    
-    @RequestMapping("/companies/employee_number_cathegories")
-    public List<EmployeeNumberCathegoryDto> getEmployeeNumberCathegories() {
-    	return companyService.loadEmployeeNumberCathegories();
+
+    @RequestMapping("/companies/employee_number_categories")
+    public List<EmployeeNumberCategoryDto> getEmployeeNumberCategories() {
+        return companyService.loadEmployeeNumberCategories();
     }
-    
+
     private Acl getAcl(Long companyId) {
         return aclService.getAcl(createIdentity(companyId));
     }
-    
+
     private ObjectIdentity createIdentity(Long contactId) {
         return new ObjectIdentityImpl(contactId, ObjectTypes.COMPANY.getName());
     }

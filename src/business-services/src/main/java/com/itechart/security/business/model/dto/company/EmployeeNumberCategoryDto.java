@@ -1,6 +1,6 @@
 package com.itechart.security.business.model.dto.company;
 
-public class CompanyTypeDto {
+public class EmployeeNumberCategoryDto {
 
     private Long id;
     private String description;

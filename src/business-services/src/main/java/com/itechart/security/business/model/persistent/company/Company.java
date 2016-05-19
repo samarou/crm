@@ -12,100 +12,98 @@ import javax.persistence.ForeignKey;
 
 import com.itechart.security.business.model.enums.ObjectTypes;
 import com.itechart.security.business.model.persistent.SecuredEntity;
-import com.itechart.security.model.persistent.User;
 
 @Entity
 @Table(name = "company")
-public class Company extends SecuredEntity  {
-	
-	@Id
+public class Company extends SecuredEntity {
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-	
-	@Column(name = "name", nullable = false, length = 60)
-	private String name;
-	
-	@Column(name = "logo_url", length = 255)
-	private String logoUrl;
-	
-	@ManyToOne
-	@JoinColumn(name = "company_type_id", foreignKey = @ForeignKey(name = "fk_company_type_id"))
-	private CompanyType companyType;
-	
-	@ManyToOne
-	@JoinColumn(name = "business_sphere_id", foreignKey = @ForeignKey(name = "fk_company_business_sphere_id"))
-	private BusinessSphere businessSphere;
-	
-	@ManyToOne
-	@JoinColumn(name = "emp_number_category_id", foreignKey = @ForeignKey(name = "fk_company_emp_number_category_id"))
-	private EmployeeNumberCathegory employeeNumberCathegory;
-	
-	@Column(name = "commentary", length = 1000)
-	private String commentary;
-	
-	//TODO address
 
-	@Override
-	public Long getId() {
-		return id;
-	}
+    @Column(name = "name", nullable = false, length = 60)
+    private String name;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @Column(name = "logo_url", length = 255)
+    private String logoUrl;
 
-	public String getName() {
-		return name;
-	}
+    @ManyToOne
+    @JoinColumn(name = "company_type_id", foreignKey = @ForeignKey(name = "fk_company_type_id"))
+    private CompanyType companyType;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @ManyToOne
+    @JoinColumn(name = "business_sphere_id", foreignKey = @ForeignKey(name = "fk_company_business_sphere_id"))
+    private BusinessSphere businessSphere;
 
-	public String getLogoUrl() {
-		return logoUrl;
-	}
+    @ManyToOne
+    @JoinColumn(name = "emp_number_category_id", foreignKey = @ForeignKey(name = "fk_company_emp_number_category_id"))
+    private EmployeeNumberCategory employeeNumberCategory;
 
-	public void setLogoUrl(String logoUrl) {
-		this.logoUrl = logoUrl;
-	}
+    @Column(name = "commentary", length = 1000)
+    private String commentary;
 
-	public CompanyType getCompanyType() {
-		return companyType;
-	}
+    // TODO address
 
-	public void setCompanyType(CompanyType companyType) {
-		this.companyType = companyType;
-	}
+    @Override
+    public Long getId() {
+        return id;
+    }
 
-	public BusinessSphere getBusinessSphere() {
-		return businessSphere;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setBusinessSphere(BusinessSphere businessSphere) {
-		this.businessSphere = businessSphere;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public EmployeeNumberCathegory getEmployeeNumberCathegory() {
-		return employeeNumberCathegory;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setEmployeeNumberCathegory(
-			EmployeeNumberCathegory employeeNumberCathegory) {
-		this.employeeNumberCathegory = employeeNumberCathegory;
-	}
+    public String getLogoUrl() {
+        return logoUrl;
+    }
 
-	public String getCommentary() {
-		return commentary;
-	}
+    public void setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl;
+    }
 
-	public void setCommentary(String commentary) {
-		this.commentary = commentary;
-	}
-	
-	@Override
+    public CompanyType getCompanyType() {
+        return companyType;
+    }
+
+    public void setCompanyType(CompanyType companyType) {
+        this.companyType = companyType;
+    }
+
+    public BusinessSphere getBusinessSphere() {
+        return businessSphere;
+    }
+
+    public void setBusinessSphere(BusinessSphere businessSphere) {
+        this.businessSphere = businessSphere;
+    }
+
+    public EmployeeNumberCategory getEmployeeNumberCategory() {
+        return employeeNumberCategory;
+    }
+
+    public void setEmployeeNumberCategory(EmployeeNumberCategory employeeNumberCategory) {
+        this.employeeNumberCategory = employeeNumberCategory;
+    }
+
+    public String getCommentary() {
+        return commentary;
+    }
+
+    public void setCommentary(String commentary) {
+        this.commentary = commentary;
+    }
+
+    @Override
     public String getObjectType() {
-		return ObjectTypes.COMPANY.getName();
-	}
-	
+        return ObjectTypes.COMPANY.getName();
+    }
+
 }

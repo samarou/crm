@@ -3,7 +3,7 @@ package com.itechart.security.web.model.dto;
 public class CompanyFilterDto extends PagingFilterDto {
 	
 	private String text;
-	private Long employeeNumberCathegoryId;
+	private Long employeeNumberCategoryId;
 
 	public String getText() {
 		return text;
@@ -13,12 +13,12 @@ public class CompanyFilterDto extends PagingFilterDto {
 		this.text = text;
 	}
 
-	public Long getEmployeeNumberCathegoryId() {
-		return employeeNumberCathegoryId;
+	public Long getEmployeeNumberCategoryId() {
+		return employeeNumberCategoryId;
 	}
 
-	public void setEmployeeNumberCathegoryId(Long employeeNumberCathegoryId) {
-		this.employeeNumberCathegoryId = employeeNumberCathegoryId;
+	public void setEmployeeNumberCategoryId(Long employeeNumberCategoryId) {
+		this.employeeNumberCategoryId = employeeNumberCategoryId;
 	}
 
 }

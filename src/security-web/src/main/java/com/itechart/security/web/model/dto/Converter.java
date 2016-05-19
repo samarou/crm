@@ -137,7 +137,7 @@ public class Converter {
         filter.setCount(dto.getCount());
         filter.setSortProperty(dto.getSortProperty());
         filter.setSortAsc(dto.isSortAsc());
-        filter.setEmployeeNumberCathegoryId(dto.getEmployeeNumberCathegoryId());
+        filter.setEmployeeNumberCategoryId(dto.getEmployeeNumberCategoryId());
         return filter;
     }
 

@@ -14,7 +14,7 @@
         vm.remove = remove;
         vm.filterUpdated = filterUpdated;
         vm.staticData = companyService.staticData;
-        vm.selectedEmployeeNumberCathegory = {};
+        vm.selectedEmployeeNumberCategory = {};
 
         init();
 
@@ -31,8 +31,8 @@
         }
 
         function filterUpdated() {
-            vm.searchBundle.filter.employeeNumberCathegoryId = vm.selectedEmployeeNumberCathegory ?
-                    vm.selectedEmployeeNumberCathegory.id : null;
+            vm.searchBundle.filter.employeeNumberCategoryId = vm.selectedEmployeeNumberCategory ?
+                    vm.selectedEmployeeNumberCategory.id : null;
             vm.searchBundle.find();
         }
 
