@@ -2,16 +2,16 @@
 	'use strict';
 
 	angular
-			.module('crm.company')
-			.factory('companyService', companyService);
+		.module('crm.company')
+		.factory('companyService', companyService);
 
 	/** @ngInject */
 	function companyService($http) {
+		var service = this;
 
-		var staticData = {};
-		staticData.companyTypes = [];
-		staticData.businessSpheres = [];
-		staticData.employeeNumberCategories = [];
+		service.companyTypes = [];
+		service.businessSpheres = [];
+		service.employeeNumberCategories = [];
 
 		init();
 
@@ -22,7 +22,7 @@
 			update: update,
 			remove: remove,
 			staticData: staticData
-		}
+		};
 
 		function init() {
 			$http.get('rest/companies/company_types').then(function (response) {
@@ -37,12 +37,12 @@
 		}
 
 		function find(filter) {
-            return $http.get('rest/companies', {params: filter});
-        }
+			return $http.get('rest/companies', {params: filter});
+		}
 
 		function create(company) {
-            return $http.post('rest/companies', company);
-        }
+			return $http.post('rest/companies', company);
+		}
 
 		function get(id) {
 			return $http.get('rest/companies/' + id);

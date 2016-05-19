@@ -3,7 +3,7 @@
 
 	angular
 			.module('crm.company')
-			.controller('companyAddController', companyAddController)
+			.controller('companyAddController', companyAddController);
 
 	/** @ngInject */
 	function companyAddController(companyDetailsService) {
@@ -21,4 +21,4 @@
 		}
 	}
 
-})()
+})();
