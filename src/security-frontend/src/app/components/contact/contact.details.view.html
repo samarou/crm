@@ -3,7 +3,7 @@
                   cancel-btn="vm.cancel()" crm-form-validation="contactForm">
     <form name="contactForm" class="form-group">
         <uib-tabset active="active">
-            <uib-tab index="0" heading="Personal Info">
+            <uib-tab heading="Personal Info">
                 <div class="row crm-top-buffer">
                     <div class="col-md-6">
                         <div class="form-group" crm-input-validation>
@@ -47,10 +47,7 @@
                     </div>
                 </div>
             </uib-tab>
-            <uib-tab index="1" heading="Access">
-                <acl-form handler="vm.aclHandler"></acl-form>
-            </uib-tab>
-            <uib-tab index="2" heading="Attachments">
+            <uib-tab heading="Attachments">
                 <div class="row crm-top-buffer">
                     <div class="col-xs-12 col-sm-6"><h4>Attachments</h4></div>
                     <div class="col-xs-12 col-sm-6 pull-right">
@@ -87,6 +84,9 @@
                     </tr>
                     </tbody>
                 </table>
+            </uib-tab>
+            <uib-tab heading="Access">
+                <acl-form handler="vm.aclHandler"></acl-form>
             </uib-tab>
         </uib-tabset>
     </form>
