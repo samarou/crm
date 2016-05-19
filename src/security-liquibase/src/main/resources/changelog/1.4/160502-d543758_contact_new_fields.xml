@@ -52,8 +52,10 @@
             <column name="id" autoIncrement="true" remarks="Identifier" type="BIGINT UNSIGNED">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="address_line_1" remarks="Street, building, apartment" type="VARCHAR(255)"/>
-            <column name="address_line_2" remarks="Zip code, City, region" type="VARCHAR(255)"/>
+            <column name="address_line" remarks="Street, building, apartment" type="VARCHAR(255)"/>
+            <column name="zipcode" remarks="Zip code" type="VARCHAR(50)"/>
+            <column name="city" remarks="City" type="VARCHAR(255)"/>
+            <column name="region" remarks="Region" type="VARCHAR(255)"/>
             <column name="country_id" remarks="Country identifier" type="BIGINT UNSIGNED">
                 <constraints nullable="false"/>
             </column>

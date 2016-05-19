@@ -18,11 +18,17 @@ public class Address extends SecuredEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "address_line_1")
-    private String addressLine1;
+    @Column(name = "address_line")
+    private String addressLine;
 
-    @Column(name = "address_line_2")
-    private String addressLine2;
+    @Column(name = "zipcode", length = 50)
+    private String zipcode;
+
+    @Column(name = "city")
+    private String city;
+
+    @Column(name = "region")
+    private String region;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "contact_id", nullable = false)

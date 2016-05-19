@@ -163,8 +163,10 @@ public class DtoConverter {
     public static AddressDto convert(Address address) {
         AddressDto dto = new AddressDto();
         dto.setId(address.getId());
-        dto.setAddressLine1(address.getAddressLine1());
-        dto.setAddressLine2(address.getAddressLine2());
+        dto.setAddressLine(address.getAddressLine());
+        dto.setZipcode(address.getZipcode());
+        dto.setCity(address.getCity());
+        dto.setRegion(address.getRegion());
         dto.setCountry(convert(address.getCountry()));
         return dto;
     }
@@ -172,8 +174,10 @@ public class DtoConverter {
     public static Address convert(AddressDto dto) {
         Address address = new Address();
         address.setId(dto.getId());
-        address.setAddressLine1(dto.getAddressLine1());
-        address.setAddressLine2(dto.getAddressLine2());
+        address.setAddressLine(dto.getAddressLine());
+        address.setZipcode(dto.getZipcode());
+        address.setCity(dto.getCity());
+        address.setRegion(dto.getRegion());
         address.setCountry(convert(dto.getCountry()));
         return address;
     }

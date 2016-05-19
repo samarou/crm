@@ -92,7 +92,7 @@
                 filePath: attachment.filePath
             });
         }
-        
+
         function updateAttachment(id, attachment) {
             return $http.put('rest/contacts/' + id + '/attachments', attachment);
         }
@@ -100,7 +100,7 @@
         function removeAttachment(id, attachmentId) {
             return $http.delete('rest/contacts/' + id + '/attachments/' + attachmentId);
         }
-        
+
         function getEmailTypes() {
             return $http.get('rest/emails/types');
         }

@@ -8,9 +8,13 @@ import lombok.Setter;
 public class AddressDto {
     private Long id;
 
-    private String addressLine1;
+    private String addressLine;
 
-    private String addressLine2;
+    private String zipcode;
+
+    private String city;
+
+    private String region;
 
     private CountryDto country;
 }
