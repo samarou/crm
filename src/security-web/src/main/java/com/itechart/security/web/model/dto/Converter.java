@@ -1,35 +1,17 @@
 package com.itechart.security.web.model.dto;
 
-import static com.itechart.security.core.model.acl.Permission.ADMIN;
-import static com.itechart.security.core.model.acl.Permission.CREATE;
-import static com.itechart.security.core.model.acl.Permission.DELETE;
-import static com.itechart.security.core.model.acl.Permission.READ;
-import static com.itechart.security.core.model.acl.Permission.WRITE;
-import static java.util.stream.Collectors.toList;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.springframework.util.CollectionUtils;
-
 import com.itechart.security.business.filter.CompanyFilter;
 import com.itechart.security.business.filter.ContactFilter;
 import com.itechart.security.core.model.acl.Permission;
-import com.itechart.security.model.filter.UserFilter;
-import com.itechart.security.model.persistent.Action;
+import com.itechart.security.model.dto.AclEntryDto;
 import com.itechart.security.model.persistent.Group;
-import com.itechart.security.model.persistent.ObjectType;
 import com.itechart.security.model.persistent.Principal;
-import com.itechart.security.model.persistent.Privilege;
-import com.itechart.security.model.persistent.Role;
 import com.itechart.security.model.persistent.User;
-import com.itechart.security.model.persistent.UserDefaultAclEntry;
-import com.itechart.security.web.model.PrincipalTypes;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import static com.itechart.security.core.model.acl.Permission.*;
 
 /**
  * Provides usefully methods to convert model to dto and vice versa.
@@ -57,5 +39,38 @@ public class Converter {
         filter.setSortAsc(dto.isSortAsc());
         filter.setEmployeeNumberCategoryId(dto.getEmployeeNumberCategoryId());
         return filter;
+    }
+
+    public static Set<Permission> convert(AclEntryDto aclEntry) {
+        Set<Permission> permissions = new HashSet<>();
+        if (aclEntry.isCanRead()) permissions.add(READ);
+        if (aclEntry.isCanWrite()) permissions.add(WRITE);
+        if (aclEntry.isCanCreate()) permissions.add(CREATE);
+        if (aclEntry.isCanDelete()) permissions.add(DELETE);
+        if (aclEntry.isCanAdmin()) permissions.add(ADMIN);
+        return permissions;
+    }
+
+    public static com.itechart.security.model.dto.AclEntryDto convert(Principal principal, Set<Permission> permissions) {
+        com.itechart.security.model.dto.AclEntryDto dto = new com.itechart.security.model.dto.AclEntryDto();
+        initAcl(dto, principal, permissions);
+        return dto;
+    }
+
+    private static void initAcl(AclEntryDto dto, Principal principal, Set<Permission> permissions) {
+        dto.setPrincipalId(principal.getId());
+        dto.setName(principal.getName());
+        if (principal instanceof User) {
+            dto.setPrincipalTypeName(com.itechart.security.model.PrincipalTypes.USER.getObjectType());
+        } else if (principal instanceof Group) {
+            dto.setPrincipalTypeName(com.itechart.security.model.PrincipalTypes.GROUP.getObjectType());
+        }
+        permissions.forEach(permission -> {
+            if (permission == READ) dto.setCanRead(true);
+            if (permission == WRITE) dto.setCanWrite(true);
+            if (permission == CREATE) dto.setCanCreate(true);
+            if (permission == DELETE) dto.setCanDelete(true);
+            if (permission == ADMIN) dto.setCanAdmin(true);
+        });
     }
 }

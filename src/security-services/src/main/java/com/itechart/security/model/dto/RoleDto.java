@@ -1,8 +1,10 @@
 package com.itechart.security.model.dto;
 
+import com.itechart.security.core.model.SecurityRole;
+
 import java.util.Set;
 
-public class RoleDto {
+public class RoleDto implements SecurityRole {
     private Long id;
     private String name;
     private String description;

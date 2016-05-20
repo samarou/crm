@@ -45,14 +45,6 @@ public class UserServiceImpl implements UserService {
         return convert(userDao.get(userId));
     }
 
-//    @Override
-//    @Transactional(readOnly = true)
-//    public User getUserWithAcls(Long userId) {
-//        User user = userDao.get(userId);
-//        user.getAcls().size();
-//        return user;
-//    }
-
     @Override
     @Transactional(readOnly = true)
     public List<SecuredUserDto> getUsers() {
@@ -108,6 +100,12 @@ public class UserServiceImpl implements UserService {
 //        userDao.update(user);
         User user = convert(userDto);
         user.setAcls(getDefaultAcls(user, userDto.getAcls()));
+        userDao.merge(user);
+    }
+
+    @Override
+    @Transactional
+    public void updateUser(User user) {
         userDao.merge(user);
     }
 

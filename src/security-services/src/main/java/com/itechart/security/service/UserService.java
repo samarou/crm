@@ -34,6 +34,8 @@ public interface UserService {
 
     void updateUser(SecuredUserDto user);
 
+    void updateUser(User user);
+
     boolean changePassword(String userName, String oldPassword, String newPassword);
 
     PublicUserDto activateUser(Long userId);
