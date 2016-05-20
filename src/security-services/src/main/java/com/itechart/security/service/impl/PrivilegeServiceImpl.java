@@ -1,6 +1,8 @@
 package com.itechart.security.service.impl;
 
 import com.itechart.security.dao.PrivilegeDao;
+import com.itechart.security.model.dto.Converter;
+import com.itechart.security.model.dto.PrivilegeDto;
 import com.itechart.security.model.persistent.Privilege;
 import com.itechart.security.service.PrivilegeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Privilege> getPrivileges() {
-        return privilegeDao.loadAll();
+    public List<PrivilegeDto> getPrivileges() {
+        return Converter.convertPrivileges(privilegeDao.loadAll());
     }
 }

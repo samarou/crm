@@ -4,16 +4,19 @@ import com.itechart.security.dao.GroupDao;
 import com.itechart.security.model.dto.GroupDto;
 import com.itechart.security.model.dto.PublicGroupDto;
 import com.itechart.security.model.persistent.Group;
+import com.itechart.security.model.persistent.User;
 import com.itechart.security.service.GroupService;
 
 import static com.itechart.security.model.dto.Converter.*;
 
+import com.itechart.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author yauheni.putsykovich
@@ -23,6 +26,9 @@ public class GroupServiceImpl implements GroupService {
 
     @Autowired
     private GroupDao groupDao;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     @Transactional(readOnly = true)
@@ -64,6 +70,12 @@ public class GroupServiceImpl implements GroupService {
     @Override
     @Transactional
     public void deleteById(Long id) {
+        Group group = groupDao.get(id);
+        Set<User> users = group.getUsers();
+        users.forEach(user -> {
+            user.removeFromGroup(group);
+            userService.updateUser(user);
+        });
         groupDao.deleteById(id);
     }
 }

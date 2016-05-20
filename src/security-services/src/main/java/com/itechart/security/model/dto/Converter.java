@@ -77,7 +77,7 @@ public class Converter {
         return users.stream().map(Converter::convertToPublicUser).collect(Collectors.toList());
     }
 
-    private static PublicUserDto convertToPublicUser(User user) {
+    public static PublicUserDto convertToPublicUser(User user) {
         if (user == null) {
             return null;
         }
@@ -112,27 +112,6 @@ public class Converter {
         filter.setSortAsc(dto.isSortAsc());
         return filter;
     }
-
-//    public static ContactFilter convert(ContactFilterDto dto) {
-//        ContactFilter filter = new ContactFilter();
-//        filter.setText(dto.getText());
-//        filter.setFrom(dto.getFrom());
-//        filter.setCount(dto.getCount());
-//        filter.setSortProperty(dto.getSortProperty());
-//        filter.setSortAsc(dto.isSortAsc());
-//        return filter;
-//    }
-//    
-//    public static CompanyFilter convert(CompanyFilterDto dto) {
-//        CompanyFilter filter = new CompanyFilter();
-//        filter.setText(dto.getText());
-//        filter.setFrom(dto.getFrom());
-//        filter.setCount(dto.getCount());
-//        filter.setSortProperty(dto.getSortProperty());
-//        filter.setSortAsc(dto.isSortAsc());
-//        filter.setEmployeeNumberCategoryId(dto.getEmployeeNumberCategoryId());
-//        return filter;
-//    }
 
     //todo: have the same erasure with convert(List<User> groups) because of erase
     //maybe replace with Group... groups?
