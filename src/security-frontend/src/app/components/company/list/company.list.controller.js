@@ -5,6 +5,7 @@
         .module('crm.company')
         .controller('companyListController', companyListController);
 
+    /** @ngInject */
     function companyListController($q, companyService, searchService, dialogService, $state) {
         var vm = this;
 
@@ -49,7 +50,7 @@
             var tasks = [];
             companies.forEach(function (company) {
                 tasks.push(companyService.remove(company.id));
-            })
+            });
             $q.all(tasks).then(vm.searchBundle.find)
         }
 

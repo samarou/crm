@@ -2,8 +2,8 @@
 	'use strict';
 
 	angular
-			.module('crm.company')
-			.factory('companyDetailsService', companyDetailsService)
+		.module('crm.company')
+		.factory('companyDetailsService', companyDetailsService);
 
 	/** @ngInject */
 	function companyDetailsService(companyService, $state) {
@@ -22,7 +22,7 @@
 		}
 
 		function goToList() {
-            $state.go('companies.list');
-        }
+			$state.go('companies.list');
+		}
 	}
 })();
