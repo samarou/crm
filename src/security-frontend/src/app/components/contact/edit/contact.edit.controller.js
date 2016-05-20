@@ -10,7 +10,7 @@
         var vm = this;
 
         vm.canEdit = false;
-        vm.contact = {};
+        vm.contact = contactDetailsService.getEmptyContact();
         vm.attachments = [];
         vm.attachmentService = contactAttachmentService;
         vm.options = {};

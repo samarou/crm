@@ -317,10 +317,17 @@ public class DtoConverter {
         return socialNetwork;
     }
 
+    public static List<SocialNetworkDto> convertSocialNetworks(List<SocialNetwork> socialNetworks) {
+        if (CollectionUtils.isEmpty(socialNetworks)) {
+            return Collections.emptyList();
+        }
+        return socialNetworks.stream().map(DtoConverter::convert).collect(Collectors.toList());
+    }
+
     public static SocialNetworkAccountDto convert(SocialNetworkAccount socialNetworkAccount) {
         SocialNetworkAccountDto dto = new SocialNetworkAccountDto();
         dto.setId(socialNetworkAccount.getId());
-        dto.setSocialNetwork(convert(socialNetworkAccount.getSocialNetwork()));
+        dto.setSocialNetwork(socialNetworkAccount.getSocialNetwork().getId());
         dto.setUrl(socialNetworkAccount.getUrl());
         return dto;
     }
@@ -328,7 +335,9 @@ public class DtoConverter {
     public static SocialNetworkAccount convert(SocialNetworkAccountDto dto) {
         SocialNetworkAccount socialNetworkAccount = new SocialNetworkAccount();
         socialNetworkAccount.setId(dto.getId());
-        socialNetworkAccount.setSocialNetwork(convert(dto.getSocialNetwork()));
+        SocialNetwork socialNetwork = new SocialNetwork();
+        socialNetwork.setId(dto.getSocialNetwork());
+        socialNetworkAccount.setSocialNetwork(socialNetwork);
         socialNetworkAccount.setUrl(dto.getUrl());
         return socialNetworkAccount;
     }

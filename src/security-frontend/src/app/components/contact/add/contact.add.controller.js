@@ -10,7 +10,7 @@
         var vm = this;
 
         vm.canEdit = true;
-        vm.contact = {};
+        vm.contact = contactDetailsService.getEmptyContact();
 
         vm.attachments = [];
         vm.title = 'Add contact';

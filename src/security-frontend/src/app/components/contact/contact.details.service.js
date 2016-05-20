@@ -17,6 +17,9 @@
             removeEmails: removeEmails,
             addAddress: addAddress,
             removeAddresses: removeAddresses,
+            addSocialNetworkAccount: addSocialNetworkAccount,
+            removeSocialNetworks: removeSocialNetworks,
+            getEmptyContact: getEmptyContact,
             now: new Date(),
             init: init
         };
@@ -26,7 +29,8 @@
                 [
                     getEmailTypes(),
                     getTelephoneTypes(),
-                    getCountries()
+                    getCountries(),
+                    getSocialNetworks()
                 ]
             ).then(function () {
                 return vm.options;
@@ -51,13 +55,19 @@
             })
         }
 
+        function getSocialNetworks() {
+            return contactService.getSocialNetworks().then(function (response) {
+                vm.options.socialNetworks = response.data;
+            })
+        }
+
         function addEmail(scope) {
             scope.contact.emails.push({});
         }
 
         function removeEmails(scope) {
             var contact = scope.contact;
-            return removeCheckedElementsFromList(contact, contact.emails, contactService.removeEmails);
+            return removeCheckedElementsFromList(contact, contact.emails, contactService.removeEmail);
         }
 
         function addAddress(scope) {
@@ -67,6 +77,27 @@
         function removeAddresses(scope) {
             var contact = scope.contact;
             return removeCheckedElementsFromList(contact, contact.addresses, contactService.removeAddress);
+        }
+
+        function addSocialNetworkAccount(scope) {
+            scope.contact.socialNetworks.push({});
+        }
+
+        function removeSocialNetworks(scope) {
+            var contact = scope.contact;
+            return removeCheckedElementsFromList(contact, contact.socialNetworks, contactService.removeSocialNetworkAccount);
+        }
+
+        function getEmptyContact() {
+            return {
+                socialNetworks: [],
+                addresses: [],
+                telephones: [],
+                emails: [],
+                messengers: [],
+                workplaces: [],
+                attachments: []
+            }
         }
 
         function removeCheckedElementsFromList(contact, elements, removingFunction) {

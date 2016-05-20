@@ -28,7 +28,9 @@
             removeEmail: removeEmail,
             getTelephoneTypes: getTelephoneTypes,
             removeAddress: removeAddress,
-            getCountries: getCountries
+            getCountries: getCountries,
+            removeSocialNetworkAccount: removeSocialNetworkAccount,
+            getSocialNetworks: getSocialNetworks
         };
 
         function getAll() {
@@ -121,6 +123,14 @@
 
         function getCountries() {
             return $http.get('rest/countries');
+        }
+
+        function removeSocialNetworkAccount(id, accountId) {
+            return $http.delete('rest/contacts/' + id + '/social_networks/' + accountId)
+        }
+
+        function getSocialNetworks() {
+            return $http.get('rest/social_networks');
         }
     }
 })();

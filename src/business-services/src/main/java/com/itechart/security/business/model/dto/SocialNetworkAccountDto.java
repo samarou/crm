@@ -10,7 +10,7 @@ public class SocialNetworkAccountDto {
 
     private Long id;
 
-    private SocialNetworkDto socialNetwork;
+    private Long socialNetwork;
 
     private String url;
 }

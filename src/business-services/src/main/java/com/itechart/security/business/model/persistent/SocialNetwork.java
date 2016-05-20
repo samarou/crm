@@ -4,8 +4,10 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
-import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Getter
@@ -19,9 +21,6 @@ public class SocialNetwork extends SecuredEntity{
 
     @Column(nullable = false, length = 100)
     private String name;
-
-    @OneToMany(mappedBy = "socialNetwork")
-    private Set<SocialNetworkAccount> socialNetworkAccounts;
 
     @Override
     public Long getId() {

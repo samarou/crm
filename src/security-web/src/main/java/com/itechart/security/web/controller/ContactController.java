@@ -1,10 +1,7 @@
 package com.itechart.security.web.controller;
 
 import com.itechart.security.business.filter.ContactFilter;
-import com.itechart.security.business.model.dto.ContactDto;
-import com.itechart.security.business.model.dto.CountryDto;
-import com.itechart.security.business.model.dto.EmailTypeDto;
-import com.itechart.security.business.model.dto.TelephoneTypeDto;
+import com.itechart.security.business.model.dto.*;
 import com.itechart.security.business.model.enums.EmailType;
 import com.itechart.security.business.model.enums.ObjectTypes;
 import com.itechart.security.business.model.enums.TelephoneType;
@@ -135,6 +132,16 @@ public class ContactController {
         contactService.deleteEmail(emailId);
     }
 
+    @RequestMapping(value = "/contacts/{contactId}/addresses/{addressId}", method = RequestMethod.DELETE)
+    public void deleteAddress(@PathVariable Long contactId, @PathVariable Long addressId) {
+        contactService.deleteAddress(addressId);
+    }
+
+    @RequestMapping(value = "/contacts/{contactId}/social_networks/{socialNetworkId}", method = RequestMethod.DELETE)
+    public void deleteSocialNetworkAccount(@PathVariable Long contactId, @PathVariable Long socialNetworkId) {
+        contactService.deleteSocialNetworkAccount(socialNetworkId);
+    }
+
     @RequestMapping(value = "/emails/types", method = RequestMethod.GET)
     public List<EmailTypeDto> getEmailTypes(){
         return convertEmailTypes(EmailType.values());
@@ -148,6 +155,11 @@ public class ContactController {
     @RequestMapping(value = "/countries", method = RequestMethod.GET)
     public List<CountryDto> getCountries() {
         return dictionaryService.getCountries();
+    }
+
+    @RequestMapping(value = "/social_networks", method = RequestMethod.GET)
+    public List<SocialNetworkDto> getSocialNetworks() {
+        return dictionaryService.getSocialNetworks();
     }
 
     private Acl getAcl(Long contactId) {

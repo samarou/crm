@@ -4,7 +4,6 @@ package com.itechart.security.business.service;
 
 import com.itechart.security.business.filter.ContactFilter;
 import com.itechart.security.business.model.dto.ContactDto;
-import com.itechart.security.business.model.persistent.Contact;
 
 import java.util.List;
 
@@ -26,6 +25,10 @@ public interface ContactService {
     void deleteById(Long id);
 
     void deleteEmail(Long id);
+
+    void deleteAddress(Long id);
+
+    void deleteSocialNetworkAccount(Long socialNetworkId);
 
     int countContacts(ContactFilter filter);
 }

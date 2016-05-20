@@ -3,11 +3,13 @@ package com.itechart.security.business.service.impl;
 import com.itechart.security.business.dao.AddressDao;
 import com.itechart.security.business.dao.ContactDao;
 import com.itechart.security.business.dao.EmailDao;
+import com.itechart.security.business.dao.SocialNetworkAccountDao;
 import com.itechart.security.business.filter.ContactFilter;
 import com.itechart.security.business.model.dto.ContactDto;
 import com.itechart.security.business.model.persistent.Address;
 import com.itechart.security.business.model.persistent.Contact;
 import com.itechart.security.business.model.persistent.Email;
+import com.itechart.security.business.model.persistent.SocialNetworkAccount;
 import com.itechart.security.business.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +35,9 @@ public class ContactServiceImpl implements ContactService {
     @Autowired
     private AddressDao addressDao;
 
+    @Autowired
+    private SocialNetworkAccountDao socialNetworkAccountDao;
+
     @Override
     @Transactional
     public List<ContactDto> findContacts(ContactFilter filter) {
@@ -43,7 +48,12 @@ public class ContactServiceImpl implements ContactService {
     @Override
     @Transactional
     public Long saveContact(ContactDto contactDto) {
-        return contactDao.save(convert(contactDto));
+        Contact contact = convert(contactDto);
+        Long contactId = contactDao.save(contact);
+        saveOrUpdateEmailsForContact(contact);
+        saveOrUpdateAddressesForContact(contact);
+        saveOrUpdateSocialNetworkAccountsForContact(contact);
+        return contactId;
     }
 
     @Override
@@ -70,6 +80,7 @@ public class ContactServiceImpl implements ContactService {
         Contact contact = convert(contactDto);
         saveOrUpdateEmailsForContact(contact);
         saveOrUpdateAddressesForContact(contact);
+        saveOrUpdateSocialNetworkAccountsForContact(contact);
         contactDao.update(contact);
     }
 
@@ -95,6 +106,17 @@ public class ContactServiceImpl implements ContactService {
         }
     }
 
+    private void saveOrUpdateSocialNetworkAccountsForContact(Contact contact){
+        for (SocialNetworkAccount account : contact.getSocialNetworks()) {
+            account.setContact(contact);
+            if (account.getId() == null) {
+                socialNetworkAccountDao.save(account);
+            } else {
+                socialNetworkAccountDao.update(account);
+            }
+        }
+    }
+
     @Override
     @Transactional
     public void deleteById(Long id) {
@@ -105,6 +127,18 @@ public class ContactServiceImpl implements ContactService {
     @Transactional
     public void deleteEmail(Long id) {
         emailDao.delete(id);
+    }
+
+    @Override
+    @Transactional
+    public void deleteAddress(Long id) {
+        addressDao.delete(id);
+    }
+
+    @Override
+    @Transactional
+    public void deleteSocialNetworkAccount(Long id) {
+        socialNetworkAccountDao.delete(id);
     }
 
     @Override

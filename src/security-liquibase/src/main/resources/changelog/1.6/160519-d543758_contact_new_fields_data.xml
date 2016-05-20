@@ -28,7 +28,15 @@
             ('United Kingdom'),('United States'),('Uruguay'),('Uzbekistan'),('Venezuela'),('Vietnam'),('Zambia'),('Zimbabwe');
         </sql>
         <rollback>
-            <delete tableName="countries"/>
+            <delete tableName="country"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="002" author="maksim.kalenik">
+        <sql dbms="mysql">
+            insert into social_network(name) values('Facebook'),('LinkedIn'),('Twitter'),('VK'),('LiveJournal'),('Other');
+        </sql>
+        <rollback>
+            <delete tableName="social_network"/>
         </rollback>
     </changeSet>
 </databaseChangeLog>

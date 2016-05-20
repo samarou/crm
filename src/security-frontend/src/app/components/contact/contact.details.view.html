@@ -85,12 +85,12 @@
                 </div>
                 <div class="row">
                     <div class="row">
-                        <div class="col-xs-12 col-sm-6"><h4>Emails</h4></div>
+                        <div class="col-xs-12 col-sm-6"><h4>Social Networks</h4></div>
                         <div class="col-xs-12 col-sm-6 pull-right" ng-show="vm.canEdit">
                             <div class="btn-group btn-group-justified pull-right">
-                                <a class="btn btn-default" ng-click="vm.details.addEmail(vm)">
+                                <a class="btn btn-default" ng-click="vm.details.addSocialNetworkAccount(vm)">
                                     Add </a>
-                                <a class="btn btn-default" ng-click="vm.details.removeEmails(vm)">
+                                <a class="btn btn-default" ng-click="vm.details.removeSocialNetworks(vm)">
                                     Remove </a>
                             </div>
                         </div>
@@ -100,22 +100,22 @@
                         <tr>
                             <th></th>
                             <th></th>
-                            <th>Email</th>
-                            <th>Type</th>
+                            <th>URL</th>
+                            <th>Social Network</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="email in vm.contact.emails">
-                            <td><input ng-show="vm.canEdit" type="checkbox" ng-model="email.checked"></td>
+                        <tr ng-repeat="account in vm.contact.socialNetworks" ng-disabled="!vm.canEdit">
+                            <td><input type="checkbox" ng-model="account.checked" ng-show="vm.canEdit"
+                                       title="select account"></td>
                             <td>{{$index + 1}}</td>
-                            <td><input ng-disabled="!vm.canEdit" class="form-control"
-                                       name="email" ng-model="email.name"></td>
-                            <td><select ng-disabled="!vm.canEdit" ng-model="email.type"
-                                        ng-options="option.name as option.value for option in vm.options.emailTypes"
+                            <td><input class="form-control" ng-model="account.url"></td>
+                            <td><select ng-disabled="!vm.canEdit" ng-model="account.socialNetwork"
+                                        ng-options="option.id as option.name for option in vm.options.socialNetworks"
                                         class="form-control" crm-input-validation required>
                                 <option value="">Please, select</option>
-                            </select>
                                 <!--TODO: add validation here-->
+                            </select>
                             </td>
                         </tr>
                         </tbody>
@@ -163,6 +163,44 @@
                                 <option value="">Please, select</option>
                                 <!--TODO: add validation here-->
                             </select>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6"><h4>Emails</h4></div>
+                        <div class="col-xs-12 col-sm-6 pull-right" ng-show="vm.canEdit">
+                            <div class="btn-group btn-group-justified pull-right">
+                                <a class="btn btn-default" ng-click="vm.details.addEmail(vm)">
+                                    Add </a>
+                                <a class="btn btn-default" ng-click="vm.details.removeEmails(vm)">
+                                    Remove </a>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-condensed">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th>Email</th>
+                            <th>Type</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="email in vm.contact.emails">
+                            <td><input ng-show="vm.canEdit" type="checkbox" ng-model="email.checked"></td>
+                            <td>{{$index + 1}}</td>
+                            <td><input ng-disabled="!vm.canEdit" class="form-control"
+                                       name="email" ng-model="email.name"></td>
+                            <td><select ng-disabled="!vm.canEdit" ng-model="email.type"
+                                        ng-options="option.name as option.value for option in vm.options.emailTypes"
+                                        class="form-control" crm-input-validation required>
+                                <option value="">Please, select</option>
+                            </select>
+                                <!--TODO: add validation here-->
                             </td>
                         </tr>
                         </tbody>
