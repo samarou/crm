@@ -3,7 +3,7 @@
 
 	angular
 			.module('crm.company')
-			.factory('companyDetailsService', companyDetailsService)
+			.factory('companyDetailsService', companyDetailsService);
 
 	/** @ngInject */
 	function companyDetailsService(companyService, $state) {
@@ -15,9 +15,9 @@
 
 		function submit(scope, isNew) {
 			if (isNew) {
-				companyService.create(scope.company).then(goToList)
+				companyService.create(scope.company).then(goToList);
 			} else {
-				companyService.update(scope.company).then(goToList)
+				companyService.update(scope.company).then(goToList);
 			}
 		}
 

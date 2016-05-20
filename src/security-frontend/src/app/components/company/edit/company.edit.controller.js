@@ -3,7 +3,7 @@
 
 	angular
 			.module('crm.company')
-			.controller('companyEditController', companyEditController)
+			.controller('companyEditController', companyEditController);
 
 	/** @ngInject */
 	function companyEditController(companyService, companyDetailsService, $stateParams) {
@@ -20,7 +20,7 @@
 
 		function init() {
 			companyService.get($stateParams.id).then(function (response) {
-				vm.company = response.data
+				vm.company = response.data;
 			})
 		}
 
@@ -29,4 +29,4 @@
 		}
 	}
 
-})()
+})();

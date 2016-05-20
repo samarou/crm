@@ -22,7 +22,7 @@
 			update: update,
 			remove: remove,
 			staticData: staticData
-		}
+		};
 
 		function init() {
 			$http.get('rest/companies/company_types').then(function (response) {
