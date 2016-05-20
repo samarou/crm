@@ -7,11 +7,11 @@
 
 	/** @ngInject */
 	function companyService($http) {
-		var service = this;
-
-		service.companyTypes = [];
-		service.businessSpheres = [];
-		service.employeeNumberCategories = [];
+		
+		var staticData = {};
+		staticData.companyTypes = [];
+		staticData.businessSpheres = [];
+		staticData.employeeNumberCategories = [];
 
 		init();
 
