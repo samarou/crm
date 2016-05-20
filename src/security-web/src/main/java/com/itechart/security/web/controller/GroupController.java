@@ -4,7 +4,7 @@ import com.itechart.security.model.persistent.Group;
 import com.itechart.security.model.persistent.User;
 import com.itechart.security.service.GroupService;
 import com.itechart.security.service.UserService;
-import com.itechart.security.web.model.dto.GroupDto;
+import com.itechart.security.model.dto.GroupDto;
 import com.itechart.security.web.model.dto.PublicGroupDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,7 +35,7 @@ public class GroupController {
 
     @RequestMapping("/groups")
     public List<GroupDto> getGroups() {
-        return convertGroups(groupService.getGroups());
+        return groupService.getGroups();
     }
 
     @RequestMapping(value = "/groups/{id}", method = GET)
