@@ -9,7 +9,7 @@ public class MessengerAccountDto {
 
     private Long id;
 
-    private MessengerDto messenger;
+    private Long messenger;
 
     private String username;
 }

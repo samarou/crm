@@ -30,6 +30,8 @@
             getTelephoneTypes: getTelephoneTypes,
             removeAddress: removeAddress,
             getCountries: getCountries,
+            removeMessengerAccount: removeMessengerAccount,
+            getMessengers: getMessengers,
             removeSocialNetworkAccount: removeSocialNetworkAccount,
             getSocialNetworks: getSocialNetworks
         };
@@ -128,6 +130,14 @@
 
         function getCountries() {
             return $http.get('rest/countries');
+        }
+
+        function removeMessengerAccount(id, accountId) {
+            return $http.delete('rest/contacts/' + id + '/messengers/' + accountId)
+        }
+
+        function getMessengers() {
+            return $http.get('rest/messengers');
         }
 
         function removeSocialNetworkAccount(id, accountId) {

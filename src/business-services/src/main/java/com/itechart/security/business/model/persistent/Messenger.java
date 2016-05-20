@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -13,7 +12,6 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "messenger")
 public class Messenger extends SecuredEntity{
-
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,9 +19,6 @@ public class Messenger extends SecuredEntity{
 
     @Column(nullable = false, length = 100)
     private String name;
-
-    @OneToMany(mappedBy = "messenger")
-    private Set<MessengerAccount> messengerAccounts;
 
     @Override
     public Long getId() {

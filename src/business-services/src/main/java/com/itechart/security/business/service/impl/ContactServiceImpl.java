@@ -30,6 +30,9 @@ public class ContactServiceImpl implements ContactService {
     private AddressDao addressDao;
 
     @Autowired
+    private MessengerAccountDao messengerAccountDao;
+
+    @Autowired
     private SocialNetworkAccountDao socialNetworkAccountDao;
 
     @Autowired
@@ -51,6 +54,7 @@ public class ContactServiceImpl implements ContactService {
         saveOrUpdateAddressesForContact(contact);
         saveOrUpdateSocialNetworkAccountsForContact(contact);
         saveOrUpdateTelephonesForContact(contact);
+        saveOrUpdateMessengersForContact(contact);
         return contactId;
     }
 
@@ -80,6 +84,7 @@ public class ContactServiceImpl implements ContactService {
         saveOrUpdateAddressesForContact(contact);
         saveOrUpdateSocialNetworkAccountsForContact(contact);
         saveOrUpdateTelephonesForContact(contact);
+        saveOrUpdateMessengersForContact(contact);
         contactDao.update(contact);
     }
 
@@ -127,6 +132,16 @@ public class ContactServiceImpl implements ContactService {
         }
     }
 
+    private void saveOrUpdateMessengersForContact(Contact contact){
+        for (MessengerAccount messenger : contact.getMessengers()) {
+            messenger.setContact(contact);
+            if (messenger.getId() == null) {
+                messengerAccountDao.save(messenger);
+            } else {
+                messengerAccountDao.update(messenger);
+            }
+        }
+    }
 
     @Override
     @Transactional
@@ -144,6 +159,12 @@ public class ContactServiceImpl implements ContactService {
     @Transactional
     public void deleteAddress(Long id) {
         addressDao.delete(id);
+    }
+
+    @Override
+    @Transactional
+    public void deleteMessengerAccount(Long id) {
+        messengerAccountDao.delete(id);
     }
 
     @Override

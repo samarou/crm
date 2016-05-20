@@ -107,7 +107,7 @@
                         <tbody>
                         <tr ng-repeat="account in vm.contact.socialNetworks" ng-disabled="!vm.canEdit">
                             <td><input type="checkbox" ng-model="account.checked" ng-show="vm.canEdit"
-                                       title="select account"></td>
+                                       title="select Social Network account"></td>
                             <td>{{$index + 1}}</td>
                             <td><input class="form-control" ng-model="account.url"></td>
                             <td><select ng-disabled="!vm.canEdit" ng-model="account.socialNetwork"
@@ -239,6 +239,44 @@
                                 <option value="">Please, select</option>
                             </select>
                                 <!--TODO: add validation here-->
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6"><h4>Messengers</h4></div>
+                        <div class="col-xs-12 col-sm-6 pull-right" ng-show="vm.canEdit">
+                            <div class="btn-group btn-group-justified pull-right">
+                                <a class="btn btn-default" ng-click="vm.details.addMessengerAccount(vm)">
+                                    Add </a>
+                                <a class="btn btn-default" ng-click="vm.details.removeMessengerAccounts(vm)">
+                                    Remove </a>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-condensed">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th>Username</th>
+                            <th>Messenger</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="account in vm.contact.messengers" ng-disabled="!vm.canEdit">
+                            <td><input type="checkbox" ng-model="account.checked" ng-show="vm.canEdit"
+                                       title="select messenger account"></td>
+                            <td>{{$index + 1}}</td>
+                            <td><input class="form-control" ng-model="account.username" required></td>
+                            <td><select ng-disabled="!vm.canEdit" ng-model="account.messenger"
+                                        ng-options="option.id as option.name for option in vm.options.messengers"
+                                        class="form-control" crm-input-validation required>
+                                <option value="">Please, select</option>
+                                <!--TODO: add validation here-->
+                            </select>
                             </td>
                         </tr>
                         </tbody>

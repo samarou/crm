@@ -137,6 +137,11 @@ public class ContactController {
         contactService.deleteAddress(addressId);
     }
 
+    @RequestMapping(value = "/contacts/{contactId}/messengers/{messengerId}", method = RequestMethod.DELETE)
+    public void deleteMessengerAccount(@PathVariable Long contactId, @PathVariable Long messengerId) {
+        contactService.deleteMessengerAccount(messengerId);
+    }
+
     @RequestMapping(value = "/contacts/{contactId}/social_networks/{socialNetworkId}", method = RequestMethod.DELETE)
     public void deleteSocialNetworkAccount(@PathVariable Long contactId, @PathVariable Long socialNetworkId) {
         contactService.deleteSocialNetworkAccount(socialNetworkId);
@@ -160,6 +165,11 @@ public class ContactController {
     @RequestMapping(value = "/countries", method = RequestMethod.GET)
     public List<CountryDto> getCountries() {
         return dictionaryService.getCountries();
+    }
+
+    @RequestMapping(value = "/messengers", method = RequestMethod.GET)
+    public List<MessengerDto> getMessengers() {
+        return dictionaryService.getMessengers();
     }
 
     @RequestMapping(value = "/social_networks", method = RequestMethod.GET)

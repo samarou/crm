@@ -265,10 +265,17 @@ public class DtoConverter {
         return messenger;
     }
 
+    public static List<MessengerDto> convertMessengers(List<Messenger> messengers) {
+        if (CollectionUtils.isEmpty(messengers)) {
+            return Collections.emptyList();
+        }
+        return messengers.stream().map(DtoConverter::convert).collect(Collectors.toList());
+    }
+
     public static MessengerAccountDto convert(MessengerAccount messengerAccount) {
         MessengerAccountDto dto = new MessengerAccountDto();
         dto.setId(messengerAccount.getId());
-        dto.setMessenger(convert(messengerAccount.getMessenger()));
+        dto.setMessenger(messengerAccount.getMessenger().getId());
         dto.setUsername(messengerAccount.getUsername());
         return dto;
     }
@@ -276,7 +283,9 @@ public class DtoConverter {
     public static MessengerAccount convert(MessengerAccountDto dto) {
         MessengerAccount messengerAccount = new MessengerAccount();
         messengerAccount.setId(dto.getId());
-        messengerAccount.setMessenger(convert(dto.getMessenger()));
+        Messenger messenger = new Messenger();
+        messenger.setId(dto.getMessenger());
+        messengerAccount.setMessenger(messenger);
         messengerAccount.setUsername(dto.getUsername());
         return messengerAccount;
     }

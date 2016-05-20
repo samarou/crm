@@ -19,8 +19,10 @@
             removeAddresses: removeAddresses,
             addTelephone: addTelephone,
             removeTelephones: removeTelephones,
+            addMessengerAccount: addMessengerAccount,
+            removeMessengerAccounts: removeMessengerAccounts,
             addSocialNetworkAccount: addSocialNetworkAccount,
-            removeSocialNetworks: removeSocialNetworks,
+            removeSocialNetworks: removeSocialNetworkAccounts,
             getEmptyContact: getEmptyContact,
             now: new Date(),
             init: init
@@ -32,7 +34,8 @@
                     getEmailTypes(),
                     getTelephoneTypes(),
                     getCountries(),
-                    getSocialNetworks()
+                    getSocialNetworks(),
+                    getMessengers()
                 ]
             ).then(function () {
                 return vm.options;
@@ -54,6 +57,12 @@
         function getCountries() {
             return contactService.getCountries().then(function (response) {
                 vm.options.countries = response.data;
+            })
+        }
+
+        function getMessengers() {
+            return contactService.getMessengers().then(function (response) {
+                vm.options.messengers = response.data;
             })
         }
 
@@ -90,11 +99,21 @@
             return removeCheckedElementsFromList(contact, contact.telephones, contactService.removeTelephone);
         }
 
+        function addMessengerAccount(scope) {
+            scope.contact.messengers.push({});
+        }
+
+        function removeMessengerAccounts(scope) {
+            var contact = scope.contact;
+            return removeCheckedElementsFromList(contact, contact.messengers, contactService.removeMessengerAccount);
+        }
+
+
         function addSocialNetworkAccount(scope) {
             scope.contact.socialNetworks.push({});
         }
 
-        function removeSocialNetworks(scope) {
+        function removeSocialNetworkAccounts(scope) {
             var contact = scope.contact;
             return removeCheckedElementsFromList(contact, contact.socialNetworks, contactService.removeSocialNetworkAccount);
         }

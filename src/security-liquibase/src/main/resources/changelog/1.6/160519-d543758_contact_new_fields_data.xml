@@ -39,4 +39,12 @@
             <delete tableName="social_network"/>
         </rollback>
     </changeSet>
+    <changeSet id="003" author="maksim.kalenik">
+        <sql dbms="mysql">
+            insert into messenger(name) values('Skype'),('Telegram'),('Viber'),('ICQ'),('Jabber'),('Other');
+        </sql>
+        <rollback>
+            <delete tableName="social_network"/>
+        </rollback>
+    </changeSet>
 </databaseChangeLog>

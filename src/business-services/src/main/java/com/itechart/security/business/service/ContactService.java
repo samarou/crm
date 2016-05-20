@@ -28,9 +28,12 @@ public interface ContactService {
 
     void deleteAddress(Long id);
 
+    void deleteMessengerAccount(Long id);
+
     void deleteSocialNetworkAccount(Long id);
 
     void deleteTelephone(Long id);
 
     int countContacts(ContactFilter filter);
+
 }
