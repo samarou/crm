@@ -17,6 +17,8 @@
             removeEmails: removeEmails,
             addAddress: addAddress,
             removeAddresses: removeAddresses,
+            addTelephone: addTelephone,
+            removeTelephones: removeTelephones,
             addSocialNetworkAccount: addSocialNetworkAccount,
             removeSocialNetworks: removeSocialNetworks,
             getEmptyContact: getEmptyContact,
@@ -77,6 +79,15 @@
         function removeAddresses(scope) {
             var contact = scope.contact;
             return removeCheckedElementsFromList(contact, contact.addresses, contactService.removeAddress);
+        }
+
+        function addTelephone(scope) {
+            scope.contact.telephones.push({});
+        }
+
+        function removeTelephones(scope) {
+            var contact = scope.contact;
+            return removeCheckedElementsFromList(contact, contact.telephones, contactService.removeTelephone);
         }
 
         function addSocialNetworkAccount(scope) {

@@ -170,6 +170,44 @@
                 </div>
                 <div class="row">
                     <div class="row">
+                        <div class="col-xs-12 col-sm-6"><h4>Telephones</h4></div>
+                        <div class="col-xs-12 col-sm-6 pull-right" ng-show="vm.canEdit">
+                            <div class="btn-group btn-group-justified pull-right">
+                                <a class="btn btn-default" ng-click="vm.details.addTelephone(vm)">
+                                    Add </a>
+                                <a class="btn btn-default" ng-click="vm.details.removeTelephones(vm)">
+                                    Remove </a>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-condensed">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th>Number</th>
+                            <th>Type</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="telephone in vm.contact.telephones">
+                            <td><input ng-show="vm.canEdit" type="checkbox" ng-model="telephone.checked"></td>
+                            <td>{{$index + 1}}</td>
+                            <td><input ng-disabled="!vm.canEdit" class="form-control"
+                                       name="telephone" ng-model="telephone.number" required></td>
+                            <td><select ng-disabled="!vm.canEdit" ng-model="telephone.type"
+                                        ng-options="option.name as option.value for option in vm.options.telephoneTypes"
+                                        class="form-control" crm-input-validation required>
+                                <option value="">Please, select</option>
+                            </select>
+                                <!--TODO: add validation here-->
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="row">
                         <div class="col-xs-12 col-sm-6"><h4>Emails</h4></div>
                         <div class="col-xs-12 col-sm-6 pull-right" ng-show="vm.canEdit">
                             <div class="btn-group btn-group-justified pull-right">

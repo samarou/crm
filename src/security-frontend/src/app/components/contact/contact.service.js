@@ -26,6 +26,7 @@
             getAttachment: getAttachment,
             getEmailTypes: getEmailTypes,
             removeEmail: removeEmail,
+            removeTelephone: removeTelephone,
             getTelephoneTypes: getTelephoneTypes,
             removeAddress: removeAddress,
             getCountries: getCountries,
@@ -111,6 +112,10 @@
 
         function removeEmail(id, emailId) {
             return $http.delete('rest/contacts/' + id + '/emails/' + emailId)
+        }
+
+        function removeTelephone(id, telephoneId) {
+            return $http.delete('rest/contacts/' + id + '/telephones/' + telephoneId)
         }
 
         function getTelephoneTypes() {

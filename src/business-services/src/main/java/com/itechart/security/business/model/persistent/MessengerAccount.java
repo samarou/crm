@@ -15,6 +15,7 @@ import java.util.Date;
 public class MessengerAccount extends SecuredEntity{
 
     @Id
+    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

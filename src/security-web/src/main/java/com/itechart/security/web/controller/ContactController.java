@@ -142,6 +142,11 @@ public class ContactController {
         contactService.deleteSocialNetworkAccount(socialNetworkId);
     }
 
+    @RequestMapping(value = "/contacts/{contactId}/telephones/{telephoneId}", method = RequestMethod.DELETE)
+    public void deleteTelephone(@PathVariable Long contactId, @PathVariable Long telephoneId) {
+        contactService.deleteTelephone(telephoneId);
+    }
+
     @RequestMapping(value = "/emails/types", method = RequestMethod.GET)
     public List<EmailTypeDto> getEmailTypes(){
         return convertEmailTypes(EmailType.values());

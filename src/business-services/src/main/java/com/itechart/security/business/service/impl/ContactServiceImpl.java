@@ -1,15 +1,9 @@
 package com.itechart.security.business.service.impl;
 
-import com.itechart.security.business.dao.AddressDao;
-import com.itechart.security.business.dao.ContactDao;
-import com.itechart.security.business.dao.EmailDao;
-import com.itechart.security.business.dao.SocialNetworkAccountDao;
+import com.itechart.security.business.dao.*;
 import com.itechart.security.business.filter.ContactFilter;
 import com.itechart.security.business.model.dto.ContactDto;
-import com.itechart.security.business.model.persistent.Address;
-import com.itechart.security.business.model.persistent.Contact;
-import com.itechart.security.business.model.persistent.Email;
-import com.itechart.security.business.model.persistent.SocialNetworkAccount;
+import com.itechart.security.business.model.persistent.*;
 import com.itechart.security.business.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +32,9 @@ public class ContactServiceImpl implements ContactService {
     @Autowired
     private SocialNetworkAccountDao socialNetworkAccountDao;
 
+    @Autowired
+    private TelephoneDao telephoneDao;
+
     @Override
     @Transactional
     public List<ContactDto> findContacts(ContactFilter filter) {
@@ -53,6 +50,7 @@ public class ContactServiceImpl implements ContactService {
         saveOrUpdateEmailsForContact(contact);
         saveOrUpdateAddressesForContact(contact);
         saveOrUpdateSocialNetworkAccountsForContact(contact);
+        saveOrUpdateTelephonesForContact(contact);
         return contactId;
     }
 
@@ -81,6 +79,7 @@ public class ContactServiceImpl implements ContactService {
         saveOrUpdateEmailsForContact(contact);
         saveOrUpdateAddressesForContact(contact);
         saveOrUpdateSocialNetworkAccountsForContact(contact);
+        saveOrUpdateTelephonesForContact(contact);
         contactDao.update(contact);
     }
 
@@ -117,6 +116,18 @@ public class ContactServiceImpl implements ContactService {
         }
     }
 
+    private void saveOrUpdateTelephonesForContact(Contact contact){
+        for (Telephone telephone : contact.getTelephones()) {
+            telephone.setContact(contact);
+            if (telephone.getId() == null) {
+                telephoneDao.save(telephone);
+            } else {
+                telephoneDao.update(telephone);
+            }
+        }
+    }
+
+
     @Override
     @Transactional
     public void deleteById(Long id) {
@@ -139,6 +150,12 @@ public class ContactServiceImpl implements ContactService {
     @Transactional
     public void deleteSocialNetworkAccount(Long id) {
         socialNetworkAccountDao.delete(id);
+    }
+
+    @Override
+    @Transactional
+    public void deleteTelephone(Long id) {
+        telephoneDao.delete(id);
     }
 
     @Override

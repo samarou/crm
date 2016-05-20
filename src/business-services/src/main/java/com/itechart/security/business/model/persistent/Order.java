@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 public class Order extends SecuredEntity {
 
     @Id
+    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

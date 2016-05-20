@@ -15,6 +15,7 @@ import java.util.Date;
 public class Telephone extends SecuredEntity {
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, length = 100)

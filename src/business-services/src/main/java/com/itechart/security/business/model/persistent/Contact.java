@@ -6,8 +6,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.util.Set;
 
 @Entity
@@ -17,6 +15,7 @@ import java.util.Set;
 public class Contact extends SecuredEntity {
 
     @Id
+    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
