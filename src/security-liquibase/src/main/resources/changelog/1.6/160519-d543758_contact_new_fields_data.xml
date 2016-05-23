@@ -4,7 +4,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
     <changeSet id="001" author="maksim.kalenik">
         <sql dbms="mysql">
-            insert into country(name) values('Afghanistan'),('Akrotiri'),('Albania'),
+            insert into country(name) values('no country'),('Afghanistan'),('Akrotiri'),('Albania'),
             ('Algeria'),('American Samoa'),('Andorra'),('Angola'),('Anguilla'),('Antarctica'),('Argentina'),
             ('Armenia'),('Aruba'),('Australia'),('Austria'),('Azerbaijan'),('Bahrain'),('Bangladesh'),
             ('Barbados'),('Bassas da India'),('Belarus'),('Belgium'),('Belize'),('Benin'),('Bermuda'),
@@ -45,6 +45,38 @@
         </sql>
         <rollback>
             <delete tableName="social_network"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="004" author="maksim.kalenik">
+        <sql dbms="mysql">
+            INSERT INTO email (contact_id,name,type)
+            SELECT id,email,'WORK' FROM contact where email is not null
+        </sql>
+        <rollback>
+            <delete tableName="email"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="005" author="maksim.kalenik">
+        <sql dbms="mysql">
+            INSERT INTO address (contact_id,address_line,country_id)
+            SELECT id,address,1 FROM contact WHERE address is not null
+        </sql>
+        <rollback>
+            <delete tableName="address"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="006" author="maksim.kalenik">
+        <dropColumn tableName="contact">
+            <column name="email"/>
+            <column name="address"/>
+        </dropColumn>
+        <rollback>
+            <addColumn tableName="contact">
+                <column name="email" type="VARCHAR(100)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="address" type="VARCHAR(250)"/>
+            </addColumn>
         </rollback>
     </changeSet>
 </databaseChangeLog>

@@ -11,17 +11,7 @@
             <column name="photo_url" remarks="url of contact photo" type="VARCHAR(255)"/>
             <column name="date_deleted" remarks="Date of contact deletion" type="DATETIME"/>
         </addColumn>
-        <dropColumn tableName="contact">
-            <column name="email"/>
-            <column name="address"/>
-        </dropColumn>
         <rollback>
-            <addColumn tableName="contact">
-                <column name="email" type="VARCHAR(100)">
-                    <constraints nullable="false"/>
-                </column>
-                <column name="address" type="VARCHAR(250)"/>
-            </addColumn>
             <dropColumn tableName="contact">
                 <column name="patronymic"/>
                 <column name="date_of_birth"/>
