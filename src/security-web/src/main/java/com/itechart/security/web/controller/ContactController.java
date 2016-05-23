@@ -152,6 +152,11 @@ public class ContactController {
         contactService.deleteTelephone(telephoneId);
     }
 
+    @RequestMapping(value = "/contacts/{contactId}/workplaces/{workplaceId}", method = RequestMethod.DELETE)
+    public void deleteWorkplace(@PathVariable Long contactId, @PathVariable Long workplaceId) {
+        contactService.deleteWorkplace(workplaceId);
+    }
+
     @RequestMapping(value = "/emails/types", method = RequestMethod.GET)
     public List<EmailTypeDto> getEmailTypes(){
         return convertEmailTypes(EmailType.values());

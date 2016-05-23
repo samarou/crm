@@ -24,6 +24,8 @@
             addSocialNetworkAccount: addSocialNetworkAccount,
             removeSocialNetworks: removeSocialNetworkAccounts,
             getEmptyContact: getEmptyContact,
+            addWorkplace: addWorkplace,
+            removeWorkplaces: removeWorkplaces,
             now: new Date(),
             init: init
         };
@@ -108,7 +110,6 @@
             return removeCheckedElementsFromList(contact, contact.messengers, contactService.removeMessengerAccount);
         }
 
-
         function addSocialNetworkAccount(scope) {
             scope.contact.socialNetworks.push({});
         }
@@ -117,6 +118,16 @@
             var contact = scope.contact;
             return removeCheckedElementsFromList(contact, contact.socialNetworks, contactService.removeSocialNetworkAccount);
         }
+
+        function addWorkplace(scope) {
+            scope.contact.workplaces.push({});
+        }
+
+        function removeWorkplaces(scope) {
+            var contact = scope.contact;
+            return removeCheckedElementsFromList(contact, contact.workplaces, contactService.removeWorkplace);
+        }
+
 
         function getEmptyContact() {
             return {

@@ -56,6 +56,7 @@
         function getAttachments() {
             return contactService.getAttachments($stateParams.id).then(function (response) {
                 vm.attachments = response.data;
+                console.log(vm.attachments);
             })
         }
 
@@ -73,6 +74,7 @@
         function getContact() {
             return contactService.get($stateParams.id).then(function (response) {
                 vm.contact = response.data;
+                console.log(vm.contact);
             });
         }
     }

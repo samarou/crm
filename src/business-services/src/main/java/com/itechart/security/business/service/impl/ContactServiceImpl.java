@@ -38,6 +38,9 @@ public class ContactServiceImpl implements ContactService {
     @Autowired
     private TelephoneDao telephoneDao;
 
+    @Autowired
+    private WorkplaceDao workplaceDao;
+
     @Override
     @Transactional
     public List<ContactDto> findContacts(ContactFilter filter) {
@@ -55,6 +58,7 @@ public class ContactServiceImpl implements ContactService {
         saveOrUpdateSocialNetworkAccountsForContact(contact);
         saveOrUpdateTelephonesForContact(contact);
         saveOrUpdateMessengersForContact(contact);
+        saveOrUpdateWorkplacesForContact(contact);
         return contactId;
     }
 
@@ -85,6 +89,7 @@ public class ContactServiceImpl implements ContactService {
         saveOrUpdateSocialNetworkAccountsForContact(contact);
         saveOrUpdateTelephonesForContact(contact);
         saveOrUpdateMessengersForContact(contact);
+        saveOrUpdateWorkplacesForContact(contact);
         contactDao.update(contact);
     }
 
@@ -143,6 +148,17 @@ public class ContactServiceImpl implements ContactService {
         }
     }
 
+    private void saveOrUpdateWorkplacesForContact(Contact contact){
+        for (Workplace workplace : contact.getWorkplaces()) {
+            workplace.setContact(contact);
+            if (workplace.getId() == null) {
+                workplaceDao.save(workplace);
+            } else {
+                workplaceDao.update(workplace);
+            }
+        }
+    }
+
     @Override
     @Transactional
     public void deleteById(Long id) {
@@ -177,6 +193,12 @@ public class ContactServiceImpl implements ContactService {
     @Transactional
     public void deleteTelephone(Long id) {
         telephoneDao.delete(id);
+    }
+
+    @Override
+    @Transactional
+    public void deleteWorkplace(Long id) {
+        workplaceDao.delete(id);
     }
 
     @Override

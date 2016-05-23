@@ -33,7 +33,8 @@
             removeMessengerAccount: removeMessengerAccount,
             getMessengers: getMessengers,
             removeSocialNetworkAccount: removeSocialNetworkAccount,
-            getSocialNetworks: getSocialNetworks
+            getSocialNetworks: getSocialNetworks,
+            removeWorkplace: removeWorkplace
         };
 
         function getAll() {
@@ -146,6 +147,10 @@
 
         function getSocialNetworks() {
             return $http.get('rest/social_networks');
+        }
+
+        function removeWorkplace(id, workplaceId) {
+            return $http.delete('rest/contacts/' + id + '/workplaces/' + workplaceId)
         }
     }
 })();
