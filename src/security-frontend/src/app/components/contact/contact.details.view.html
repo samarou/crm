@@ -5,376 +5,38 @@
         <uib-tabset active="active">
             <uib-tab heading="General Info">
                 <div class="row crm-top-buffer">
-                    <div class="col-md-10">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group" crm-input-validation>
-                                    <label for="contact-first-name">First name</label>
-                                    <input ng-disabled="!vm.canEdit" id="contact-first-name" class="form-control"
-                                           name="firstName"
-                                           ng-model="vm.contact.firstName" required>
-                        <span ng-show="contactForm.firstName.$dirty && contactForm.firstName.$error.required"
-                              class="help-block">First name is required</span>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group" crm-input-validation>
-                                    <label for="contact-last-name">Last name</label>
-                                    <input ng-disabled="!vm.canEdit" id="contact-last-name" class="form-control"
-                                           name="lastName"
-                                           ng-model="vm.contact.lastName" required>
-                            <span ng-show="contactForm.lastName.$dirty && contactForm.lastName.$error.required"
-                                  class="help-block">Last name is required</span>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group" crm-input-validation>
-                                    <label for="contact-patronymic">Patronymic</label>
-                                    <input ng-disabled="!vm.canEdit" id="contact-patronymic" class="form-control"
-                                           name="patronymic"
-                                           ng-model="vm.contact.patronymic">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group" crm-input-validation>
-                                    <label for="contact-date-of-birth">Date of birth</label>
-                                    <input ng-disabled="!vm.canEdit"
-                                           id="contact-date-of-birth"
-                                           uib-datepicker-popup
-                                           placeholder="yyyy-MM-dd" min="1900-01-01"
-                                           max="{{vm.details.now|date:'yyyy-MM-dd'}}"
-                                           class="form-control"
-                                           name="dateOfBirth"
-                                           ng-model="vm.contact.dateOfBirth">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group" crm-input-validation>
-                                    <label for="contact-is-male">Gender</label>
-                                    <select ng-disabled="!vm.canEdit" id="contact-is-male" class="form-control"
-                                            name="isMale" ng-model="vm.contact.isMale"
-                                            ng-options="o.v as o.n for o in [{n:'Please, select',v:null},{n:'Female',v:false},{n:'Male', v:true}]">
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group" crm-input-validation>
-                                    <label for="contact-nationality">Nationality</label>
-                                    <input ng-disabled="!vm.canEdit" id="contact-nationality" class="form-control"
-                                           name="nationality" ng-model="vm.contact.nationality">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="row">
-                            <div class="col-md-12 col-md-offset-0 col-sm-4 col-sm-offset-4 ">
-                                <img class="img-responsive center-block" ng-src="{{vm.contact.photoUrl}}">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group" crm-input-validation>
-                                    <label for="contact-photo">Photo URL</label>
-                                    <input ng-disabled="!vm.canEdit" id="contact-photo" class="form-control"
-                                           name="photoUrl" ng-model="vm.contact.photoUrl">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <crm-contact vm="vm"></crm-contact>
                 </div>
                 <div class="row">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-6"><h4>Social Networks</h4></div>
-                        <div class="col-xs-12 col-sm-6 pull-right" ng-show="vm.canEdit">
-                            <div class="btn-group btn-group-justified pull-right">
-                                <a class="btn btn-default" ng-click="vm.details.addSocialNetworkAccount(vm)">
-                                    Add </a>
-                                <a class="btn btn-default" ng-click="vm.details.removeSocialNetworks(vm)">
-                                    Remove </a>
-                            </div>
-                        </div>
-                    </div>
-                    <table class="table table-condensed">
-                        <thead>
-                        <tr>
-                            <th></th>
-                            <th></th>
-                            <th>URL</th>
-                            <th>Social Network</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="account in vm.contact.socialNetworks" ng-disabled="!vm.canEdit">
-                            <td><input type="checkbox" ng-model="account.checked" ng-show="vm.canEdit"
-                                       title="select Social Network account"></td>
-                            <td>{{$index + 1}}</td>
-                            <td><input class="form-control" ng-model="account.url"></td>
-                            <td><select ng-disabled="!vm.canEdit" ng-model="account.socialNetwork"
-                                        ng-options="option.id as option.name for option in vm.dictionary.socialNetworks"
-                                        class="form-control" crm-input-validation required>
-                                <option value="">Please, select</option>
-                                <!--TODO: add validation here-->
-                            </select>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <crm-contact-social-networks vm="vm"></crm-contact-social-networks>
                 </div>
             </uib-tab>
 
             <uib-tab heading="Contact Info">
                 <div class="row crm-top-buffer">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-6"><h4>Addresses</h4></div>
-                        <div class="col-xs-12 col-sm-6 pull-right" ng-show="vm.canEdit">
-                            <div class="btn-group btn-group-justified pull-right">
-                                <a class="btn btn-default" ng-click="vm.details.addAddress(vm)">
-                                    Add </a>
-                                <a class="btn btn-default" ng-click="vm.details.removeAddresses(vm)">
-                                    Remove </a>
-                            </div>
-                        </div>
-                    </div>
-                    <table class="table table-condensed">
-                        <thead>
-                        <tr>
-                            <th></th>
-                            <th></th>
-                            <th>Address line</th>
-                            <th>Zipcode</th>
-                            <th>City</th>
-                            <th>Region</th>
-                            <th>Country</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="address in vm.contact.addresses" ng-disabled="!vm.canEdit">
-                            <td><input type="checkbox" ng-model="address.checked" ng-show="vm.canEdit"
-                                       title="select address"></td>
-                            <td>{{$index + 1}}</td>
-                            <td><input class="form-control" ng-model="address.addressLine"></td>
-                            <td><input class="form-control" ng-model="address.zipcode"></td>
-                            <td><input class="form-control" ng-model="address.city"></td>
-                            <td><input class="form-control" ng-model="address.region"></td>
-                            <td><select ng-disabled="!vm.canEdit" ng-model="address.country"
-                                        ng-options="option.id as option.name for option in vm.dictionary.countries"
-                                        class="form-control" crm-input-validation required>
-                                <option value="">Please, select</option>
-                                <!--TODO: add validation here-->
-                            </select>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <crm-contact-addresses vm="vm"></crm-contact-addresses>
                 </div>
                 <div class="row">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-6"><h4>Telephones</h4></div>
-                        <div class="col-xs-12 col-sm-6 pull-right" ng-show="vm.canEdit">
-                            <div class="btn-group btn-group-justified pull-right">
-                                <a class="btn btn-default" ng-click="vm.details.addTelephone(vm)">
-                                    Add </a>
-                                <a class="btn btn-default" ng-click="vm.details.removeTelephones(vm)">
-                                    Remove </a>
-                            </div>
-                        </div>
-                    </div>
-                    <table class="table table-condensed">
-                        <thead>
-                        <tr>
-                            <th></th>
-                            <th></th>
-                            <th>Number</th>
-                            <th>Type</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="telephone in vm.contact.telephones">
-                            <td><input ng-show="vm.canEdit" type="checkbox" ng-model="telephone.checked"></td>
-                            <td>{{$index + 1}}</td>
-                            <td><input ng-disabled="!vm.canEdit" class="form-control"
-                                       name="telephone" ng-model="telephone.number" required></td>
-                            <td><select ng-disabled="!vm.canEdit" ng-model="telephone.type"
-                                        ng-options="option.name as option.value for option in vm.dictionary.telephoneTypes"
-                                        class="form-control" crm-input-validation required>
-                                <option value="">Please, select</option>
-                            </select>
-                                <!--TODO: add validation here-->
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <crm-contact-telephones vm="vm"></crm-contact-telephones>
                 </div>
                 <div class="row">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-6"><h4>Emails</h4></div>
-                        <div class="col-xs-12 col-sm-6 pull-right" ng-show="vm.canEdit">
-                            <div class="btn-group btn-group-justified pull-right">
-                                <a class="btn btn-default" ng-click="vm.details.addEmail(vm)">
-                                    Add </a>
-                                <a class="btn btn-default" ng-click="vm.details.removeEmails(vm)">
-                                    Remove </a>
-                            </div>
-                        </div>
-                    </div>
-                    <table class="table table-condensed">
-                        <thead>
-                        <tr>
-                            <th></th>
-                            <th></th>
-                            <th>Email</th>
-                            <th>Type</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="email in vm.contact.emails">
-                            <td><input ng-show="vm.canEdit" type="checkbox" ng-model="email.checked"></td>
-                            <td>{{$index + 1}}</td>
-                            <td><input ng-disabled="!vm.canEdit" class="form-control"
-                                       name="email" ng-model="email.name"></td>
-                            <td><select ng-disabled="!vm.canEdit" ng-model="email.type"
-                                        ng-options="option.name as option.value for option in vm.dictionary.emailTypes"
-                                        class="form-control" crm-input-validation required>
-                                <option value="">Please, select</option>
-                            </select>
-                                <!--TODO: add validation here-->
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <crm-contact-emails vm="vm"></crm-contact-emails>
                 </div>
                 <div class="row">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-6"><h4>Messengers</h4></div>
-                        <div class="col-xs-12 col-sm-6 pull-right" ng-show="vm.canEdit">
-                            <div class="btn-group btn-group-justified pull-right">
-                                <a class="btn btn-default" ng-click="vm.details.addMessengerAccount(vm)">
-                                    Add </a>
-                                <a class="btn btn-default" ng-click="vm.details.removeMessengerAccounts(vm)">
-                                    Remove </a>
-                            </div>
-                        </div>
-                    </div>
-                    <table class="table table-condensed">
-                        <thead>
-                        <tr>
-                            <th></th>
-                            <th></th>
-                            <th>Username</th>
-                            <th>Messenger</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="account in vm.contact.messengers" ng-disabled="!vm.canEdit">
-                            <td><input type="checkbox" ng-model="account.checked" ng-show="vm.canEdit"
-                                       title="select messenger account"></td>
-                            <td>{{$index + 1}}</td>
-                            <td><input class="form-control" ng-model="account.username" required></td>
-                            <td><select ng-disabled="!vm.canEdit" ng-model="account.messenger"
-                                        ng-options="option.id as option.name for option in vm.dictionary.messengers"
-                                        class="form-control" crm-input-validation required>
-                                <option value="">Please, select</option>
-                                <!--TODO: add validation here-->
-                            </select>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <crm-contact-messengers vm="vm"></crm-contact-messengers>
                 </div>
             </uib-tab>
 
             <uib-tab heading="Work Experience">
                 <div class="row crm-top-buffer">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-6"><h4>Workplaces</h4></div>
-                        <div class="col-xs-12 col-sm-6 pull-right" ng-show="vm.canEdit">
-                            <div class="btn-group btn-group-justified pull-right">
-                                <a class="btn btn-default" ng-click="vm.details.addWorkplace(vm)">
-                                    Add </a>
-                                <a class="btn btn-default" ng-click="vm.details.removeWorkplaces(vm)">
-                                    Remove </a>
-                            </div>
-                        </div>
-                    </div>
-                    <table class="table table-condensed">
-                        <thead>
-                        <tr>
-                            <th></th>
-                            <th></th>
-                            <th>Name</th>
-                            <th>Position</th>
-                            <th>Start date</th>
-                            <th>End date</th>
-                            <th>Comment</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="workplace in vm.contact.workplaces" ng-disabled="!vm.canEdit">
-                            <td><input type="checkbox" ng-model="workplace.checked" ng-show="vm.canEdit"
-                                       title="select workplace"></td>
-                            <td>{{$index + 1}}</td>
-                            <td><input class="form-control" ng-model="workplace.name"></td>
-                            <td><input class="form-control" ng-model="workplace.position"></td>
-                            <td>
-                                <input class="form-control"
-                                       uib-datepicker-popup
-                                       ng-model="workplace.startDate"
-                                       placeholder="yyyy-MM-dd" min="1900-01-01"
-                                       max="{{vm.details.now|date:'yyyy-MM-dd'}}">
-                            </td>
-                            <td><input class="form-control"
-                                       uib-datepicker-popup
-                                       ng-model="workplace.endDate"
-                                       placeholder="yyyy-MM-dd" min="1900-01-01"
-                                       max="{{vm.details.now|date:'yyyy-MM-dd'}}">
-                            </td>
-                            <td><input class="form-control" ng-model="workplace.comment"></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <crm-contact-workplaces vm="vm"></crm-contact-workplaces>
                 </div>
             </uib-tab>
 
             <uib-tab heading="Attachments">
                 <div class="row crm-top-buffer">
-                    <div class="col-xs-12 col-sm-6"><h4>Attachments</h4></div>
-                    <div class="col-xs-12 col-sm-6 pull-right">
-                        <div class="btn-group btn-group-justified pull-right">
-                            <a class="btn btn-default" ng-click="vm.attachmentService.addAttachments(vm)"
-                               ng-show="vm.canEdit"> Add </a>
-                            <a class="btn btn-default" ng-click="vm.attachmentService.removeAttachments(vm)"
-                               ng-show="vm.canEdit"> Remove </a>
-                        </div>
-                    </div>
+                    <crm-contact-attachments vm="vm"></crm-contact-attachments>
                 </div>
-                <table class="table table-condensed">
-                    <thead>
-                    <tr>
-                        <th></th>
-                        <th>#</th>
-                        <th>File</th>
-                        <th>Date of upload</th>
-                        <th>Comment</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="attachment in vm.attachments"
-                        ng-dblclick="vm.attachmentService.updateAttachment(attachment)" class="crm-hover">
-                        <td><input type="checkbox" ng-model="attachment.checked" ng-show="vm.canEdit"
-                                   title="select attachment"></td>
-                        <td>{{$index + 1}}</td>
-                        <td>
-                            <a ng-if="attachment.id" ng-click="vm.attachmentService.getAttachment(attachment)">{{attachment.name}}</a>
-                            <span ng-if="!attachment.id">{{attachment.name}}</span>
-                        </td>
-                        <td>{{attachment.dateUpload | date:'yyyy-MM-dd'}}</td>
-                        <td>{{attachment.comment}}</td>
-                    </tr>
-                    </tbody>
-                </table>
             </uib-tab>
             <uib-tab heading="Access">
                 <acl-form handler="vm.aclHandler"></acl-form>

@@ -6,26 +6,24 @@
         .factory('contactDetailsService', contactDetailsService);
     /** @ngInject */
     function contactDetailsService(contactService, aclServiceBuilder, $state, contactAttachmentService, $q) {
-        var vm = this;
-        vm.dictionary = {};
 
         return {
             submit: submit,
             cancel: goToList,
             createAclHandler: createAclHandler,
             addEmail: addEmail,
-            removeEmails: removeEmails,
             addAddress: addAddress,
-            removeAddresses: removeAddresses,
             addTelephone: addTelephone,
-            removeTelephones: removeTelephones,
             addMessengerAccount: addMessengerAccount,
-            removeMessengerAccounts: removeMessengerAccounts,
             addSocialNetworkAccount: addSocialNetworkAccount,
-            removeSocialNetworks: removeSocialNetworkAccounts,
-            getEmptyContact: getEmptyContact,
             addWorkplace: addWorkplace,
+            removeEmails: removeEmails,
+            removeAddresses: removeAddresses,
+            removeTelephones: removeTelephones,
+            removeMessengerAccounts: removeMessengerAccounts,
+            removeSocialNetworks: removeSocialNetworkAccounts,
             removeWorkplaces: removeWorkplaces,
+            getEmptyContact: getEmptyContact,
             now: new Date(),
             getDictionary: getDictionary
         };
@@ -40,56 +38,49 @@
             scope.contact.emails.push({});
         }
 
-        function removeEmails(scope) {
-            var contact = scope.contact;
-            return removeCheckedElementsFromList(contact, contact.emails, contactService.removeEmail);
-        }
-
         function addAddress(scope) {
             scope.contact.addresses.push({});
-        }
-
-        function removeAddresses(scope) {
-            var contact = scope.contact;
-            return removeCheckedElementsFromList(contact, contact.addresses, contactService.removeAddress);
         }
 
         function addTelephone(scope) {
             scope.contact.telephones.push({});
         }
 
-        function removeTelephones(scope) {
-            var contact = scope.contact;
-            return removeCheckedElementsFromList(contact, contact.telephones, contactService.removeTelephone);
-        }
-
         function addMessengerAccount(scope) {
             scope.contact.messengers.push({});
-        }
-
-        function removeMessengerAccounts(scope) {
-            var contact = scope.contact;
-            return removeCheckedElementsFromList(contact, contact.messengers, contactService.removeMessengerAccount);
         }
 
         function addSocialNetworkAccount(scope) {
             scope.contact.socialNetworks.push({});
         }
 
-        function removeSocialNetworkAccounts(scope) {
-            var contact = scope.contact;
-            return removeCheckedElementsFromList(contact, contact.socialNetworks, contactService.removeSocialNetworkAccount);
-        }
-
         function addWorkplace(scope) {
             scope.contact.workplaces.push({});
         }
 
-        function removeWorkplaces(scope) {
-            var contact = scope.contact;
-            return removeCheckedElementsFromList(contact, contact.workplaces, contactService.removeWorkplace);
+        function removeEmails(scope) {
+            return removeCheckedElementsFromList(scope.contact, scope.contact.emails, contactService.removeEmail);
         }
 
+        function removeAddresses(scope) {
+            return removeCheckedElementsFromList(scope.contact, scope.contact.addresses, contactService.removeAddress);
+        }
+
+        function removeTelephones(scope) {
+            return removeCheckedElementsFromList(scope.contact, scope.contact.telephones, contactService.removeTelephone);
+        }
+
+        function removeMessengerAccounts(scope) {
+            return removeCheckedElementsFromList(scope.contact, scope.contact.messengers, contactService.removeMessengerAccount);
+        }
+
+        function removeSocialNetworkAccounts(scope) {
+            return removeCheckedElementsFromList(scope.contact, scope.contact.socialNetworks, contactService.removeSocialNetworkAccount);
+        }
+
+        function removeWorkplaces(scope) {
+            return removeCheckedElementsFromList(scope.contact, scope.contact.workplaces, contactService.removeWorkplace);
+        }
 
         function getEmptyContact() {
             return {
