@@ -24,16 +24,12 @@
             updateAttachment: updateAttachment,
             removeAttachment: removeAttachment,
             getAttachment: getAttachment,
-            getEmailTypes: getEmailTypes,
             removeEmail: removeEmail,
             removeTelephone: removeTelephone,
-            getTelephoneTypes: getTelephoneTypes,
             removeAddress: removeAddress,
-            getCountries: getCountries,
             removeMessengerAccount: removeMessengerAccount,
-            getMessengers: getMessengers,
             removeSocialNetworkAccount: removeSocialNetworkAccount,
-            getSocialNetworks: getSocialNetworks,
+            getDictionary: getDictionary,
             removeWorkplace: removeWorkplace
         };
 
@@ -121,32 +117,20 @@
             return $http.delete('rest/contacts/' + id + '/telephones/' + telephoneId)
         }
 
-        function getTelephoneTypes() {
-            return $http.get('rest/telephones/types');
-        }
-
         function removeAddress(id, addressId) {
             return $http.delete('rest/contacts/' + id + '/addresses/' + addressId)
-        }
-
-        function getCountries() {
-            return $http.get('rest/countries');
         }
 
         function removeMessengerAccount(id, accountId) {
             return $http.delete('rest/contacts/' + id + '/messengers/' + accountId)
         }
 
-        function getMessengers() {
-            return $http.get('rest/messengers');
-        }
-
         function removeSocialNetworkAccount(id, accountId) {
             return $http.delete('rest/contacts/' + id + '/social_networks/' + accountId)
         }
 
-        function getSocialNetworks() {
-            return $http.get('rest/social_networks');
+        function getDictionary() {
+            return $http.get('rest/dictionary');
         }
 
         function removeWorkplace(id, workplaceId) {

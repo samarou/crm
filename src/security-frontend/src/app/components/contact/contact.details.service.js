@@ -7,7 +7,7 @@
     /** @ngInject */
     function contactDetailsService(contactService, aclServiceBuilder, $state, contactAttachmentService, $q) {
         var vm = this;
-        vm.options = {};
+        vm.dictionary = {};
 
         return {
             submit: submit,
@@ -27,50 +27,12 @@
             addWorkplace: addWorkplace,
             removeWorkplaces: removeWorkplaces,
             now: new Date(),
-            init: init
+            getDictionary: getDictionary
         };
 
-        function init() {
-            return $q.all(
-                [
-                    getEmailTypes(),
-                    getTelephoneTypes(),
-                    getCountries(),
-                    getSocialNetworks(),
-                    getMessengers()
-                ]
-            ).then(function () {
-                return vm.options;
-            })
-        }
-
-        function getEmailTypes() {
-            return contactService.getEmailTypes().then(function (response) {
-                vm.options.emailTypes = response.data;
-            })
-        }
-
-        function getTelephoneTypes() {
-            return contactService.getTelephoneTypes().then(function (response) {
-                vm.options.telephoneTypes = response.data;
-            })
-        }
-
-        function getCountries() {
-            return contactService.getCountries().then(function (response) {
-                vm.options.countries = response.data;
-            })
-        }
-
-        function getMessengers() {
-            return contactService.getMessengers().then(function (response) {
-                vm.options.messengers = response.data;
-            })
-        }
-
-        function getSocialNetworks() {
-            return contactService.getSocialNetworks().then(function (response) {
-                vm.options.socialNetworks = response.data;
+        function getDictionary() {
+            return contactService.getDictionary().then(function (response) {
+                return response.data;
             })
         }
 

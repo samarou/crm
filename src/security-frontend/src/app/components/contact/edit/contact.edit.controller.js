@@ -13,7 +13,6 @@
         vm.contact = contactDetailsService.getEmptyContact();
         vm.attachments = [];
         vm.attachmentService = contactAttachmentService;
-        vm.options = {};
         vm.isManager = authService.isManager();
         vm.submitText = 'Save';
         vm.title = 'Edit contact';
@@ -29,7 +28,7 @@
         function init() {
             $q.all(
                 [
-                    initOptions(),
+                    initDictionary(),
                     isEditable(),
                     getAcls(),
                     getAttachments()
@@ -37,9 +36,9 @@
             ).then(getContact);
         }
 
-        function initOptions() {
-            return vm.details.init().then(function (response) {
-                vm.options = response;
+        function initDictionary() {
+            return vm.details.getDictionary().then(function (response) {
+                vm.dictionary = response;
             });
         }
 
@@ -56,7 +55,6 @@
         function getAttachments() {
             return contactService.getAttachments($stateParams.id).then(function (response) {
                 vm.attachments = response.data;
-                console.log(vm.attachments);
             })
         }
 
@@ -74,7 +72,6 @@
         function getContact() {
             return contactService.get($stateParams.id).then(function (response) {
                 vm.contact = response.data;
-                console.log(vm.contact);
             });
         }
     }

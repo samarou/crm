@@ -1,10 +1,9 @@
 package com.itechart.security.web.controller;
 
 import com.itechart.security.business.filter.ContactFilter;
-import com.itechart.security.business.model.dto.*;
-import com.itechart.security.business.model.enums.EmailType;
+import com.itechart.security.business.model.dto.ContactDto;
+import com.itechart.security.business.model.dto.DictionaryDto;
 import com.itechart.security.business.model.enums.ObjectTypes;
-import com.itechart.security.business.model.enums.TelephoneType;
 import com.itechart.security.business.service.ContactService;
 import com.itechart.security.business.service.DictionaryService;
 import com.itechart.security.core.SecurityUtils;
@@ -28,8 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.itechart.security.business.model.dto.utils.DtoConverter.convertEmailTypes;
-import static com.itechart.security.business.model.dto.utils.DtoConverter.convertTelephoneTypes;
 import static com.itechart.security.web.model.dto.Converter.convert;
 import static java.util.stream.Collectors.toList;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -157,30 +154,8 @@ public class ContactController {
         contactService.deleteWorkplace(workplaceId);
     }
 
-    @RequestMapping(value = "/emails/types", method = RequestMethod.GET)
-    public List<EmailTypeDto> getEmailTypes(){
-        return convertEmailTypes(EmailType.values());
-    }
-
-    @RequestMapping(value = "/telephones/types", method = RequestMethod.GET)
-    public List<TelephoneTypeDto> getTelephoneTypes(){
-        return convertTelephoneTypes(TelephoneType.values());
-    }
-
-    @RequestMapping(value = "/countries", method = RequestMethod.GET)
-    public List<CountryDto> getCountries() {
-        return dictionaryService.getCountries();
-    }
-
-    @RequestMapping(value = "/messengers", method = RequestMethod.GET)
-    public List<MessengerDto> getMessengers() {
-        return dictionaryService.getMessengers();
-    }
-
-    @RequestMapping(value = "/social_networks", method = RequestMethod.GET)
-    public List<SocialNetworkDto> getSocialNetworks() {
-        return dictionaryService.getSocialNetworks();
-    }
+    @RequestMapping(value = "/dictionary", method = RequestMethod.GET)
+    public DictionaryDto getDictionary(){return  dictionaryService.getDictionary();}
 
     private Acl getAcl(Long contactId) {
         return aclService.getAcl(createIdentity(contactId));

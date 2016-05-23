@@ -26,7 +26,7 @@
         init();
 
         function init() {
-            return initAcls().then(initOptions);
+            return initAcls().then(initDictionary);
         }
 
         function initAcls() {
@@ -35,9 +35,9 @@
             });
         }
 
-        function initOptions() {
-            return vm.details.init().then(function (response) {
-                vm.options = response;
+        function initDictionary() {
+            return vm.details.getDictionary().then(function (response) {
+                vm.dictionary = response;
             });
         }
 

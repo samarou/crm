@@ -113,7 +113,7 @@
                             <td>{{$index + 1}}</td>
                             <td><input class="form-control" ng-model="account.url"></td>
                             <td><select ng-disabled="!vm.canEdit" ng-model="account.socialNetwork"
-                                        ng-options="option.id as option.name for option in vm.options.socialNetworks"
+                                        ng-options="option.id as option.name for option in vm.dictionary.socialNetworks"
                                         class="form-control" crm-input-validation required>
                                 <option value="">Please, select</option>
                                 <!--TODO: add validation here-->
@@ -160,7 +160,7 @@
                             <td><input class="form-control" ng-model="address.city"></td>
                             <td><input class="form-control" ng-model="address.region"></td>
                             <td><select ng-disabled="!vm.canEdit" ng-model="address.country"
-                                        ng-options="option.id as option.name for option in vm.options.countries"
+                                        ng-options="option.id as option.name for option in vm.dictionary.countries"
                                         class="form-control" crm-input-validation required>
                                 <option value="">Please, select</option>
                                 <!--TODO: add validation here-->
@@ -198,7 +198,7 @@
                             <td><input ng-disabled="!vm.canEdit" class="form-control"
                                        name="telephone" ng-model="telephone.number" required></td>
                             <td><select ng-disabled="!vm.canEdit" ng-model="telephone.type"
-                                        ng-options="option.name as option.value for option in vm.options.telephoneTypes"
+                                        ng-options="option.name as option.value for option in vm.dictionary.telephoneTypes"
                                         class="form-control" crm-input-validation required>
                                 <option value="">Please, select</option>
                             </select>
@@ -236,7 +236,7 @@
                             <td><input ng-disabled="!vm.canEdit" class="form-control"
                                        name="email" ng-model="email.name"></td>
                             <td><select ng-disabled="!vm.canEdit" ng-model="email.type"
-                                        ng-options="option.name as option.value for option in vm.options.emailTypes"
+                                        ng-options="option.name as option.value for option in vm.dictionary.emailTypes"
                                         class="form-control" crm-input-validation required>
                                 <option value="">Please, select</option>
                             </select>
@@ -274,7 +274,7 @@
                             <td>{{$index + 1}}</td>
                             <td><input class="form-control" ng-model="account.username" required></td>
                             <td><select ng-disabled="!vm.canEdit" ng-model="account.messenger"
-                                        ng-options="option.id as option.name for option in vm.options.messengers"
+                                        ng-options="option.id as option.name for option in vm.dictionary.messengers"
                                         class="form-control" crm-input-validation required>
                                 <option value="">Please, select</option>
                                 <!--TODO: add validation here-->

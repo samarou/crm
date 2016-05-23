@@ -1,6 +1,7 @@
 package com.itechart.security.business.service;
 
 import com.itechart.security.business.model.dto.CountryDto;
+import com.itechart.security.business.model.dto.DictionaryDto;
 import com.itechart.security.business.model.dto.MessengerDto;
 import com.itechart.security.business.model.dto.SocialNetworkDto;
 
@@ -12,4 +13,6 @@ public interface DictionaryService {
     List<SocialNetworkDto> getSocialNetworks();
 
     List<MessengerDto> getMessengers();
+
+    DictionaryDto getDictionary();
 }
