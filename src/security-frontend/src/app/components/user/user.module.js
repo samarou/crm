@@ -1,12 +1,12 @@
 (function () {
-	'use strict';
+    'use strict';
 
-	angular
-			.module('crm.user', ['crm.acl', 'crm.common',
-				'crm.role',
-				'crm.group',
-				'crm.validation',
-				'crm.formWrapper',
-				'crm.search']);
+    angular
+        .module('crm.user', ['crm.acl', 'crm.common',
+            'crm.role',
+            'crm.group',
+            'crm.validation',
+            'crm.formWrapper',
+            'crm.search']);
 
 })();

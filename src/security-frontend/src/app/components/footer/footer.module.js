@@ -1,7 +1,7 @@
 (function () {
-	'use strict';
+    'use strict';
 
-	angular
-			.module('crm.footer', []);
+    angular
+        .module('crm.footer', []);
 
 })();

@@ -33,7 +33,7 @@
 
         function filterUpdated() {
             vm.searchBundle.filter.employeeNumberCategoryId = vm.selectedEmployeeNumberCategory ?
-                    vm.selectedEmployeeNumberCategory.id : null;
+                vm.selectedEmployeeNumberCategory.id : null;
             vm.searchBundle.find();
         }
 

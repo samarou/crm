@@ -2,8 +2,8 @@
     'use strict';
 
     angular
-    .module('crm')
-    .config(config);
+        .module('crm')
+        .config(config);
 
     /** @ngInject */
     function config($logProvider, $uibModalProvider, $httpProvider, toastrConfig) {
