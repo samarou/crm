@@ -25,7 +25,7 @@
 				controllerAs: 'vm',
 				resolve: {
 					message: function () {
-						return message
+						return message;
 					}
 				}
 			});
@@ -38,7 +38,7 @@
 				controllerAs: 'vm',
 				resolve: {
 					message: function () {
-						return message
+						return message;
 					}
 				}
 			});
@@ -51,7 +51,7 @@
 				controllerAs: 'vm',
 				resolve: {
 					message: function () {
-						return message
+						return message;
 					}
 				}
 			});

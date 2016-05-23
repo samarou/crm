@@ -7,7 +7,7 @@
 
 	/** @ngInject */
 	function companyService($http) {
-		
+
 		var staticData = {};
 		staticData.companyTypes = [];
 		staticData.businessSpheres = [];

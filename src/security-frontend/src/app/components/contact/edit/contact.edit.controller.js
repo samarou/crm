@@ -49,13 +49,13 @@
         function getAcls() {
             return contactService.getAcls($stateParams.id).then(function (response) {
                 vm.aclHandler.acls = response.data;
-            })
+            });
         }
 
         function getAttachments() {
             return contactService.getAttachments($stateParams.id).then(function (response) {
                 vm.attachments = response.data;
-            })
+            });
         }
 
         function isEditable() {
@@ -64,9 +64,9 @@
                 vm.aclHandler.canEdit = canEdit;
                 if (!canEdit) {
                     vm.submitText = null;
-                    vm.cancelText = 'Ok'
+                    vm.cancelText = 'Ok';
                 }
-            })
+            });
         }
 
         function getContact() {

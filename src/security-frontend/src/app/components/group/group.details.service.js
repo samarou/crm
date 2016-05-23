@@ -14,9 +14,9 @@
 
 		function submit(group, isNew) {
 			if (isNew) {
-				groupService.create(group).then(goToList)
+				groupService.create(group).then(goToList);
 			} else {
-				groupService.update(group).then(goToList)
+				groupService.update(group).then(goToList);
 			}
 		}
 

@@ -2,8 +2,8 @@
 	'use strict';
 
 	angular
-			.module('crm.user')
-			.factory('userDetailsService', userDetailsService);
+		.module('crm.user')
+		.factory('userDetailsService', userDetailsService);
 
 	/** @ngInject */
 	function userDetailsService(userService, groupService, roleService, aclServiceBuilder, $state, $q) {
@@ -11,24 +11,24 @@
 			save: save,
 			cancel: goToList,
 			getGroupsAndRoles: getGroupsAndRoles,
-      createAclHandler: createAclHandler
+			createAclHandler: createAclHandler
 		};
 
-    function createAclHandler(getId) {
-      return {
-        canEdit: true,
-        acls: [],
-        actions: aclServiceBuilder(getId, userService)
-      }
-    }
+		function createAclHandler(getId) {
+			return {
+				canEdit: true,
+				acls: [],
+				actions: aclServiceBuilder(getId, userService)
+			};
+		}
 
 		function save(user, roles, groups, isNew) {
 			checkGroups(user, groups);
 			checkRoles(user, roles);
 			if (isNew) {
-				userService.create(user).then(goToList)
+				userService.create(user).then(goToList);
 			} else {
-				userService.update(user).then(goToList)
+				userService.update(user).then(goToList);
 			}
 		}
 
@@ -37,15 +37,15 @@
 		}
 
 		function getGroupsAndRoles() {
-			return $q.all([getGroups(), getRoles()])
+			return $q.all([getGroups(), getRoles()]);
 		}
 
 		function getGroups() {
-			return groupService.getAll()
+			return groupService.getAll();
 		}
 
 		function getRoles() {
-			return roleService.fetchAll()
+			return roleService.fetchAll();
 		}
 
 		function checkGroups(user, groups) {

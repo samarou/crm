@@ -29,7 +29,7 @@
 		}
 
 		function updateFilterObject() {
-			pagingFilter.updateFilterObject(vm.searchText)
+			pagingFilter.updateFilterObject(vm.searchText);
 		}
 
 		function selectAll(checked) {
@@ -60,13 +60,13 @@
 
 		function remove() {
 			if (vm.pageRoles.some(function (role) {
-				return role.checked
+				return role.checked;
 			})) {
 				openRemoveDialog().then(function () {
 					var tasks = [];
 					vm.pageRoles.forEach(function (role) {
 						if (role.checked) {
-							tasks.push(roleService.remove(role.id))
+							tasks.push(roleService.remove(role.id));
 						}
 					});
 					$q.all(tasks).then(fetchAllRoles);

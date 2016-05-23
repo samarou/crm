@@ -33,7 +33,7 @@ var SearchService = function () {
       return row.element(self.searchCriteria).getText().then(function (text) {
         return text === element;
       });
-    })
+    });
   }
 
   function isLastPage(element) {

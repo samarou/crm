@@ -49,7 +49,7 @@
 			scope.objectTypes.forEach(function (privilegeObject) {
 				privilegeObject.actions.forEach(function (action) {
 					action.privilege.checked = !!collections.find(action.privilege, scope.role.privileges);
-				})
+				});
 			});
 		}
 

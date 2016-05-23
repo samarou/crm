@@ -20,8 +20,8 @@
 
 		function init() {
 			companyService.get($stateParams.id).then(function (response) {
-				vm.company = response.data
-			})
+				vm.company = response.data;
+			});
 		}
 
 		function submit() {

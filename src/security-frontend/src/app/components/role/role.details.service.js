@@ -16,9 +16,9 @@
 			scope.role.privileges = [];
 			rolePrivilegeService.getPrivilegesOfRole(scope);
 			if (isNew) {
-				roleService.create(scope.role).then(goToList)
+				roleService.create(scope.role).then(goToList);
 			} else {
-				roleService.update(scope.role).then(goToList)
+				roleService.update(scope.role).then(goToList);
 			}
 		}
 

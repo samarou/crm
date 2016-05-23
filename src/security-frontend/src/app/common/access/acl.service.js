@@ -1,12 +1,9 @@
-/**
- * Created by anton.charnou on 12.04.2016.
- */
 (function () {
-  'use strict';
+	'use strict';
 
-  angular
-    .module('crm.acl')
-    .service('aclServiceBuilder', aclServiceBuilder);
+	angular
+		.module('crm.acl')
+		.service('aclServiceBuilder', aclServiceBuilder);
 
 	/** @ngInject */
 	function aclServiceBuilder(collections, dialogService, groupSearch, searchService, $q) {
@@ -15,42 +12,42 @@
 		vm.groupBundle = groupSearch.publicMode();
 		vm.userBundle = searchService.userPublicMode();
 
-    return function (getid, aclService) {
-      return {
-        addAclsForUser: addAclsForUser,
-        addAclsForGroup: addAclsForGroup,
-        removeAcls: createRemoveAclsAction(getid, aclService)
-      }
-    };
+		return function (getid, aclService) {
+			return {
+				addAclsForUser: addAclsForUser,
+				addAclsForGroup: addAclsForGroup,
+				removeAcls: createRemoveAclsAction(getid, aclService)
+			};
+		};
 
-    function principalAclComparator(principal, acl) {
-      return principal.id === acl.principalId;
-    }
+		function principalAclComparator(principal, acl) {
+			return principal.id === acl.principalId;
+		}
 
-    function aclComparator(acl1, acl2) {
-      return acl1.principalId === acl2.principalId;
-    }
+		function aclComparator(acl1, acl2) {
+			return acl1.principalId === acl2.principalId;
+		}
 
-    function createRemoveAclsAction(getid, service) {
-      return function (scope) {
-        var checkedAcls = scope.acls.filter(function (acl) {
-          return acl.checked;
-        });
-        if (getid()) {
-          $q.all(
-            ([].concat(checkedAcls)).map(function (acl) {
-              return service.removeAcl(getid(), acl.principalId);
-            })
-          ).then(function () {
-              service.getAcls(getid()).then(function (response) {
-                scope.acls = response.data;
-              })
-            });
-        } else {
-          scope.acls = collections.difference(scope.acls, checkedAcls, aclComparator);
-        }
-      }
-    }
+		function createRemoveAclsAction(getid, service) {
+			return function (scope) {
+				var checkedAcls = scope.acls.filter(function (acl) {
+					return acl.checked;
+				});
+				if (getid()) {
+					$q.all(
+						([].concat(checkedAcls)).map(function (acl) {
+							return service.removeAcl(getid(), acl.principalId);
+						})
+					).then(function () {
+						service.getAcls(getid()).then(function (response) {
+							scope.acls = response.data;
+						});
+					});
+				} else {
+					scope.acls = collections.difference(scope.acls, checkedAcls, aclComparator);
+				}
+			};
+		}
 
 		function addAclsForUser(scope) {
 			vm.userBundle.find();
@@ -80,7 +77,7 @@
 				okTitle: 'Ok'
 			}).result.then(function (model) {
 				model.bundle.groupList.forEach(function (group) {
-          var stillNotPresent = !collections.find(group, scope.acls, principalAclComparator);
+					var stillNotPresent = !collections.find(group, scope.acls, principalAclComparator);
 					if (stillNotPresent && group.checked) {
 						addDefaultAcl(group.id, group.name, 'group', scope);
 					}
@@ -90,7 +87,7 @@
 
 		function addDefaultAcl(principalId, name, principalTypeName, scope) {
 			var defaultAcl = {
-        id: null,
+				id: null,
 				principalId: principalId,
 				name: name,
 				principalTypeName: principalTypeName,

@@ -42,7 +42,7 @@
 		function checkEditPermission(id) {
 			return contactService.isAllowed(id, permissions.write).then(function (response) {
 				return $q.resolve(!!response.data);
-			})
+			});
 		}
 
 		function checkDeletePermission(contact) {

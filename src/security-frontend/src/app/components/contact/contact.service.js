@@ -66,7 +66,7 @@
         }
 
         function removeAcl(id, aclId) {
-            return $http.delete('rest/contacts/' + id + '/acls/' + aclId)
+            return $http.delete('rest/contacts/' + id + '/acls/' + aclId);
         }
 
         function isAllowed(contactId, permission) {

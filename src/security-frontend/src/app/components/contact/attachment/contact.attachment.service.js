@@ -96,7 +96,7 @@
                         }
                         var index = scope.attachments.indexOf(attachment);
                         scope.attachments.splice(index, 1);
-                    })
+                    });
                 }
             });
             return $q.all(tasks);

@@ -23,7 +23,7 @@
 						$timeout.cancel(timer);
 						timer = $timeout(action, delay);
 					}
-				}
+				};
 			})();
 		}
 	}

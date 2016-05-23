@@ -37,7 +37,7 @@
 			var start = config.itemsPerPage * (config.currentPage - 1);
 			var end = config.itemsPerPage * config.currentPage;
 			return filterResult.slice(start, end);
-		}
+		};
 	}
 
 	/** @ngInject */
@@ -62,6 +62,6 @@
                 return user.userName === name;
             }
             return false;
-        }
+        };
     }
 })();

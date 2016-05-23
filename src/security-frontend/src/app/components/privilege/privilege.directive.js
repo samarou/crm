@@ -19,7 +19,7 @@
 				$scope.selectAll = function (objectType, checked) {
 					objectType.actions.forEach(function (action) {
 						action.privilege.checked = checked;
-					})
+					});
 				};
 				$scope.selectOne = function (objectType) {
 					objectType.isSelectAll = objectType.actions.every(function (action) {
@@ -27,6 +27,6 @@
 					});
 				};
 			}]
-		}
+		};
 	}
 })();

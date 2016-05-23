@@ -2,15 +2,15 @@
 	'use strict';
 
 	angular
-			.module('crm.common')
-			.factory('collections', collections);
+		.module('crm.common')
+		.factory('collections', collections);
 
 	/** @ngInject */
 	function collections() {
 		return {
 			byId: byId,
 			compare: compare,
-      propertyComparator: propertyComparator,
+			propertyComparator: propertyComparator,
 			difference: difference,
 			sort: sort,
 			find: find
@@ -27,7 +27,7 @@
 		function propertyComparator(propertyName) {
 			return function (a, b) {
 				return compare(a[propertyName], b[propertyName]);
-			}
+			};
 		}
 
 		function difference(from, what, comparator) {
@@ -41,8 +41,8 @@
 			return from.filter(function (f) {
 				return !what.some(function (w) {
 					return comparator(f, w);
-				})
-			})
+				});
+			});
 		}
 
 		function sort(collection, asc, comparator) {
