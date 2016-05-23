@@ -138,7 +138,6 @@
             };
 
             bundle.selectOne = function () {
-                $log.debug(' current user');
                 bundle.isSelectedAll = bundle.itemsList.every(function (user) {
                     return user.checked;
                 });
