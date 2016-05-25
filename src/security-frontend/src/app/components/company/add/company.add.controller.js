@@ -1,24 +1,24 @@
 (function () {
-	'use strict';
+    'use strict';
 
-	angular
-			.module('crm.company')
-			.controller('companyAddController', companyAddController);
+    angular
+        .module('crm.company')
+        .controller('companyAddController', companyAddController);
 
-	/** @ngInject */
-	function companyAddController(companyDetailsService, userService) {
-		var vm = this;
+    /** @ngInject */
+    function companyAddController(companyDetailsService, userService) {
+        var vm = this;
 
         vm.canEdit = true;
-		vm.company = {};
-		vm.submitText = 'Add';
-		vm.title = 'Add company';
-		vm.submit = submit;
-		vm.cancel = companyDetailsService.cancel;
+        vm.company = {};
+        vm.submitText = 'Add';
+        vm.title = 'Add company';
+        vm.submit = submit;
+        vm.cancel = companyDetailsService.cancel;
         vm.aclHandler = companyDetailsService.createAclHandler(function () {
             return vm.company.id;
         });
-		vm.staticData = companyDetailsService.staticData;
+        vm.staticData = companyDetailsService.staticData;
 
         init();
 
@@ -28,12 +28,12 @@
             });
         }
 
-		function submit() {
-			var promise = companyDetailsService.create(vm.company).then(function (id) {
+        function submit() {
+            var promise = companyDetailsService.create(vm.company).then(function (id) {
                 companyDetailsService.updateAcls(id, vm.aclHandler.acls);
             });
             companyDetailsService.submit(promise);
-		}
-	}
+        }
+    }
 
 })();

@@ -1,21 +1,21 @@
 (function () {
-	'use strict';
+    'use strict';
 
-	angular
-		.module('crm.company')
-		.factory('companyDetailsService', companyDetailsService);
+    angular
+        .module('crm.company')
+        .factory('companyDetailsService', companyDetailsService);
 
-	/** @ngInject */
-	function companyDetailsService(companyService, aclServiceBuilder, $state) {
-		return {
-			submit: submit,
+    /** @ngInject */
+    function companyDetailsService(companyService, aclServiceBuilder, $state) {
+        return {
+            submit: submit,
             create: create,
             update: update,
             updateAcls: companyService.updateAcls,
-			cancel: goToList,
+            cancel: goToList,
             createAclHandler: createAclHandler,
-			staticData: companyService.staticData
-		};
+            staticData: companyService.staticData
+        };
 
         function create(company) {
             return companyService.create(company).then(function (response) {
@@ -35,9 +35,9 @@
             })
         }
 
-		function goToList() {
-			$state.go('companies.list');
-		}
+        function goToList() {
+            $state.go('companies.list');
+        }
 
         function createAclHandler(getId) {
             return {
@@ -46,5 +46,5 @@
                 actions: aclServiceBuilder(getId, companyService)
             }
         }
-	}
+    }
 })();

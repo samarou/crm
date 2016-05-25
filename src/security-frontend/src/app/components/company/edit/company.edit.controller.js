@@ -1,28 +1,28 @@
 (function () {
-	'use strict';
+    'use strict';
 
-	angular
-			.module('crm.company')
-			.controller('companyEditController', companyEditController);
+    angular
+        .module('crm.company')
+        .controller('companyEditController', companyEditController);
 
-	/** @ngInject */
-	function companyEditController(companyService, companyDetailsService, companySecurityService, $stateParams, $q) {
-		var vm = this;
+    /** @ngInject */
+    function companyEditController(companyService, companyDetailsService, companySecurityService, $stateParams, $q) {
+        var vm = this;
 
         vm.canEdit = false;
-		vm.company = {};
-		vm.submitText = 'Edit';
-		vm.title = 'Edit company';
-		vm.submit = submit;
+        vm.company = {};
+        vm.submitText = 'Edit';
+        vm.title = 'Edit company';
+        vm.submit = submit;
         vm.staticData = companyService.staticData;
-		vm.cancel = companyDetailsService.cancel;
+        vm.cancel = companyDetailsService.cancel;
         vm.aclHandler = companyDetailsService.createAclHandler(function () {
             return vm.company.id;
         });
 
-		init();
+        init();
 
-		function init() {
+        function init() {
             $q.all(
                 [
                     canEdit(),
@@ -30,9 +30,9 @@
                     getAcls()
                 ]
             ).then(getCompany)
-		}
+        }
 
-		function submit() {
+        function submit() {
             var promise = $q.all(
                 [
                     companyDetailsService.update(vm.company),
@@ -40,7 +40,7 @@
                 ]
             );
             companyDetailsService.submit(promise);
-		}
+        }
 
         function updateAcls() {
             return vm.aclHandler.canEdit ? companyDetailsService.updateAcls(vm.company.id, vm.aclHandler.acls)
@@ -75,6 +75,6 @@
                 vm.company = response.data;
             });
         }
-	}
+    }
 
 })();
