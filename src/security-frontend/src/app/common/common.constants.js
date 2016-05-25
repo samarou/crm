@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('crm.contact')
+        .module('crm.common')
         .constant('permissions', {
             read: 'read',
             write: 'write',

@@ -18,5 +18,5 @@
             'ui.router',
             'ui.bootstrap',
             'blockUI'
-        ])
+        ]);
 })();

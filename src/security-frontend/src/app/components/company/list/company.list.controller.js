@@ -6,7 +6,8 @@
         .controller('companyListController', companyListController);
 
     /** @ngInject */
-    function companyListController($q, companyService, searchService, dialogService, $state) {
+    function companyListController(companyService, companySecurityService, searchService, dialogService, permissions,
+                                   $q, $state) {
         var vm = this;
 
         vm.searchBundle = searchService.companyMode();
@@ -42,7 +43,7 @@
                 var checkedCompanies = vm.searchBundle.itemsList.filter(function (company) {
                     return company.checked;
                 });
-                removeCompanies(checkedCompanies);
+                companySecurityService.checkDeletePermissionForList(checkedCompanies).then(removeCompanies);
             });
         }
 

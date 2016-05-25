@@ -21,6 +21,10 @@
             get: get,
             update: update,
             remove: remove,
+            getAcls: getAcls,
+            updateAcls: updateAcls,
+            removeAcl: removeAcl,
+            isAllowed: isAllowed,
             staticData: staticData
         };
 
@@ -54,6 +58,22 @@
 
         function remove(id) {
             return $http.delete('rest/companies/' + id);
+        }
+
+        function getAcls(id) {
+            return $http.get('rest/companies/' + id + '/acls');
+        }
+
+        function updateAcls(id, acls) {
+            return $http.put('rest/companies/' + id + '/acls', acls);
+        }
+
+        function removeAcl(id, aclId) {
+            return $http.delete('rest/companies/' + id + '/acls/' + aclId);
+        }
+
+        function isAllowed(companyId, permission) {
+            return $http.get('rest/companies/' + companyId + '/actions/' + permission);
         }
 
     }
