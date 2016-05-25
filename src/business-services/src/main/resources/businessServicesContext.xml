@@ -27,12 +27,7 @@
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
-        <property name="packagesToScan">
-            <array>
-                <value>com.itechart.security.business.model.persistent</value>
-                <value>com.itechart.security.model.persistent</value>
-            </array>
-        </property>
+        <property name="packagesToScan" value="com.itechart.security.business.model.persistent"/>
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
