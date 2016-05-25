@@ -6,7 +6,8 @@
         .controller('companyListController', companyListController);
 
     /** @ngInject */
-    function companyListController($q, companyService, companySecurityService, searchService, dialogService, $state) {
+    function companyListController(companyService, companySecurityService, searchService, dialogService, permissions,
+                                   $q, $state) {
         var vm = this;
 
         vm.searchBundle = searchService.companyMode();
@@ -28,9 +29,7 @@
         }
 
         function edit(company) {
-            companySecurityService.checkReadPermission(company).then(function () {
-                $state.go('companies.edit', {id: company.id});
-            });
+            $state.go('companies.edit', {id: company.id});
         }
 
         function filterUpdated() {

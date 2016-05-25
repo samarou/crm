@@ -41,7 +41,7 @@
 
         function createAclHandler(getId) {
             return {
-                canEdit: true,
+                canEdit: false,
                 acls: [],
                 actions: aclServiceBuilder(getId, companyService)
             };

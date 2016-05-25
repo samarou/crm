@@ -6,7 +6,8 @@
         .controller('companyEditController', companyEditController);
 
     /** @ngInject */
-    function companyEditController(companyService, companyDetailsService, companySecurityService, $stateParams, $q) {
+    function companyEditController(companyService, companyDetailsService, companySecurityService, permissions,
+                                   $stateParams, $q) {
         var vm = this;
 
         vm.canEdit = false;
@@ -29,7 +30,7 @@
                     canAdmin(),
                     getAcls()
                 ]
-            ).then(getCompany);
+            ).finally(getCompany);
         }
 
         function submit() {
@@ -54,19 +55,17 @@
         }
 
         function canEdit() {
-            return companySecurityService.checkEditPermission($stateParams.id).then(function (canEdit) {
-                vm.canEdit = canEdit;
-                if (!canEdit) {
-                    vm.submitText = null;
-                    vm.cancelText = 'Ok';
-                }
+            return companySecurityService.checkPermission($stateParams.id, permissions.write).then(function () {
+                vm.canEdit = true;
+            }).catch(function () {
+                vm.submitText = null;
+                vm.cancelText = 'Ok';
             });
         }
 
         function canAdmin() {
-            return companySecurityService.checkAdminPermission($stateParams.id).then(function (canAdmin) {
-                vm.aclHandler.canEdit = canAdmin;
-
+            return companySecurityService.checkPermission($stateParams.id, permissions.admin).then(function () {
+                vm.aclHandler.canEdit = true;
             });
         }
 
