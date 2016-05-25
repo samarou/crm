@@ -2,8 +2,10 @@ package com.itechart.security.web.controller;
 
 import com.itechart.security.business.filter.ContactFilter;
 import com.itechart.security.business.model.dto.ContactDto;
+import com.itechart.security.business.model.dto.DictionaryDto;
 import com.itechart.security.business.model.enums.ObjectTypes;
 import com.itechart.security.business.service.ContactService;
+import com.itechart.security.business.service.DictionaryService;
 import com.itechart.security.core.SecurityUtils;
 import com.itechart.security.core.acl.AclPermissionEvaluator;
 import com.itechart.security.core.model.acl.ObjectIdentity;
@@ -47,6 +49,9 @@ public class ContactController {
     private AclService aclService;
 
     @Autowired
+    private DictionaryService dictionaryService;
+
+    @Autowired
     private AclPermissionEvaluator aclPermissionEvaluator;
 
     @RequestMapping("/contacts/{contactId}/actions/{value}")
@@ -75,7 +80,8 @@ public class ContactController {
     public DataPageDto find(ContactFilterDto filterDto) {
         ContactFilter filter = convert(filterDto);
         DataPageDto<ContactDto> page = new DataPageDto<>();
-        page.setData(contactService.findContacts(filter));
+        List<ContactDto> contactDtos = contactService.findContacts(filter);
+        page.setData(contactDtos);
         page.setTotalCount(contactService.countContacts(filter));
         return page;
     }
@@ -117,6 +123,39 @@ public class ContactController {
         acl.removePrincipal(principalId);
         aclService.updateAcl(acl);
     }
+
+    @RequestMapping(value = "/contacts/{contactId}/emails/{emailId}", method = RequestMethod.DELETE)
+    public void deleteEmail(@PathVariable Long contactId, @PathVariable Long emailId) {
+        contactService.deleteEmail(emailId);
+    }
+
+    @RequestMapping(value = "/contacts/{contactId}/addresses/{addressId}", method = RequestMethod.DELETE)
+    public void deleteAddress(@PathVariable Long contactId, @PathVariable Long addressId) {
+        contactService.deleteAddress(addressId);
+    }
+
+    @RequestMapping(value = "/contacts/{contactId}/messengers/{messengerId}", method = RequestMethod.DELETE)
+    public void deleteMessengerAccount(@PathVariable Long contactId, @PathVariable Long messengerId) {
+        contactService.deleteMessengerAccount(messengerId);
+    }
+
+    @RequestMapping(value = "/contacts/{contactId}/social_networks/{socialNetworkId}", method = RequestMethod.DELETE)
+    public void deleteSocialNetworkAccount(@PathVariable Long contactId, @PathVariable Long socialNetworkId) {
+        contactService.deleteSocialNetworkAccount(socialNetworkId);
+    }
+
+    @RequestMapping(value = "/contacts/{contactId}/telephones/{telephoneId}", method = RequestMethod.DELETE)
+    public void deleteTelephone(@PathVariable Long contactId, @PathVariable Long telephoneId) {
+        contactService.deleteTelephone(telephoneId);
+    }
+
+    @RequestMapping(value = "/contacts/{contactId}/workplaces/{workplaceId}", method = RequestMethod.DELETE)
+    public void deleteWorkplace(@PathVariable Long contactId, @PathVariable Long workplaceId) {
+        contactService.deleteWorkplace(workplaceId);
+    }
+
+    @RequestMapping(value = "/dictionary", method = RequestMethod.GET)
+    public DictionaryDto getDictionary(){return  dictionaryService.getDictionary();}
 
     private Acl getAcl(Long contactId) {
         return aclService.getAcl(createIdentity(contactId));

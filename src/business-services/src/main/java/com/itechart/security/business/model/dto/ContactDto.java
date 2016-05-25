@@ -1,52 +1,41 @@
 package com.itechart.security.business.model.dto;
 
-/**
- * @author yauheni.putsykovich
- */
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.Date;
+import java.util.Set;
+
+@Getter
+@Setter
 public class ContactDto {
     private Long id;
+
     private String firstName;
+
     private String lastName;
-    private String email;
-    private String address;
 
-    public Long getId() {
-        return id;
-    }
+    private String patronymic;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private Date dateOfBirth;
 
-    public String getFirstName() {
-        return firstName;
-    }
+    private Boolean isMale;
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+    private String nationality;
 
-    public String getLastName() {
-        return lastName;
-    }
+    private String photoUrl;
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+    private Set<OrderDto> orders;
 
-    public String getEmail() {
-        return email;
-    }
+    private Set<MessengerAccountDto> messengers;
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    private Set<SocialNetworkAccountDto> socialNetworks;
 
-    public String getAddress() {
-        return address;
-    }
+    private Set<TelephoneDto> telephones;
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+    private Set<AddressDto> addresses;
+
+    private Set<WorkplaceDto> workplaces;
+
+    private Set<EmailDto> emails;
 }

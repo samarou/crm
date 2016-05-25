@@ -27,21 +27,24 @@
             <tr>
                 <th><input type="checkbox" ng-model="vm.searchContactBundle.isSelectedAll"
                            ng-click="vm.searchContactBundle.selectAll(vm.searchContactBundle.isSelectedAll)"></th>
-                <th class="crm-hover" ng-click="vm.searchContactBundle.sortBy(vm.searchContactBundle.sortProperties.firstName)">
+                <th class="crm-hover"
+                    ng-click="vm.searchContactBundle.sortBy(vm.searchContactBundle.sortProperties.firstName)">
                         <span class="glyphicon" ng-show="vm.searchContactBundle.sortProperties.firstName.enabled"
                               ng-class="vm.searchContactBundle.sortProperties.firstName.asc ? 'glyphicon-sort-by-attributes' : 'glyphicon-sort-by-attributes-alt' ">
 
                         </span>
                     Full Name
                 </th>
-                <th class="crm-hover" ng-click="vm.searchContactBundle.sortBy(vm.searchContactBundle.sortProperties.email)">
+                <th class="crm-hover"
+                    ng-click="vm.searchContactBundle.sortBy(vm.searchContactBundle.sortProperties.email)">
                         <span class="glyphicon" ng-show="vm.searchContactBundle.sortProperties.email.enabled"
                               ng-class="vm.searchContactBundle.sortProperties.email.asc ? 'glyphicon-sort-by-attributes' : 'glyphicon-sort-by-attributes-alt' ">
 
                         </span>
                     Email
                 </th>
-                <th class="crm-hover hidden-xs" ng-click="vm.searchContactBundle.sortBy(vm.searchContactBundle.sortProperties.address)">
+                <th class="crm-hover hidden-xs"
+                    ng-click="vm.searchContactBundle.sortBy(vm.searchContactBundle.sortProperties.address)">
                         <span class="glyphicon" ng-show="vm.searchContactBundle.sortProperties.address.enabled"
                               ng-class="vm.searchContactBundle.sortProperties.address.asc ? 'glyphicon-sort-by-attributes' : 'glyphicon-sort-by-attributes-alt' ">
 
@@ -57,14 +60,15 @@
                            ng-click="vm.searchContactBundle.selectOne();$event.stopPropagation()">
                 </td>
                 <td>{{contact.firstName + ' ' + contact.lastName}}</td>
-                <td>{{contact.email}}</td>
-                <td class="hidden-xs">{{contact.address}}</td>
+                <td>{{contact.emails.length > 0 ? contact.emails[0].name :''}}</td>
+                <td class="hidden-xs">{{contact.addresses.length > 0 ? contact.addresses[0].addressLine : ''}}</td>
             </tr>
             </tbody>
         </table>
     </div>
 </div>
-<span class="pull-right" ng-hide="vm.bundle.paging.totalCount === 0">Total: {{vm.searchContactBundle.paging.totalCount}}</span>
+<span class="pull-right"
+      ng-hide="vm.bundle.paging.totalCount === 0">Total: {{vm.searchContactBundle.paging.totalCount}}</span>
 <div class="crm-text-center">
     <uib-pagination class="pagination-sm" ng-change="vm.searchContactBundle.paging.onPageChanged()"
                     ng-model="vm.searchContactBundle.paging.currentPage"

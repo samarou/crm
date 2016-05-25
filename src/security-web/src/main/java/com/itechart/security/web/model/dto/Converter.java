@@ -32,9 +32,7 @@ import com.itechart.security.model.persistent.UserDefaultAclEntry;
 import com.itechart.security.web.model.PrincipalTypes;
 
 /**
- * Provides usefully methods to convert model to dto and vice versa.
- *
- * @author yauheni.putsykovich
+ * Provides useful methods to convert model to dto and vice versa.
  */
 public class Converter {
     public static List<SecuredUserDto> convert(List<User> users) {

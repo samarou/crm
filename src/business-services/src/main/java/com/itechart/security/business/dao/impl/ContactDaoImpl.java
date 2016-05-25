@@ -14,6 +14,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,12 +47,15 @@ public class ContactDaoImpl extends AbstractHibernateDao<Contact> implements Con
     @Override
     public void deleteById(Long id) {
         Contact contact = getHibernateTemplate().get(Contact.class, id);
-        if (contact != null) getHibernateTemplate().delete(contact);
+        if (contact != null) {
+            contact.setDateDeleted(new Date());
+            getHibernateTemplate().update(contact);
+        }
     }
 
     @Override
     @AclFilter(@AclFilterRule(type = Contact.class, permissions = {Permission.READ}))
-    public int countContacts(ContactFilter filter){
+    public int countContacts(ContactFilter filter) {
         return getHibernateTemplate().executeWithNativeSession(session -> {
             Criteria criteria = createFilterCriteria(session, filter);
             criteria.setProjection(Projections.rowCount());
@@ -71,12 +75,14 @@ public class ContactDaoImpl extends AbstractHibernateDao<Contact> implements Con
     private Criteria createFilterCriteria(Session session, ContactFilter filter) {
         Criteria criteria = session.createCriteria(Contact.class, "u");
         if (StringUtils.hasText(filter.getText())) {
-            criteria.add(Restrictions.disjunction(
-                    Restrictions.ilike("u.address", filter.getText(), MatchMode.ANYWHERE),
+            criteria.add(
+                Restrictions.disjunction(
+                    Restrictions.ilike("u.address.name", filter.getText(), MatchMode.ANYWHERE),
                     Restrictions.ilike("u.firstName", filter.getText(), MatchMode.ANYWHERE),
                     Restrictions.ilike("u.lastName", filter.getText(), MatchMode.ANYWHERE),
-                    Restrictions.ilike("u.email", filter.getText(), MatchMode.ANYWHERE)
-            ));
+                    Restrictions.ilike("u.email.name", filter.getText(), MatchMode.ANYWHERE)
+                )
+            );
         }
         return criteria;
     }

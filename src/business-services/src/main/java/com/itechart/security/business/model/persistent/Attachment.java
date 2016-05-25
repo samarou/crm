@@ -9,6 +9,7 @@ import java.util.Date;
 @Table(name = "attachment")
 public class Attachment extends SecuredEntity {
     @Id
+    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
