@@ -1,37 +1,37 @@
 (function () {
-	'use strict';
+    'use strict';
 
-	angular
-			.module('crm.user')
-			.controller('UsersAddController', UserAddController);
+    angular
+        .module('crm.user')
+        .controller('UsersAddController', UserAddController);
 
-	/** @ngInject */
-	function UserAddController(userDetailsService) {
-		var vm = this;
+    /** @ngInject */
+    function UserAddController(userDetailsService) {
+        var vm = this;
 
-		vm.user = {active: true};
-		vm.groups = [];
-		vm.roles = [];
-		vm.submitText = 'Add';
-		vm.title = 'Add user';
-		vm.submit = submit;
-		vm.cancel = userDetailsService.cancel;
-    vm.aclHandler = userDetailsService.createAclHandler(function () {
-      return vm.user.id;
-    });
+        vm.user = {active: true};
+        vm.groups = [];
+        vm.roles = [];
+        vm.submitText = 'Add';
+        vm.title = 'Add user';
+        vm.submit = submit;
+        vm.cancel = userDetailsService.cancel;
+        vm.aclHandler = userDetailsService.createAclHandler(function () {
+            return vm.user.id;
+        });
 
-		init();
+        init();
 
-		function init() {
-			userDetailsService.getGroupsAndRoles().then(function (tuple) {
-        vm.groups = tuple[0].data;
-        vm.roles = tuple[1].data;
-      });
-		}
+        function init() {
+            userDetailsService.getGroupsAndRoles().then(function (tuple) {
+                vm.groups = tuple[0].data;
+                vm.roles = tuple[1].data;
+            });
+        }
 
-		function submit() {
-      vm.user.acls = vm.aclHandler.acls;
-			userDetailsService.save(vm.user, vm.roles, vm.groups, true);
-		}
-	}
+        function submit() {
+            vm.user.acls = vm.aclHandler.acls;
+            userDetailsService.save(vm.user, vm.roles, vm.groups, true);
+        }
+    }
 })();

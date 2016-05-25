@@ -1,0 +1,47 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <crm-contact-table-header title="Addresses" adding-function="vm.details.addAddress"
+                                  removing-function="vm.details.removeAddresses"
+                                  vm="vm"></crm-contact-table-header>
+    </div>
+    <table class="table table-condensed" ng-show="vm.contact.addresses.length>0">
+        <thead>
+        <tr>
+            <th></th>
+            <th></th>
+            <th>Address line</th>
+            <th>Zipcode</th>
+            <th>City</th>
+            <th>Region</th>
+            <th>Country</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="address in vm.contact.addresses" ng-form="addressForm">
+            <td><input type="checkbox" ng-model="address.checked" ng-show="vm.canEdit" title="select address"></td>
+            <td>{{$index + 1}}</td>
+            <td><input class="form-control" ng-disabled="!vm.canEdit" name="addressAddressLine"
+                       ng-model="address.addressLine"></td>
+            <td><input class="form-control" ng-disabled="!vm.canEdit" name="addressZipcode"
+                       ng-model="address.zipcode"></td>
+            <td><input class="form-control" ng-disabled="!vm.canEdit" name="addressCity"
+                       ng-model="address.city"></td>
+            <td><input class="form-control" ng-disabled="!vm.canEdit" name="addressRegion"
+                       ng-model="address.region"></td>
+            <td>
+                <div crm-input-validation class="crm-select-validation-icon">
+                    <select ng-model="address.country"
+                            name="addressCountry"
+                            ng-options="option.id as option.name for option in vm.dictionary.countries"
+                            class="form-control"
+                            ng-disabled="!vm.canEdit">
+                        <option value="">Please, select</option>
+                    </select>
+                    <span ng-show="addressForm.addressCountry.$dirty &&  addressForm.addressCountry.$error.required"
+                          class="help-block">Email type is required</span>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

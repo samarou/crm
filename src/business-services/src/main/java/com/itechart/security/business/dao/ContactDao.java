@@ -20,7 +20,7 @@ public interface ContactDao {
 
     void deleteById(Long id);
 
-    List findContacts(ContactFilter filter);
+    List<Contact> findContacts(ContactFilter filter);
 
     int countContacts(ContactFilter filter);
 }

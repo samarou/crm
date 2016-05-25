@@ -1,0 +1,55 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <crm-contact-table-header title="Workplaces"
+                                  adding-function="vm.details.addWorkplace"
+                                  removing-function="vm.details.removeWorkplaces"
+                                  vm="vm"></crm-contact-table-header>
+    </div>
+    <table class="table table-condensed" ng-show="vm.contact.workplaces.length>0">
+        <thead>
+        <tr>
+            <th></th>
+            <th></th>
+            <th>Name</th>
+            <th>Position</th>
+            <th>Start date</th>
+            <th>End date</th>
+            <th>Comment</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="workplace in vm.contact.workplaces"
+            class="form-group">
+            <td>
+                <input type="checkbox" ng-model="workplace.checked" ng-show="vm.canEdit"
+                       title="select workplace">
+            </td>
+            <td>{{$index + 1}}</td>
+            <td>
+                <input ng-model="workplace.name" class="form-control" ng-disabled="!vm.canEdit" name="workplaceName">
+            </td>
+            <td>
+                <input ng-model="workplace.position" class="form-control" ng-disabled="!vm.canEdit"
+                       name="workplacePosition"></td>
+            <td>
+                <input ng-model="workplace.startDate"
+                       class="form-control" ng-disabled="!vm.canEdit" name="workplaceStartDate"
+                       uib-datepicker-popup
+                       placeholder="yyyy-MM-dd" min="1900-01-01"
+                       max="{{vm.details.now|date:'yyyy-MM-dd'}}">
+            </td>
+            <td>
+                <input ng-model="workplace.endDate"
+                       class="form-control" ng-disabled="!vm.canEdit" name="workplaceEndDate"
+                       uib-datepicker-popup
+                       placeholder="yyyy-MM-dd" min="1900-01-01"
+                       max="{{vm.details.now|date:'yyyy-MM-dd'}}">
+            </td>
+            <td>
+                <input ng-model="workplace.comment" class="form-control" ng-disabled="!vm.canEdit"
+                       name="workplaceComment">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

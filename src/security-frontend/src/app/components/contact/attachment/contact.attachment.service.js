@@ -65,7 +65,7 @@
             openUpdateAttachmentDialog(attachment).then(function (model) {
                 attachment.name = model.attachment.name;
                 attachment.comment = model.attachment.comment;
-                if (attachment.contactId) {
+                if (attachment.id) {
                     contactService.updateAttachment(attachment.contactId, attachment)
                 }
             });
@@ -92,11 +92,11 @@
                     dialogService.confirm('Do you really want to delete attachment ' + attachment.name + '?')
                         .result.then(function () {
                         if (attachment.id) {
-                            tasks.push(contactService.removeAttachment(attachment.contactId, attachment.id));
+                            tasks.push(contactService.removeAttachment(scope.contact.id, attachment.id));
                         }
                         var index = scope.attachments.indexOf(attachment);
                         scope.attachments.splice(index, 1);
-                    })
+                    });
                 }
             });
             return $q.all(tasks);
@@ -105,7 +105,7 @@
         function getNewAttachments(attachments) {
             var newAttachments = [];
             attachments.forEach(function (attachment) {
-                if (!attachment.contactId) {
+                if (!attachment.id) {
                     newAttachments.push(attachment);
                 }
             });

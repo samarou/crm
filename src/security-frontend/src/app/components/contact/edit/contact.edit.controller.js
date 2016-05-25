@@ -10,13 +10,14 @@
         var vm = this;
 
         vm.canEdit = false;
-        vm.contact = {};
+        vm.contact = contactDetailsService.getEmptyContact();
         vm.attachments = [];
         vm.attachmentService = contactAttachmentService;
         vm.isManager = authService.isManager();
         vm.submitText = 'Save';
         vm.title = 'Edit contact';
         vm.submit = submit;
+        vm.details = contactDetailsService;
         vm.cancel = contactDetailsService.cancel;
         vm.aclHandler = contactDetailsService.createAclHandler(function () {
             return vm.contact.id;
@@ -27,11 +28,18 @@
         function init() {
             $q.all(
                 [
+                    initDictionary(),
                     isEditable(),
                     getAcls(),
                     getAttachments()
                 ]
             ).then(getContact);
+        }
+
+        function initDictionary() {
+            return vm.details.getDictionary().then(function (response) {
+                vm.dictionary = response;
+            });
         }
 
         function submit() {
@@ -41,13 +49,13 @@
         function getAcls() {
             return contactService.getAcls($stateParams.id).then(function (response) {
                 vm.aclHandler.acls = response.data;
-            })
+            });
         }
 
         function getAttachments() {
             return contactService.getAttachments($stateParams.id).then(function (response) {
                 vm.attachments = response.data;
-            })
+            });
         }
 
         function isEditable() {
@@ -56,9 +64,9 @@
                 vm.aclHandler.canEdit = canEdit;
                 if (!canEdit) {
                     vm.submitText = null;
-                    vm.cancelText = 'Ok'
+                    vm.cancelText = 'Ok';
                 }
-            })
+            });
         }
 
         function getContact() {

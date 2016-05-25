@@ -3,9 +3,9 @@
  */
 
 (function () {
-  'use strict';
+    'use strict';
 
-  angular
-    .module('crm.acl', ['crm.common', 'crm.dialog']);
+    angular
+        .module('crm.acl', ['crm.common', 'crm.dialog']);
 
 })();

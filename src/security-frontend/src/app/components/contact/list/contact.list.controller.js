@@ -36,7 +36,7 @@
                 var checkedContacts = vm.searchContactBundle.itemsList.filter(function (contact) {
                     return contact.checked;
                 });
-                contactSecurityService.checkDeletePermissionForList(checkedContacts).then(removeContacts)
+                contactSecurityService.checkDeletePermissionForList(checkedContacts).then(removeContacts);
             });
         }
 
@@ -47,7 +47,7 @@
                     tasks.push(contactService.remove(contact.id));
                 }
             });
-            $q.all(tasks).then(vm.searchContactBundle.find)
+            $q.all(tasks).then(vm.searchContactBundle.find);
         }
 
         function openRemoveDialog() {

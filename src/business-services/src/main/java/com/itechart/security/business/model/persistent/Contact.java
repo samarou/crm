@@ -1,20 +1,21 @@
 package com.itechart.security.business.model.persistent;
 
 import com.itechart.security.business.model.enums.ObjectTypes;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
-/**
- * Contact
- *
- * @author andrei.samarou
- */
 @Entity
+@Getter
+@Setter
 @Table(name = "contact")
 public class Contact extends SecuredEntity {
 
     @Id
+    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -24,65 +25,47 @@ public class Contact extends SecuredEntity {
     @Column(name = "lastName", nullable = false, length = 50)
     private String lastName;
 
-    @Column(name = "email", nullable = false, length = 100)
-    private String email;
+    @Column(length = 50)
+    private String patronymic;
 
-    @Column(name = "address", length = 250)
-    private String address;
+    @Column(name = "date_of_birth")
+    private Date dateOfBirth;
 
-    @OneToMany(orphanRemoval = true, mappedBy = "contact")
-    private Set<Order> orders;
+    @Column(name = "is_male")
+    private Boolean isMale;
+
+    private String nationality;
+
+    @Column(name = "photo_url")
+    private String photoUrl;
+
+   /* @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY, orphanRemoval = true)
+    private Set<Order> orders;*/
+
+    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY)
+    private Set<MessengerAccount> messengers;
+
+    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY)
+    private Set<SocialNetworkAccount> socialNetworks;
+
+    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY)
+    private Set<Telephone> telephones;
+
+    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY)
+    private Set<Address> addresses;
+
+    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY)
+    private Set<Workplace> workplaces;
+
+    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY)
+    private Set<Email> emails;
 
     @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY)
     private Set<Attachment> attachments;
 
-    public Set<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(Set<Order> orders) {
-        this.orders = orders;
-    }
-
     @Override
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     @Override
@@ -90,11 +73,6 @@ public class Contact extends SecuredEntity {
         return ObjectTypes.CONTACT.getName();
     }
 
-    public Set<Attachment> getAttachments() {
-        return attachments;
-    }
-
-    public void setAttachments(Set<Attachment> attachments) {
-        this.attachments = attachments;
-    }
+    @Column(name = "date_deleted")
+    private Date dateDeleted;
 }

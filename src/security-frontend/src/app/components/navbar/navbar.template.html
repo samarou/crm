@@ -30,7 +30,11 @@
 
             <ul class="nav navbar-nav navbar-right" ng-show="vm.isLoggedUser()">
                 <p class="navbar-text crm-navbar-margin">User: <strong>{{vm.getUserName()}}</strong></p>
-                <li><button type="button" class="btn btn-primary navbar-btn crm-navbar-margin" ng-click="vm.logout()">Logout</button></li>
+                <li>
+                    <button type="button" class="btn btn-primary navbar-btn crm-navbar-margin" ng-click="vm.logout()">
+                        Logout
+                    </button>
+                </li>
             </ul>
         </div><!--/.nav-collapse -->
     </div><!--/.container-fluid -->
