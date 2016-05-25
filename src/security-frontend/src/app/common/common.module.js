@@ -1,7 +1,7 @@
 (function () {
-	'use strict';
+    'use strict';
 
-	angular
-			.module('crm.common', ['toastr']);
+    angular
+        .module('crm.common', ['toastr']);
 
 })();

@@ -8,7 +8,7 @@ var UsersFormPage = function () {
     return self.getRoles.filter(function (elem) {
       return elem.getText().then(function (text) {
         return text === roleName;
-      })
+      });
     }).first();
   };
 
@@ -18,7 +18,7 @@ var UsersFormPage = function () {
       if (present) {
         roleListItem.element(by.css('.ng-empty')).click();
       }
-    })
+    });
 
   };
   self.uncheckRole = function (roleName) {

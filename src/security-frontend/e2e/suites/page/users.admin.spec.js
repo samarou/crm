@@ -19,7 +19,7 @@ describe('Users under role ADMIN', function () {
   var CHANGING_ROLE_USER = credentials.admin;
 
   beforeEach(function () {
-    loginService.login(ADMIN)
+    loginService.login(ADMIN);
   });
 
   it('should be able to filter user records by roles', function () {
@@ -83,7 +83,7 @@ describe('Users under role ADMIN', function () {
   function checkUserOnPage(userName) {
     return usersPO.getUserNamesInTable().then(function (users) {
       return checkIfUserInArray(users, userName);
-    })
+    });
   }
 
   function checkIfUserInArray(users, name) {

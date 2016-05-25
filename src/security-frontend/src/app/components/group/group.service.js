@@ -1,43 +1,43 @@
 (function () {
-	'use strict';
+    'use strict';
 
-	angular
-			.module('crm.group')
-			.factory('groupService', groupService);
+    angular
+        .module('crm.group')
+        .factory('groupService', groupService);
 
-	/** @ngInject */
-	function groupService($http) {
-		return {
-			getAll: getAll,
-			getPublicGroups: getPublicGroups,
-			get: get,
-			create: create,
-			update: update,
-			remove: remove
-		};
+    /** @ngInject */
+    function groupService($http) {
+        return {
+            getAll: getAll,
+            getPublicGroups: getPublicGroups,
+            get: get,
+            create: create,
+            update: update,
+            remove: remove
+        };
 
-		function getAll() {
-			return $http.get('rest/groups');
-		}
+        function getAll() {
+            return $http.get('rest/groups');
+        }
 
-		function getPublicGroups() {
-			return $http.get('rest/groups/public');
-		}
+        function getPublicGroups() {
+            return $http.get('rest/groups/public');
+        }
 
-		function get(id) {
-			return $http.get('rest/groups/' + id);
-		}
+        function get(id) {
+            return $http.get('rest/groups/' + id);
+        }
 
-		function create(group) {
-			return $http.post('rest/groups', group);
-		}
+        function create(group) {
+            return $http.post('rest/groups', group);
+        }
 
-		function update(group) {
-			return $http.put('rest/groups', group);
-		}
+        function update(group) {
+            return $http.put('rest/groups', group);
+        }
 
-		function remove(id) {
-			return $http.delete('rest/groups/' + id);
-		}
-	}
+        function remove(id) {
+            return $http.delete('rest/groups/' + id);
+        }
+    }
 })();

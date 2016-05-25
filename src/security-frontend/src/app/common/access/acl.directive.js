@@ -3,21 +3,21 @@
  */
 
 (function () {
-  'use strict';
+    'use strict';
 
-  angular
-    .module('crm.acl')
-    .directive('aclForm', aclForm);
+    angular
+        .module('crm.acl')
+        .directive('aclForm', aclForm);
 
-  /** @ngInject */
-  function aclForm() {
-    return {
-      restrict: 'E',
-      templateUrl: 'app/common/access/acl-list.html',
-      replace: true,
-      scope: {
-        handler: '='
-      }
-    };
-  }
+    /** @ngInject */
+    function aclForm() {
+        return {
+            restrict: 'E',
+            templateUrl: 'app/common/access/acl-list.html',
+            replace: true,
+            scope: {
+                handler: '='
+            }
+        };
+    }
 })();

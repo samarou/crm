@@ -33,7 +33,7 @@
 
         function filterUpdated() {
             vm.searchBundle.filter.employeeNumberCategoryId = vm.selectedEmployeeNumberCategory ?
-                    vm.selectedEmployeeNumberCategory.id : null;
+                vm.selectedEmployeeNumberCategory.id : null;
             vm.searchBundle.find();
         }
 
@@ -51,7 +51,7 @@
             companies.forEach(function (company) {
                 tasks.push(companyService.remove(company.id));
             });
-            $q.all(tasks).then(vm.searchBundle.find)
+            $q.all(tasks).then(vm.searchBundle.find);
         }
 
         function openRemoveDialog() {

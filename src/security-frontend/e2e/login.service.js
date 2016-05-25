@@ -14,7 +14,7 @@ var LoginService = function () {
 
 	self.logout = function () {
 		navbarPage.logoutButton.click();
-	}
+	};
 };
 
 module.exports = new LoginService();
