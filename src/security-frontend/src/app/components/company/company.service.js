@@ -69,7 +69,7 @@
         }
 
         function removeAcl(id, aclId) {
-            return $http.delete('rest/companies/' + id + '/acls/' + aclId)
+            return $http.delete('rest/companies/' + id + '/acls/' + aclId);
         }
 
         function isAllowed(companyId, permission) {

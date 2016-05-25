@@ -22,7 +22,7 @@
                     return $q.reject(response);
                 }
                 return $q.resolve(response);
-            })
+            });
         }
 
         function checkDeletePermissionForList(companyList) {
@@ -37,19 +37,19 @@
             }).catch(function () {
                 dialogService.notify('You don\'t have permissions to do it.');
                 return $q.reject();
-            })
+            });
         }
 
         function checkEditPermission(id) {
             return companyService.isAllowed(id, permissions.write).then(function (response) {
                 return $q.resolve(!!response.data);
-            })
+            });
         }
 
         function checkAdminPermission(id) {
             return companyService.isAllowed(id, permissions.admin).then(function (response) {
                 return $q.resolve(!!response.data);
-            })
+            });
         }
 
         function checkDeletePermission(company) {

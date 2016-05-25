@@ -32,7 +32,7 @@
         function submit(promise) {
             promise.then(function () {
                 goToList();
-            })
+            });
         }
 
         function goToList() {
@@ -44,7 +44,7 @@
                 canEdit: true,
                 acls: [],
                 actions: aclServiceBuilder(getId, companyService)
-            }
+            };
         }
     }
 })();

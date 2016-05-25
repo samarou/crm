@@ -29,7 +29,7 @@
                     canAdmin(),
                     getAcls()
                 ]
-            ).then(getCompany)
+            ).then(getCompany);
         }
 
         function submit() {
@@ -60,14 +60,14 @@
                     vm.submitText = null;
                     vm.cancelText = 'Ok';
                 }
-            })
+            });
         }
 
         function canAdmin() {
             return companySecurityService.checkAdminPermission($stateParams.id).then(function (canAdmin) {
                 vm.aclHandler.canEdit = canAdmin;
 
-            })
+            });
         }
 
         function getCompany() {
