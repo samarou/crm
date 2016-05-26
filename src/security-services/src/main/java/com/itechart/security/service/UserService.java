@@ -14,11 +14,9 @@ public interface UserService {
 
     SecuredUserDto getUser(Long userId);
 
-//    User getUserWithAcls(Long userId);
-
     public void deleteAcl(Long userId, Long principalId);
 
-    List<UserDefaultAclEntryDto> getAcls(Long userId);
+    List<UserDefaultAclEntryDto> getDefaultAcls(Long userId);
 
     List<SecuredUserDto> getUsers();
 

@@ -51,8 +51,8 @@ public class Converter {
         return permissions;
     }
 
-    public static com.itechart.security.model.dto.AclEntryDto convert(Principal principal, Set<Permission> permissions) {
-        com.itechart.security.model.dto.AclEntryDto dto = new com.itechart.security.model.dto.AclEntryDto();
+    public static AclEntryDto convert(Principal principal, Set<Permission> permissions) {
+        AclEntryDto dto = new AclEntryDto();
         initAcl(dto, principal, permissions);
         return dto;
     }

@@ -145,7 +145,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public List<UserDefaultAclEntryDto> getAcls(Long userId) {
+    public List<UserDefaultAclEntryDto> getDefaultAcls(Long userId) {
         User user = userDao.get(userId);
         return convertToDefaultAclDtos(user.getAcls());
     }

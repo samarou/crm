@@ -96,8 +96,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users/{userId}/acls", method = GET)
-    public List<UserDefaultAclEntryDto> getAcls(@PathVariable Long userId) {
-        return userService.getAcls(userId);
+    public List<UserDefaultAclEntryDto> getDefaultAcls(@PathVariable Long userId) {
+        return userService.getDefaultAcls(userId);
     }
 
     @PreAuthorize("hasRole('USER')")
