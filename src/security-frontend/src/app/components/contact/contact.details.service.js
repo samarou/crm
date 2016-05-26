@@ -1,5 +1,5 @@
 (function () {
-	'use strict';
+    'use strict';
 
     angular
         .module('crm.contact')
@@ -31,7 +31,7 @@
         function getDictionary() {
             return contactService.getDictionary().then(function (response) {
                 return response.data;
-            })
+            });
         }
 
         function addEmail(scope) {
@@ -91,7 +91,7 @@
                 messengers: [],
                 workplaces: [],
                 attachments: []
-            }
+            };
         }
 
         function removeCheckedElementsFromList(contact, elements, removingFunction) {
@@ -116,46 +116,46 @@
             });
             return checkedElements;
         }
-        
 
-		function createAclHandler(getId) {
-			return {
-				canEdit: true,
-				acls: [],
-				actions: aclServiceBuilder(getId, contactService)
-			};
-		}
 
-		function submit(contact, acls, attachments, isNew) {
-			if (isNew) {
-				contactService.create(contact).then(function (response) {
-					var id = response.data;
-					updateAclsAndAttachments(id, acls, attachments).then(goToList);
-				});
-			} else {
-				contactService.update(contact).then(function () {
-					updateAclsAndAttachments(contact.id, acls, attachments).then(goToList);
-				});
-			}
-		}
+        function createAclHandler(getId) {
+            return {
+                canEdit: true,
+                acls: [],
+                actions: aclServiceBuilder(getId, contactService)
+            };
+        }
 
-		function updateAclsAndAttachments(contactId, acls, attachments) {
-			return contactService.updateAcls(contactId, acls).then(function () {
-				return updateAttachments(contactId, attachments);
-			});
-		}
+        function submit(contact, acls, attachments, isNew) {
+            if (isNew) {
+                contactService.create(contact).then(function (response) {
+                    var id = response.data;
+                    updateAclsAndAttachments(id, acls, attachments).then(goToList);
+                });
+            } else {
+                contactService.update(contact).then(function () {
+                    updateAclsAndAttachments(contact.id, acls, attachments).then(goToList);
+                });
+            }
+        }
 
-		function updateAttachments(contactId, attachments) {
-			var tasks = [];
-			var newAttachments = contactAttachmentService.getNewAttachments(attachments);
-			newAttachments.forEach(function (attachment) {
-				tasks.push(contactService.addAttachment(contactId, attachment));
-			});
-			return $q.all(tasks);
-		}
+        function updateAclsAndAttachments(contactId, acls, attachments) {
+            return contactService.updateAcls(contactId, acls).then(function () {
+                return updateAttachments(contactId, attachments);
+            });
+        }
 
-		function goToList() {
-			$state.go('contacts.list');
-		}
-	}
+        function updateAttachments(contactId, attachments) {
+            var tasks = [];
+            var newAttachments = contactAttachmentService.getNewAttachments(attachments);
+            newAttachments.forEach(function (attachment) {
+                tasks.push(contactService.addAttachment(contactId, attachment));
+            });
+            return $q.all(tasks);
+        }
+
+        function goToList() {
+            $state.go('contacts.list');
+        }
+    }
 })();
