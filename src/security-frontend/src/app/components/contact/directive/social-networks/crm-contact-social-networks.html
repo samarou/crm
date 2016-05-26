@@ -12,6 +12,7 @@
             <th></th>
             <th>URL</th>
             <th>Social Network</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -45,6 +46,11 @@
                         <option value="">Please, select</option>
                     </select>
                 </div>
+            </td>
+            <td>
+                <a ng-show="vm.details.isLinkedInUrl(account.url)" ng-click="vm.details.parseProfile(vm, account.url)"
+                        class="btn btn-default pull-right">Load
+                </a>
             </td>
         </tr>
         </tbody>
