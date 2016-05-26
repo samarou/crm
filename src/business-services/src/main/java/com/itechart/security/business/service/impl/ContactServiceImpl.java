@@ -3,8 +3,14 @@ package com.itechart.security.business.service.impl;
 import com.itechart.security.business.dao.*;
 import com.itechart.security.business.filter.ContactFilter;
 import com.itechart.security.business.model.dto.ContactDto;
+import com.itechart.security.business.model.dto.HistoryEntryDto;
+import com.itechart.security.business.model.enums.ObjectTypes;
 import com.itechart.security.business.model.persistent.*;
 import com.itechart.security.business.service.ContactService;
+import com.itechart.security.business.service.HistoryEntryService;
+import com.itechart.security.model.persistent.ObjectType;
+import com.itechart.security.model.persistent.acl.AclObjectKey;
+import com.itechart.security.service.ObjectTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +47,12 @@ public class ContactServiceImpl implements ContactService {
     @Autowired
     private WorkplaceDao workplaceDao;
 
+    @Autowired
+    private HistoryEntryService historyEntryService;
+
+    @Autowired
+    private ObjectTypeService objectTypeService;
+
     @Override
     @Transactional
     public List<ContactDto> findContacts(ContactFilter filter) {
@@ -59,23 +71,26 @@ public class ContactServiceImpl implements ContactService {
         saveOrUpdateTelephonesForContact(contact);
         saveOrUpdateMessengersForContact(contact);
         saveOrUpdateWorkplacesForContact(contact);
+        historyEntryService.startHistory(contactId);
         return contactId;
     }
 
     @Override
     @Transactional
     public ContactDto get(Long id) {
-        return convert(contactDao.get(id));
+        ContactDto contactDto = convert(contactDao.get(id));
+        HistoryEntryDto historyEntry = historyEntryService.getLastModification(getObjectIdentityId(id));
+        contactDto.setHistory(historyEntry);
+        return contactDto;
+    }
+
+    private AclObjectKey getObjectIdentityId(long contactId) {
+        ObjectType objectType = objectTypeService.getObjectTypeByName(ObjectTypes.CONTACT.getName());
+        return new AclObjectKey(objectType.getId(), contactId);
     }
 
     @Override
     @Transactional(readOnly = true)
-    //@PreAuthorize("hasPrivilege('sample.Contact', 'READ') or hasRole('ROOT')")
-    //@PreAuthorize("@mySecurityService.hasPermission('special')")
-    //@PreAuthorize("hasPermission(#objectId, 'ObjectType', 'READ')")
-    //@PreFilter("filterObject.property == authentication.name")
-    //@PostFilter ("filterObject.owner == authentication.name")
-    //@PostFilter("hasPermission(filterObject, 'READ')")
     public List<ContactDto> getContacts() {
         return convertContacts(contactDao.loadAll());
     }
@@ -91,6 +106,7 @@ public class ContactServiceImpl implements ContactService {
         saveOrUpdateMessengersForContact(contact);
         saveOrUpdateWorkplacesForContact(contact);
         contactDao.update(contact);
+        historyEntryService.updateHistory(contact.getId());
     }
 
     private void saveOrUpdateEmailsForContact(Contact contact){

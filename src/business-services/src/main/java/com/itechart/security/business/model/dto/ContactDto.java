@@ -10,10 +10,11 @@ import java.util.Set;
 @Setter
 public class ContactDto {
     private Long id;
-
     private String firstName;
-
     private String lastName;
+    private String email;
+    private String address;
+    private HistoryEntryDto history;
 
     private String patronymic;
 
@@ -38,4 +39,12 @@ public class ContactDto {
     private Set<WorkplaceDto> workplaces;
 
     private Set<EmailDto> emails;
+
+    public HistoryEntryDto getHistory() {
+        return history;
+    }
+
+    public void setHistory(HistoryEntryDto history) {
+        this.history = history;
+    }
 }
