@@ -6,7 +6,7 @@
         .factory('searchService', searchService);
 
     /** @ngInject */
-    function searchService(userService, contactService, companyService, util, $filter, $log) {
+    function searchService(userService, contactService, companyService, util, $filter) {
         return {
             userPublicMode: getPublicBundle,
             userSecurityMode: getSecurityBundle,

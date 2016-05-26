@@ -4,6 +4,7 @@ import com.itechart.security.business.model.dto.*;
 import com.itechart.security.business.model.enums.EmailType;
 import com.itechart.security.business.model.enums.TelephoneType;
 import com.itechart.security.business.model.persistent.*;
+import com.itechart.security.model.persistent.dto.PublicUserDto;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
@@ -488,5 +489,18 @@ public class DtoConverter {
             .stream()
             .map(DtoConverter::convert)
             .collect(Collectors.toList());
+    }
+
+    public static HistoryEntryDto convert(HistoryEntry historyEntry, PublicUserDto creator, PublicUserDto editor) {
+        HistoryEntryDto dto = new HistoryEntryDto();
+        dto.setCreator(userToString(creator));
+        dto.setCreatedDate(historyEntry.getCreatedDate());
+        dto.setEditor(userToString(editor));
+        dto.setLastModificationDate(historyEntry.getModificationDate());
+        return dto;
+    }
+
+    public static String userToString(PublicUserDto user) {
+        return user.getFirstName() + " " + user.getLastName() + "(" + user.getUserName() + ")";
     }
 }
