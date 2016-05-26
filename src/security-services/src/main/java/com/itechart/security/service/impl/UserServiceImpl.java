@@ -3,6 +3,7 @@ package com.itechart.security.service.impl;
 import com.itechart.security.dao.UserDao;
 import com.itechart.security.model.filter.UserFilter;
 import com.itechart.security.model.persistent.User;
+import com.itechart.security.model.persistent.dto.PublicUserDto;
 import com.itechart.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.itechart.security.model.persistent.dto.Converter.convert;
 
 /**
  * Service for managing of user data
@@ -24,6 +27,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Override
+    public PublicUserDto getPublicUser(Long userId) {
+        User user = userDao.get(userId);
+        return convert(user);
+    }
 
     @Override
     @Transactional(readOnly = true)

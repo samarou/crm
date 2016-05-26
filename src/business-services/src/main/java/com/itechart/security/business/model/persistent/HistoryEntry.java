@@ -1,10 +1,6 @@
 package com.itechart.security.business.model.persistent;
 
-import com.itechart.security.model.persistent.User;
-import com.itechart.security.model.persistent.acl.AclObjectKey;
-
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -18,18 +14,16 @@ public class HistoryEntry extends BaseEntity {
     private Long id;
 
     @Embedded
-    private AclObjectKey objectKey;
+    private ObjectKey objectKey;
 
-    @OneToOne
-    @JoinColumn(name = "creator_id")
-    private User creator;
+    @Column(name = "creator_id")
+    private long creatorId;
 
     @Column(name = "created_date", nullable = false)
     private Date createdDate;
 
-    @OneToOne
-    @JoinColumn(name = "editor_id")
-    private User editor;
+    @Column(name = "editor_id")
+    private long editorId;
 
     @Column(name = "modification_date")
     private Date modificationDate;
@@ -37,16 +31,16 @@ public class HistoryEntry extends BaseEntity {
     public HistoryEntry() {
     }
 
-    public HistoryEntry(AclObjectKey objectKey, User creator, Date createdDate, User editor, Date modificationDate) {
+    public HistoryEntry(ObjectKey objectKey, long creatorId, Date createdDate, long editorId, Date modificationDate) {
         this.objectKey = objectKey;
-        this.creator = creator;
+        this.creatorId = creatorId;
         this.createdDate = createdDate;
-        this.editor = editor;
+        this.editorId = editorId;
         this.modificationDate = modificationDate;
     }
 
     @Override
-    public Serializable getId() {
+    public Long getId() {
         return id;
     }
 
@@ -54,20 +48,20 @@ public class HistoryEntry extends BaseEntity {
         this.id = id;
     }
 
-    public AclObjectKey getObjectKey() {
+    public ObjectKey getObjectKey() {
         return objectKey;
     }
 
-    public void setObjectKey(AclObjectKey objectKey) {
+    public void setObjectKey(ObjectKey objectKey) {
         this.objectKey = objectKey;
     }
 
-    public User getCreator() {
-        return creator;
+    public long getCreatorId() {
+        return creatorId;
     }
 
-    public void setCreator(User creator) {
-        this.creator = creator;
+    public void setCreatorId(long creatorId) {
+        this.creatorId = creatorId;
     }
 
     public Date getCreatedDate() {
@@ -78,12 +72,12 @@ public class HistoryEntry extends BaseEntity {
         this.createdDate = createdDate;
     }
 
-    public User getEditor() {
-        return editor;
+    public long getEditorId() {
+        return editorId;
     }
 
-    public void setEditor(User editor) {
-        this.editor = editor;
+    public void setEditorId(long editorId) {
+        this.editorId = editorId;
     }
 
     public Date getModificationDate() {

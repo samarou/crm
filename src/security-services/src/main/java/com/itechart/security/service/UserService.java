@@ -2,6 +2,7 @@ package com.itechart.security.service;
 
 import com.itechart.security.model.filter.UserFilter;
 import com.itechart.security.model.persistent.User;
+import com.itechart.security.model.persistent.dto.PublicUserDto;
 
 import java.util.List;
 
@@ -11,6 +12,8 @@ import java.util.List;
  * @author andrei.samarou
  */
 public interface UserService {
+
+    PublicUserDto getPublicUser(Long userId);
 
     User getUser(Long userId);
 

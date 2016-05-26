@@ -4,6 +4,7 @@ import com.itechart.security.business.filter.ContactFilter;
 import com.itechart.security.business.model.dto.ContactDto;
 import com.itechart.security.business.model.dto.DictionaryDto;
 import com.itechart.security.business.model.enums.ObjectTypes;
+import com.itechart.security.business.model.persistent.ObjectKey;
 import com.itechart.security.business.service.ContactService;
 import com.itechart.security.business.service.DictionaryService;
 import com.itechart.security.business.service.HistoryEntryService;
@@ -11,9 +12,11 @@ import com.itechart.security.core.acl.AclPermissionEvaluator;
 import com.itechart.security.core.model.acl.ObjectIdentity;
 import com.itechart.security.core.model.acl.ObjectIdentityImpl;
 import com.itechart.security.core.model.acl.Permission;
+import com.itechart.security.model.persistent.ObjectType;
 import com.itechart.security.model.persistent.Principal;
 import com.itechart.security.model.persistent.acl.Acl;
 import com.itechart.security.service.AclService;
+import com.itechart.security.service.ObjectTypeService;
 import com.itechart.security.service.PrincipalService;
 import com.itechart.security.web.model.dto.AclEntryDto;
 import com.itechart.security.web.model.dto.ContactFilterDto;
@@ -59,6 +62,9 @@ public class ContactController {
     @Autowired
     private HistoryEntryService historyEntryService;
 
+    @Autowired
+    private ObjectTypeService objectTypeService;
+
     @RequestMapping("/contacts/{contactId}/actions/{value}")
     public boolean isAllowed(@PathVariable Long contactId, @PathVariable String value) {
         Permission permission = Permission.valueOf(value.toUpperCase());
@@ -79,7 +85,7 @@ public class ContactController {
     @RequestMapping(value = "/contacts", method = PUT)
     public void update(@RequestBody ContactDto dto) {
         contactService.updateContact(dto);
-        historyEntryService.updateHistory(dto.getId());
+        historyEntryService.updateHistory(buildObjectKey(dto.getId()));
     }
 
     @RequestMapping("/contacts/find")
@@ -97,7 +103,7 @@ public class ContactController {
         Long contactId = contactService.saveContact(dto);
         Long userId = getAuthenticatedUserId();
         aclService.createAcl(createIdentity(contactId), null, userId);
-        historyEntryService.startHistory(contactId);
+        historyEntryService.startHistory(buildObjectKey(contactId));
         return contactId;
     }
 
@@ -170,5 +176,10 @@ public class ContactController {
 
     private ObjectIdentity createIdentity(Long contactId) {
         return new ObjectIdentityImpl(contactId, ObjectTypes.CONTACT.getName());
+    }
+
+    private ObjectKey buildObjectKey(long contactId) {
+        ObjectType objectType = objectTypeService.getObjectTypeByName(ObjectTypes.CONTACT.getName());
+        return new ObjectKey(objectType.getId(), contactId);
     }
 }
