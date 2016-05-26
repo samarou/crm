@@ -7,6 +7,17 @@ import com.itechart.security.business.model.dto.DictionaryDto;
 import com.itechart.security.business.model.enums.ObjectTypes;
 import com.itechart.security.business.service.ContactService;
 import com.itechart.security.business.service.DictionaryService;
+import com.itechart.security.business.service.HistoryEntryService;
+import com.itechart.security.core.acl.AclPermissionEvaluator;
+import com.itechart.security.core.model.acl.ObjectIdentity;
+import com.itechart.security.core.model.acl.ObjectIdentityImpl;
+import com.itechart.security.core.model.acl.Permission;
+import com.itechart.security.model.persistent.Principal;
+import com.itechart.security.model.persistent.acl.Acl;
+import com.itechart.security.service.AclService;
+import com.itechart.security.service.PrincipalService;
+import com.itechart.security.web.model.dto.AclEntryDto;
+import com.itechart.security.web.model.dto.ContactFilterDto;
 import com.itechart.security.business.service.FileService;
 import com.itechart.security.business.service.ParsingService;
 import com.itechart.security.model.dto.AclEntryDto;
@@ -23,6 +34,12 @@ import java.util.List;
 
 import static com.itechart.security.business.model.dto.utils.ContactConverter.convert;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
+import static com.itechart.security.core.SecurityUtils.getAuthenticatedUserId;
+import static com.itechart.security.core.SecurityUtils.getAuthentication;
+import static com.itechart.security.web.model.dto.Converter.convert;
+import static java.util.stream.Collectors.toList;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 /**
  * @author yauheni.putsykovich
@@ -45,6 +62,9 @@ public class ContactController extends SecuredController {
     @Autowired
     private ParsingService parsingService;
 
+    @Autowired
+    private HistoryEntryService historyEntryService;
+
     @RequestMapping("/contacts/{contactId}/actions/{value}")
     public boolean isAllowed(@PathVariable Long contactId, @PathVariable String value) {
         return super.isAllowed(contactId, value);
@@ -59,6 +79,7 @@ public class ContactController extends SecuredController {
     @RequestMapping(value = "/contacts", method = PUT)
     public void update(@RequestBody ContactDto dto) {
         contactService.updateContact(dto);
+        historyEntryService.updateHistory(dto.getId());
     }
 
     @RequestMapping("/contacts")
@@ -75,6 +96,7 @@ public class ContactController extends SecuredController {
     public Long create(@RequestBody ContactDto dto) {
         Long contactId = contactService.saveContact(dto);
         super.createAcl(contactId);
+        historyEntryService.startHistory(contactId);
         return contactId;
     }
 
