@@ -6,7 +6,7 @@ import com.itechart.security.business.model.dto.DictionaryDto;
 import com.itechart.security.business.model.enums.ObjectTypes;
 import com.itechart.security.business.service.ContactService;
 import com.itechart.security.business.service.DictionaryService;
-import com.itechart.security.core.SecurityUtils;
+import com.itechart.security.business.service.HistoryEntryService;
 import com.itechart.security.core.acl.AclPermissionEvaluator;
 import com.itechart.security.core.model.acl.ObjectIdentity;
 import com.itechart.security.core.model.acl.ObjectIdentityImpl;
@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.itechart.security.core.SecurityUtils.getAuthenticatedUserId;
+import static com.itechart.security.core.SecurityUtils.getAuthentication;
 import static com.itechart.security.web.model.dto.Converter.convert;
 import static java.util.stream.Collectors.toList;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -54,10 +56,13 @@ public class ContactController {
     @Autowired
     private AclPermissionEvaluator aclPermissionEvaluator;
 
+    @Autowired
+    private HistoryEntryService historyEntryService;
+
     @RequestMapping("/contacts/{contactId}/actions/{value}")
     public boolean isAllowed(@PathVariable Long contactId, @PathVariable String value) {
         Permission permission = Permission.valueOf(value.toUpperCase());
-        return aclPermissionEvaluator.hasPermission(SecurityUtils.getAuthentication(), createIdentity(contactId), permission);
+        return aclPermissionEvaluator.hasPermission(getAuthentication(), createIdentity(contactId), permission);
     }
 
     @RequestMapping("/contacts")
@@ -74,6 +79,7 @@ public class ContactController {
     @RequestMapping(value = "/contacts", method = PUT)
     public void update(@RequestBody ContactDto dto) {
         contactService.updateContact(dto);
+        historyEntryService.updateHistory(dto.getId());
     }
 
     @RequestMapping("/contacts/find")
@@ -89,8 +95,9 @@ public class ContactController {
     @RequestMapping(value = "/contacts", method = POST)
     public Long create(@RequestBody ContactDto dto) {
         Long contactId = contactService.saveContact(dto);
-        Long userId = SecurityUtils.getAuthenticatedUserId();
-        aclService.createAcl(new ObjectIdentityImpl(contactId, ObjectTypes.CONTACT.getName()), null, userId);
+        Long userId = getAuthenticatedUserId();
+        aclService.createAcl(createIdentity(contactId), null, userId);
+        historyEntryService.startHistory(contactId);
         return contactId;
     }
 
