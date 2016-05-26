@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.util.Date;
 
-import static com.itechart.security.business.model.dto.DtoConverter.convert;
+import static com.itechart.security.business.model.dto.utils.DtoConverter.convert;
 import static com.itechart.security.core.SecurityUtils.getAuthenticatedUserId;
 
 /**
