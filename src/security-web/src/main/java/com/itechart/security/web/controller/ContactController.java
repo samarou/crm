@@ -79,7 +79,7 @@ public class ContactController extends SecuredController {
     @RequestMapping(value = "/contacts", method = PUT)
     public void update(@RequestBody ContactDto dto) {
         contactService.updateContact(dto);
-        historyEntryService.updateHistory(dto.getId());
+        historyEntryService.updateHistory(buildObjectKey(dto.getId()));
     }
 
     @RequestMapping("/contacts")
@@ -97,6 +97,9 @@ public class ContactController extends SecuredController {
         Long contactId = contactService.saveContact(dto);
         super.createAcl(contactId);
         historyEntryService.startHistory(contactId);
+        Long userId = getAuthenticatedUserId();
+        aclService.createAcl(createIdentity(contactId), null, userId);
+        historyEntryService.startHistory(buildObjectKey(contactId));
         return contactId;
     }
 

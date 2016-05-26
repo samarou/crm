@@ -6,13 +6,13 @@ import com.itechart.security.business.model.dto.ContactDto;
 import com.itechart.security.business.model.dto.HistoryEntryDto;
 import com.itechart.security.business.model.enums.ObjectTypes;
 import com.itechart.security.business.model.persistent.*;
+import com.itechart.security.business.model.persistent.ObjectKey;
 import com.itechart.security.business.service.ContactService;
 import com.itechart.security.business.service.FileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.itechart.security.business.service.HistoryEntryService;
 import com.itechart.security.model.persistent.ObjectType;
-import com.itechart.security.model.persistent.acl.AclObjectKey;
 import com.itechart.security.service.ObjectTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -83,14 +83,14 @@ public class ContactServiceImpl implements ContactService {
     @Transactional
     public ContactDto get(Long id) {
         ContactDto contactDto = convert(contactDao.get(id));
-        HistoryEntryDto historyEntry = historyEntryService.getLastModification(getObjectIdentityId(id));
+        HistoryEntryDto historyEntry = historyEntryService.getLastModification(buildObjectKey(id));
         contactDto.setHistory(historyEntry);
         return contactDto;
     }
 
-    private AclObjectKey getObjectIdentityId(long contactId) {
+    private ObjectKey buildObjectKey(long contactId) {
         ObjectType objectType = objectTypeService.getObjectTypeByName(ObjectTypes.CONTACT.getName());
-        return new AclObjectKey(objectType.getId(), contactId);
+        return new ObjectKey(objectType.getId(), contactId);
     }
 
     @Override

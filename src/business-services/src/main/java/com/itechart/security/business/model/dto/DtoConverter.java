@@ -4,7 +4,7 @@ import com.itechart.security.business.model.persistent.Attachment;
 import com.itechart.security.business.model.persistent.Contact;
 import com.itechart.security.business.model.persistent.HistoryEntry;
 import com.itechart.security.business.model.persistent.Order;
-import com.itechart.security.model.persistent.User;
+import com.itechart.security.model.persistent.dto.PublicUserDto;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
@@ -93,16 +93,16 @@ public class DtoConverter {
         return attachmentsDto.stream().map(DtoConverter::convert).collect(Collectors.toList());
     }
 
-    public static HistoryEntryDto convert(HistoryEntry historyEntry) {
+    public static HistoryEntryDto convert(HistoryEntry historyEntry, PublicUserDto creator, PublicUserDto editor) {
         HistoryEntryDto dto = new HistoryEntryDto();
-        dto.setCreator(userToString(historyEntry.getCreator()));
+        dto.setCreator(userToString(creator));
         dto.setCreatedDate(historyEntry.getCreatedDate());
-        dto.setEditor(userToString(historyEntry.getEditor()));
+        dto.setEditor(userToString(editor));
         dto.setLastModificationDate(historyEntry.getModificationDate());
         return dto;
     }
 
-    public static String userToString(User user) {
+    public static String userToString(PublicUserDto user) {
         return user.getFirstName() + " " + user.getLastName() + "(" + user.getUserName() + ")";
     }
 }

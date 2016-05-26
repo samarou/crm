@@ -10,6 +10,7 @@ import com.itechart.security.model.persistent.UserDefaultAclEntry;
 import com.itechart.security.model.util.AclConverter;
 import com.itechart.security.model.util.UserConverter;
 import com.itechart.security.service.PrincipalService;
+import com.itechart.security.model.persistent.dto.PublicUserDto;
 import com.itechart.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,6 +28,8 @@ import static com.itechart.security.model.util.UserConverter.convertToSecuredDto
 import static com.itechart.security.model.util.UserConverter.convert;
 import static com.itechart.security.model.util.UserFilterConverter.convert;
 import static java.util.stream.Collectors.toList;
+
+import static com.itechart.security.model.persistent.dto.Converter.convert;
 
 /**
  * Service for managing of user data

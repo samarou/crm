@@ -2,13 +2,10 @@ package com.itechart.security.business.service.impl;
 
 import com.itechart.security.business.dao.HistoryEntryDao;
 import com.itechart.security.business.model.dto.HistoryEntryDto;
-import com.itechart.security.business.model.enums.ObjectTypes;
 import com.itechart.security.business.model.persistent.HistoryEntry;
+import com.itechart.security.business.model.persistent.ObjectKey;
 import com.itechart.security.business.service.HistoryEntryService;
-import com.itechart.security.model.persistent.ObjectType;
-import com.itechart.security.model.persistent.User;
-import com.itechart.security.model.persistent.acl.AclObjectKey;
-import com.itechart.security.service.ObjectTypeService;
+import com.itechart.security.model.persistent.dto.PublicUserDto;
 import com.itechart.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,9 +29,6 @@ public class HistoryEntryServiceImpl implements HistoryEntryService {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private ObjectTypeService objectTypeService;
-
     @Override
     @Transactional
     public void saveOrUpdate(HistoryEntry historyEntry) {
@@ -43,32 +37,28 @@ public class HistoryEntryServiceImpl implements HistoryEntryService {
 
     @Override
     @Transactional(readOnly = true)
-    public HistoryEntryDto getLastModification(AclObjectKey objectKey) {
-        return convert(historyDao.getLastModification(objectKey));
+    public HistoryEntryDto getLastModification(ObjectKey objectKey) {
+        HistoryEntry historyEntry = historyDao.getLastModification(objectKey);
+        PublicUserDto creator = userService.getPublicUser(historyEntry.getCreatorId());
+        PublicUserDto editor = userService.getPublicUser(historyEntry.getEditorId());
+        return convert(historyEntry, creator, editor);
     }
 
     @Override
     @Transactional
-    public void startHistory(long contactId) {
-        AclObjectKey objectKey = getObjectIdentityId(contactId);
-        User user = userService.getUser(getAuthenticatedUserId());
+    public void startHistory(ObjectKey objectKey) {
+        long userId = getAuthenticatedUserId();
         Date now = Date.from(Instant.now());
-        HistoryEntry historyEntry = new HistoryEntry(objectKey, user, now, user, now);
+        HistoryEntry historyEntry = new HistoryEntry(objectKey, userId, now, userId, now);
         saveOrUpdate(historyEntry);
     }
 
     @Override
     @Transactional
-    public void updateHistory(long contactId) {
-        AclObjectKey objectKey = getObjectIdentityId(contactId);
+    public void updateHistory(ObjectKey objectKey) {
         HistoryEntry historyEntry = historyDao.getLastModification(objectKey);
         historyEntry.setModificationDate(Date.from(Instant.now()));
-        historyEntry.setEditor(userService.getUser(getAuthenticatedUserId()));
+        historyEntry.setEditorId(getAuthenticatedUserId());
         saveOrUpdate(historyEntry);
-    }
-
-    private AclObjectKey getObjectIdentityId(long contactId) {
-        ObjectType objectType = objectTypeService.getObjectTypeByName(ObjectTypes.CONTACT.getName());
-        return new AclObjectKey(objectType.getId(), contactId);
     }
 }

@@ -3,6 +3,7 @@ package com.itechart.security.service;
 import com.itechart.security.model.dto.*;
 import com.itechart.security.model.persistent.Principal;
 import com.itechart.security.model.persistent.User;
+import com.itechart.security.model.persistent.dto.PublicUserDto;
 
 import java.util.List;
 
@@ -44,6 +45,4 @@ public interface UserService {
     PublicUserDto activateUser(Long userId);
 
     PublicUserDto deactivateUser(Long userId);
-
-    List<UserDefaultAclEntryDto> getDefaultAcls();
 }

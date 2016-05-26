@@ -2,7 +2,7 @@ package com.itechart.security.business.dao.impl;
 
 import com.itechart.security.business.dao.HistoryEntryDao;
 import com.itechart.security.business.model.persistent.HistoryEntry;
-import com.itechart.security.model.persistent.acl.AclObjectKey;
+import com.itechart.security.business.model.persistent.ObjectKey;
 import org.springframework.stereotype.Repository;
 
 import static org.hibernate.criterion.Restrictions.eq;
@@ -14,7 +14,7 @@ import static org.hibernate.criterion.Restrictions.eq;
 public class HistoryEntryDaoImpl extends BaseHibernateDao<HistoryEntry> implements HistoryEntryDao {
 
     @Override
-    public HistoryEntry getLastModification(AclObjectKey objectKey) {
+    public HistoryEntry getLastModification(ObjectKey objectKey) {
         return getHibernateTemplate().execute(session ->
                 (HistoryEntry) session.createCriteria(HistoryEntry.class, "h")
                         .add(eq("h.objectKey", objectKey))
