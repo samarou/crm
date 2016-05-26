@@ -12,9 +12,6 @@ import java.util.List;
  * @author andrei.samarou
  */
 public interface UserService {
-
-    PublicUserDto getPublicUser(Long userId);
-
     User getUser(Long userId);
 
     User getUserWithAcls(Long userId);
@@ -36,4 +33,6 @@ public interface UserService {
     void activateUser(Long userId);
 
     void deactivateUser(Long userId);
+
+    PublicUserDto getPublicUser(Long userId);
 }

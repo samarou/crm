@@ -29,12 +29,6 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public PublicUserDto getPublicUser(Long userId) {
-        User user = userDao.get(userId);
-        return convert(user);
-    }
-
-    @Override
     @Transactional(readOnly = true)
     public User getUser(Long userId) {
         return userDao.get(userId);
@@ -103,5 +97,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void deactivateUser(Long userId) {
         userDao.setUserActivity(userId, false);
+    }
+
+    @Override
+    public PublicUserDto getPublicUser(Long userId) {
+        User user = userDao.get(userId);
+        return convert(user);
     }
 }
