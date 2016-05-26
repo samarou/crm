@@ -3,6 +3,7 @@ package com.itechart.security.web.model.dto;
 import com.itechart.security.business.filter.CompanyFilter;
 import com.itechart.security.business.filter.ContactFilter;
 import com.itechart.security.core.model.acl.Permission;
+import com.itechart.security.model.PrincipalTypes;
 import com.itechart.security.model.dto.AclEntryDto;
 import com.itechart.security.model.persistent.Group;
 import com.itechart.security.model.persistent.Principal;
@@ -61,9 +62,9 @@ public class Converter {
         dto.setPrincipalId(principal.getId());
         dto.setName(principal.getName());
         if (principal instanceof User) {
-            dto.setPrincipalTypeName(com.itechart.security.model.PrincipalTypes.USER.getObjectType());
+            dto.setPrincipalTypeName(PrincipalTypes.USER.getObjectType());
         } else if (principal instanceof Group) {
-            dto.setPrincipalTypeName(com.itechart.security.model.PrincipalTypes.GROUP.getObjectType());
+            dto.setPrincipalTypeName(PrincipalTypes.GROUP.getObjectType());
         }
         permissions.forEach(permission -> {
             if (permission == READ) dto.setCanRead(true);
