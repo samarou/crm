@@ -5,7 +5,7 @@
         .module('crm.contact')
         .factory('contactDetailsService', contactDetailsService);
     /** @ngInject */
-    function contactDetailsService(contactService, aclServiceBuilder, $state, contactAttachmentService, $q) {
+    function contactDetailsService(contactService, aclServiceBuilder, $state, contactAttachmentService, $q, $log) {
 
         return {
             submit: submit,
@@ -25,7 +25,9 @@
             removeWorkplaces: removeWorkplaces,
             getEmptyContact: getEmptyContact,
             now: new Date(),
-            getDictionary: getDictionary
+            getDictionary: getDictionary,
+            parseProfile: parseProfile,
+            isLinkedInUrl: isLinkedInUrl
         };
 
         function getDictionary() {
@@ -92,6 +94,27 @@
                 workplaces: [],
                 attachments: []
             };
+        }
+
+        function parseProfile(scope, profileUrl) {
+            contactService.parseProfile(profileUrl).then(function (response) {
+                $log.log(response.data);
+                scope.contact.firstName = response.data.firstName;
+                scope.contact.lastName = response.data.lastName;
+                scope.contact.photoUrl = response.data.photoUrl;
+                response.data.workplaces.forEach(function (workplace) {
+                    scope.contact.workplaces.push(workplace)
+                });
+                response.data.addresses.forEach(function (address) {
+                    scope.contact.addresses.push(address)
+                });
+            })
+        }
+
+        function isLinkedInUrl(url) {
+            if (url) {
+                return /.*linkedin.*/.test(url)
+            }
         }
 
         function removeCheckedElementsFromList(contact, elements, removingFunction) {

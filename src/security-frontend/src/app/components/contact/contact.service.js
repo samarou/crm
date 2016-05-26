@@ -30,7 +30,8 @@
             removeMessengerAccount: removeMessengerAccount,
             removeSocialNetworkAccount: removeSocialNetworkAccount,
             getDictionary: getDictionary,
-            removeWorkplace: removeWorkplace
+            removeWorkplace: removeWorkplace,
+            parseProfile: parseProfile
         };
 
         function getAll() {
@@ -131,6 +132,10 @@
 
         function removeWorkplace(id, workplaceId) {
             return $http.delete('rest/contacts/' + id + '/workplaces/' + workplaceId);
+        }
+
+        function parseProfile(profileUrl) {
+            return $http.get('rest/parser/linkedIn', {params: {url: profileUrl}});
         }
     }
 })();
