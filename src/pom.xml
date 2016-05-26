@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.itechart.security</groupId>
     <artifactId>security-project</artifactId>
-    <version>1.6-SNAPSHOT</version>
+    <version>1.7-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Security Project</name>
     <description>Role/privilege-based and ACL security support</description>
@@ -46,6 +46,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <finalName>security-web</finalName>
         <lombok.version>1.16.8</lombok.version>
+        <jsoap.version>1.9.2</jsoap.version>
+        <apache.common.lang3.version>3.1</apache.common.lang3.version>
     </properties>
     <dependencies>
         <dependency>

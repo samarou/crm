@@ -8,6 +8,8 @@ import com.itechart.security.business.model.persistent.ObjectKey;
 import com.itechart.security.business.service.ContactService;
 import com.itechart.security.business.service.DictionaryService;
 import com.itechart.security.business.service.HistoryEntryService;
+import com.itechart.security.business.service.ParsingService;
+import com.itechart.security.core.SecurityUtils;
 import com.itechart.security.core.acl.AclPermissionEvaluator;
 import com.itechart.security.core.model.acl.ObjectIdentity;
 import com.itechart.security.core.model.acl.ObjectIdentityImpl;
@@ -25,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +61,9 @@ public class ContactController {
 
     @Autowired
     private AclPermissionEvaluator aclPermissionEvaluator;
+
+    @Autowired
+    ParsingService parsingService;
 
     @Autowired
     private HistoryEntryService historyEntryService;
@@ -169,6 +175,11 @@ public class ContactController {
 
     @RequestMapping(value = "/dictionary", method = RequestMethod.GET)
     public DictionaryDto getDictionary(){return  dictionaryService.getDictionary();}
+
+    @RequestMapping(value = "/parser/linkedIn", method = RequestMethod.GET)
+    public ContactDto getFromSocialNetworkAccount(@RequestParam String url) throws IOException {
+        return parsingService.parse(url);
+    }
 
     private Acl getAcl(Long contactId) {
         return aclService.getAcl(createIdentity(contactId));
