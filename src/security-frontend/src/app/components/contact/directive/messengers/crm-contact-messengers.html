@@ -29,7 +29,7 @@
                            ng-disabled="!vm.canEdit"
                            required>
                     <span
-                        ng-show="account.username.$dirty && account.username.$error.required"
+                        ng-show="account.username.$error.required"
                         class="help-block">Username is required</span>
                 </div>
             </td>
@@ -39,12 +39,9 @@
                             name="messengerType"
                             class="form-control"
                             ng-options="option.id as option.name for option in vm.dictionary.messengers"
-                            ng-disabled="!vm.canEdit" required>
+                            ng-disabled="!vm.canEdit">
                         <option value>Please, select</option>
                     </select>
-                    <span
-                        ng-show="messengersForm.messengerType.$dirty && messengersForm.messengerType.$error.required"
-                        class="help-block">Messenger type is required</span>
                 </div>
             </td>
         </tr>

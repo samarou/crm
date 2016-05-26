@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet id="001" author="maksim.kalenik">
+        <dropNotNullConstraint tableName="address" columnName="country_id" columnDataType="BIGINT UNSIGNED"/>
+        <rollback>
+            <addNotNullConstraint tableName="address" columnName="country_id" columnDataType="BIGINT UNSIGNED"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="002" author="maksim.kalenik">
+        <update tableName="address">
+            <column name="country_id" type="BIGINT UNSIGNED"/>
+            <where>country_id = 1</where>
+        </update>
+        <delete tableName="country">
+            <where>id = 1</where>
+        </delete>
+    </changeSet>
+    <changeSet id="003" author="maksim.kalenik">
+        <dropNotNullConstraint tableName="messenger_account" columnName="messenger_id" columnDataType="BIGINT UNSIGNED"/>
+        <rollback>
+            <addNotNullConstraint tableName="messenger_account" columnName="messenger_id" columnDataType="BIGINT UNSIGNED"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="004" author="maksim.kalenik">
+        <dropNotNullConstraint tableName="social_network_account" columnName="social_network_id" columnDataType="BIGINT UNSIGNED"/>
+        <rollback>
+            <addNotNullConstraint tableName="social_network_account" columnName="social_network_id" columnDataType="BIGINT UNSIGNED"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="005" author="maksim.kalenik">
+        <dropNotNullConstraint tableName="telephone" columnName="type" columnDataType="ENUM('MOBILE', 'WORK', 'HOME', 'FAX', 'PAGER', 'OTHER')"/>
+        <rollback>
+            <addNotNullConstraint tableName="telephone" columnName="type" columnDataType="ENUM('MOBILE', 'WORK', 'HOME', 'FAX', 'PAGER', 'OTHER')"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

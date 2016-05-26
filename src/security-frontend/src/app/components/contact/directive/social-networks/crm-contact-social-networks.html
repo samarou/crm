@@ -31,7 +31,7 @@
                            ng-disabled="!vm.canEdit"
                            required maxlength="100">
                     <span
-                        ng-show="socialNetworksForm.socialNetworkAccountUrl.$dirty &&  socialNetworksForm.socialNetworkAccountUrl.$error.required"
+                        ng-show="socialNetworksForm.socialNetworkAccountUrl.$error.required"
                         class="help-block">URL is required</span>
                 </div>
             </td>
@@ -41,12 +41,9 @@
                             name="socialNetworkType"
                             class="form-control"
                             ng-options="option.id as option.name for option in vm.dictionary.socialNetworks"
-                            ng-disabled="!vm.canEdit" required>
+                            ng-disabled="!vm.canEdit">
                         <option value="">Please, select</option>
                     </select>
-                    <span
-                        ng-show="socialNetworksForm.socialNetworkType.$dirty && socialNetworksForm.socialNetworkType.$error.required"
-                        class="help-block">Messenger type is required</span>
                 </div>
             </td>
         </tr>

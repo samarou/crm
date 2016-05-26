@@ -19,8 +19,8 @@ public class SocialNetworkAccount extends SecuredEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "social_network_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "social_network_id")
     private SocialNetwork socialNetwork;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
