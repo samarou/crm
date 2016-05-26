@@ -3,11 +3,17 @@ package com.itechart.security.business.service.impl;
 import com.itechart.security.business.dao.*;
 import com.itechart.security.business.filter.ContactFilter;
 import com.itechart.security.business.model.dto.ContactDto;
+import com.itechart.security.business.model.dto.HistoryEntryDto;
+import com.itechart.security.business.model.enums.ObjectTypes;
 import com.itechart.security.business.model.persistent.*;
 import com.itechart.security.business.service.ContactService;
 import com.itechart.security.business.service.FileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.itechart.security.business.service.HistoryEntryService;
+import com.itechart.security.model.persistent.ObjectType;
+import com.itechart.security.model.persistent.acl.AclObjectKey;
+import com.itechart.security.service.ObjectTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,8 +29,6 @@ import static com.itechart.security.business.model.dto.utils.DtoConverter.conver
  */
 @Service
 public class ContactServiceImpl implements ContactService {
-
-    private static final Logger logger = LoggerFactory.getLogger(ContactServiceImpl.class);
 
     @Autowired
     private ContactDao contactDao;
@@ -53,6 +57,12 @@ public class ContactServiceImpl implements ContactService {
     @Autowired
     private FileService fileService;
 
+    @Autowired
+    private HistoryEntryService historyEntryService;
+
+    @Autowired
+    private ObjectTypeService objectTypeService;
+
     @Override
     @Transactional
     public List<ContactDto> findContacts(ContactFilter filter) {
@@ -72,7 +82,21 @@ public class ContactServiceImpl implements ContactService {
     @Override
     @Transactional
     public ContactDto get(Long id) {
-        return convert(contactDao.get(id));
+        ContactDto contactDto = convert(contactDao.get(id));
+        HistoryEntryDto historyEntry = historyEntryService.getLastModification(getObjectIdentityId(id));
+        contactDto.setHistory(historyEntry);
+        return contactDto;
+    }
+
+    private AclObjectKey getObjectIdentityId(long contactId) {
+        ObjectType objectType = objectTypeService.getObjectTypeByName(ObjectTypes.CONTACT.getName());
+        return new AclObjectKey(objectType.getId(), contactId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ContactDto> getContacts() {
+        return convertContacts(contactDao.loadAll());
     }
 
     @Override
@@ -81,6 +105,7 @@ public class ContactServiceImpl implements ContactService {
         Contact contact = convert(contactDto);
         contactDao.update(contact);
         moveFilesToTargetDirectory(contact);
+        historyEntryService.updateHistory(contact.getId());
     }
 
     private void moveFilesToTargetDirectory(Contact contact) {
