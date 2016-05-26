@@ -1,0 +1,79 @@
+<div class="col-md-10">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group" crm-input-validation>
+                <label for="contact-first-name">First name</label>
+                <input ng-disabled="!vm.canEdit" id="contact-first-name" class="form-control"
+                       name="firstName"
+                       ng-model="vm.contact.firstName" required maxlength="50">
+                <span ng-show="contactForm.firstName.$dirty && contactForm.firstName.$error.required"
+                      class="help-block">First name is required</span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group" crm-input-validation>
+                <label for="contact-last-name">Last name</label>
+                <input ng-disabled="!vm.canEdit" id="contact-last-name" class="form-control"
+                       name="lastName"
+                       ng-model="vm.contact.lastName" required maxlength="50">
+                <span ng-show="contactForm.lastName.$dirty && contactForm.lastName.$error.required"
+                      class="help-block">Last name is required</span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group" crm-input-validation>
+                <label for="contact-patronymic">Patronymic</label>
+                <input ng-disabled="!vm.canEdit" id="contact-patronymic" class="form-control"
+                       name="patronymic"
+                       ng-model="vm.contact.patronymic" maxlength="50">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group" crm-input-validation>
+                <label for="contact-date-of-birth">Date of birth</label>
+                <input ng-disabled="!vm.canEdit"
+                       id="contact-date-of-birth"
+                       uib-datepicker-popup
+                       placeholder="yyyy-MM-dd" min="1900-01-01"
+                       max="{{vm.details.now|date:'yyyy-MM-dd'}}"
+                       class="form-control"
+                       name="dateOfBirth"
+                       ng-model="vm.contact.dateOfBirth">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group" crm-input-validation>
+                <label for="contact-is-male">Gender</label>
+                <select ng-disabled="!vm.canEdit" id="contact-is-male" class="form-control"
+                        name="isMale" ng-model="vm.contact.isMale"
+                        ng-options="o.v as o.n for o in [{n:'Please, select',v:null},{n:'Female',v:false},{n:'Male', v:true}]">
+                </select>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group" crm-input-validation>
+                <label for="contact-nationality">Nationality</label>
+                <input ng-disabled="!vm.canEdit" id="contact-nationality" class="form-control"
+                       name="nationality" ng-model="vm.contact.nationality" maxlength="255">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-2">
+    <div class="row">
+        <div class="col-md-12 col-md-offset-0 col-sm-4 col-sm-offset-4 ">
+            <img class="img-responsive center-block" ng-src="{{vm.contact.photoUrl}}">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group" crm-input-validation>
+                <label for="contact-photo">Photo URL</label>
+                <input ng-disabled="!vm.canEdit" id="contact-photo" class="form-control"
+                       name="photoUrl" ng-model="vm.contact.photoUrl" maxlength="255">
+            </div>
+        </div>
+    </div>
+</div>

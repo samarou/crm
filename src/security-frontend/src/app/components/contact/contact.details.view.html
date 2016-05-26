@@ -3,87 +3,40 @@
                   cancel-btn="vm.cancel()" crm-form-validation="contactForm">
     <form name="contactForm" class="form-group">
         <uib-tabset active="active">
-            <uib-tab heading="Personal Info">
+            <uib-tab heading="General Info">
                 <div class="row crm-top-buffer">
-                    <div class="col-md-6">
-                        <div class="form-group" crm-input-validation>
-                            <label for="contact-first-name">First name</label>
-                            <input ng-disabled="!vm.canEdit" id="contact-first-name" class="form-control"
-                                   name="firstName"
-                                   ng-model="vm.contact.firstName" required>
-                        <span ng-show="contactForm.firstName.$dirty && contactForm.firstName.$error.required"
-                              class="help-block">First name is required</span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group" crm-input-validation>
-                            <label for="contact-last-name">Last name</label>
-                            <input ng-disabled="!vm.canEdit" id="contact-last-name" class="form-control" name="lastName"
-                                   ng-model="vm.contact.lastName" required>
-                            <span ng-show="contactForm.lastName.$dirty && contactForm.lastName.$error.required"
-                                  class="help-block">Last name is required</span>
-                        </div>
-                    </div>
+                    <crm-contact vm="vm"></crm-contact>
                 </div>
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group" crm-input-validation>
-                            <label for="contact-email">Email</label>
-                            <input type="email" ng-disabled="!vm.canEdit" id="contact-email" class="form-control"
-                                   name="email"
-                                   ng-model="vm.contact.email" required>
-                    <span ng-show="contactForm.email.$dirty">
-                        <span ng-show="contactForm.email.$error.required" class="help-block">Email is required</span>
-                        <span ng-show="contactForm.email.$error.email" class="help-block">Enter valid email</span>
-                    </span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group" crm-input-validation>
-                            <label for="contact-address">Address</label>
-                            <input ng-disabled="!vm.canEdit" id="contact-address" class="form-control" name="address"
-                                   ng-model="vm.contact.address">
-                        </div>
-                    </div>
+                    <crm-contact-social-networks vm="vm"></crm-contact-social-networks>
                 </div>
             </uib-tab>
+
+            <uib-tab heading="Contact Info">
+                <div class="row crm-top-buffer">
+                    <crm-contact-addresses vm="vm"></crm-contact-addresses>
+                </div>
+                <div class="row">
+                    <crm-contact-telephones vm="vm"></crm-contact-telephones>
+                </div>
+                <div class="row">
+                    <crm-contact-emails vm="vm"></crm-contact-emails>
+                </div>
+                <div class="row">
+                    <crm-contact-messengers vm="vm"></crm-contact-messengers>
+                </div>
+            </uib-tab>
+
+            <uib-tab heading="Work Experience">
+                <div class="row crm-top-buffer">
+                    <crm-contact-workplaces vm="vm"></crm-contact-workplaces>
+                </div>
+            </uib-tab>
+
             <uib-tab heading="Attachments">
                 <div class="row crm-top-buffer">
-                    <div class="col-xs-12 col-sm-6"><h4>Attachments</h4></div>
-                    <div class="col-xs-12 col-sm-6 pull-right">
-                        <div class="btn-group btn-group-justified pull-right">
-                            <a class="btn btn-default" ng-click="vm.attachmentService.addAttachments(vm)"
-                               ng-show="vm.canEdit"> Add </a>
-                            <a class="btn btn-default" ng-click="vm.attachmentService.removeAttachments(vm)"
-                               ng-show="vm.canEdit"> Remove </a>
-                        </div>
-                    </div>
+                    <crm-contact-attachments vm="vm"></crm-contact-attachments>
                 </div>
-                <table class="table table-condensed">
-                    <thead>
-                    <tr>
-                        <th></th>
-                        <th>#</th>
-                        <th>File</th>
-                        <th>Date of upload</th>
-                        <th>Comment</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="attachment in vm.attachments"
-                        ng-dblclick="vm.attachmentService.updateAttachment(attachment)" class="crm-hover">
-                        <td><input type="checkbox" ng-model="attachment.checked" ng-show="vm.canEdit"
-                                   title="select attachment"></td>
-                        <td>{{$index + 1}}</td>
-                        <td>
-                            <a ng-if="attachment.id" ng-click="vm.attachmentService.getAttachment(attachment)">{{attachment.name}}</a>
-                            <span ng-if="!attachment.id">{{attachment.name}}</span>
-                        </td>
-                        <td>{{attachment.dateUpload | date:'yyyy-MM-dd'}}</td>
-                        <td>{{attachment.comment}}</td>
-                    </tr>
-                    </tbody>
-                </table>
             </uib-tab>
             <uib-tab heading="Access">
                 <acl-form handler="vm.aclHandler"></acl-form>

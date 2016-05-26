@@ -2,41 +2,65 @@
                   submit-btn="vm.submit()"
                   cancel-btn="vm.cancel()" crm-form-validation="companyForm">
     <form name="companyForm" class="form-group">
-        <div class="form-group" crm-input-validation>
-            <label for="company-name">Name</label>
-            <input id="company-name" class="form-control" name="companyName" ng-model="vm.company.name" required>
-            <span ng-show="companyForm.companyName.$dirty && companyForm.companyName.$error.required" class="help-block">
-                Company name is required
-            </span>
-        </div>
-        <div class="form-group" crm-input-validation>
-            <label for="company-type">Company Type</label>
-            <select ng-model="vm.company.companyType" 
-                    ng-options="x.description for x in vm.staticData.companyTypes track by x.id" 
-                    ng-init="vm.company.companyType"
-                    class="form-control" name="company-type">
-            </select>
-        </div>
-        <div class="form-group" crm-input-validation>
-            <label for="company-business-sphere">Business Sphere</label>
-            <select ng-model="vm.company.businessSphere" 
-                    ng-options="x.description for x in vm.staticData.businessSpheres track by x.id" 
-                    ng-init="vm.company.businessSphere"
-                    class="form-control" name="company-business-sphere">
-            </select>
-        </div>
-        <div class="form-group" crm-input-validation>
-            <label for="company-employee-number">Number of Employees</label>
-            <select ng-model="vm.company.employeeNumberCategory" 
-                    ng-options="x.description for x in vm.staticData.employeeNumberCategories track by x.id" 
-                    ng-init="vm.company.employeeNumberCategory"
-                    class="form-control" name="company-employee-number">
-            </select>
-        </div>
-        <div class="form-group" crm-input-validation>
-            <label for="company-commentary">Commentary</label>
-            <textarea id="company-commentary" class="form-control" name="company-commentary"
-                  ng-model="vm.company.commentary"/>
-        </div>
+        <uib-tabset active="active">
+            <uib-tab heading="Company Info">
+
+                <div class="form-group" crm-input-validation>
+                    <label for="company-name">Name</label>
+                    <input id="company-name" class="form-control"
+                           name="companyName"
+                           ng-disabled="!vm.canEdit"
+                           ng-model="vm.company.name" required>
+                    <span ng-show="companyForm.companyName.$dirty && companyForm.companyName.$error.required"
+                          class="help-block">
+                        Company name is required
+                    </span>
+                </div>
+
+                <div class="form-group" crm-input-validation>
+                    <label for="company-type">Company Type</label>
+                    <select ng-model="vm.company.companyType"
+                            ng-disabled="!vm.canEdit"
+                            ng-options="x.description for x in vm.staticData.companyTypes track by x.id"
+                            ng-init="vm.company.companyType"
+                            id="company-type"
+                            class="form-control" name="company-type">
+                    </select>
+                </div>
+
+                <div class="form-group" crm-input-validation>
+                    <label for="company-business-sphere">Business Sphere</label>
+                    <select ng-model="vm.company.businessSphere"
+                            ng-disabled="!vm.canEdit"
+                            ng-options="x.description for x in vm.staticData.businessSpheres track by x.id"
+                            ng-init="vm.company.businessSphere"
+                            id="company-business-sphere"
+                            class="form-control" name="company-business-sphere">
+                    </select>
+                </div>
+
+                <div class="form-group" crm-input-validation>
+                    <label for="company-employee-number">Number of Employees</label>
+                    <select ng-model="vm.company.employeeNumberCategory"
+                            ng-disabled="!vm.canEdit"
+                            ng-options="x.description for x in vm.staticData.employeeNumberCategories track by x.id"
+                            ng-init="vm.company.employeeNumberCategory"
+                            id="company-employee-number"
+                            class="form-control" name="company-employee-number">
+                    </select>
+                </div>
+                <div class="form-group" crm-input-validation>
+                    <label for="company-commentary">Commentary</label>
+                    <textarea id="company-commentary"
+                              ng-disabled="!vm.canEdit"
+                              class="form-control"
+                              name="company-commentary"
+                              ng-model="vm.company.commentary"></textarea>
+                </div>
+            </uib-tab>
+            <uib-tab heading="Access">
+                <acl-form handler="vm.aclHandler"></acl-form>
+            </uib-tab>
+        </uib-tabset>
     </form>
 </crm-form-wrapper>

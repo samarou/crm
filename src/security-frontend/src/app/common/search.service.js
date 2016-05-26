@@ -2,8 +2,8 @@
     'use strict';
 
     angular
-            .module('crm.common')
-            .factory('searchService', searchService);
+        .module('crm.common')
+        .factory('searchService', searchService);
 
     /** @ngInject */
     function searchService(userService, contactService, companyService, util, $filter, $log) {
@@ -65,7 +65,7 @@
                         item.checked = checked;
                     }
                 });
-            }
+            };
         }
 
         function createCommonBundle() {

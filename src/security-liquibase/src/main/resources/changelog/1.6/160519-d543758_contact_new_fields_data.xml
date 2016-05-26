@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet id="001" author="maksim.kalenik">
+        <sql dbms="mysql">
+            insert into country(name) values('no country'),('Afghanistan'),('Akrotiri'),('Albania'),
+            ('Algeria'),('American Samoa'),('Andorra'),('Angola'),('Anguilla'),('Antarctica'),('Argentina'),
+            ('Armenia'),('Aruba'),('Australia'),('Austria'),('Azerbaijan'),('Bahrain'),('Bangladesh'),
+            ('Barbados'),('Bassas da India'),('Belarus'),('Belgium'),('Belize'),('Benin'),('Bermuda'),
+            ('Cambodia'),('Cameroon'),('Canada'),('Cape Verde'),('Cayman Islands'),('Central African Republic'),
+            ('Chad'),('Chile'),('China'),('Christmas Island'),('Clipperton Island'),('Colombia'),('Comoros'),
+            ('Democratic Republic Congo'),('Cook Islands'),('Costa Rica'),('Croatia'),('Cuba'),('Cyprus'),
+            ('Czech Republic'),('Denmark'),('Dominican Republic'),('Ecuador'),('Egypt'),('El Salvador'),
+            ('Equatorial Guinea'),('Estonia'),('Ethiopia'),('Finland'),('France'),('Gabon'),('Gambia'),
+            ('Georgia'),('Germany'),('Ghana'),('Greece'),('Guatemala'),('Guinea'),('Haiti'),('Hong Kong'),
+            ('Iceland'),('India'),('Indonesia'),('Iran'),('Iraq'),('Israel'),('Italy'),('Jamaica'),('Japan'),
+            ('Jersey'),('Jordan'),('Kazakhstan'),('Kenya'),('North Korea'),('South Korea'),('Kyrgyzstan'),
+            ('Laos'),('Latvia'),('Liberia'),('Liechtenstein'),('Lithuania'),('Luxembourg'),('Macedonia'),
+            ('Madagascar'),('Malaysia'),('Maldives'),('Mali'),('Malta'),('Mexico'),('Moldova'),('Monaco'),
+            ('Mongolia'),('Morocco'),('Mozambique'),('Namibia'),('Nepal'),('New Caledonia'),('New Zealand'),
+            ('Nicaragua'),('Niger'),('Nigeria'),('Norway'),('Pakistan'),('Panama'),('Papua New Guinea'),
+            ('Paraguay'),('Peru'),('Philippines'),('Poland'),('Portugal'),('Puerto Rico'),('Romania'),('Russia'),
+            ('Rwanda'),('Saint Lucia'),('San Marino'),('Senegal'),('Serbia and Montenegro'),('Seychelles'),
+            ('Sierra Leone'),('Singapore'),('Slovakia'),('Slovenia'),('Spain'),('Sri Lanka'),('Sudan'),
+            ('Swaziland'),('Sweden'),('Switzerland'),('Syria'),('Taiwan'),('Tajikistan'),('Tanzania'),
+            ('Thailand'),('Tunisia'),('Turkey'),('Turkmenistan'),('Ukraine'),('United Arab Emirates'),
+            ('United Kingdom'),('United States'),('Uruguay'),('Uzbekistan'),('Venezuela'),('Vietnam'),('Zambia'),('Zimbabwe');
+        </sql>
+        <rollback>
+            <delete tableName="country"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="002" author="maksim.kalenik">
+        <sql dbms="mysql">
+            insert into social_network(name) values('Facebook'),('LinkedIn'),('Twitter'),('VK'),('LiveJournal'),('Other');
+        </sql>
+        <rollback>
+            <delete tableName="social_network"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="003" author="maksim.kalenik">
+        <sql dbms="mysql">
+            insert into messenger(name) values('Skype'),('Telegram'),('Viber'),('ICQ'),('Jabber'),('Other');
+        </sql>
+        <rollback>
+            <delete tableName="social_network"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="004" author="maksim.kalenik">
+        <sql dbms="mysql">
+            INSERT INTO email (contact_id,name,type)
+            SELECT id,email,'WORK' FROM contact where email is not null
+        </sql>
+        <rollback>
+            <delete tableName="email"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="005" author="maksim.kalenik">
+        <sql dbms="mysql">
+            INSERT INTO address (contact_id,address_line,country_id)
+            SELECT id,address,1 FROM contact WHERE address is not null
+        </sql>
+        <rollback>
+            <delete tableName="address"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="006" author="maksim.kalenik">
+        <dropColumn tableName="contact">
+            <column name="email"/>
+            <column name="address"/>
+        </dropColumn>
+        <rollback>
+            <addColumn tableName="contact">
+                <column name="email" type="VARCHAR(100)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="address" type="VARCHAR(250)"/>
+            </addColumn>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

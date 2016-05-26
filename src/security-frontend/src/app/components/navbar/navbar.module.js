@@ -1,7 +1,7 @@
 (function () {
-	'use strict';
+    'use strict';
 
-	angular
-			.module('crm.navbar', ['crm.common']);
+    angular
+        .module('crm.navbar', ['crm.common']);
 
 })();

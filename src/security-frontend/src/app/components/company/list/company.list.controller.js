@@ -6,7 +6,8 @@
         .controller('companyListController', companyListController);
 
     /** @ngInject */
-    function companyListController($q, companyService, searchService, dialogService, $state) {
+    function companyListController(companyService, companySecurityService, searchService, dialogService, permissions,
+                                   $q, $state) {
         var vm = this;
 
         vm.searchBundle = searchService.companyMode();
@@ -33,7 +34,7 @@
 
         function filterUpdated() {
             vm.searchBundle.filter.employeeNumberCategoryId = vm.selectedEmployeeNumberCategory ?
-                    vm.selectedEmployeeNumberCategory.id : null;
+                vm.selectedEmployeeNumberCategory.id : null;
             vm.searchBundle.find();
         }
 
@@ -42,7 +43,7 @@
                 var checkedCompanies = vm.searchBundle.itemsList.filter(function (company) {
                     return company.checked;
                 });
-                removeCompanies(checkedCompanies);
+                companySecurityService.checkDeletePermissionForList(checkedCompanies).then(removeCompanies);
             });
         }
 
@@ -51,7 +52,7 @@
             companies.forEach(function (company) {
                 tasks.push(companyService.remove(company.id));
             });
-            $q.all(tasks).then(vm.searchBundle.find)
+            $q.all(tasks).then(vm.searchBundle.find);
         }
 
         function openRemoveDialog() {

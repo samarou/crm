@@ -1,5 +1,7 @@
 package com.itechart.security.business.model.persistent;
 
+import lombok.EqualsAndHashCode;
+
 import java.io.Serializable;
 
 /**

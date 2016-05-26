@@ -4,13 +4,15 @@ import com.itechart.security.business.dao.AttachmentDao;
 import com.itechart.security.business.model.dto.AttachmentDto;
 import com.itechart.security.business.service.AttachmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.itechart.security.business.model.dto.DtoConverter.convert;
-import static com.itechart.security.business.model.dto.DtoConverter.convertAttachments;
+import static com.itechart.security.business.model.dto.utils.DtoConverter.convert;
+import static com.itechart.security.business.model.dto.utils.DtoConverter.convertAttachments;
 
+@Service
 public class AttachmentServiceImpl implements AttachmentService {
 
     @Autowired

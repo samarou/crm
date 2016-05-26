@@ -1,0 +1,45 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <crm-contact-table-header title="Telephones" adding-function="vm.details.addTelephone"
+                                  removing-function="vm.details.removeTelephones"
+                                  vm="vm"></crm-contact-table-header>
+    </div>
+    <table class="table table-condensed" ng-show="vm.contact.telephones.length>0">
+        <thead>
+        <tr>
+            <th></th>
+            <th></th>
+            <th>Number</th>
+            <th>Type</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="telephone in vm.contact.telephones" ng-form="telephonesForm">
+            <td>
+                <input ng-model="telephone.checked" ng-show="vm.canEdit" type="checkbox">
+            </td>
+            <td>{{$index + 1}}</td>
+            <td>
+                <div crm-input-validation>
+                    <input ng-model="telephone.number"
+                           class="form-control"
+                           ng-disabled="!vm.canEdit"
+                           name="telephone" required maxlength="100">
+                    <span
+                        ng-show="telephonesForm.telephone.$error.required"
+                        class="help-block">Telephone is required</span>
+                </div>
+            </td>
+            <td>
+                <div crm-input-validation class="crm-select-validation-icon">
+                    <select ng-model="telephone.type" ng-disabled="!vm.canEdit" name="telephoneType"
+                            ng-options="option.name as option.value for option in vm.dictionary.telephoneTypes"
+                            class="form-control">
+                        <option value="">Please, select</option>
+                    </select>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

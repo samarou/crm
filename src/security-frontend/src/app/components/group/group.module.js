@@ -1,7 +1,7 @@
 (function () {
-	'use strict';
+    'use strict';
 
-	angular
-			.module('crm.group', ['crm.common', 'crm.validation', 'crm.formWrapper']);
+    angular
+        .module('crm.group', ['crm.common', 'crm.validation', 'crm.formWrapper']);
 
 })();

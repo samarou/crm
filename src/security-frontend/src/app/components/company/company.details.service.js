@@ -1,28 +1,50 @@
 (function () {
-	'use strict';
+    'use strict';
 
-	angular
-		.module('crm.company')
-		.factory('companyDetailsService', companyDetailsService);
+    angular
+        .module('crm.company')
+        .factory('companyDetailsService', companyDetailsService);
 
-	/** @ngInject */
-	function companyDetailsService(companyService, $state) {
-		return {
-			submit: submit,
-			cancel: goToList,
-			staticData: companyService.staticData
-		};
+    /** @ngInject */
+    function companyDetailsService(companyService, aclServiceBuilder, $state) {
+        return {
+            submit: submit,
+            create: create,
+            update: update,
+            updateAcls: companyService.updateAcls,
+            cancel: goToList,
+            createAclHandler: createAclHandler,
+            staticData: companyService.staticData
+        };
 
-		function submit(scope, isNew) {
-			if (isNew) {
-				companyService.create(scope.company).then(goToList)
-			} else {
-				companyService.update(scope.company).then(goToList)
-			}
-		}
+        function create(company) {
+            return companyService.create(company).then(function (response) {
+                return response.data;
+            });
+        }
 
-		function goToList() {
-			$state.go('companies.list');
-		}
-	}
+        function update(company) {
+            return companyService.update(company).then(function () {
+                return company.id;
+            });
+        }
+
+        function submit(promise) {
+            promise.then(function () {
+                goToList();
+            });
+        }
+
+        function goToList() {
+            $state.go('companies.list');
+        }
+
+        function createAclHandler(getId) {
+            return {
+                canEdit: false,
+                acls: [],
+                actions: aclServiceBuilder(getId, companyService)
+            };
+        }
+    }
 })();

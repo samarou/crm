@@ -1,0 +1,52 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <crm-contact-table-header title="Emails" adding-function="vm.details.addEmail"
+                                  removing-function="vm.details.removeEmails"
+                                  vm="vm"></crm-contact-table-header>
+    </div>
+    <table class="table table-condensed" ng-show="vm.contact.emails.length>0">
+        <thead>
+        <tr>
+            <th></th>
+            <th></th>
+            <th>Email</th>
+            <th>Type</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="email in vm.contact.emails" ng-form="emailsForm">
+            <td>
+                <input ng-model="email.checked"
+                       type="checkbox"
+                       ng-show="vm.canEdit">
+            </td>
+            <td>{{$index + 1}}</td>
+            <td>
+                <div crm-input-validation>
+                    <input ng-model="email.name"
+                           name="email"
+                           class="form-control"
+                           type="email"
+                           ng-disabled="!vm.canEdit"
+                           required maxlength="255">
+                    <span ng-show="emailsForm.email.$error.required"
+                          class="help-block">Email is required</span>
+                    <span ng-show="!emailsForm.email.$error.required && emailsForm.email.$dirty && !emailsForm.email.$valid"
+                          class="help-block">Email format is not correct</span>
+                </div>
+            </td>
+            <td>
+                <div crm-input-validation class="crm-select-validation-icon">
+                    <select ng-model="email.type"
+                            name="emailType"
+                            class="form-control"
+                            ng-options="option.name as option.value for option in vm.dictionary.emailTypes"
+                            ng-disabled="!vm.canEdit">
+                        <option value="">Please, select</option>
+                    </select>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

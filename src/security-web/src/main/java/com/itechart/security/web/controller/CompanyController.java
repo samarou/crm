@@ -1,7 +1,14 @@
 package com.itechart.security.web.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import com.itechart.security.core.model.acl.Permission;
+import com.itechart.security.model.persistent.Principal;
+import com.itechart.security.service.PrincipalService;
+import com.itechart.security.web.model.dto.AclEntryDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +33,7 @@ import com.itechart.security.web.model.dto.CompanyFilterDto;
 import com.itechart.security.web.model.dto.DataPageDto;
 
 import static com.itechart.security.web.model.dto.Converter.convert;
+import static java.util.stream.Collectors.toList;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
@@ -42,16 +50,20 @@ public class CompanyController {
     @Autowired
     private AclPermissionEvaluator aclPermissionEvaluator;
 
+    @Autowired
+    private PrincipalService principalService;
+
     @RequestMapping("/companies")
     public DataPageDto<CompanyDto> getCompanies(CompanyFilterDto filter) {
         List<CompanyDto> companies = companyService.findCompanies(convert(filter));
         DataPageDto<CompanyDto> result = new DataPageDto<CompanyDto>();
         result.setData(companies);
-        result.setTotalCount(companies.size());
+        result.setTotalCount(companyService.countCompanies(convert(filter)));
         return result;
     }
 
     @RequestMapping(value = "/companies/{companyId}", method = RequestMethod.GET)
+    @PreAuthorize("hasPermission(#companyId, 'sample.Company', 'READ')")
     public CompanyDto get(@PathVariable Long companyId) {
         return companyService.get(companyId);
     }
@@ -92,6 +104,37 @@ public class CompanyController {
     @RequestMapping("/companies/employee_number_categories")
     public List<EmployeeNumberCategoryDto> getEmployeeNumberCategories() {
         return companyService.loadEmployeeNumberCategories();
+    }
+
+    @RequestMapping("/companies/{companyId}/actions/{action}")
+    public boolean isAllowed(@PathVariable Long companyId, @PathVariable String action) {
+        Permission permission = Permission.valueOf(action.toUpperCase());
+        return aclPermissionEvaluator.hasPermission(SecurityUtils.getAuthentication(), createIdentity(companyId), permission);
+    }
+
+    @RequestMapping("/companies/{companyId}/acls")
+    @PreAuthorize("hasPermission(#companyId, 'sample.Company', 'READ')")
+    public List<AclEntryDto> getAcls(@PathVariable Long companyId) {
+        Acl acl = getAcl(companyId);
+        Map<Long, Set<Permission>> allPermissions = acl.getPermissions();
+        List<Principal> principals = principalService.getByIds(new ArrayList<>(allPermissions.keySet()));
+        return principals.stream().map(principal -> convert(principal, allPermissions.get(principal.getId()))).collect(toList());
+    }
+
+    @RequestMapping(value = "/companies/{companyId}/acls", method = PUT)
+    @PreAuthorize("hasPermission(#companyId, 'sample.Company', 'ADMIN')")
+    public void createOrUpdateAcls(@PathVariable Long companyId, @RequestBody List<AclEntryDto> aclEntries) {
+        Acl acl = getAcl(companyId);
+        aclEntries.forEach(aclEntry -> acl.setPermissions(aclEntry.getPrincipalId(), convert(aclEntry)));
+        aclService.updateAcl(acl);
+    }
+
+    @RequestMapping(value = "/companies/{companyId}/acls/{principalId}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasPermission(#companyId, 'sample.Company', 'ADMIN')")
+    public void deleteAcl(@PathVariable Long companyId, @PathVariable Long principalId) {
+        Acl acl = getAcl(companyId);
+        acl.removePrincipal(principalId);
+        aclService.updateAcl(acl);
     }
 
     private Acl getAcl(Long companyId) {

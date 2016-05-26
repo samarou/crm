@@ -20,7 +20,7 @@ var GroupsPage = function () {
 	};
 	self.getNotifyButton = function () {
 		return element.all(by.css('button[ng-click="vm.close()"]')).first();
-	}
+	};
 };
 
 module.exports = new GroupsPage();

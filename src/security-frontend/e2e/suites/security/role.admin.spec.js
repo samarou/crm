@@ -42,5 +42,5 @@ describe('Admin security', function () {
 
   afterAll(function () {
     auth.logout();
-  })
+  });
 });

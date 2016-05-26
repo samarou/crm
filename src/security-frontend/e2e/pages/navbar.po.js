@@ -8,7 +8,7 @@ var LoginPage = function () {
 	self.contactsLink = element(by.css('a[ui-sref="contacts.list"]'));
 	self.getUserName = function () {
 		return element(by.binding('vm.getUserName()')).getText();
-	}
+	};
 };
 
 module.exports = new LoginPage();

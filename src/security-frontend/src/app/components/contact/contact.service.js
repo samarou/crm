@@ -23,7 +23,14 @@
             addAttachment: addAttachment,
             updateAttachment: updateAttachment,
             removeAttachment: removeAttachment,
-            getAttachment: getAttachment
+            getAttachment: getAttachment,
+            removeEmail: removeEmail,
+            removeTelephone: removeTelephone,
+            removeAddress: removeAddress,
+            removeMessengerAccount: removeMessengerAccount,
+            removeSocialNetworkAccount: removeSocialNetworkAccount,
+            getDictionary: getDictionary,
+            removeWorkplace: removeWorkplace
         };
 
         function getAll() {
@@ -59,16 +66,16 @@
         }
 
         function removeAcl(id, aclId) {
-            return $http.delete('rest/contacts/' + id + '/acls/' + aclId)
+            return $http.delete('rest/contacts/' + id + '/acls/' + aclId);
         }
 
         function isAllowed(contactId, permission) {
             return $http.get('rest/contacts/' + contactId + '/actions/' + permission);
         }
 
-        function getAttachment(attachment) {
-            if (attachment.contactId) {
-                var url = 'rest/files/contacts/' + attachment.contactId + '/attachments/' + attachment.id;
+        function getAttachment(contactId, attachment) {
+            if (contactId) {
+                var url = 'rest/files/contacts/' + contactId + '/attachments/' + attachment.id;
                 return $http.get(url + '/check').then(function () {
                     $window.open(url);
                 });
@@ -90,13 +97,40 @@
             });
         }
 
-
         function updateAttachment(id, attachment) {
             return $http.put('rest/contacts/' + id + '/attachments', attachment);
         }
 
         function removeAttachment(id, attachmentId) {
             return $http.delete('rest/contacts/' + id + '/attachments/' + attachmentId);
+        }
+
+        function removeEmail(id, emailId) {
+            return $http.delete('rest/contacts/' + id + '/emails/' + emailId);
+        }
+
+        function removeTelephone(id, telephoneId) {
+            return $http.delete('rest/contacts/' + id + '/telephones/' + telephoneId);
+        }
+
+        function removeAddress(id, addressId) {
+            return $http.delete('rest/contacts/' + id + '/addresses/' + addressId);
+        }
+
+        function removeMessengerAccount(id, accountId) {
+            return $http.delete('rest/contacts/' + id + '/messengers/' + accountId);
+        }
+
+        function removeSocialNetworkAccount(id, accountId) {
+            return $http.delete('rest/contacts/' + id + '/social_networks/' + accountId);
+        }
+
+        function getDictionary() {
+            return $http.get('rest/dictionary');
+        }
+
+        function removeWorkplace(id, workplaceId) {
+            return $http.delete('rest/contacts/' + id + '/workplaces/' + workplaceId);
         }
     }
 })();

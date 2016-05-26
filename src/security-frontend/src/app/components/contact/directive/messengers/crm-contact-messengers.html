@@ -1,0 +1,50 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <crm-contact-table-header title="Messengers" adding-function="vm.details.addMessengerAccount"
+                                  removing-function="vm.details.removeMessengerAccounts"
+                                  vm="vm"></crm-contact-table-header>
+    </div>
+    <table class="table table-condensed" ng-show="vm.contact.messengers.length > 0">
+        <thead>
+        <tr>
+            <th></th>
+            <th></th>
+            <th>Username</th>
+            <th>Messenger</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="account in vm.contact.messengers" class="form-group" ng-form="messengersForm">
+            <td>
+                <input ng-model="account.checked"
+                       type="checkbox"
+                       ng-show="vm.canEdit">
+            </td>
+            <td>{{$index + 1}}</td>
+            <td>
+                <div crm-input-validation>
+                    <input ng-model="account.username"
+                           name="messengers"
+                           class="form-control"
+                           ng-disabled="!vm.canEdit"
+                           required>
+                    <span
+                        ng-show="account.username.$error.required"
+                        class="help-block">Username is required</span>
+                </div>
+            </td>
+            <td>
+                <div crm-input-validation class="crm-select-validation-icon">
+                    <select ng-model="account.messenger"
+                            name="messengerType"
+                            class="form-control"
+                            ng-options="option.id as option.name for option in vm.dictionary.messengers"
+                            ng-disabled="!vm.canEdit">
+                        <option value>Please, select</option>
+                    </select>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
