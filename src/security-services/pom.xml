@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.itechart.security</groupId>
         <artifactId>security-project</artifactId>
-        <version>1.6</version>
+        <version>1.7-SNAPSHOT</version>
     </parent>
     <artifactId>security-services</artifactId>
     <packaging>jar</packaging>
