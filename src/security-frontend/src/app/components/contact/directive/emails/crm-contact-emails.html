@@ -29,8 +29,10 @@
                            type="email"
                            ng-disabled="!vm.canEdit"
                            required maxlength="255">
-                    <span ng-show="emailsForm.email.$dirty &&  emailsForm.email.$error.required"
+                    <span ng-show="emailsForm.email.$error.required"
                           class="help-block">Email is required</span>
+                    <span ng-show="!emailsForm.email.$error.required && emailsForm.email.$dirty && !emailsForm.email.$valid"
+                          class="help-block">Email format is not correct</span>
                 </div>
             </td>
             <td>
@@ -39,11 +41,9 @@
                             name="emailType"
                             class="form-control"
                             ng-options="option.name as option.value for option in vm.dictionary.emailTypes"
-                            ng-disabled="!vm.canEdit" required>
+                            ng-disabled="!vm.canEdit">
                         <option value="">Please, select</option>
                     </select>
-                    <span ng-show="emailsForm.emailType.$dirty &&  emailsForm.emailType.$error.required"
-                          class="help-block">Email type is required</span>
                 </div>
             </td>
         </tr>

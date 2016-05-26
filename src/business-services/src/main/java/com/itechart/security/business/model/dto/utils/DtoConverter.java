@@ -6,10 +6,7 @@ import com.itechart.security.business.model.enums.TelephoneType;
 import com.itechart.security.business.model.persistent.*;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.emptySet;
@@ -112,7 +109,7 @@ public class DtoConverter {
         EmailDto dto = new EmailDto();
         dto.setId(email.getId());
         dto.setName(email.getName());
-        dto.setType(email.getType().name());
+        dto.setType(email.getType() != null ? email.getType().name() : null);
         return dto;
     }
 
@@ -120,7 +117,7 @@ public class DtoConverter {
         Email email = new Email();
         email.setId(dto.getId());
         email.setName(dto.getName());
-        email.setType(EmailType.findByName(dto.getType()));
+        email.setType(dto.getType() != null ? EmailType.findByName(dto.getType()) : null);
         return email;
     }
 
@@ -174,7 +171,7 @@ public class DtoConverter {
         dto.setZipcode(address.getZipcode());
         dto.setCity(address.getCity());
         dto.setRegion(address.getRegion());
-        dto.setCountry(address.getCountry().getId());
+        dto.setCountry(address.getCountry() != null ? address.getCountry().getId() : null);
         return dto;
     }
 
@@ -185,9 +182,11 @@ public class DtoConverter {
         address.setZipcode(dto.getZipcode());
         address.setCity(dto.getCity());
         address.setRegion(dto.getRegion());
-        Country country = new Country();
-        country.setId(dto.getCountry());
-        address.setCountry(country);
+        if (dto.getCountry() != null && dto.getCountry() != 0) {
+            Country country = new Country();
+            country.setId(dto.getCountry());
+            address.setCountry(country);
+        }
         return address;
     }
 
@@ -217,7 +216,7 @@ public class DtoConverter {
         TelephoneDto dto = new TelephoneDto();
         dto.setId(telephone.getId());
         dto.setNumber(telephone.getNumber());
-        dto.setType(telephone.getType().name());
+        dto.setType(telephone.getType() != null ? telephone.getType().name() : null);
         return dto;
     }
 
@@ -225,7 +224,7 @@ public class DtoConverter {
         Telephone telephone = new Telephone();
         telephone.setId(dto.getId());
         telephone.setNumber(dto.getNumber());
-        telephone.setType(TelephoneType.findByName(dto.getType()));
+        telephone.setType(dto.getType() != null ? TelephoneType.findByName(dto.getType()) : null);
         return telephone;
     }
 
@@ -275,7 +274,7 @@ public class DtoConverter {
     public static MessengerAccountDto convert(MessengerAccount messengerAccount) {
         MessengerAccountDto dto = new MessengerAccountDto();
         dto.setId(messengerAccount.getId());
-        dto.setMessenger(messengerAccount.getMessenger().getId());
+        dto.setMessenger(messengerAccount.getMessenger() != null ? messengerAccount.getMessenger().getId() : null);
         dto.setUsername(messengerAccount.getUsername());
         return dto;
     }
@@ -283,9 +282,11 @@ public class DtoConverter {
     public static MessengerAccount convert(MessengerAccountDto dto) {
         MessengerAccount messengerAccount = new MessengerAccount();
         messengerAccount.setId(dto.getId());
-        Messenger messenger = new Messenger();
-        messenger.setId(dto.getMessenger());
-        messengerAccount.setMessenger(messenger);
+        if (dto.getMessenger() != null && dto.getMessenger() != 0) {
+            Messenger messenger = new Messenger();
+            messenger.setId(dto.getMessenger());
+            messengerAccount.setMessenger(messenger);
+        }
         messengerAccount.setUsername(dto.getUsername());
         return messengerAccount;
     }
@@ -336,7 +337,7 @@ public class DtoConverter {
     public static SocialNetworkAccountDto convert(SocialNetworkAccount socialNetworkAccount) {
         SocialNetworkAccountDto dto = new SocialNetworkAccountDto();
         dto.setId(socialNetworkAccount.getId());
-        dto.setSocialNetwork(socialNetworkAccount.getSocialNetwork().getId());
+        dto.setSocialNetwork(socialNetworkAccount.getSocialNetwork() != null ? socialNetworkAccount.getSocialNetwork().getId() : null);
         dto.setUrl(socialNetworkAccount.getUrl());
         return dto;
     }
@@ -344,9 +345,11 @@ public class DtoConverter {
     public static SocialNetworkAccount convert(SocialNetworkAccountDto dto) {
         SocialNetworkAccount socialNetworkAccount = new SocialNetworkAccount();
         socialNetworkAccount.setId(dto.getId());
-        SocialNetwork socialNetwork = new SocialNetwork();
-        socialNetwork.setId(dto.getSocialNetwork());
-        socialNetworkAccount.setSocialNetwork(socialNetwork);
+        if (dto.getSocialNetwork() != null && dto.getSocialNetwork() != 0) {
+            SocialNetwork socialNetwork = new SocialNetwork();
+            socialNetwork.setId(dto.getSocialNetwork());
+            socialNetworkAccount.setSocialNetwork(socialNetwork);
+        }
         socialNetworkAccount.setUrl(dto.getUrl());
         return socialNetworkAccount;
     }

@@ -4,7 +4,7 @@
                                   removing-function="vm.details.removeMessengerAccounts"
                                   vm="vm"></crm-contact-table-header>
     </div>
-    <table class="table table-condensed" ng-show="vm.contact.messengers>0">
+    <table class="table table-condensed" ng-show="vm.contact.messengers.length > 0">
         <thead>
         <tr>
             <th></th>
@@ -29,7 +29,7 @@
                            ng-disabled="!vm.canEdit"
                            required>
                     <span
-                        ng-show="account.username.$dirty && account.username.$error.required"
+                        ng-show="account.username.$error.required"
                         class="help-block">Username is required</span>
                 </div>
             </td>
@@ -39,12 +39,9 @@
                             name="messengerType"
                             class="form-control"
                             ng-options="option.id as option.name for option in vm.dictionary.messengers"
-                            ng-disabled="!vm.canEdit" required>
-                        <option value="">Please, select</option>
+                            ng-disabled="!vm.canEdit">
+                        <option value>Please, select</option>
                     </select>
-                    <span
-                        ng-show="messengersForm.messengerType.$dirty && messengersForm.messengerType.$error.required"
-                        class="help-block">Messenger type is required</span>
                 </div>
             </td>
         </tr>

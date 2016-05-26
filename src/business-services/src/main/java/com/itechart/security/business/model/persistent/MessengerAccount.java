@@ -19,8 +19,8 @@ public class MessengerAccount extends SecuredEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "messenger_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "messenger_id")
     private Messenger messenger;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)

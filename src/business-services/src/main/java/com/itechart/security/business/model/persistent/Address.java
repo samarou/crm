@@ -34,8 +34,8 @@ public class Address extends SecuredEntity {
     @JoinColumn(name = "contact_id", nullable = false)
     private Contact contact;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "country_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "country_id")
     private Country country;
 
     @Override
