@@ -46,6 +46,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <finalName>security-web</finalName>
         <lombok.version>1.16.8</lombok.version>
+        <jsoap.version>1.9.2</jsoap.version>
+        <apache.common.lang3.version>3.1</apache.common.lang3.version>
     </properties>
     <dependencies>
         <dependency>

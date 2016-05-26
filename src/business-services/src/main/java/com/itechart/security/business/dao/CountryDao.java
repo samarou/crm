@@ -8,4 +8,6 @@ public interface CountryDao {
     List<Country> loadAll();
 
     Country get(Long id);
+
+    Country getByName(String name);
 }

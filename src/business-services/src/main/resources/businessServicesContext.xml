@@ -44,6 +44,7 @@
     <bean name="contactService" class="com.itechart.security.business.service.impl.ContactServiceImpl"/>
     <bean name="companyService" class="com.itechart.security.business.service.impl.CompanyServiceImpl"/>
     <bean name="attachmentService" class="com.itechart.security.business.service.impl.AttachmentServiceImpl"/>
+    <bean name="parsingService" class="com.itechart.security.business.service.impl.ParsingServiceImpl"/>
 
     <!-- Method Security -->
 
