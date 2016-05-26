@@ -73,9 +73,9 @@
             return $http.get('rest/contacts/' + contactId + '/actions/' + permission);
         }
 
-        function getAttachment(attachment) {
-            if (attachment.contactId) {
-                var url = 'rest/files/contacts/' + attachment.contactId + '/attachments/' + attachment.id;
+        function getAttachment(contactId, attachment) {
+            if (contactId) {
+                var url = 'rest/files/contacts/' + contactId + '/attachments/' + attachment.id;
                 return $http.get(url + '/check').then(function () {
                     $window.open(url);
                 });
@@ -105,28 +105,24 @@
             return $http.delete('rest/contacts/' + id + '/attachments/' + attachmentId);
         }
 
-        function getEmailTypes() {
-            return $http.get('rest/emails/types');
-        }
-
         function removeEmail(id, emailId) {
-            return $http.delete('rest/contacts/' + id + '/emails/' + emailId)
+            return $http.delete('rest/contacts/' + id + '/emails/' + emailId);
         }
 
         function removeTelephone(id, telephoneId) {
-            return $http.delete('rest/contacts/' + id + '/telephones/' + telephoneId)
+            return $http.delete('rest/contacts/' + id + '/telephones/' + telephoneId);
         }
 
         function removeAddress(id, addressId) {
-            return $http.delete('rest/contacts/' + id + '/addresses/' + addressId)
+            return $http.delete('rest/contacts/' + id + '/addresses/' + addressId);
         }
 
         function removeMessengerAccount(id, accountId) {
-            return $http.delete('rest/contacts/' + id + '/messengers/' + accountId)
+            return $http.delete('rest/contacts/' + id + '/messengers/' + accountId);
         }
 
         function removeSocialNetworkAccount(id, accountId) {
-            return $http.delete('rest/contacts/' + id + '/social_networks/' + accountId)
+            return $http.delete('rest/contacts/' + id + '/social_networks/' + accountId);
         }
 
         function getDictionary() {
@@ -134,7 +130,7 @@
         }
 
         function removeWorkplace(id, workplaceId) {
-            return $http.delete('rest/contacts/' + id + '/workplaces/' + workplaceId)
+            return $http.delete('rest/contacts/' + id + '/workplaces/' + workplaceId);
         }
     }
 })();

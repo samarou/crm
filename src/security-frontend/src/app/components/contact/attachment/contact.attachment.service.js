@@ -61,18 +61,18 @@
             }).result;
         }
 
-        function updateAttachment(attachment) {
+        function updateAttachment(contactId, attachment) {
             openUpdateAttachmentDialog(attachment).then(function (model) {
                 attachment.name = model.attachment.name;
                 attachment.comment = model.attachment.comment;
                 if (attachment.id) {
-                    contactService.updateAttachment(attachment.contactId, attachment)
+                    contactService.updateAttachment(contactId, attachment);
                 }
             });
         }
 
-        function getAttachment(attachment) {
-            return contactService.getAttachment(attachment);
+        function getAttachment(contactId, attachment) {
+            return contactService.getAttachment(contactId, attachment);
         }
 
         function openUpdateAttachmentDialog(attachment) {

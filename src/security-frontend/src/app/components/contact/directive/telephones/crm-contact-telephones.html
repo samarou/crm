@@ -26,7 +26,7 @@
                            ng-disabled="!vm.canEdit"
                            name="telephone" required maxlength="100">
                     <span
-                        ng-show="telephonesForm.telephone.$dirty && telephonesForm.telephone.$error.required"
+                        ng-show="telephonesForm.telephone.$error.required"
                         class="help-block">Telephone is required</span>
                 </div>
             </td>
@@ -34,12 +34,9 @@
                 <div crm-input-validation class="crm-select-validation-icon">
                     <select ng-model="telephone.type" ng-disabled="!vm.canEdit" name="telephoneType"
                             ng-options="option.name as option.value for option in vm.dictionary.telephoneTypes"
-                            class="form-control" required>
+                            class="form-control">
                         <option value="">Please, select</option>
                     </select>
-                    <span
-                        ng-show="telephonesForm.telephoneType.$dirty && telephonesForm.telephoneType.$error.required"
-                        class="help-block">Telephone type is required</span>
                 </div>
             </td>
         </tr>
