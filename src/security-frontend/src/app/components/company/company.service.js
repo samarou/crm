@@ -8,13 +8,6 @@
     /** @ngInject */
     function companyService($http) {
 
-        var staticData = {};
-        staticData.companyTypes = [];
-        staticData.businessSpheres = [];
-        staticData.employeeNumberCategories = [];
-
-        init();
-
         return {
             find: find,
             create: create,
@@ -25,19 +18,21 @@
             updateAcls: updateAcls,
             removeAcl: removeAcl,
             isAllowed: isAllowed,
-            staticData: staticData
+            getCompanyTypes: getCompanyTypes,
+            getBusinessSpheres: getBusinessSpheres,
+            getEmployeeCategories: getEmployeeCategories
         };
 
-        function init() {
-            $http.get('rest/companies/company_types').then(function (response) {
-                staticData.companyTypes = response.data;
-            });
-            $http.get('rest/companies/business_spheres').then(function (response) {
-                staticData.businessSpheres = response.data;
-            });
-            $http.get('rest/companies/employee_number_categories').then(function (response) {
-                staticData.employeeNumberCategories = response.data;
-            });
+        function getCompanyTypes() {
+            return $http.get('rest/companies/company_types', {cache: true});
+        }
+
+        function getBusinessSpheres() {
+            return $http.get('rest/companies/business_spheres', {cache: true});
+        }
+
+        function getEmployeeCategories() {
+            return $http.get('rest/companies/employee_number_categories', {cache: true});
         }
 
         function find(filter) {
