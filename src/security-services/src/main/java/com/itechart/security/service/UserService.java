@@ -1,6 +1,6 @@
 package com.itechart.security.service;
 
-import com.itechart.security.model.filter.UserFilter;
+import com.itechart.security.model.dto.*;
 import com.itechart.security.model.persistent.User;
 
 import java.util.List;
@@ -12,25 +12,33 @@ import java.util.List;
  */
 public interface UserService {
 
-    User getUser(Long userId);
+    SecuredUserDto getUser(Long userId);
 
-    User getUserWithAcls(Long userId);
+    public void deleteAcl(Long userId, Long principalId);
 
-    List<User> getUsers();
+    List<UserDefaultAclEntryDto> getDefaultAcls(Long userId);
+
+    List<SecuredUserDto> getUsers();
+
+    List<PublicUserDto> getPublicUsers();
 
     User findByName(String userName);
 
-    List<User> findUsers(UserFilter filter);
+    DataPageDto<SecuredUserDto> findUsers(SecuredUserFilterDto filter);
 
-    int countUsers(UserFilter filter);
+    DataPageDto<PublicUserDto> findPublicUsers(PublicUserFilterDto filter);
 
-    Long createUser(User user);
+    Long createUser(SecuredUserDto user);
+
+    void updateUser(SecuredUserDto user);
 
     void updateUser(User user);
 
     boolean changePassword(String userName, String oldPassword, String newPassword);
 
-    void activateUser(Long userId);
+    PublicUserDto activateUser(Long userId);
 
-    void deactivateUser(Long userId);
+    PublicUserDto deactivateUser(Long userId);
+
+    List<UserDefaultAclEntryDto> getDefaultAcls();
 }

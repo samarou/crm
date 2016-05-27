@@ -1,5 +1,6 @@
 package com.itechart.security.service;
 
+import com.itechart.security.model.dto.RoleDto;
 import com.itechart.security.model.persistent.Role;
 
 import java.util.List;
@@ -11,15 +12,15 @@ import java.util.List;
  */
 public interface RoleService {
 
-    List<Role> getRoles();
+    List<RoleDto> getRoles();
 
-    Long createRole(Role role);
+    Long createRole(RoleDto role);
 
-    void updateRole(Role role);
+    void updateRole(RoleDto role);
 
-    void deleteRole(Role role);
+    void deleteRole(RoleDto role);
 
     void deleteRoleById(Long id);
 
-    Role getRole(Long id);
+    RoleDto getRole(Long id);
 }

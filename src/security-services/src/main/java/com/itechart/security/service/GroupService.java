@@ -1,6 +1,7 @@
 package com.itechart.security.service;
 
-import com.itechart.security.model.persistent.Group;
+import com.itechart.security.model.dto.GroupDto;
+import com.itechart.security.model.dto.PublicGroupDto;
 
 import java.io.Serializable;
 import java.util.List;
@@ -10,15 +11,17 @@ import java.util.List;
  */
 public interface GroupService {
 
-    List<Group> getGroups();
+    List<GroupDto> getGroups();
 
-    Serializable create(Group group);
+    Serializable create(GroupDto group);
 
-    void update(Group convert);
+    void update(GroupDto convert);
 
-    Group get(Long id);
+    GroupDto get(Long id);
 
-    Group getGroupWithUsers(Long id);
+    GroupDto getGroupWithUsers(Long id);
+
+    List<PublicGroupDto> getPublicGroups();
 
     void deleteById(Long id);
 }

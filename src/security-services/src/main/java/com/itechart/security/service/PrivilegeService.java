@@ -1,5 +1,6 @@
 package com.itechart.security.service;
 
+import com.itechart.security.model.dto.PrivilegeDto;
 import com.itechart.security.model.persistent.Privilege;
 
 import java.util.List;
@@ -11,5 +12,5 @@ import java.util.List;
  */
 public interface PrivilegeService {
 
-    List<Privilege> getPrivileges();
+    List<PrivilegeDto> getPrivileges();
 }
