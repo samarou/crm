@@ -2,10 +2,8 @@ package com.itechart.security.service;
 
 import com.itechart.security.model.persistent.acl.Acl;
 import com.itechart.security.core.model.acl.ObjectIdentity;
-import com.itechart.security.core.model.acl.Permission;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Service for managing of ACL entities

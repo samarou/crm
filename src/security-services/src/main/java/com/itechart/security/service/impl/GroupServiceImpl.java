@@ -1,14 +1,22 @@
 package com.itechart.security.service.impl;
 
 import com.itechart.security.dao.GroupDao;
+import com.itechart.security.model.dto.GroupDto;
+import com.itechart.security.model.dto.PublicGroupDto;
 import com.itechart.security.model.persistent.Group;
+import com.itechart.security.model.persistent.User;
 import com.itechart.security.service.GroupService;
+
+import static com.itechart.security.model.dto.Converter.*;
+
+import com.itechart.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author yauheni.putsykovich
@@ -19,41 +27,55 @@ public class GroupServiceImpl implements GroupService {
     @Autowired
     private GroupDao groupDao;
 
+    @Autowired
+    private UserService userService;
+
     @Override
     @Transactional(readOnly = true)
-    public List<Group> getGroups() {
-        return groupDao.loadAll();
+    public List<GroupDto> getGroups() {
+        return convertGroups(groupDao.loadAll());
     }
 
     @Override
     @Transactional
-    public Serializable create(Group group) {
-        return groupDao.save(group);
+    public Serializable create(GroupDto group) {
+        return groupDao.save(convert(group));
     }
 
     @Override
     @Transactional
-    public void update(Group group) {
-        groupDao.update(group);
+    public void update(GroupDto group) {
+        groupDao.update(convert(group));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Group get(Long id) {
-        return groupDao.get(id);
+    public GroupDto get(Long id) {
+        return convert(groupDao.get(id));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Group getGroupWithUsers(Long id) {
+    public GroupDto getGroupWithUsers(Long id) {
         Group group = groupDao.get(id);
-        group.getUsers().size();
-        return group;
+        return convertGroupWithUsers(group);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<PublicGroupDto> getPublicGroups() {
+        return convertToPublicGroups(groupDao.loadAll());
     }
 
     @Override
     @Transactional
     public void deleteById(Long id) {
+        Group group = groupDao.get(id);
+        Set<User> users = group.getUsers();
+        users.forEach(user -> {
+            user.removeFromGroup(group);
+            userService.updateUser(user);
+        });
         groupDao.deleteById(id);
     }
 }

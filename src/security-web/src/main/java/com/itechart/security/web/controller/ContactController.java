@@ -16,7 +16,7 @@ import com.itechart.security.model.persistent.Principal;
 import com.itechart.security.model.persistent.acl.Acl;
 import com.itechart.security.service.AclService;
 import com.itechart.security.service.PrincipalService;
-import com.itechart.security.web.model.dto.AclEntryDto;
+import com.itechart.security.model.dto.AclEntryDto;
 import com.itechart.security.web.model.dto.ContactFilterDto;
 import com.itechart.security.web.model.dto.DataPageDto;
 import org.springframework.beans.factory.annotation.Autowired;
