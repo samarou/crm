@@ -1,5 +1,7 @@
 package com.itechart.security.business.model.dto.company;
 
+import com.itechart.security.business.model.persistent.company.Company;
+
 public class CompanyDto {
 
     private Long id;
@@ -12,6 +14,19 @@ public class CompanyDto {
     private String commentary;
 
     // TODO address
+
+    public CompanyDto() {
+    }
+
+    public CompanyDto(Company entity) {
+        setId(entity.getId());
+        setName(entity.getName());
+        setLogoUrl(entity.getLogoUrl());
+        setCompanyType(new CompanyTypeDto(entity.getCompanyType()));
+        setBusinessSphere(new BusinessSphereDto(entity.getBusinessSphere()));
+        setEmployeeNumberCategory(new EmployeeNumberCategoryDto(entity.getEmployeeNumberCategory()));
+        setCommentary(entity.getCommentary());
+    }
 
     public Long getId() {
         return id;
@@ -67,5 +82,17 @@ public class CompanyDto {
 
     public void setCommentary(String commentary) {
         this.commentary = commentary;
+    }
+
+    public Company convert() {
+        Company result = new Company();
+        result.setId(getId());
+        result.setName(getName());
+        result.setLogoUrl(getLogoUrl());
+        result.setCompanyType(getCompanyType().convert());
+        result.setBusinessSphere(getBusinessSphere().convert());
+        result.setEmployeeNumberCategory(getEmployeeNumberCategory().convert());
+        result.setCommentary(getCommentary());
+        return result;
     }
 }

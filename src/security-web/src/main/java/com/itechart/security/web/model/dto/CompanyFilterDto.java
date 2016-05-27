@@ -1,17 +1,8 @@
 package com.itechart.security.web.model.dto;
 
-public class CompanyFilterDto extends PagingFilterDto {
-	
-	private String text;
+public class CompanyFilterDto extends TextFilterDto {
+
 	private Long employeeNumberCategoryId;
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
 
 	public Long getEmployeeNumberCategoryId() {
 		return employeeNumberCategoryId;

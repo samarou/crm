@@ -1,11 +1,27 @@
 package com.itechart.security.model.dto;
 
+import com.itechart.security.model.persistent.User;
+
 public class PublicUserDto {
+
     private Long id;
     private String userName;
     private String email;
     private String firstName;
     private String lastName;
+
+    public PublicUserDto(){
+    }
+
+    public PublicUserDto(User entity) {
+        if (entity != null) {
+            setId(entity.getId());
+            setUserName(entity.getUserName());
+            setEmail(entity.getEmail());
+            setFirstName(entity.getFirstName());
+            setLastName(entity.getLastName());
+        }
+    }
 
     public Long getId() {
         return id;
@@ -45,5 +61,15 @@ public class PublicUserDto {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public User convert() {
+        User result = new User();
+        result.setId(getId());
+        result.setUserName(getUserName());
+        result.setEmail(getEmail());
+        result.setFirstName(getFirstName());
+        result.setLastName(getLastName());
+        return result;
     }
 }

@@ -14,10 +14,7 @@ import com.itechart.security.business.model.dto.company.CompanyTypeDto;
 import com.itechart.security.business.model.dto.company.EmployeeNumberCategoryDto;
 import com.itechart.security.business.service.CompanyService;
 
-import static com.itechart.security.business.model.dto.company.CompanyDtoConverter.convert;
-import static com.itechart.security.business.model.dto.company.CompanyDtoConverter.convertBusinessSpheres;
-import static com.itechart.security.business.model.dto.company.CompanyDtoConverter.convertCompanyTypes;
-import static com.itechart.security.business.model.dto.company.CompanyDtoConverter.convertEmployeeNumberCategories;
+import static com.itechart.security.util.Converter.convertCollection;
 
 @Service
 public class CompanyServiceImpl implements CompanyService {
@@ -28,25 +25,25 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     @Transactional
     public List<CompanyDto> findCompanies(CompanyFilter filter) {
-        return convert(companyDao.find(filter));
+        return convertCollection(companyDao.find(filter), CompanyDto::new);
     }
 
     @Override
     @Transactional
     public Long saveCompany(CompanyDto company) {
-        return companyDao.save(convert(company));
+        return companyDao.save(company.convert());
     }
 
     @Override
     @Transactional
     public CompanyDto get(Long id) {
-        return convert(companyDao.get(id));
+        return new CompanyDto(companyDao.get(id));
     }
 
     @Override
     @Transactional
     public void updateCompany(CompanyDto company) {
-        companyDao.update(convert(company));
+        companyDao.update(company.convert());
     }
 
     @Override
@@ -63,17 +60,17 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<CompanyTypeDto> loadCompanyTypes() {
-        return convertCompanyTypes(companyDao.loadCompanyTypes());
+        return convertCollection(companyDao.loadCompanyTypes(), CompanyTypeDto::new);
     }
 
     @Override
     public List<BusinessSphereDto> loadBusinessSpheres() {
-        return convertBusinessSpheres(companyDao.loadBusinessSpheres());
+        return convertCollection(companyDao.loadBusinessSpheres(), BusinessSphereDto::new);
     }
 
     @Override
     public List<EmployeeNumberCategoryDto> loadEmployeeNumberCategories() {
-        return convertEmployeeNumberCategories(companyDao.loadEmployeeNumberCategories());
+        return convertCollection(companyDao.loadEmployeeNumberCategories(), EmployeeNumberCategoryDto::new);
     }
 
 }

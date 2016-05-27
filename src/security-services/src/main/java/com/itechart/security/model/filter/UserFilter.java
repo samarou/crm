@@ -5,7 +5,7 @@ package com.itechart.security.model.filter;
  *
  * @author andrei.samarou
  */
-public class UserFilter extends PagingFilter {
+public class UserFilter extends TextFilter {
     /**
      * User role ID
      */
@@ -18,10 +18,6 @@ public class UserFilter extends PagingFilter {
      * Only active users
      */
     private boolean active;
-    /**
-     * Substring for searching user by text attributes
-     */
-    private String text;
 
     public UserFilter() {
     }
@@ -50,11 +46,4 @@ public class UserFilter extends PagingFilter {
         this.active = active;
     }
 
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
 }

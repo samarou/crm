@@ -1,11 +1,22 @@
 package com.itechart.security.model.dto;
 
 import com.itechart.security.core.model.SecurityPrivilege;
+import com.itechart.security.model.persistent.Privilege;
 
 public class PrivilegeDto implements SecurityPrivilege {
+
     private Long id;
     private ObjectTypeDto objectType;
     private ActionDto action;
+
+    public PrivilegeDto() {
+    }
+
+    public PrivilegeDto(Privilege entity) {
+        setId(getId());
+        setAction(new ActionDto(entity.getAction()));
+        setObjectType(new ObjectTypeDto(entity.getObjectType()));
+    }
 
     public Long getId() {
         return id;
@@ -37,5 +48,13 @@ public class PrivilegeDto implements SecurityPrivilege {
 
     public String getActionName() {
         return action != null ? action.getName() : null;
+    }
+
+    public Privilege convert() {
+        Privilege entity = new Privilege();
+        entity.setId(getId());
+        entity.setAction(getAction().convert());
+        entity.setObjectType(getObjectType().convert());
+        return entity;
     }
 }
