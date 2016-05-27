@@ -8,7 +8,7 @@ import java.util.Set;
 import com.itechart.security.core.model.acl.Permission;
 import com.itechart.security.model.persistent.Principal;
 import com.itechart.security.service.PrincipalService;
-import com.itechart.security.web.model.dto.AclEntryDto;
+import com.itechart.security.model.dto.AclEntryDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
