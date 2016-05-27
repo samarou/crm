@@ -6,7 +6,7 @@
         .controller('companyAddController', companyAddController);
 
     /** @ngInject */
-    function companyAddController(companyDetailsService, userService) {
+    function companyAddController(companyDetailsService, userService, $q) {
         var vm = this;
 
         vm.canEdit = true;
@@ -18,13 +18,26 @@
         vm.aclHandler = companyDetailsService.createAclHandler(function () {
             return vm.company.id;
         });
-        vm.staticData = companyDetailsService.staticData;
+        vm.staticData = {};
 
         init();
 
         function init() {
-            userService.getDefaultAcls().then(function (response) {
+            $q.all([
+                getDefaultAcls(),
+                getStaticData()
+            ]);
+        }
+
+        function getDefaultAcls() {
+            return userService.getDefaultAcls().then(function (response) {
                 vm.aclHandler.acls = response.data;
+            });
+        }
+
+        function getStaticData() {
+            return companyDetailsService.getStaticData().then(function (staticData) {
+                vm.staticData = staticData;
             });
         }
 

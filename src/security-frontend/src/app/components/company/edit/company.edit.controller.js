@@ -15,7 +15,7 @@
         vm.submitText = 'Edit';
         vm.title = 'Edit company';
         vm.submit = submit;
-        vm.staticData = companyService.staticData;
+        vm.staticData = {};
         vm.cancel = companyDetailsService.cancel;
         vm.aclHandler = companyDetailsService.createAclHandler(function () {
             return vm.company.id;
@@ -28,24 +28,10 @@
                 [
                     canEdit(),
                     canAdmin(),
-                    getAcls()
+                    getAcls(),
+                    getStaticData()
                 ]
             ).finally(getCompany);
-        }
-
-        function submit() {
-            var promise = $q.all(
-                [
-                    companyDetailsService.update(vm.company),
-                    updateAcls()
-                ]
-            );
-            companyDetailsService.submit(promise);
-        }
-
-        function updateAcls() {
-            return vm.aclHandler.canEdit ? companyDetailsService.updateAcls(vm.company.id, vm.aclHandler.acls)
-                : $q.resolve();
         }
 
         function getAcls() {
@@ -69,11 +55,33 @@
             });
         }
 
+        function getStaticData() {
+            return companyDetailsService.getStaticData().then(function (staticData) {
+                vm.staticData = staticData;
+            });
+        }
+
         function getCompany() {
             companyService.get($stateParams.id).then(function (response) {
                 vm.company = response.data;
             });
         }
+
+        function submit() {
+            var promise = $q.all(
+                [
+                    companyDetailsService.update(vm.company),
+                    updateAcls()
+                ]
+            );
+            companyDetailsService.submit(promise);
+        }
+
+        function updateAcls() {
+            return vm.aclHandler.canEdit ? companyDetailsService.updateAcls(vm.company.id, vm.aclHandler.acls)
+                : $q.resolve();
+        }
+
     }
 
 })();
