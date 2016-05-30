@@ -1,5 +1,7 @@
 package com.itechart.security.model.dto;
 
+import com.itechart.security.model.filter.UserFilter;
+
 public class SecuredUserFilterDto extends TextFilterDto {
     private Long groupId;
     private Long roleId;
@@ -27,5 +29,13 @@ public class SecuredUserFilterDto extends TextFilterDto {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public UserFilter convert() {
+        UserFilter entity = super.convert(new UserFilter());
+        entity.setGroupId(getGroupId());
+        entity.setRoleId(getRoleId());
+        entity.setActive(isActive());
+        return entity;
     }
 }

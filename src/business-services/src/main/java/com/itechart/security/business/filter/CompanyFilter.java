@@ -1,17 +1,10 @@
 package com.itechart.security.business.filter;
 
-public class CompanyFilter extends PagingFilter {
-	
-	private String text;
+import com.itechart.security.model.filter.TextFilter;
+
+public class CompanyFilter extends TextFilter {
+
 	private Long employeeNumberCategoryId;
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
 
 	public Long getEmployeeNumberCategoryId() {
 		return employeeNumberCategoryId;

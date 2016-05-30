@@ -2,7 +2,6 @@ package com.itechart.security.model.dto;
 
 import com.itechart.security.model.persistent.User;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,7 +13,7 @@ public class SecuredUserDto extends PublicUserDto {
     private String password;
     private boolean active;
     private Set<RoleDto> roles;
-    private Set<GroupDto> groups;
+    private Set<SecuredGroupDto> groups;
     private List<UserDefaultAclEntryDto> acls;
 
     public SecuredUserDto() {
@@ -24,7 +23,7 @@ public class SecuredUserDto extends PublicUserDto {
         super(entity);
         if (entity != null) {
             setActive(entity.isActive());
-            setGroups(new HashSet<>(convertCollection(entity.getGroups(), GroupDto::new)));
+            setGroups(new HashSet<>(convertCollection(entity.getGroups(), SecuredGroupDto::new)));
             setRoles(new HashSet<>(convertCollection(entity.getRoles(), RoleDto::new)));
         }
     }
@@ -53,11 +52,11 @@ public class SecuredUserDto extends PublicUserDto {
         this.roles = roles;
     }
 
-    public Set<GroupDto> getGroups() {
+    public Set<SecuredGroupDto> getGroups() {
         return groups;
     }
 
-    public void setGroups(Set<GroupDto> groups) {
+    public void setGroups(Set<SecuredGroupDto> groups) {
         this.groups = groups;
     }
 
@@ -73,7 +72,7 @@ public class SecuredUserDto extends PublicUserDto {
         User entity = super.convert();
         entity.setPassword(getPassword());
         entity.setActive(isActive());
-        entity.setGroups(new HashSet<>(convertCollection(getGroups(), GroupDto::convert)));
+        entity.setGroups(new HashSet<>(convertCollection(getGroups(), SecuredGroupDto::convert)));
         entity.setRoles(new HashSet<>(convertCollection(getRoles(), RoleDto::convert)));
         return entity;
     }

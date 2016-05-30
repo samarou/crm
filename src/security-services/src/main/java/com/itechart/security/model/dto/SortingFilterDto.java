@@ -1,5 +1,7 @@
 package com.itechart.security.model.dto;
 
+import com.itechart.security.model.filter.SortingFilter;
+
 public class SortingFilterDto{
 
     private String sortProperty;
@@ -19,5 +21,11 @@ public class SortingFilterDto{
 
     public void setSortAsc(boolean sortAsc) {
         this.sortAsc = sortAsc;
+    }
+
+    public <T extends SortingFilter> T convert(T entity) {
+        entity.setSortProperty(getSortProperty());
+        entity.setSortAsc(isSortAsc());
+        return entity;
     }
 }

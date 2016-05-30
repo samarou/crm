@@ -1,5 +1,7 @@
 package com.itechart.security.model.dto;
 
+import com.itechart.security.model.filter.PagingFilter;
+
 public class PagingFilterDto extends SortingFilterDto {
 
     private Integer from;
@@ -19,5 +21,12 @@ public class PagingFilterDto extends SortingFilterDto {
 
     public void setCount(Integer count) {
         this.count = count;
+    }
+
+    public <T extends PagingFilter> T convert(T entity) {
+        T result = super.convert(entity);
+        result.setFrom(getFrom());
+        result.setCount(getCount());
+        return result;
     }
 }

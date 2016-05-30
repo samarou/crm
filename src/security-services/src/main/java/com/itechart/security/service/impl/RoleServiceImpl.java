@@ -1,7 +1,6 @@
 package com.itechart.security.service.impl;
 
 import com.itechart.security.dao.RoleDao;
-import com.itechart.security.model.dto.Converter;
 import com.itechart.security.model.dto.RoleDto;
 import com.itechart.security.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.itechart.security.util.Converter.convertCollection;
 
 /**
  * Service for managing of user roles
@@ -24,25 +25,25 @@ public class RoleServiceImpl implements RoleService {
     @Override
     @Transactional(readOnly = true)
     public List<RoleDto> getRoles() {
-        return Converter.convertRoles(roleDao.loadAll());
+        return convertCollection(roleDao.loadAll(), RoleDto::new);
     }
 
     @Override
     @Transactional
     public Long createRole(RoleDto role) {
-        return (Long) roleDao.save(Converter.convert(role));
+        return (Long) roleDao.save(role.convert());
     }
 
     @Override
     @Transactional
     public void updateRole(RoleDto role) {
-        roleDao.update(Converter.convert(role));
+        roleDao.update(role.convert());
     }
 
     @Override
     @Transactional
     public void deleteRole(RoleDto role) {
-        roleDao.delete(Converter.convert(role));
+        roleDao.delete(role.convert());
     }
 
     @Override
@@ -54,6 +55,6 @@ public class RoleServiceImpl implements RoleService {
     @Override
     @Transactional
     public RoleDto getRole(Long id) {
-        return Converter.convert(roleDao.get(id));
+        return new RoleDto(roleDao.get(id));
     }
 }
