@@ -4,36 +4,20 @@
     <form name="contactForm" class="form-group">
         <uib-tabset active="active">
             <uib-tab heading="General Info">
-                <div class="row crm-top-buffer">
-                    <crm-contact vm="vm"></crm-contact>
-                </div>
-                <div class="row">
-                    <crm-contact-social-networks vm="vm"></crm-contact-social-networks>
-                </div>
+                <crm-contact-general-info></crm-contact-general-info>
             </uib-tab>
 
             <uib-tab heading="Contact Info">
-                <div class="row crm-top-buffer">
-                    <crm-contact-addresses vm="vm"></crm-contact-addresses>
-                </div>
-                <div class="row">
-                    <crm-contact-telephones vm="vm"></crm-contact-telephones>
-                </div>
-                <div class="row">
-                    <crm-contact-emails vm="vm"></crm-contact-emails>
-                </div>
-                <div class="row">
-                    <crm-contact-messengers vm="vm"></crm-contact-messengers>
-                </div>
+                <crm-contact-info></crm-contact-info>
             </uib-tab>
 
             <uib-tab heading="Work Experience">
-                <crm-contact-work-experience vm="vm"></crm-contact-work-experience>
+                <crm-contact-work-experience></crm-contact-work-experience>
             </uib-tab>
 
             <uib-tab heading="Attachments">
-                <div class="row crm-top-buffer">
-                    <crm-contact-attachments vm="vm"></crm-contact-attachments>
+                <div class="crm-top-buffer">
+                    <crm-contact-attachments></crm-contact-attachments>
                 </div>
             </uib-tab>
             <uib-tab heading="Access">

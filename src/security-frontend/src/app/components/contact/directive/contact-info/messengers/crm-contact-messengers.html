@@ -8,28 +8,26 @@
         <thead>
         <tr>
             <th></th>
-            <th></th>
             <th>Username</th>
             <th>Messenger</th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="account in vm.contact.messengers" class="form-group" ng-form="messengersForm">
-            <td>
+            <td class="crm-v-middle crm-narrow">
                 <input ng-model="account.checked"
                        type="checkbox"
                        ng-show="vm.canEdit">
             </td>
-            <td>{{$index + 1}}</td>
             <td>
                 <div crm-input-validation>
                     <input ng-model="account.username"
-                           name="messengers"
+                           name="messengerUsername"
                            class="form-control"
                            ng-disabled="!vm.canEdit"
                            required>
                     <span
-                        ng-show="account.username.$error.required"
+                        ng-show="messengersForm.messengerUsername.$error.required"
                         class="help-block">Username is required</span>
                 </div>
             </td>

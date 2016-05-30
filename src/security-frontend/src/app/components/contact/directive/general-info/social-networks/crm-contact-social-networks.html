@@ -9,7 +9,6 @@
         <thead>
         <tr>
             <th></th>
-            <th></th>
             <th>URL</th>
             <th>Social Network</th>
             <th></th>
@@ -17,13 +16,12 @@
         </thead>
         <tbody>
         <tr ng-repeat="account in vm.contact.socialNetworks" ng-form="socialNetworksForm">
-            <td>
+            <td class="crm-v-middle crm-narrow">
                 <input ng-model="account.checked"
                        type="checkbox"
                        ng-show="vm.canEdit"
                        title="select Social Network account">
             </td>
-            <td>{{$index + 1}}</td>
             <td>
                 <div crm-input-validation>
                     <input ng-model="account.url"

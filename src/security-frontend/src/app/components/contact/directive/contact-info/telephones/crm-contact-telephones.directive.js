@@ -12,7 +12,7 @@
     function crmContactTelephones() {
         return {
             restrict: 'E',
-            templateUrl: 'app/components/contact/directive/telephones/crm-contact-telephones.html',
+            templateUrl: 'app/components/contact/directive/contact-info/telephones/crm-contact-telephones.html',
             scope: false
         };
     }
