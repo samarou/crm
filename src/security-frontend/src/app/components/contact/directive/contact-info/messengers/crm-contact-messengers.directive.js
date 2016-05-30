@@ -6,13 +6,13 @@
 
     angular
         .module('crm.contact')
-        .directive('crmContactSocialNetworks', crmContactSocialNetworks);
+        .directive('crmContactMessengers', crmContactMessengers);
 
     /** @ngInject */
-    function crmContactSocialNetworks() {
+    function crmContactMessengers() {
         return {
             restrict: 'E',
-            templateUrl: 'app/components/contact/directive/social-networks/crm-contact-social-networks.html',
+            templateUrl: 'app/components/contact/directive/contact-info/messengers/crm-contact-messengers.html',
             scope: false
         };
     }

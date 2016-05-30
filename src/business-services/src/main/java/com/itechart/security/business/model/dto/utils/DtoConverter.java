@@ -30,6 +30,8 @@ public class DtoConverter {
         dto.setMessengers(convertMessengerAccounts(contact.getMessengers()));
         dto.setSocialNetworks(convertSocialNetworkAccounts(contact.getSocialNetworks()));
         dto.setWorkplaces(convertWorkplaces(contact.getWorkplaces()));
+        dto.setIndustry(contact.getIndustry());
+        dto.setSkills(convertSkills(contact.getSkills()));
         return dto;
     }
 
@@ -62,6 +64,8 @@ public class DtoConverter {
         contact.setMessengers(convertMessengerAccountDtos(dto.getMessengers()));
         contact.setSocialNetworks(convertSocialNetworkAccountDtos(dto.getSocialNetworks()));
         contact.setWorkplaces(convertWorkplaceDtos(dto.getWorkplaces()));
+        contact.setIndustry(dto.getIndustry());
+        contact.setSkills(convertSkillDtos(dto.getSkills()));
         return contact;
     }
 
@@ -488,5 +492,40 @@ public class DtoConverter {
             .stream()
             .map(DtoConverter::convert)
             .collect(Collectors.toList());
+    }
+
+    public static Skill convert(SkillDto dto) {
+        Skill skill = new Skill();
+        skill.setId(dto.getId());
+        skill.setName(dto.getName());
+        return skill;
+    }
+
+    public static SkillDto convert(Skill skill) {
+        SkillDto dto = new SkillDto();
+        dto.setId(skill.getId());
+        dto.setName(skill.getName());
+        return dto;
+    }
+
+    public static Set<SkillDto> convertSkills(Set<Skill> skills) {
+        if (CollectionUtils.isEmpty(skills)) {
+            return emptySet();
+        }
+        return skills
+            .stream()
+            .filter(skill -> skill.getDateDeleted() == null)
+            .map(DtoConverter::convert)
+            .collect(toSet());
+    }
+
+    public static Set<Skill> convertSkillDtos(Set<SkillDto> skills) {
+        if (CollectionUtils.isEmpty(skills)) {
+            return emptySet();
+        }
+        return skills
+            .stream()
+            .map(DtoConverter::convert)
+            .collect(toSet());
     }
 }

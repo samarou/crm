@@ -9,7 +9,6 @@
         <thead>
         <tr>
             <th></th>
-            <th></th>
             <th>Name</th>
             <th>Position</th>
             <th>Start date</th>
@@ -19,11 +18,10 @@
         </thead>
         <tbody>
         <tr ng-repeat="workplace in vm.contact.workplaces" ng-form="workplaceForm" class="form-group">
-            <td>
+            <td class="crm-v-middle crm-narrow">
                 <input type="checkbox" ng-model="workplace.checked" ng-show="vm.canEdit"
                        title="select workplace">
             </td>
-            <td>{{$index + 1}}</td>
             <td>
                 <div crm-input-validation>
                     <input ng-model="workplace.name" class="form-control" ng-disabled="!vm.canEdit"

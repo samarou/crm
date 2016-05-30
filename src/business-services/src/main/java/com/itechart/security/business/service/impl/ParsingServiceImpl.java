@@ -14,8 +14,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLDecoder;
 import java.text.ParseException;
 import java.util.*;
 import java.util.function.Predicate;
@@ -32,24 +36,32 @@ public class ParsingServiceImpl implements ParsingService {
     private CountryDao countryDao;
 
     @Override
-    public LinkedInContactDto parse(String profileUrl) throws IOException {
-        Document document = Jsoup.connect(profileUrl).get();
+    @Transactional
+    public LinkedInContactDto parse(String profileUrl) {
+        log.debug("profile url = {}", profileUrl);
+        Document document;
         LinkedInContactDto contact = new LinkedInContactDto();
-        contact.setFullName(getFullName(document));
-        contact.setFirstName(getFirstName(document));
-        contact.setLastName(getLastName(document));
-        contact.setLocation(getLocationOrIndustry(document, this::locationFilter));
-        contact.setIndustry(getLocationOrIndustry(document, this::industryFilter));
-        contact.setSummary(getSummary(document));
-        contact.setSkills(getSkills(document));
-        contact.setSchools(getEducation(document));
-        contact.setPhotoUrl(getPicture(document));
-        contact.setLanguages(getLanguages(document));
-        contact.setWorkplaces(getWorkplaces(document, this::jobFilter));
-        contact.setProjects(getProjects(document));
-        Set<AddressDto> addressDtoSet = new HashSet<>();
-        addressDtoSet.add(getAddress(contact.getLocation()));
-        contact.setAddresses(addressDtoSet);
+        try {
+            URI uri = new URI(URLDecoder.decode(profileUrl, "UTF-8"));
+            document = Jsoup.connect(uri.toASCIIString()).get();
+            contact.setFullName(getFullName(document));
+            contact.setFirstName(getFirstName(document));
+            contact.setLastName(getLastName(document));
+            contact.setLocation(getLocationOrIndustry(document, this::locationFilter));
+            contact.setIndustry(getLocationOrIndustry(document, this::industryFilter));
+            contact.setSummary(getSummary(document));
+            contact.setSkills(getSkills(document));
+            contact.setSchools(getEducation(document));
+            contact.setPhotoUrl(getPicture(document));
+            contact.setLanguages(getLanguages(document));
+            contact.setWorkplaces(getWorkplaces(document, this::jobFilter));
+            contact.setProjects(getProjects(document));
+            Set<AddressDto> addressDtoSet = new HashSet<>();
+            addressDtoSet.add(getAddress(contact.getLocation()));
+            contact.setAddresses(addressDtoSet);
+        } catch (IOException | URISyntaxException e) {
+            log.error("Can't get html page", profileUrl);
+        }
         return contact;
     }
 
@@ -88,10 +100,16 @@ public class ParsingServiceImpl implements ParsingService {
         return Objects.isNull(summary) ? null : summary.getElementsByClass("description").text();
     }
 
-    private Set<String> getSkills(Document document) {
+    private Set<SkillDto> getSkills(Document document) {
         Element skillsTab = document.getElementById("skills");
         return Objects.isNull(skillsTab) ? new HashSet<>() : skillsTab.getElementsByClass("skill").stream()
-                .map(Element::text).collect(Collectors.toSet());
+                .map(ParsingServiceImpl::getSkillDto).collect(Collectors.toSet());
+    }
+
+    private static SkillDto getSkillDto(Element element){
+        SkillDto dto = new SkillDto();
+        dto.setName(element.text());
+        return dto;
     }
 
     private Set<SchoolDto> getEducation(Document document) {

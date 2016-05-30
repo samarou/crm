@@ -5,7 +5,7 @@
         .module('crm.contact')
         .factory('contactDetailsService', contactDetailsService);
     /** @ngInject */
-    function contactDetailsService(contactService, aclServiceBuilder, $state, contactAttachmentService, $q, $log) {
+    function contactDetailsService(contactService, aclServiceBuilder, $state, contactAttachmentService, $q, $log, dialogService) {
 
         return {
             submit: submit,
@@ -17,12 +17,14 @@
             addMessengerAccount: addMessengerAccount,
             addSocialNetworkAccount: addSocialNetworkAccount,
             addWorkplace: addWorkplace,
+            addSkill: addSkill,
             removeEmails: removeEmails,
             removeAddresses: removeAddresses,
             removeTelephones: removeTelephones,
             removeMessengerAccounts: removeMessengerAccounts,
             removeSocialNetworks: removeSocialNetworkAccounts,
             removeWorkplaces: removeWorkplaces,
+            removeSkills: removeSkills,
             getEmptyContact: getEmptyContact,
             now: new Date(),
             getDictionary: getDictionary,
@@ -60,6 +62,10 @@
             scope.contact.workplaces.push({});
         }
 
+        function addSkill(scope) {
+            scope.contact.skills.push({});
+        }
+
         function removeEmails(scope) {
             return removeCheckedElementsFromList(scope.contact, scope.contact.emails, contactService.removeEmail);
         }
@@ -84,6 +90,10 @@
             return removeCheckedElementsFromList(scope.contact, scope.contact.workplaces, contactService.removeWorkplace);
         }
 
+        function removeSkills(scope) {
+            return removeCheckedElementsFromList(scope.contact, scope.contact.skills, contactService.removeSkill);
+        }
+
         function getEmptyContact() {
             return {
                 socialNetworks: [],
@@ -92,6 +102,7 @@
                 emails: [],
                 messengers: [],
                 workplaces: [],
+                skills: [],
                 attachments: []
             };
         }
@@ -118,16 +129,31 @@
         }
 
         function removeCheckedElementsFromList(contact, elements, removingFunction) {
-            var tasks = [];
-            getCheckedElements(elements)
-                .forEach(function (element) {
-                    if (element.id) {
-                        tasks.push(removingFunction(contact.id, element.id));
-                    }
-                    var index = elements.indexOf(element);
-                    elements.splice(index, 1);
+            dialogService.confirm('Do you really want to delete these fields?')
+                .result.then(function () {
+                var tasks = [];
+                getCheckedElements(elements)
+                    .forEach(function (element) {
+                        if (element.id) {
+                            tasks.push(removeElementHandlingError(contact, element, elements, removingFunction));
+                        } else {
+                            removeElementFromArray(element, elements)
+                        }
+                    });
+                return $q.all(tasks);
+            });
+        }
+
+        function removeElementHandlingError(contact, element, elements, removingFunction) {
+            removingFunction(contact.id, element.id)
+                .then(function () {
+                    removeElementFromArray(element, elements);
                 });
-            return $q.all(tasks);
+        }
+
+        function removeElementFromArray(element, elements) {
+            var index = elements.indexOf(element);
+            elements.splice(index, 1);
         }
 
         function getCheckedElements(elements) {

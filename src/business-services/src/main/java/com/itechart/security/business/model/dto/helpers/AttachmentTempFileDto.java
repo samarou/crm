@@ -1,4 +1,4 @@
-package com.itechart.security.business.model.dto.helper;
+package com.itechart.security.business.model.dto.helpers;
 
 import com.itechart.security.business.model.dto.AttachmentDto;
 import lombok.Getter;

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet id="001" author="maksim.kalenik">
+        <addColumn tableName="contact">
+            <column name="industry" remarks="Industry" type="VARCHAR(255)"/>
+        </addColumn>
+        <rollback>
+            <dropColumn tableName="contact">
+                <column name="industry"/>
+            </dropColumn>
+        </rollback>
+    </changeSet>
+    <changeSet id="002" author="maksim.kalenik">
+        <createTable tableName="skill" remarks="Contact's skills">
+            <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" remarks="Skill description" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="contact_id" remarks="Contact identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_deleted" remarks="Date of skill deletion" type="DATETIME"/>
+        </createTable>
+        <createIndex tableName="skill" indexName="fk_skill_contact_id">
+            <column name="contact_id"/>
+        </createIndex>
+        <addForeignKeyConstraint baseTableName="skill" baseColumnNames="contact_id"
+                                 constraintName="fk_skill_contact_id"
+                                 referencedTableName="contact"
+                                 referencedColumnNames="id"/>
+        <rollback>
+            <dropIndex tableName="skill" indexName="fk_skill_contact_id"/>
+            <dropForeignKeyConstraint baseTableName="skill"
+                                      constraintName="fk_skill_contact_id"/>
+            <dropTable tableName="skill"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

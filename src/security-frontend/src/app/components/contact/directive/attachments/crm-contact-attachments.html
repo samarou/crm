@@ -9,7 +9,6 @@
         <thead>
         <tr>
             <th></th>
-            <th>#</th>
             <th>File</th>
             <th>Date of upload</th>
             <th>Comment</th>
@@ -19,13 +18,12 @@
         <tr ng-repeat="attachment in vm.attachments"
             ng-dblclick="vm.attachmentService.updateAttachment(vm.contact.id, attachment)"
             class="crm-hover">
-            <td>
+            <td class="crm-narrow">
                 <input type="checkbox"
                        ng-model="attachment.checked"
                        ng-show="vm.canEdit"
                        title="select attachment">
             </td>
-            <td>{{$index + 1}}</td>
             <td>
                 <a ng-if="attachment.id"
                    ng-click="vm.attachmentService.getAttachment(vm.contact.id, attachment)">{{attachment.name}}</a>
