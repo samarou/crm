@@ -12,7 +12,7 @@
     function crmContact() {
         return {
             restrict: 'E',
-            templateUrl: 'app/components/contact/directive/contact/crm-contact.html',
+            templateUrl: 'app/components/contact/directive/general-info/contact/crm-contact.html',
             scope: false
         };
     }

@@ -3,6 +3,7 @@ package com.itechart.security.business.dao.impl;
 import com.itechart.security.business.dao.ContactDao;
 import com.itechart.security.business.filter.ContactFilter;
 import com.itechart.security.business.model.persistent.Contact;
+import com.itechart.security.business.model.persistent.Skill;
 import com.itechart.security.core.annotation.AclFilter;
 import com.itechart.security.core.annotation.AclFilterRule;
 import com.itechart.security.core.model.acl.Permission;
@@ -61,6 +62,16 @@ public class ContactDaoImpl extends AbstractHibernateDao<Contact> implements Con
             criteria.setProjection(Projections.rowCount());
             return ((Number) criteria.uniqueResult()).intValue();
         });
+    }
+
+    @Override
+    @AclFilter(@AclFilterRule(type = Contact.class, permissions = {Permission.READ}))
+    public void deleteSkill(Long id) {
+        Skill skill = getHibernateTemplate().get(Skill.class, id);
+        if (skill != null) {
+            skill.setDateDeleted(new Date());
+            getHibernateTemplate().update(skill);
+        }
     }
 
     @Override

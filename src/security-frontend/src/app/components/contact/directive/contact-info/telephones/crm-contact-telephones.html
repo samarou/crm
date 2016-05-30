@@ -8,17 +8,15 @@
         <thead>
         <tr>
             <th></th>
-            <th></th>
             <th>Number</th>
             <th>Type</th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="telephone in vm.contact.telephones" ng-form="telephonesForm">
-            <td>
+            <td class="crm-v-middle crm-narrow">
                 <input ng-model="telephone.checked" ng-show="vm.canEdit" type="checkbox">
             </td>
-            <td>{{$index + 1}}</td>
             <td>
                 <div crm-input-validation>
                     <input ng-model="telephone.number"

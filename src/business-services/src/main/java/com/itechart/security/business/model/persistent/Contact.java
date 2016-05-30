@@ -39,6 +39,9 @@ public class Contact extends SecuredEntity {
     @Column(name = "photo_url")
     private String photoUrl;
 
+    @Column(name = "industry")
+    private String industry;
+
    /* @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<Order> orders;*/
 
@@ -62,6 +65,9 @@ public class Contact extends SecuredEntity {
 
     @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY)
     private Set<Attachment> attachments;
+
+    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Skill> skills;
 
     @Override
     public Long getId() {

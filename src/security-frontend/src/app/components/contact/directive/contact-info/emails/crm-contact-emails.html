@@ -8,19 +8,17 @@
         <thead>
         <tr>
             <th></th>
-            <th></th>
             <th>Email</th>
             <th>Type</th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="email in vm.contact.emails" ng-form="emailsForm">
-            <td>
+            <td class="crm-v-middle crm-narrow">
                 <input ng-model="email.checked"
                        type="checkbox"
                        ng-show="vm.canEdit">
             </td>
-            <td>{{$index + 1}}</td>
             <td>
                 <div crm-input-validation>
                     <input ng-model="email.name"

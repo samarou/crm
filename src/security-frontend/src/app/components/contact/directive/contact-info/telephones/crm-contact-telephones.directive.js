@@ -6,13 +6,13 @@
 
     angular
         .module('crm.contact')
-        .directive('crmContactWorkplaces', crmContactWorkplaces);
+        .directive('crmContactTelephones', crmContactTelephones);
 
     /** @ngInject */
-    function crmContactWorkplaces() {
+    function crmContactTelephones() {
         return {
             restrict: 'E',
-            templateUrl: 'app/components/contact/directive/workplaces/crm-contact-workplaces.html',
+            templateUrl: 'app/components/contact/directive/contact-info/telephones/crm-contact-telephones.html',
             scope: false
         };
     }

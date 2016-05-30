@@ -36,5 +36,7 @@ public interface ContactService {
 
     void deleteWorkplace(Long id);
 
+    void deleteSkill(Long id);
+
     int countContacts(ContactFilter filter);
 }

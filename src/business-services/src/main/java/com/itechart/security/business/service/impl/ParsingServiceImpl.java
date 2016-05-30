@@ -100,10 +100,16 @@ public class ParsingServiceImpl implements ParsingService {
         return Objects.isNull(summary) ? null : summary.getElementsByClass("description").text();
     }
 
-    private Set<String> getSkills(Document document) {
+    private Set<SkillDto> getSkills(Document document) {
         Element skillsTab = document.getElementById("skills");
         return Objects.isNull(skillsTab) ? new HashSet<>() : skillsTab.getElementsByClass("skill").stream()
-                .map(Element::text).collect(Collectors.toSet());
+                .map(ParsingServiceImpl::getSkillDto).collect(Collectors.toSet());
+    }
+
+    private static SkillDto getSkillDto(Element element){
+        SkillDto dto = new SkillDto();
+        dto.setName(element.text());
+        return dto;
     }
 
     private Set<SchoolDto> getEducation(Document document) {
