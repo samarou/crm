@@ -23,4 +23,6 @@ public interface ContactDao {
     List<Contact> findContacts(ContactFilter filter);
 
     int countContacts(ContactFilter filter);
+
+    void deleteSkill(Long id);
 }

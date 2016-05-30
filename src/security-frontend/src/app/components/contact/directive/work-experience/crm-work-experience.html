@@ -1,0 +1,19 @@
+<div class="row crm-top-buffer">
+    <div class="col-md-12">
+        <div class="form-group" crm-input-validation>
+            <label for="contact-industry">Industry</label>
+            <input ng-disabled="!vm.canEdit" id="contact-industry" class="form-control"
+                   name="industry" ng-model="vm.contact.industry" maxlength="255">
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <crm-contact-workplaces vm="vm"></crm-contact-workplaces>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <crm-contact-skills vm="vm"></crm-contact-skills>
+    </div>
+</div>

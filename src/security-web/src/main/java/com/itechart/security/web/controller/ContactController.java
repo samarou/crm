@@ -159,6 +159,11 @@ public class ContactController {
         contactService.deleteWorkplace(workplaceId);
     }
 
+    @RequestMapping(value = "/contacts/{contactId}/skills/{skillId}", method = RequestMethod.DELETE)
+    public void deleteSkill(@PathVariable Long contactId, @PathVariable Long skillId) {
+        contactService.deleteSkill(skillId);
+    }
+
     @RequestMapping(value = "/dictionary", method = RequestMethod.GET)
     public DictionaryDto getDictionary(){return  dictionaryService.getDictionary();}
 

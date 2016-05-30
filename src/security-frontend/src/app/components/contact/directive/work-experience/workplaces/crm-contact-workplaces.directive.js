@@ -12,7 +12,7 @@
     function crmContactWorkplaces() {
         return {
             restrict: 'E',
-            templateUrl: 'app/components/contact/directive/workplaces/crm-contact-workplaces.html',
+            templateUrl: 'app/components/contact/directive/work-experience/workplaces/crm-contact-workplaces.html',
             scope: false
         };
     }

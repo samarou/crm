@@ -25,6 +25,8 @@ public class ContactDto {
 
     private String photoUrl;
 
+    private String industry;
+
     private Set<OrderDto> orders;
 
     private Set<MessengerAccountDto> messengers;
@@ -38,4 +40,6 @@ public class ContactDto {
     private Set<WorkplaceDto> workplaces;
 
     private Set<EmailDto> emails;
+
+    private Set<SkillDto> skills;
 }

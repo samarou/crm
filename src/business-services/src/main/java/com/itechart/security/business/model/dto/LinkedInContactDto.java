@@ -13,7 +13,6 @@ public class LinkedInContactDto extends ContactDto {
     public String location;
     public String industry;
     public String summary;
-    public Set<String> skills;
     public Set<SchoolDto> schools;
     public Set<LanguageDto> languages;
     public Set<ProjectDto> projects;

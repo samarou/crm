@@ -1,21 +1,29 @@
 .icon--small {
-  display: inline-block;
-  width: 32px;
-  height: 32px;
+    display: inline-block;
+    width: 32px;
+    height: 32px;
 }
 
 .icon--user {
-  background: url("../assets/icons/user.svg");
+    background: url("../assets/icons/user.svg");
 }
 
 .icon--user-group {
-  background: url("../assets/icons/group.svg");
+    background: url("../assets/icons/group.svg");
 }
 
 .icon--user-group-add {
-  background: url("../assets/icons/group-add.svg");
+    background: url("../assets/icons/group-add.svg");
 }
 
-.crm-select-validation-icon .form-control-feedback{
+.crm-select-validation-icon .form-control-feedback {
     right: 3%;
+}
+
+.table tbody > tr > td.crm-v-middle {
+    vertical-align: middle;
+}
+
+.table tbody > tr > td.crm-narrow {
+    width: 1%;
 }

@@ -59,6 +59,7 @@ public class ContactServiceImpl implements ContactService {
         saveOrUpdateTelephonesForContact(contact);
         saveOrUpdateMessengersForContact(contact);
         saveOrUpdateWorkplacesForContact(contact);
+        setContactForFields(contact);
         return contactId;
     }
 
@@ -90,6 +91,7 @@ public class ContactServiceImpl implements ContactService {
         saveOrUpdateTelephonesForContact(contact);
         saveOrUpdateMessengersForContact(contact);
         saveOrUpdateWorkplacesForContact(contact);
+        setContactForFields(contact);
         contactDao.update(contact);
     }
 
@@ -159,6 +161,12 @@ public class ContactServiceImpl implements ContactService {
         }
     }
 
+    private void setContactForFields(Contact contact) {
+        for (Skill skill : contact.getSkills()) {
+            skill.setContact(contact);
+        }
+    }
+
     @Override
     @Transactional
     public void deleteById(Long id) {
@@ -199,6 +207,12 @@ public class ContactServiceImpl implements ContactService {
     @Transactional
     public void deleteWorkplace(Long id) {
         workplaceDao.delete(id);
+    }
+
+    @Override
+    @Transactional
+    public void deleteSkill(Long id) {
+        contactDao.deleteSkill(id);
     }
 
     @Override

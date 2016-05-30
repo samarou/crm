@@ -31,6 +31,7 @@
             removeSocialNetworkAccount: removeSocialNetworkAccount,
             getDictionary: getDictionary,
             removeWorkplace: removeWorkplace,
+            removeSkill: removeSkill,
             parseProfile: parseProfile
         };
 
@@ -132,6 +133,10 @@
 
         function removeWorkplace(id, workplaceId) {
             return $http.delete('rest/contacts/' + id + '/workplaces/' + workplaceId);
+        }
+
+        function removeSkill(id, skillId) {
+            return $http.delete('rest/contacts/' + id + '/skills/' + skillId);
         }
 
         function parseProfile(profileUrl) {
