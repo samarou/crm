@@ -62,16 +62,19 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CompanyTypeDto> loadCompanyTypes() {
         return convertCompanyTypes(companyDao.loadCompanyTypes());
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<BusinessSphereDto> loadBusinessSpheres() {
         return convertBusinessSpheres(companyDao.loadBusinessSpheres());
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<EmployeeNumberCategoryDto> loadEmployeeNumberCategories() {
         return convertEmployeeNumberCategories(companyDao.loadEmployeeNumberCategories());
     }
