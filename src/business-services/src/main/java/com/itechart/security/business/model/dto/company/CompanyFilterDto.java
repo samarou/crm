@@ -1,7 +1,7 @@
 package com.itechart.security.business.model.dto.company;
 
 import com.itechart.security.business.filter.CompanyFilter;
-import com.itechart.security.model.dto.TextFilterDto;
+import com.itechart.common.model.filter.dto.TextFilterDto;
 
 public class CompanyFilterDto extends TextFilterDto {
 

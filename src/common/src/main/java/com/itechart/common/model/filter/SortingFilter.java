@@ -1,4 +1,4 @@
-package com.itechart.security.model.filter;
+package com.itechart.common.model.filter;
 
 /**
  * Filter supports loading of sorted lists

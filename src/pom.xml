@@ -15,6 +15,7 @@
         <module>security-web</module>
         <module>business-services</module>
         <module>security-frontend</module>
+        <module>common</module>
     </modules>
     <scm>
         <connection>scm:git:git@github.com/samarou/crm.git</connection>

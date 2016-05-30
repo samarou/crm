@@ -17,7 +17,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
-import static com.itechart.security.util.Converter.convertCollection;
+import static com.itechart.common.model.util.Converter.convertCollection;
 
 /**
  * @author yauheni.putsykovich

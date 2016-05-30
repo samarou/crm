@@ -6,7 +6,7 @@ import com.itechart.security.model.persistent.Role;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.itechart.security.util.Converter.convertCollection;
+import static com.itechart.common.model.util.Converter.convertCollection;
 
 public class RoleDto implements SecurityRole {
     private Long id;

@@ -22,6 +22,11 @@
             <artifactId>security-hibernate-support</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.itechart.security</groupId>
+            <artifactId>common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!-- Spring -->
         <dependency>

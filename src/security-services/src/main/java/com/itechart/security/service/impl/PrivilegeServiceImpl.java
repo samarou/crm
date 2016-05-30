@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.itechart.security.util.Converter.convertCollection;
+import static com.itechart.common.model.util.Converter.convertCollection;
 
 /**
  * Service for managing of priveleges

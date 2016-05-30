@@ -1,6 +1,6 @@
-package com.itechart.security.model.dto;
+package com.itechart.common.model.filter.dto;
 
-import com.itechart.security.model.filter.SortingFilter;
+import com.itechart.common.model.filter.SortingFilter;
 
 public class SortingFilterDto{
 

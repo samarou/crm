@@ -11,7 +11,7 @@ import com.itechart.security.model.persistent.Principal;
 import com.itechart.security.model.persistent.acl.Acl;
 import com.itechart.security.service.AclService;
 import com.itechart.security.service.PrincipalService;
-import com.itechart.security.util.Converter;
+import com.itechart.common.model.util.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;

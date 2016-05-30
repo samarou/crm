@@ -18,7 +18,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.Collections;
 import java.util.List;
 
-import static com.itechart.security.util.Converter.convertCollection;
+import static com.itechart.common.model.util.Converter.convertCollection;
 import static java.util.stream.Collectors.toList;
 
 /**

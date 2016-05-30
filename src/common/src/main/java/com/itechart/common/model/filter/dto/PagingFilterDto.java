@@ -1,6 +1,6 @@
-package com.itechart.security.model.dto;
+package com.itechart.common.model.filter.dto;
 
-import com.itechart.security.model.filter.PagingFilter;
+import com.itechart.common.model.filter.PagingFilter;
 
 public class PagingFilterDto extends SortingFilterDto {
 

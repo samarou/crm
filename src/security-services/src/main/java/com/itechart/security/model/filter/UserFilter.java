@@ -1,5 +1,6 @@
 package com.itechart.security.model.filter;
 
+import com.itechart.common.model.filter.TextFilter;
 /**
  * Filter for user data
  *

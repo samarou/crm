@@ -1,6 +1,6 @@
 package com.itechart.security.business.filter;
 
-import com.itechart.security.model.filter.TextFilter;
+import com.itechart.common.model.filter.TextFilter;
 
 /**
  * @author yauheni.putsykovich

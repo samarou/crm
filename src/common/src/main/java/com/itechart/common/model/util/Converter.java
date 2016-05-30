@@ -1,4 +1,4 @@
-package com.itechart.security.util;
+package com.itechart.common.model.util;
 
 import org.springframework.util.CollectionUtils;
 

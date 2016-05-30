@@ -14,7 +14,7 @@ import com.itechart.security.business.model.dto.company.CompanyTypeDto;
 import com.itechart.security.business.model.dto.company.EmployeeNumberCategoryDto;
 import com.itechart.security.business.service.CompanyService;
 
-import static com.itechart.security.util.Converter.convertCollection;
+import static com.itechart.common.model.util.Converter.convertCollection;
 
 @Service
 public class CompanyServiceImpl implements CompanyService {

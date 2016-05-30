@@ -1,6 +1,7 @@
 package com.itechart.security.model.dto;
 
 import com.itechart.security.model.filter.UserFilter;
+import com.itechart.common.model.filter.dto.TextFilterDto;
 
 public class SecuredUserFilterDto extends TextFilterDto {
     private Long groupId;

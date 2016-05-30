@@ -1,4 +1,4 @@
-package com.itechart.security.business.filter;
+package com.itechart.common.model.filter;
 
 /**
  * Filter supports pagination of lists

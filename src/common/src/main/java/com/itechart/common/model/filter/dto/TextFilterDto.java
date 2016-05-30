@@ -1,6 +1,6 @@
-package com.itechart.security.model.dto;
+package com.itechart.common.model.filter.dto;
 
-import com.itechart.security.model.filter.TextFilter;
+import com.itechart.common.model.filter.TextFilter;
 
 public class TextFilterDto extends PagingFilterDto {
     private String text;
