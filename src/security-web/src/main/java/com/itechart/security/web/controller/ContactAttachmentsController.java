@@ -1,7 +1,7 @@
 package com.itechart.security.web.controller;
 
 import com.itechart.security.business.model.dto.AttachmentDto;
-import com.itechart.security.business.model.dto.helper.AttachmentTempFileDto;
+import com.itechart.security.business.model.dto.helpers.AttachmentTempFileDto;
 import com.itechart.security.business.service.AttachmentService;
 import com.itechart.security.web.service.ContactAttachmentService;
 import com.itechart.security.web.util.FileUtil;
