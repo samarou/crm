@@ -65,6 +65,7 @@ public class ContactDaoImpl extends AbstractHibernateDao<Contact> implements Con
     }
 
     @Override
+    @AclFilter(@AclFilterRule(type = Contact.class, permissions = {Permission.READ}))
     public void deleteSkill(Long id) {
         Skill skill = getHibernateTemplate().get(Skill.class, id);
         if (skill != null) {

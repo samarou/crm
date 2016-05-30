@@ -135,13 +135,25 @@
                 getCheckedElements(elements)
                     .forEach(function (element) {
                         if (element.id) {
-                            tasks.push(removingFunction(contact.id, element.id));
+                            tasks.push(removeElementHandlingError(contact, element, elements, removingFunction));
+                        } else {
+                            removeElementFromArray(element, elements)
                         }
-                        var index = elements.indexOf(element);
-                        elements.splice(index, 1);
                     });
                 return $q.all(tasks);
             });
+        }
+
+        function removeElementHandlingError(contact, element, elements, removingFunction) {
+            removingFunction(contact.id, element.id)
+                .then(function () {
+                    removeElementFromArray(element, elements);
+                });
+        }
+
+        function removeElementFromArray(element, elements) {
+            var index = elements.indexOf(element);
+            elements.splice(index, 1);
         }
 
         function getCheckedElements(elements) {

@@ -130,36 +130,43 @@ public class ContactController {
     }
 
     @RequestMapping(value = "/contacts/{contactId}/emails/{emailId}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasPermission(#contactId, 'sample.Contact', 'DELETE')")
     public void deleteEmail(@PathVariable Long contactId, @PathVariable Long emailId) {
         contactService.deleteEmail(emailId);
     }
 
     @RequestMapping(value = "/contacts/{contactId}/addresses/{addressId}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasPermission(#contactId, 'sample.Contact', 'DELETE')")
     public void deleteAddress(@PathVariable Long contactId, @PathVariable Long addressId) {
         contactService.deleteAddress(addressId);
     }
 
     @RequestMapping(value = "/contacts/{contactId}/messengers/{messengerId}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasPermission(#contactId, 'sample.Contact', 'DELETE')")
     public void deleteMessengerAccount(@PathVariable Long contactId, @PathVariable Long messengerId) {
         contactService.deleteMessengerAccount(messengerId);
     }
 
     @RequestMapping(value = "/contacts/{contactId}/social_networks/{socialNetworkId}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasPermission(#contactId, 'sample.Contact', 'DELETE')")
     public void deleteSocialNetworkAccount(@PathVariable Long contactId, @PathVariable Long socialNetworkId) {
         contactService.deleteSocialNetworkAccount(socialNetworkId);
     }
 
     @RequestMapping(value = "/contacts/{contactId}/telephones/{telephoneId}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasPermission(#contactId, 'sample.Contact', 'DELETE')")
     public void deleteTelephone(@PathVariable Long contactId, @PathVariable Long telephoneId) {
         contactService.deleteTelephone(telephoneId);
     }
 
     @RequestMapping(value = "/contacts/{contactId}/workplaces/{workplaceId}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasPermission(#contactId, 'sample.Contact', 'DELETE')")
     public void deleteWorkplace(@PathVariable Long contactId, @PathVariable Long workplaceId) {
         contactService.deleteWorkplace(workplaceId);
     }
 
     @RequestMapping(value = "/contacts/{contactId}/skills/{skillId}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasPermission(#contactId, 'sample.Contact', 'DELETE')")
     public void deleteSkill(@PathVariable Long contactId, @PathVariable Long skillId) {
         contactService.deleteSkill(skillId);
     }
