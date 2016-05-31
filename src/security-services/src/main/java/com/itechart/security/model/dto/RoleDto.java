@@ -73,7 +73,7 @@ public class RoleDto implements SecurityRole {
         entity.setId(getId());
         entity.setName(getName());
         entity.setDescription(getDescription());
-        entity.setParent(getParent().convert());
+        entity.setParent(getParent() != null ? getParent().convert() : null);
         entity.setPrivileges(new HashSet<>(convertCollection(getPrivileges(), PrivilegeDto::convert)));
         return entity;
     }
