@@ -4,6 +4,7 @@ import com.itechart.security.core.model.SecurityRole;
 import com.itechart.security.model.persistent.Role;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import static com.itechart.common.model.util.Converter.convertCollection;
@@ -23,7 +24,7 @@ public class RoleDto implements SecurityRole {
             setId(entity.getId());
             setName(entity.getName());
             setDescription(entity.getDescription());
-            setParent(new RoleDto(entity.getParent()));
+            setParent(Optional.ofNullable(entity.getParent()).map(RoleDto::new).orElse(null));
             setPrivileges(new HashSet<>(convertCollection(entity.getPrivileges(), PrivilegeDto::new)));
         }
     }
@@ -73,7 +74,7 @@ public class RoleDto implements SecurityRole {
         entity.setId(getId());
         entity.setName(getName());
         entity.setDescription(getDescription());
-        entity.setParent(getParent() != null ? getParent().convert() : null);
+        entity.setParent(Optional.ofNullable(getParent()).map(RoleDto::convert).orElse(null));
         entity.setPrivileges(new HashSet<>(convertCollection(getPrivileges(), PrivilegeDto::convert)));
         return entity;
     }

@@ -13,7 +13,7 @@ public class PrivilegeDto implements SecurityPrivilege {
     }
 
     public PrivilegeDto(Privilege entity) {
-        setId(getId());
+        setId(entity.getId());
         setAction(new ActionDto(entity.getAction()));
         setObjectType(new ObjectTypeDto(entity.getObjectType()));
     }
