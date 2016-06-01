@@ -5,9 +5,6 @@ public class ObjectTypeDto {
     private String name;
     private String description;
 
-    public ObjectTypeDto() {
-    }
-
     public Long getId() {
         return id;
     }
@@ -31,5 +28,4 @@ public class ObjectTypeDto {
     public void setDescription(String description) {
         this.description = description;
     }
-
 }

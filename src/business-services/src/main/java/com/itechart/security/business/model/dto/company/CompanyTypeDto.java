@@ -5,9 +5,6 @@ public class CompanyTypeDto {
     private Long id;
     private String description;
 
-    public CompanyTypeDto() {
-    }
-
     public Long getId() {
         return id;
     }
@@ -23,5 +20,4 @@ public class CompanyTypeDto {
     public void setDescription(String description) {
         this.description = description;
     }
-
 }

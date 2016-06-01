@@ -5,9 +5,6 @@ public class PublicGroupDto {
     private String name;
     private String description;
 
-    public PublicGroupDto() {
-    }
-
     public Long getId() {
         return id;
     }
@@ -31,5 +28,4 @@ public class PublicGroupDto {
     public void setDescription(String description) {
         this.description = description;
     }
-
 }

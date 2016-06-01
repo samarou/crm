@@ -5,9 +5,6 @@ public class BusinessSphereDto {
     private Long id;
     private String description;
 
-    public BusinessSphereDto() {
-    }
-
     public Long getId() {
         return id;
     }
@@ -23,5 +20,4 @@ public class BusinessSphereDto {
     public void setDescription(String description) {
         this.description = description;
     }
-
 }

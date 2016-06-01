@@ -1,15 +1,11 @@
 package com.itechart.security.model.dto;
 
 public class PublicUserDto {
-
     private Long id;
     private String userName;
     private String email;
     private String firstName;
     private String lastName;
-
-    public PublicUserDto(){
-    }
 
     public Long getId() {
         return id;
@@ -50,5 +46,4 @@ public class PublicUserDto {
     public String getLastName() {
         return lastName;
     }
-
 }

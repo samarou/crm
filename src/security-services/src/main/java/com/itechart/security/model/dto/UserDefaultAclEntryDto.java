@@ -1,11 +1,8 @@
 package com.itechart.security.model.dto;
 
 public class UserDefaultAclEntryDto extends AclEntryDto {
-
     private Long id;
 
-    public UserDefaultAclEntryDto() {
-    }
 
     public Long getId() {
         return id;
@@ -14,5 +11,4 @@ public class UserDefaultAclEntryDto extends AclEntryDto {
     public void setId(Long id) {
         this.id = id;
     }
-
 }

@@ -13,9 +13,6 @@ public class CompanyDto {
 
     // TODO address
 
-    public CompanyDto() {
-    }
-
     public Long getId() {
         return id;
     }
@@ -71,5 +68,4 @@ public class CompanyDto {
     public void setCommentary(String commentary) {
         this.commentary = commentary;
     }
-
 }

@@ -5,9 +5,6 @@ public class ActionDto {
     private String name;
     private String description;
 
-    public ActionDto() {
-    }
-
     public Long getId() {
         return id;
     }
@@ -31,5 +28,4 @@ public class ActionDto {
     public void setDescription(String description) {
         this.description = description;
     }
-
 }

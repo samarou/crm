@@ -10,9 +10,6 @@ public class RoleDto implements SecurityRole {
     private RoleDto parent;
     private Set<PrivilegeDto> privileges;
 
-    public RoleDto() {
-    }
-
     public Long getId() {
         return id;
     }
@@ -52,5 +49,4 @@ public class RoleDto implements SecurityRole {
     public void setPrivileges(Set<PrivilegeDto> privileges) {
         this.privileges = privileges;
     }
-
 }
