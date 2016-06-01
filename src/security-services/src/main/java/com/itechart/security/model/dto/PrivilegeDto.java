@@ -3,7 +3,6 @@ package com.itechart.security.model.dto;
 import com.itechart.security.core.model.SecurityPrivilege;
 
 public class PrivilegeDto implements SecurityPrivilege {
-
     private Long id;
     private ObjectTypeDto objectType;
     private ActionDto action;

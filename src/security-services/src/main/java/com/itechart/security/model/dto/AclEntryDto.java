@@ -10,9 +10,6 @@ public class AclEntryDto {
     private boolean canDelete;
     private boolean canAdmin;
 
-    public AclEntryDto() {
-    }
-
     public Long getPrincipalId() {
         return principalId;
     }
@@ -76,6 +73,5 @@ public class AclEntryDto {
     public void setCanAdmin(boolean canAdmin) {
         this.canAdmin = canAdmin;
     }
-
 }
 
