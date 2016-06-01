@@ -13,11 +13,15 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Authentication filter that processes requests to stateless services,
@@ -28,16 +32,15 @@ public class TokenAuthenticationFilter extends GenericFilterBean {
 
     private static final Logger logger = LoggerFactory.getLogger(TokenAuthenticationFilter.class);
 
-    private static final String HEADER_AUTH_TOKEN = "X-Auth-Token";
-
     private AuthenticationManager authenticationManager;
 
     private TokenService tokenService;
 
+
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         try {
-            authenticate((HttpServletRequest) request);
+            authenticate((HttpServletRequest) request, (HttpServletResponse) response);
             chain.doFilter(request, response);
         } catch (AuthenticationException e) {
             HttpServletResponse httpResponse = (HttpServletResponse) response;
@@ -45,18 +48,20 @@ public class TokenAuthenticationFilter extends GenericFilterBean {
         }
     }
 
-    public Authentication authenticate(HttpServletRequest request) throws AuthenticationException {
-        String token = request.getHeader(HEADER_AUTH_TOKEN);
+    public Authentication authenticate(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+        String token = tokenService.getTokenFromRequest(request);
+        if (Objects.isNull(token)) throw new InvalidTokenException("Authentication token is required");
         logger.debug("Process token {} for request {}", token, request.getQueryString());
-        if (token == null) {
-            throw new InvalidTokenException("Authentication token is required");
-        }
         TokenData tokenData = tokenService.parseToken(token);
         String remoteAddr = request.getRemoteAddr();
         if (remoteAddr != null && !isEqualRemoteAddresses(remoteAddr, tokenData.getRemoteAddr())) {
             logger.warn("IP address from token ({}) differs from client IP ({})", tokenData.getRemoteAddr(), remoteAddr);
             throw new InvalidTokenException("Invalid authentication token attributes");
         }
+
+        token = tokenService.generateToken(tokenData);
+        tokenService.setTokenToResponse(response, token);
+
         Authentication authentication = new TokenAuthentication(token);
         authentication = authenticationManager.authenticate(authentication);
         SecurityContextHolder.getContext().setAuthentication(authentication);

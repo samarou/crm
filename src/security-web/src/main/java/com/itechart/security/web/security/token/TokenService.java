@@ -10,10 +10,15 @@ import org.springframework.security.crypto.keygen.StringKeyGenerator;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.net.InetAddress;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.Optional;
 
 /**
  * Service performs generating of new security tokens,
@@ -26,6 +31,8 @@ import java.util.Base64;
 public class TokenService {
 
     private static final Logger logger = LoggerFactory.getLogger(TokenService.class);
+
+    private static final String HEADER_AUTH_TOKEN = "X-Auth-Token";
 
     private KeyBasedPersistenceTokenService tokenHelper;
 
@@ -84,6 +91,39 @@ public class TokenService {
         }
         Token token = tokenHelper.allocateToken(extraInformation.toString());
         return token.getKey();
+    }
+
+    public String getTokenFromRequest(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        String token = null;
+        if (cookies != null) {
+            Optional<Cookie> optionalCookie = Arrays.asList(cookies)
+                    .stream()
+                    .filter(cookie -> cookie.getName().equals(HEADER_AUTH_TOKEN))
+                    .findFirst();
+            if (optionalCookie.isPresent()) {
+                token =  optionalCookie.get().getValue();
+            }
+        }
+        return token;
+    }
+
+    public void setTokenToResponse(HttpServletResponse response, String token) {
+        Cookie cookie = createCookie(HEADER_AUTH_TOKEN, token, Math.toIntExact(tokenTimeToLive / 1000));
+        response.addCookie(cookie);
+    }
+
+    public void deleteTokenFromResponse(HttpServletResponse response) {
+        Cookie cookie = createCookie(HEADER_AUTH_TOKEN, null, 0);
+        response.addCookie(cookie);
+    }
+
+    private Cookie createCookie(String name, String value, int maxAge) {
+        Cookie cookie = new Cookie(name, value);
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(maxAge);
+        cookie.setPath("/");
+        return cookie;
     }
 
     public void setTokenTimeToLive(Long tokenTimeToLive) {

@@ -17,22 +17,15 @@
             restore: restore,
             isAuthenticated: isAuthenticated,
             getAuthentication: getAuthentication,
+            setAuthentication: setAuthentication,
             isAdmin: isAdmin,
             isManager: isManager,
-            isSpecialist: isSpecialist
+            isSpecialist: isSpecialist,
+            getAuthStatus: getAuthStatus
         };
 
         function setAuthentication(authData) {
             service.authentication = authData;
-            $http.defaults.headers.common['X-Auth-Token'] =
-                authData ? authData.token : undefined;
-            if (sessionStorage) {
-                if (authData) {
-                    sessionStorage.setItem('auth.data', angular.toJson(authData));
-                } else {
-                    sessionStorage.removeItem('auth.data');
-                }
-            }
         }
 
         function login(username, password) {
@@ -49,27 +42,44 @@
         }
 
         function logout() {
-            setAuthentication(null);
+            return getAuthStatus()
+                .then(function () {
+                    return $http.post('rest/logout').then(function () {
+                        setAuthentication(null);
+                        return $q.resolve();
+                    });
+                });
         }
 
         function restore() {
-            if (sessionStorage) {
-                var authData = sessionStorage.getItem('auth.data');
-                if (authData) {
-                    try {
-                        setAuthentication(angular.fromJson(authData));
-                        return true;
-                    } catch (e) {
-                        $log.error(e);
+            return $http.get('rest/login/roles')
+                .then(function (response) {
+                        setAuthentication(response.data);
+                        return $q.resolve(response);
+                    }, function () {
+                        setAuthentication(null);
+                        return $q.reject();
                     }
-                }
-            }
-            return false;
+                );
         }
 
         function isAuthenticated() {
             return !!service.authentication;
         }
+
+        function getAuthStatus() {
+            return $http.get('rest/login/check').then(
+                function (response) {
+                    $log.log(response);
+                    if (response.data) {
+                        return $q.resolve();
+                    } else {
+                        return $q.reject();
+                    }
+                }
+            );
+        }
+
 
         function getAuthentication() {
             return angular.copy(service.authentication);
