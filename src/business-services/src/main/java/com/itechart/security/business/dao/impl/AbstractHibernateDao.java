@@ -51,6 +51,17 @@ public abstract class AbstractHibernateDao<T> extends HibernateDaoSupport {
         return getSessionFactory().getClassMetadata(getPersistentClass()).getIdentifierPropertyName();
     }
 
+    public boolean deleteById(Serializable id) {
+        return getHibernateTemplate().executeWithNativeSession(session -> {
+            Object persistentInstance = session.get(resolvePersistentClass(), id);
+            if (persistentInstance != null) {
+                session.delete(persistentInstance);
+                return true;
+            }
+            return false;
+        });
+    }
+
 
     @SuppressWarnings("unchecked")
     protected List<T> executePagingDistinctCriteria(Session session, Criteria criteria, PagingFilter filter) {

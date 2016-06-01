@@ -1,23 +1,29 @@
 package com.itechart.security.business.model.dto.utils;
 
 import com.itechart.security.business.model.dto.*;
+import com.itechart.security.business.model.dto.helpers.NamedEntity;
 import com.itechart.security.business.model.enums.EmailType;
 import com.itechart.security.business.model.enums.TelephoneType;
 import com.itechart.security.business.model.persistent.*;
-import org.springframework.util.CollectionUtils;
+import com.itechart.security.business.model.persistent.task.Priority;
+import com.itechart.security.business.model.persistent.task.Status;
+import com.itechart.security.business.model.persistent.task.Task;
+import com.itechart.security.model.dto.PublicUserDto;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
+import static java.util.Collections.emptyList;
 import static java.util.Collections.emptySet;
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
+import static org.springframework.util.CollectionUtils.isEmpty;
 
 public class DtoConverter {
     public static List<ContactDto> convertContacts(List<Contact> contacts) {
-        if (CollectionUtils.isEmpty(contacts)) {
-            return Collections.emptyList();
+        if (isEmpty(contacts)) {
+            return emptyList();
         }
-        return contacts.stream().map(DtoConverter::convertMainFields).collect(Collectors.toList());
+        return contacts.stream().map(DtoConverter::convertMainFields).collect(toList());
     }
 
     public static ContactDto convert(Contact contact) {
@@ -115,7 +121,7 @@ public class DtoConverter {
     }
 
     public static Set<OrderDto> convertOrders(Set<Order> orders) {
-        if (CollectionUtils.isEmpty(orders)) {
+        if (isEmpty(orders)) {
             return emptySet();
         }
         return orders
@@ -125,7 +131,7 @@ public class DtoConverter {
     }
 
     public static Set<Order> convertOrderDtos(Set<OrderDto> orderDtos) {
-        if (CollectionUtils.isEmpty(orderDtos)) {
+        if (isEmpty(orderDtos)) {
             return emptySet();
         }
         return orderDtos
@@ -152,7 +158,7 @@ public class DtoConverter {
     }
 
     public static Set<EmailDto> convertEmails(Set<Email> emails) {
-        if (CollectionUtils.isEmpty(emails)) {
+        if (isEmpty(emails)) {
             return emptySet();
         }
         return emails
@@ -163,7 +169,7 @@ public class DtoConverter {
     }
 
     public static Set<Email> convertEmailDtos(Set<EmailDto> dtos) {
-        if (CollectionUtils.isEmpty(dtos)) {
+        if (isEmpty(dtos)) {
             return emptySet();
         }
         return dtos
@@ -188,10 +194,10 @@ public class DtoConverter {
     }
 
     public static List<CountryDto> convertCountries(List<Country> countries) {
-        if (CollectionUtils.isEmpty(countries)) {
-            return Collections.emptyList();
+        if (isEmpty(countries)) {
+            return emptyList();
         }
-        return countries.stream().map(DtoConverter::convert).collect(Collectors.toList());
+        return countries.stream().map(DtoConverter::convert).collect(toList());
     }
 
     public static AddressDto convert(Address address) {
@@ -221,7 +227,7 @@ public class DtoConverter {
     }
 
     public static Set<AddressDto> convertAddresses(Set<Address> addresses) {
-        if (CollectionUtils.isEmpty(addresses)) {
+        if (isEmpty(addresses)) {
             return emptySet();
         }
         return addresses
@@ -232,7 +238,7 @@ public class DtoConverter {
     }
 
     public static Set<Address> convertAddressDtos(Set<AddressDto> dtos) {
-        if (CollectionUtils.isEmpty(dtos)) {
+        if (isEmpty(dtos)) {
             return emptySet();
         }
         return dtos
@@ -259,7 +265,7 @@ public class DtoConverter {
     }
 
     public static Set<TelephoneDto> convertTelephones(Set<Telephone> telephones) {
-        if (CollectionUtils.isEmpty(telephones)) {
+        if (isEmpty(telephones)) {
             return emptySet();
         }
         return telephones
@@ -270,7 +276,7 @@ public class DtoConverter {
     }
 
     public static Set<Telephone> convertTelephoneDtos(Set<TelephoneDto> telephones) {
-        if (CollectionUtils.isEmpty(telephones)) {
+        if (isEmpty(telephones)) {
             return emptySet();
         }
         return telephones
@@ -295,10 +301,10 @@ public class DtoConverter {
     }
 
     public static List<MessengerDto> convertMessengers(List<Messenger> messengers) {
-        if (CollectionUtils.isEmpty(messengers)) {
-            return Collections.emptyList();
+        if (isEmpty(messengers)) {
+            return emptyList();
         }
-        return messengers.stream().map(DtoConverter::convert).collect(Collectors.toList());
+        return messengers.stream().map(DtoConverter::convert).collect(toList());
     }
 
     public static MessengerAccountDto convert(MessengerAccount messengerAccount) {
@@ -322,7 +328,7 @@ public class DtoConverter {
     }
 
     public static Set<MessengerAccountDto> convertMessengerAccounts(Set<MessengerAccount> messengers) {
-        if (CollectionUtils.isEmpty(messengers)) {
+        if (isEmpty(messengers)) {
             return emptySet();
         }
         return messengers
@@ -333,7 +339,7 @@ public class DtoConverter {
     }
 
     public static Set<MessengerAccount> convertMessengerAccountDtos(Set<MessengerAccountDto> messengers) {
-        if (CollectionUtils.isEmpty(messengers)) {
+        if (isEmpty(messengers)) {
             return emptySet();
         }
         return messengers
@@ -358,10 +364,10 @@ public class DtoConverter {
     }
 
     public static List<SocialNetworkDto> convertSocialNetworks(List<SocialNetwork> socialNetworks) {
-        if (CollectionUtils.isEmpty(socialNetworks)) {
-            return Collections.emptyList();
+        if (isEmpty(socialNetworks)) {
+            return emptyList();
         }
-        return socialNetworks.stream().map(DtoConverter::convert).collect(Collectors.toList());
+        return socialNetworks.stream().map(DtoConverter::convert).collect(toList());
     }
 
     public static SocialNetworkAccountDto convert(SocialNetworkAccount socialNetworkAccount) {
@@ -385,7 +391,7 @@ public class DtoConverter {
     }
 
     public static Set<SocialNetworkAccountDto> convertSocialNetworkAccounts(Set<SocialNetworkAccount> socialNetworks) {
-        if (CollectionUtils.isEmpty(socialNetworks)) {
+        if (isEmpty(socialNetworks)) {
             return emptySet();
         }
         return socialNetworks
@@ -396,7 +402,7 @@ public class DtoConverter {
     }
 
     public static Set<SocialNetworkAccount> convertSocialNetworkAccountDtos(Set<SocialNetworkAccountDto> socialNetworks) {
-        if (CollectionUtils.isEmpty(socialNetworks)) {
+        if (isEmpty(socialNetworks)) {
             return emptySet();
         }
         return socialNetworks
@@ -429,7 +435,7 @@ public class DtoConverter {
     }
 
     public static Set<WorkplaceDto> convertWorkplaces(Set<Workplace> workplaces) {
-        if (CollectionUtils.isEmpty(workplaces)) {
+        if (isEmpty(workplaces)) {
             return emptySet();
         }
         return workplaces
@@ -440,7 +446,7 @@ public class DtoConverter {
     }
 
     public static Set<Workplace> convertWorkplaceDtos(Set<WorkplaceDto> workplaces) {
-        if (CollectionUtils.isEmpty(workplaces)) {
+        if (isEmpty(workplaces)) {
             return emptySet();
         }
         return workplaces
@@ -499,12 +505,12 @@ public class DtoConverter {
 
     public static List<EmailTypeDto> convertEmailTypes(EmailType[] types) {
         if (types.length == 0) {
-            return Collections.emptyList();
+            return emptyList();
         }
         return Arrays.asList(types)
             .stream()
             .map(DtoConverter::convert)
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
 
@@ -517,12 +523,67 @@ public class DtoConverter {
 
     public static List<TelephoneTypeDto> convertTelephoneTypes(TelephoneType[] types) {
         if (types.length == 0) {
-            return Collections.emptyList();
+            return emptyList();
         }
         return Arrays.asList(types)
             .stream()
             .map(DtoConverter::convert)
-            .collect(Collectors.toList());
+            .collect(toList());
+    }
+
+    public static Task convert(TaskDto dto) {
+        Task task = new Task();
+        task.setId(dto.getId());
+        task.setName(dto.getName());
+        task.setDescription(dto.getDescription());
+        task.setStartDate(dto.getStartDate());
+        task.setEndDate(dto.getEndDate());
+        task.setPriority(convertToPriority(dto.getPriority()));
+        task.setStatus(convertToStatus(dto.getStatus()));
+        task.setAssignee(dto.getAssignee().getId());
+        return task;
+    }
+
+    public static Priority convertToPriority(NamedEntity dto){
+        Priority priority = new Priority();
+        priority.setId(dto.getId());
+        priority.setName(dto.getName());
+        return priority;
+    }
+
+    public static Status convertToStatus(NamedEntity dto){
+        Status status = new Status();
+        status.setId(dto.getId());
+        status.setName(dto.getName());
+        return status;
+    }
+
+    public static List<NamedEntity> convertFromStatuses(List<Status> statuses) {
+        if(isEmpty(statuses)) {
+            return emptyList();
+        }
+        return statuses.stream().map(DtoConverter::convert).collect(toList());
+    }
+
+    public static NamedEntity convert(Status status) {
+        NamedEntity dto = new NamedEntity();
+        dto.setId((Long) status.getId());
+        dto.setName(status.getName());
+        return dto;
+    }
+
+    public static List<NamedEntity> convertFromPriorities(List<Priority> priorities) {
+        if(isEmpty(priorities)) {
+            return emptyList();
+        }
+        return priorities.stream().map(DtoConverter::convert).collect(toList());
+    }
+
+    public static NamedEntity convert(Priority priority) {
+        NamedEntity dto = new NamedEntity();
+        dto.setId((Long) priority.getId());
+        dto.setName(priority.getName());
+        return dto;
     }
 
     public static Skill convert(SkillDto dto) {
@@ -540,7 +601,7 @@ public class DtoConverter {
     }
 
     public static Set<SkillDto> convertSkills(Set<Skill> skills) {
-        if (CollectionUtils.isEmpty(skills)) {
+        if (isEmpty(skills)) {
             return emptySet();
         }
         return skills
@@ -551,12 +612,34 @@ public class DtoConverter {
     }
 
     public static Set<Skill> convertSkillDtos(Set<SkillDto> skills) {
-        if (CollectionUtils.isEmpty(skills)) {
+        if (isEmpty(skills)) {
             return emptySet();
         }
         return skills
             .stream()
             .map(DtoConverter::convert)
             .collect(toSet());
+    }
+
+    public static List<TaskDto> convert(Map<Task, PublicUserDto> tasks) {
+        if(isEmpty(tasks)){
+            return emptyList();
+        }
+        List<TaskDto> dtos = new ArrayList<>();
+        tasks.forEach((task, user) -> dtos.add(convert(task, user)));
+        return dtos;
+    }
+
+    public static TaskDto convert(Task task, PublicUserDto assignee){
+        TaskDto dto = new TaskDto();
+        dto.setId((Long)task.getId());
+        dto.setName(task.getName());
+        dto.setDescription(task.getDescription());
+        dto.setStartDate(task.getStartDate());
+        dto.setEndDate(task.getEndDate());
+        dto.setAssignee(assignee);
+        dto.setStatus(convert(task.getStatus()));
+        dto.setPriority(convert(task.getPriority()));
+        return dto;
     }
 }
