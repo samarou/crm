@@ -9,6 +9,7 @@
             'crm.group',
             'crm.contact',
             'crm.company',
+            'crm.task',
             'crm.navbar',
             'crm.footer']);
 

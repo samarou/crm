@@ -1,0 +1,43 @@
+<div class="page-header">
+    <h4>Contacts</h4>
+</div>
+<div class="row crm-bottom-buffer">
+    <div class="col-xs-12 col-sm-offset-8 col-sm-4 col-md-offset-9 col-md-3">
+        <div class="btn-group btn-group-justified">
+            <a class="btn btn-default" ng-click="vm.add()">
+                Add
+            </a>
+            <a class="btn btn-default" ng-click="vm.remove()">
+                Remove
+            </a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-condensed">
+            <caption></caption>
+            <thead>
+                <th></th>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Assignee</th>
+                <th>Start date</th>
+                <th>End date</th>
+            </thead>
+            <tbody>
+                <tr class="crm-hover" ng-click="vm.edit(task)"
+                    ng-repeat="task in vm.taskList">
+                    <td><input type="checkbox" ng-click="$event.stopPropagation()" ng-model="task.checked"></td>
+                    <td>{{task.name}}</td>
+                    <td>{{task.status.name}}</td>
+                    <td>{{task.priority.name}}</td>
+                    <td>{{task.assignee | fullName}}</td>
+                    <td>{{task.startDate | date : 'yyyy-mm-dd'}}</td>
+                    <td>{{task.endDate | date : 'yyyy-mm-dd'}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
