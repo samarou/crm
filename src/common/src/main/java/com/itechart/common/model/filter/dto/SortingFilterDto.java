@@ -1,7 +1,5 @@
 package com.itechart.common.model.filter.dto;
 
-import com.itechart.common.model.filter.SortingFilter;
-
 public class SortingFilterDto{
 
     private String sortProperty;
@@ -23,9 +21,4 @@ public class SortingFilterDto{
         this.sortAsc = sortAsc;
     }
 
-    public <T extends SortingFilter> T convert(T entity) {
-        entity.setSortProperty(getSortProperty());
-        entity.setSortAsc(isSortAsc());
-        return entity;
-    }
 }

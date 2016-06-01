@@ -1,12 +1,7 @@
 package com.itechart.security.model.dto;
 
-import com.itechart.security.model.persistent.User;
-
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static com.itechart.common.model.util.Converter.convertCollection;
 
 public class SecuredUserDto extends PublicUserDto {
 
@@ -17,15 +12,6 @@ public class SecuredUserDto extends PublicUserDto {
     private List<UserDefaultAclEntryDto> acls;
 
     public SecuredUserDto() {
-    }
-
-    public SecuredUserDto(User entity) {
-        super(entity);
-        if (entity != null) {
-            setActive(entity.isActive());
-            setGroups(new HashSet<>(convertCollection(entity.getGroups(), SecuredGroupDto::new)));
-            setRoles(new HashSet<>(convertCollection(entity.getRoles(), RoleDto::new)));
-        }
     }
 
     public String getPassword() {
@@ -68,12 +54,4 @@ public class SecuredUserDto extends PublicUserDto {
         return acls;
     }
 
-    public User convert() {
-        User entity = super.convert();
-        entity.setPassword(getPassword());
-        entity.setActive(isActive());
-        entity.setGroups(new HashSet<>(convertCollection(getGroups(), SecuredGroupDto::convert)));
-        entity.setRoles(new HashSet<>(convertCollection(getRoles(), RoleDto::convert)));
-        return entity;
-    }
 }

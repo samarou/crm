@@ -1,6 +1,5 @@
 package com.itechart.security.model.dto;
 
-import com.itechart.security.model.filter.UserFilter;
 import com.itechart.common.model.filter.dto.TextFilterDto;
 
 public class SecuredUserFilterDto extends TextFilterDto {
@@ -32,11 +31,4 @@ public class SecuredUserFilterDto extends TextFilterDto {
         this.active = active;
     }
 
-    public UserFilter convert() {
-        UserFilter entity = super.convert(new UserFilter());
-        entity.setGroupId(getGroupId());
-        entity.setRoleId(getRoleId());
-        entity.setActive(isActive());
-        return entity;
-    }
 }

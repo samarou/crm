@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class Converter {
+public class CollectionConverter {
 
     public static <A, B> List<B> convertCollection(Collection<A> list, Function<A, B> conversion) {
         if (CollectionUtils.isEmpty(list)) {

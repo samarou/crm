@@ -1,20 +1,11 @@
 package com.itechart.security.business.model.dto.company;
 
-import com.itechart.security.business.model.persistent.company.EmployeeNumberCategory;
-
 public class EmployeeNumberCategoryDto {
 
     private Long id;
     private String description;
 
     public EmployeeNumberCategoryDto() {
-    }
-
-    public EmployeeNumberCategoryDto(EmployeeNumberCategory entity) {
-        if (entity != null) {
-            setId(entity.getId());
-            setDescription(entity.getDescription());
-        }
     }
 
     public Long getId() {
@@ -33,10 +24,4 @@ public class EmployeeNumberCategoryDto {
         this.description = description;
     }
 
-    public EmployeeNumberCategory convert() {
-        EmployeeNumberCategory result = new EmployeeNumberCategory();
-        result.setId(getId());
-        result.setDescription(getDescription());
-        return result;
-    }
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.itechart.security.business.model.dto.utils.CompanyConverter.convert;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
@@ -23,10 +24,10 @@ public class CompanyController extends SecuredController {
 
     @RequestMapping("/companies")
     public DataPageDto<CompanyDto> getCompanies(CompanyFilterDto filter) {
-        List<CompanyDto> companies = companyService.findCompanies(filter.convert());
+        List<CompanyDto> companies = companyService.findCompanies(convert(filter));
         DataPageDto<CompanyDto> result = new DataPageDto<>();
         result.setData(companies);
-        result.setTotalCount(companyService.countCompanies(filter.convert()));
+        result.setTotalCount(companyService.countCompanies(convert(filter)));
         return result;
     }
 

@@ -1,17 +1,5 @@
 package com.itechart.security.model.dto;
 
-import com.itechart.security.core.model.acl.Permission;
-import com.itechart.security.model.PrincipalTypes;
-import com.itechart.security.model.persistent.Group;
-import com.itechart.security.model.persistent.Principal;
-import com.itechart.security.model.persistent.User;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import static com.itechart.security.core.model.acl.Permission.*;
-import static com.itechart.security.core.model.acl.Permission.ADMIN;
-
 public class AclEntryDto {
     private Long principalId;
     private String name;
@@ -23,23 +11,6 @@ public class AclEntryDto {
     private boolean canAdmin;
 
     public AclEntryDto() {
-    }
-
-    public AclEntryDto(Principal principal, Set<Permission> permissions) {
-        setPrincipalId(principal.getId());
-        setName(principal.getName());
-        if (principal instanceof User) {
-            setPrincipalTypeName(PrincipalTypes.USER.getObjectType());
-        } else if (principal instanceof Group) {
-            setPrincipalTypeName(PrincipalTypes.GROUP.getObjectType());
-        }
-        permissions.forEach(permission -> {
-            if (permission == READ) setCanRead(true);
-            if (permission == WRITE) setCanWrite(true);
-            if (permission == CREATE) setCanCreate(true);
-            if (permission == DELETE) setCanDelete(true);
-            if (permission == ADMIN) setCanAdmin(true);
-        });
     }
 
     public Long getPrincipalId() {
@@ -106,14 +77,5 @@ public class AclEntryDto {
         this.canAdmin = canAdmin;
     }
 
-    public Set<Permission> convert() {
-        Set<Permission> permissions = new HashSet<>();
-        if (isCanRead()) permissions.add(READ);
-        if (isCanWrite()) permissions.add(WRITE);
-        if (isCanCreate()) permissions.add(CREATE);
-        if (isCanDelete()) permissions.add(DELETE);
-        if (isCanAdmin()) permissions.add(ADMIN);
-        return permissions;
-    }
 }
 

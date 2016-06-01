@@ -1,7 +1,5 @@
 package com.itechart.common.model.filter.dto;
 
-import com.itechart.common.model.filter.PagingFilter;
-
 public class PagingFilterDto extends SortingFilterDto {
 
     private Integer from;
@@ -23,10 +21,4 @@ public class PagingFilterDto extends SortingFilterDto {
         this.count = count;
     }
 
-    public <T extends PagingFilter> T convert(T entity) {
-        T result = super.convert(entity);
-        result.setFrom(getFrom());
-        result.setCount(getCount());
-        return result;
-    }
 }

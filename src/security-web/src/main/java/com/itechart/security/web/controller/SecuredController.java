@@ -11,13 +11,15 @@ import com.itechart.security.model.persistent.Principal;
 import com.itechart.security.model.persistent.acl.Acl;
 import com.itechart.security.service.AclService;
 import com.itechart.security.service.PrincipalService;
-import com.itechart.common.model.util.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static com.itechart.common.model.util.CollectionConverter.convertCollection;
+import static com.itechart.security.model.util.AclConverter.convert;
 
 public abstract class SecuredController {
 
@@ -49,12 +51,12 @@ public abstract class SecuredController {
         Acl acl = getAcl(entityId);
         Map<Long, Set<Permission>> allPermissions = acl.getPermissions();
         List<Principal> principals = principalService.getByIds(new ArrayList<>(allPermissions.keySet()));
-        return Converter.convertCollection(principals, principal -> new AclEntryDto(principal, allPermissions.get(principal.getId())));
+        return convertCollection(principals, principal -> convert(principal, allPermissions.get(principal.getId())));
     }
 
     protected void createOrUpdateAcls(Long entityId, List<AclEntryDto> aclEntries) {
         Acl acl = getAcl(entityId);
-        aclEntries.forEach(aclEntry -> acl.setPermissions(aclEntry.getPrincipalId(), aclEntry.convert()));
+        aclEntries.forEach(aclEntry -> acl.setPermissions(aclEntry.getPrincipalId(), convert(aclEntry)));
         aclService.updateAcl(acl);
     }
 

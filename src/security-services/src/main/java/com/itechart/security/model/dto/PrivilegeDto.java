@@ -2,6 +2,8 @@ package com.itechart.security.model.dto;
 
 import com.itechart.security.core.model.SecurityPrivilege;
 import com.itechart.security.model.persistent.Privilege;
+import com.itechart.security.model.util.ActionConverter;
+import com.itechart.security.model.util.ObjectTypeConverter;
 
 public class PrivilegeDto implements SecurityPrivilege {
 
@@ -10,12 +12,6 @@ public class PrivilegeDto implements SecurityPrivilege {
     private ActionDto action;
 
     public PrivilegeDto() {
-    }
-
-    public PrivilegeDto(Privilege entity) {
-        setId(entity.getId());
-        setAction(new ActionDto(entity.getAction()));
-        setObjectType(new ObjectTypeDto(entity.getObjectType()));
     }
 
     public Long getId() {
@@ -53,8 +49,8 @@ public class PrivilegeDto implements SecurityPrivilege {
     public Privilege convert() {
         Privilege entity = new Privilege();
         entity.setId(getId());
-        entity.setAction(getAction().convert());
-        entity.setObjectType(getObjectType().convert());
+        entity.setAction(ActionConverter.convert(getAction()));
+        entity.setObjectType(ObjectTypeConverter.convert(getObjectType()));
         return entity;
     }
 }

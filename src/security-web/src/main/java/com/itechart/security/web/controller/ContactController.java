@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
+import static com.itechart.security.business.model.dto.utils.ContactConverter.convert;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
@@ -59,7 +60,7 @@ public class ContactController extends SecuredController {
 
     @RequestMapping("/contacts/find")
     public DataPageDto find(ContactFilterDto filterDto) {
-        ContactFilter filter = filterDto.convert();
+        ContactFilter filter = convert(filterDto);
         DataPageDto<ContactDto> page = new DataPageDto<>();
         List<ContactDto> contactDtos = contactService.findContacts(filter);
         page.setData(contactDtos);
