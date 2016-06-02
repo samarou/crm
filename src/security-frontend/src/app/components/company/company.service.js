@@ -6,7 +6,7 @@
         .factory('companyService', companyService);
 
     /** @ngInject */
-    function companyService($http) {
+    function companyService($http, $q) {
 
         return {
             find: find,
@@ -18,22 +18,8 @@
             updateAcls: updateAcls,
             removeAcl: removeAcl,
             isAllowed: isAllowed,
-            getCompanyTypes: getCompanyTypes,
-            getBusinessSpheres: getBusinessSpheres,
-            getEmployeeCategories: getEmployeeCategories
+            getStaticData: getStaticData
         };
-
-        function getCompanyTypes() {
-            return $http.get('rest/companies/company_types', {cache: true});
-        }
-
-        function getBusinessSpheres() {
-            return $http.get('rest/companies/business_spheres', {cache: true});
-        }
-
-        function getEmployeeCategories() {
-            return $http.get('rest/companies/employee_number_categories', {cache: true});
-        }
 
         function find(filter) {
             return $http.get('rest/companies', {params: filter});
@@ -69,6 +55,39 @@
 
         function isAllowed(companyId, permission) {
             return $http.get('rest/companies/' + companyId + '/actions/' + permission);
+        }
+
+        function getCompanyTypes(staticData) {
+            return $http.get('rest/companies/company_types', {cache: true}).then(function (response) {
+                staticData.companyTypes = response.data;
+            });
+        }
+
+        function getBusinessSpheres(staticData) {
+            return $http.get('rest/companies/business_spheres', {cache: true}).then(function (response) {
+                staticData.businessSpheres = response.data;
+            });
+        }
+
+        function getEmployeeCategories(staticData) {
+            return $http.get('rest/companies/employee_number_categories', {cache: true}).then(function (response) {
+                staticData.employeeNumberCategories = response.data;
+            });
+        }
+
+        function getStaticData() {
+            var staticData = {
+                companyTypes: [],
+                businessSpheres: [],
+                employeeNumberCategories: []
+            };
+            return $q.all([
+                getCompanyTypes(staticData),
+                getBusinessSpheres(staticData),
+                getEmployeeCategories(staticData)
+            ]).then(function () {
+                return $q.resolve(staticData);
+            });
         }
 
     }

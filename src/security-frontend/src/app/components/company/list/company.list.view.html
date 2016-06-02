@@ -29,47 +29,58 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <table class="table table-condensed">
-                <thead>
-                <tr>
-                    <th><input type="checkbox" ng-model="vm.searchBundle.isSelectedAll"
-                               ng-click="vm.searchBundle.selectAll(vm.searchBundle.isSelectedAll)">
-                    </th>
-                    <th class="crm-hover" ng-click="vm.searchBundle.sortBy(vm.searchBundle.sortProperties.name)">
-                            <span class="glyphicon" ng-show="vm.searchBundle.sortProperties.name.enabled"
-                                  ng-class="vm.searchBundle.sortProperties.name.asc ? 'glyphicon-sort-by-attributes' : 'glyphicon-sort-by-attributes-alt' ">
-                            </span>
-                        Name
-                    </th>
-                    <!--
-                    <th class="crm-hover">
-                        Country
-                    </th>
-                    <th class="crm-hover">
-                        City
-                    </th>
-                    -->
-                    <th class="crm-hover"
-                        ng-click="vm.searchBundle.sortBy(vm.searchBundle.sortProperties.employeeNumber)">
-                            <span class="glyphicon" ng-show="vm.searchBundle.sortProperties.employeeNumber.enabled"
-                                  ng-class="vm.searchBundle.sortProperties.employeeNumber.asc ? 'glyphicon-sort-by-attributes' : 'glyphicon-sort-by-attributes-alt' ">
-                            </span>
-                        Number of Employees
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="crm-hover" ng-click="vm.edit(company)" ng-repeat="company in vm.searchBundle.itemsList">
-                    <td><input type="checkbox" ng-model="company.checked"
-                               ng-click="vm.searchBundle.selectOne();$event.stopPropagation()">
-                    </td>
-                    <td>{{company.name}}</td>
-                    <td>{{company.employeeNumberCategory.description}}</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-condensed">
+            <thead>
+            <tr>
+                <th><input type="checkbox" ng-model="vm.searchBundle.isSelectedAll"
+                           ng-click="vm.searchBundle.selectAll(vm.searchBundle.isSelectedAll)">
+                </th>
+                <th class="crm-hover" ng-click="vm.searchBundle.sortBy(vm.searchBundle.sortProperties.name)">
+                        <span class="glyphicon" ng-show="vm.searchBundle.sortProperties.name.enabled"
+                              ng-class="vm.searchBundle.sortProperties.name.asc ? 'glyphicon-sort-by-attributes' : 'glyphicon-sort-by-attributes-alt' ">
+                        </span>
+                    Name
+                </th>
+                <!--
+                <th class="crm-hover">
+                    Country
+                </th>
+                <th class="crm-hover">
+                    City
+                </th>
+                -->
+                <th class="crm-hover"
+                    ng-click="vm.searchBundle.sortBy(vm.searchBundle.sortProperties.employeeNumber)">
+                        <span class="glyphicon" ng-show="vm.searchBundle.sortProperties.employeeNumber.enabled"
+                              ng-class="vm.searchBundle.sortProperties.employeeNumber.asc ? 'glyphicon-sort-by-attributes' : 'glyphicon-sort-by-attributes-alt' ">
+                        </span>
+                    Number of Employees
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="crm-hover" ng-click="vm.edit(company)" ng-repeat="company in vm.searchBundle.itemsList">
+                <td><input type="checkbox" ng-model="company.checked"
+                           ng-click="vm.searchBundle.selectOne();$event.stopPropagation()">
+                </td>
+                <td>{{company.name}}</td>
+                <td>{{company.employeeNumberCategory.description}}</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
+</div>
+<span class="pull-right"
+      ng-hide="vm.searchBundle.paging.totalCount === 0">Total: {{vm.searchBundle.paging.totalCount}}</span>
+<div class="crm-text-center">
+    <uib-pagination class="pagination-sm" ng-change="vm.searchBundle.paging.onPageChanged()"
+                    ng-model="vm.searchBundle.paging.currentPage"
+                    total-items="vm.searchBundle.paging.totalCount"
+                    items-per-page="vm.searchBundle.paging.itemsPerPage"
+                    max-size="vm.searchBundle.paging.visiblePages"
+                    boundary-link-numbers="true" rotate="false">
+    </uib-pagination>
 </div>
