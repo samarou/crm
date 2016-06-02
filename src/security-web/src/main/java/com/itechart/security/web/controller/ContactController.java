@@ -2,35 +2,22 @@ package com.itechart.security.web.controller;
 
 import com.itechart.security.business.filter.ContactFilter;
 import com.itechart.security.business.model.dto.ContactDto;
+import com.itechart.security.business.model.dto.ContactFilterDto;
 import com.itechart.security.business.model.dto.DictionaryDto;
 import com.itechart.security.business.model.enums.ObjectTypes;
 import com.itechart.security.business.service.ContactService;
 import com.itechart.security.business.service.DictionaryService;
 import com.itechart.security.business.service.ParsingService;
-import com.itechart.security.core.SecurityUtils;
-import com.itechart.security.core.acl.AclPermissionEvaluator;
-import com.itechart.security.core.model.acl.ObjectIdentity;
-import com.itechart.security.core.model.acl.ObjectIdentityImpl;
-import com.itechart.security.core.model.acl.Permission;
-import com.itechart.security.model.persistent.Principal;
-import com.itechart.security.model.persistent.acl.Acl;
-import com.itechart.security.service.AclService;
-import com.itechart.security.service.PrincipalService;
 import com.itechart.security.model.dto.AclEntryDto;
-import com.itechart.security.web.model.dto.ContactFilterDto;
-import com.itechart.security.web.model.dto.DataPageDto;
+import com.itechart.security.model.dto.DataPageDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import static com.itechart.security.web.model.dto.Converter.convert;
-import static java.util.stream.Collectors.toList;
+import static com.itechart.security.business.model.dto.utils.ContactConverter.convert;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
@@ -39,30 +26,20 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
  */
 @RestController
 @PreAuthorize("hasAnyRole('MANAGER', 'SPECIALIST')")
-public class ContactController {
+public class ContactController extends SecuredController {
 
     @Autowired
     private ContactService contactService;
 
     @Autowired
-    private PrincipalService principalService;
-
-    @Autowired
-    private AclService aclService;
-
-    @Autowired
     private DictionaryService dictionaryService;
-
-    @Autowired
-    private AclPermissionEvaluator aclPermissionEvaluator;
 
     @Autowired
     ParsingService parsingService;
 
     @RequestMapping("/contacts/{contactId}/actions/{value}")
     public boolean isAllowed(@PathVariable Long contactId, @PathVariable String value) {
-        Permission permission = Permission.valueOf(value.toUpperCase());
-        return aclPermissionEvaluator.hasPermission(SecurityUtils.getAuthentication(), createIdentity(contactId), permission);
+        return super.isAllowed(contactId, value);
     }
 
     @RequestMapping("/contacts")
@@ -94,39 +71,30 @@ public class ContactController {
     @RequestMapping(value = "/contacts", method = POST)
     public Long create(@RequestBody ContactDto dto) {
         Long contactId = contactService.saveContact(dto);
-        Long userId = SecurityUtils.getAuthenticatedUserId();
-        aclService.createAcl(new ObjectIdentityImpl(contactId, ObjectTypes.CONTACT.getName()), null, userId);
+        super.createAcl(contactId);
         return contactId;
     }
 
     @RequestMapping(value = "/contacts/{contactId}", method = RequestMethod.DELETE)
     @PreAuthorize("hasPermission(#contactId, 'sample.Contact', 'DELETE')")
     public void delete(@PathVariable Long contactId) {
-        Acl acl = getAcl(contactId);
-        aclService.deleteAcl(acl);
+        super.deleteAcl(contactId);
         contactService.deleteById(contactId);
     }
 
     @RequestMapping("/contacts/{contactId}/acls")
     public List<AclEntryDto> getAcls(@PathVariable Long contactId) {
-        Acl acl = getAcl(contactId);
-        Map<Long, Set<Permission>> allPermissions = acl.getPermissions();
-        List<Principal> principals = principalService.getByIds(new ArrayList<>(allPermissions.keySet()));
-        return principals.stream().map(principal -> convert(principal, allPermissions.get(principal.getId()))).collect(toList());
+        return super.getAcls(contactId);
     }
 
     @RequestMapping(value = "/contacts/{contactId}/acls", method = PUT)
     public void createOrUpdateAcls(@PathVariable Long contactId, @RequestBody List<AclEntryDto> aclEntries) {
-        Acl acl = getAcl(contactId);
-        aclEntries.forEach(aclEntry -> acl.setPermissions(aclEntry.getPrincipalId(), convert(aclEntry)));
-        aclService.updateAcl(acl);
+        super.createOrUpdateAcls(contactId, aclEntries);
     }
 
     @RequestMapping(value = "/contacts/{contactId}/acls/{principalId}", method = RequestMethod.DELETE)
     public void deleteAcl(@PathVariable Long contactId, @PathVariable Long principalId) {
-        Acl acl = getAcl(contactId);
-        acl.removePrincipal(principalId);
-        aclService.updateAcl(acl);
+        super.deleteAcl(contactId, principalId);
     }
 
     @RequestMapping(value = "/contacts/{contactId}/emails/{emailId}", method = RequestMethod.DELETE)
@@ -179,11 +147,8 @@ public class ContactController {
         return parsingService.parse(url);
     }
 
-    private Acl getAcl(Long contactId) {
-        return aclService.getAcl(createIdentity(contactId));
-    }
-
-    private ObjectIdentity createIdentity(Long contactId) {
-        return new ObjectIdentityImpl(contactId, ObjectTypes.CONTACT.getName());
+    @Override
+    public ObjectTypes getObjectType() {
+        return ObjectTypes.CONTACT;
     }
 }

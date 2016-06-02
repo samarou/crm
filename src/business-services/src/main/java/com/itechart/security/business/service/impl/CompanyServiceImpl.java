@@ -2,6 +2,7 @@ package com.itechart.security.business.service.impl;
 
 import java.util.List;
 
+import com.itechart.security.business.model.dto.utils.CompanyConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,10 +15,8 @@ import com.itechart.security.business.model.dto.company.CompanyTypeDto;
 import com.itechart.security.business.model.dto.company.EmployeeNumberCategoryDto;
 import com.itechart.security.business.service.CompanyService;
 
-import static com.itechart.security.business.model.dto.company.CompanyDtoConverter.convert;
-import static com.itechart.security.business.model.dto.company.CompanyDtoConverter.convertBusinessSpheres;
-import static com.itechart.security.business.model.dto.company.CompanyDtoConverter.convertCompanyTypes;
-import static com.itechart.security.business.model.dto.company.CompanyDtoConverter.convertEmployeeNumberCategories;
+import static com.itechart.common.model.util.CollectionConverter.convertCollection;
+import static com.itechart.security.business.model.dto.utils.CompanyConverter.convert;
 
 @Service
 public class CompanyServiceImpl implements CompanyService {
@@ -28,7 +27,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     @Transactional
     public List<CompanyDto> findCompanies(CompanyFilter filter) {
-        return convert(companyDao.find(filter));
+        return convertCollection(companyDao.find(filter), CompanyConverter::convert);
     }
 
     @Override
@@ -64,19 +63,19 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     @Transactional(readOnly = true)
     public List<CompanyTypeDto> loadCompanyTypes() {
-        return convertCompanyTypes(companyDao.loadCompanyTypes());
+        return convertCollection(companyDao.loadCompanyTypes(), CompanyConverter::convert);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<BusinessSphereDto> loadBusinessSpheres() {
-        return convertBusinessSpheres(companyDao.loadBusinessSpheres());
+        return convertCollection(companyDao.loadBusinessSpheres(), CompanyConverter::convert);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<EmployeeNumberCategoryDto> loadEmployeeNumberCategories() {
-        return convertEmployeeNumberCategories(companyDao.loadEmployeeNumberCategories());
+        return convertCollection(companyDao.loadEmployeeNumberCategories(), CompanyConverter::convert);
     }
 
 }

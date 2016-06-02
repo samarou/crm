@@ -1,16 +1,9 @@
 package com.itechart.security.business.filter;
 
+import com.itechart.common.model.filter.TextFilter;
+
 /**
  * @author yauheni.putsykovich
  */
-public class ContactFilter extends PagingFilter {
-    private String text;
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
+public class ContactFilter extends TextFilter {
 }

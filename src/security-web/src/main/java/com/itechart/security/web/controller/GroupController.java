@@ -1,7 +1,7 @@
 package com.itechart.security.web.controller;
 
 import com.itechart.security.service.GroupService;
-import com.itechart.security.model.dto.GroupDto;
+import com.itechart.security.model.dto.SecuredGroupDto;
 import com.itechart.security.model.dto.PublicGroupDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,12 +26,12 @@ public class GroupController {
     private GroupService groupService;
 
     @RequestMapping("/groups")
-    public List<GroupDto> getGroups() {
+    public List<SecuredGroupDto> getGroups() {
         return groupService.getGroups();
     }
 
     @RequestMapping(value = "/groups/{id}", method = GET)
-    public GroupDto  get(@PathVariable Long id) {
+    public SecuredGroupDto get(@PathVariable Long id) {
         return groupService.getGroupWithUsers(id);
     }
 
@@ -42,12 +42,12 @@ public class GroupController {
     }
 
     @RequestMapping(value = "/groups", method = POST)
-    public Serializable create(@RequestBody GroupDto group) {
+    public Serializable create(@RequestBody SecuredGroupDto group) {
         return groupService.create(group);
     }
 
     @RequestMapping(value = "/groups", method = PUT)
-    public void update(@RequestBody GroupDto dto) {
+    public void update(@RequestBody SecuredGroupDto dto) {
         groupService.update(dto);
     }
 

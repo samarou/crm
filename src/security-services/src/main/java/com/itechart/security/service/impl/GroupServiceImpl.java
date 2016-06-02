@@ -1,13 +1,13 @@
 package com.itechart.security.service.impl;
 
 import com.itechart.security.dao.GroupDao;
-import com.itechart.security.model.dto.GroupDto;
+import com.itechart.security.model.dto.SecuredGroupDto;
 import com.itechart.security.model.dto.PublicGroupDto;
 import com.itechart.security.model.persistent.Group;
 import com.itechart.security.model.persistent.User;
+import com.itechart.security.model.util.GroupConverter;
+import com.itechart.security.model.util.UserConverter;
 import com.itechart.security.service.GroupService;
-
-import static com.itechart.security.model.dto.Converter.*;
 
 import com.itechart.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
+
+import static com.itechart.common.model.util.CollectionConverter.convertCollection;
+import static com.itechart.security.model.util.GroupConverter.convert;
+import static com.itechart.security.model.util.GroupConverter.convertToSecuredDto;
 
 /**
  * @author yauheni.putsykovich
@@ -32,39 +36,41 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<GroupDto> getGroups() {
-        return convertGroups(groupDao.loadAll());
+    public List<SecuredGroupDto> getGroups() {
+        return convertCollection(groupDao.loadAll(), GroupConverter::convertToSecuredDto);
     }
 
     @Override
     @Transactional
-    public Serializable create(GroupDto group) {
+    public Serializable create(SecuredGroupDto group) {
         return groupDao.save(convert(group));
     }
 
     @Override
     @Transactional
-    public void update(GroupDto group) {
+    public void update(SecuredGroupDto group) {
         groupDao.update(convert(group));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public GroupDto get(Long id) {
-        return convert(groupDao.get(id));
+    public SecuredGroupDto get(Long id) {
+        return convertToSecuredDto(groupDao.get(id));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public GroupDto getGroupWithUsers(Long id) {
+    public SecuredGroupDto getGroupWithUsers(Long id) {
         Group group = groupDao.get(id);
-        return convertGroupWithUsers(group);
+        SecuredGroupDto result = convertToSecuredDto(group);
+        result.setMembers(convertCollection(group.getUsers(), UserConverter::convertToPublicDto));
+        return result;
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<PublicGroupDto> getPublicGroups() {
-        return convertToPublicGroups(groupDao.loadAll());
+        return convertCollection(groupDao.loadAll(), GroupConverter::convertToPublicDto);
     }
 
     @Override

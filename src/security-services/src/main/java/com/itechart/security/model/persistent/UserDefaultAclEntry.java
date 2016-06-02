@@ -33,7 +33,7 @@ public class UserDefaultAclEntry extends BaseEntity {
     private int permissionMask;
 
     @Override
-    public Serializable getId() {
+    public Long getId() {
         return id;
     }
 

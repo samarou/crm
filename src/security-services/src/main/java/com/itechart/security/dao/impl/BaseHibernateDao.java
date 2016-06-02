@@ -1,8 +1,8 @@
 package com.itechart.security.dao.impl;
 
 import com.itechart.security.dao.BaseDao;
-import com.itechart.security.model.filter.PagingFilter;
-import com.itechart.security.model.filter.SortingFilter;
+import com.itechart.common.model.filter.PagingFilter;
+import com.itechart.common.model.filter.SortingFilter;
 import com.itechart.security.model.persistent.BaseEntity;
 import com.itechart.security.util.BatchExecutor;
 import org.hibernate.Criteria;

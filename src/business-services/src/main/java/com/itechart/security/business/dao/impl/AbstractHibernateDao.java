@@ -1,7 +1,7 @@
 package com.itechart.security.business.dao.impl;
 
-import com.itechart.security.business.filter.PagingFilter;
-import com.itechart.security.business.filter.SortingFilter;
+import com.itechart.common.model.filter.PagingFilter;
+import com.itechart.common.model.filter.SortingFilter;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

@@ -5,9 +5,10 @@ import com.itechart.security.dao.UserDao;
 import com.itechart.security.model.dto.*;
 import com.itechart.security.model.filter.UserFilter;
 import com.itechart.security.model.persistent.Principal;
-import com.itechart.security.model.persistent.Role;
 import com.itechart.security.model.persistent.User;
 import com.itechart.security.model.persistent.UserDefaultAclEntry;
+import com.itechart.security.model.util.AclConverter;
+import com.itechart.security.model.util.UserConverter;
 import com.itechart.security.service.PrincipalService;
 import com.itechart.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import static com.itechart.security.model.dto.Converter.*;
-import static java.util.stream.Collectors.toList;
-
 import java.util.Collections;
 import java.util.List;
+
+import static com.itechart.common.model.util.CollectionConverter.convertCollection;
+import static com.itechart.security.model.util.AclConverter.convert;
+import static com.itechart.security.model.util.UserConverter.convertToPublicDto;
+import static com.itechart.security.model.util.UserConverter.convertToSecuredDto;
+import static com.itechart.security.model.util.UserConverter.convert;
+import static com.itechart.security.model.util.UserFilterConverter.convert;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Service for managing of user data
@@ -42,19 +48,19 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public SecuredUserDto getUser(Long userId) {
-        return convert(userDao.get(userId));
+        return convertToSecuredDto(userDao.get(userId));
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<SecuredUserDto> getUsers() {
-        return convert(userDao.loadAll());
+        return convertCollection(userDao.loadAll(), UserConverter::convertToSecuredDto);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<PublicUserDto> getPublicUsers() {
-        return convertToPublicUsers(userDao.loadAll());
+        return convertCollection(userDao.loadAll(), UserConverter::convertToPublicDto);
     }
 
     @Override
@@ -68,7 +74,7 @@ public class UserServiceImpl implements UserService {
     public DataPageDto<SecuredUserDto> findUsers(SecuredUserFilterDto filterDto) {
         UserFilter filter = convert(filterDto);
         DataPageDto<SecuredUserDto> dataPage = new DataPageDto<>();
-        dataPage.setData(convert(userDao.findUsers(filter)));
+        dataPage.setData(convertCollection(userDao.findUsers(filter), UserConverter::convertToSecuredDto));
         dataPage.setTotalCount(userDao.countUsers(filter));
         return dataPage;
     }
@@ -79,7 +85,7 @@ public class UserServiceImpl implements UserService {
         UserFilter filter = convert(filterDto);
         filter.setActive(true);
         DataPageDto<PublicUserDto> dataPage = new DataPageDto<>();
-        dataPage.setData(convertToPublicUsers(userDao.findUsers(filter)));
+        dataPage.setData(convertCollection(userDao.findUsers(filter), UserConverter::convertToPublicDto));
         dataPage.setTotalCount(userDao.countUsers(filter));
         return dataPage;
     }
@@ -122,7 +128,7 @@ public class UserServiceImpl implements UserService {
         if (user != null) {
             userDao.setUserActivity(userId, true);
         }
-        return convertToPublicUser(user);
+        return convertToPublicDto(user);
     }
 
     @Override
@@ -132,7 +138,7 @@ public class UserServiceImpl implements UserService {
         if (user != null) {
                 userDao.setUserActivity(userId, false);
         }
-        return convertToPublicUser(user);
+        return convertToPublicDto(user);
     }
 
     @Override
@@ -147,7 +153,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public List<UserDefaultAclEntryDto> getDefaultAcls(Long userId) {
         User user = userDao.get(userId);
-        return convertToDefaultAclDtos(user.getAcls());
+        return convertCollection(user.getAcls(), AclConverter::convert);
     }
 
     @Override
@@ -155,7 +161,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDefaultAclEntryDto> getDefaultAcls() {
         long userId = SecurityUtils.getAuthenticatedUserId();
         User user = userDao.get(userId);
-        return convertToDefaultAclDtos(user.getAcls());
+        return convertCollection(user.getAcls(), AclConverter::convert);
     }
 
     private List<UserDefaultAclEntry> getDefaultAcls(User user, List<UserDefaultAclEntryDto> dtos) {
@@ -164,6 +170,6 @@ public class UserServiceImpl implements UserService {
         }
         List<Long> principalIds = dtos.stream().map(AclEntryDto::getPrincipalId).collect(toList());
         List<Principal> principals = principalService.getByIds(principalIds);
-        return convert(user, dtos, principals);
+        return convertCollection(dtos, (dto) -> convert(user, principals, dto));
     }
 }
