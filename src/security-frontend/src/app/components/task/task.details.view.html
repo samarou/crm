@@ -1,39 +1,14 @@
-<crm-form-wrapper form-title="vm.title" submit-text="{{vm.submitText}}" submit-btn="vm.submit()" cancel-btn="vm.cancel()" crm-form-validation="userForm">
+<crm-form-wrapper form-title="vm.title" submit-text="{{vm.submitText}}" submit-btn="vm.submit()" cancel-btn="vm.cancel()" crm-form-validation="taskForm">
 
     <form name="taskForm" class="form-group">
-        <div class="form-group">
-            <label for="task-name">Name</label>
-            <input id="task-name" type="text" class="form-control" ng-model="vm.task.name">
-        </div>
-
-        <div class="row">
-            <div class="form-group col-md-6">
-                <label for="task-status">Status</label>
-                <select id="task-status" class="form-control" ng-model="vm.task.status" ng-options="x as x.name for x in vm.statuses track by x.id"></select>
-            </div>
-            <div class="form-group col-md-6">
-                <label>Start date</label>
-                <crm-datepicker model="vm.task.startDate"></crm-datepicker>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="form-group col-md-6">
-                <label for="task-priority">End date</label>
-                <select id="task-priority" class="form-control" ng-model="vm.task.priority" ng-options="x as x.name for x in vm.priorities track by x.id"></select>
-            </div>
-            <div class="form-group col-md-6">
-                <label>End date</label>
-                <crm-datepicker model="vm.task.endDate"></crm-datepicker>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="form-group col-md-6">
-                <label for="task-assignee">Assignee</label>
-                <select id="task-assignee" class="form-control" ng-model="vm.task.assignee" ng-options="x as x | fullName for x in vm.assigns track by x.id"></select>
-            </div>
-        </div>
+        <uib-tabset active="active">
+            <uib-tab heading="General Info">
+                <crm-task-general-info task="vm.task"></crm-task-general-info>
+            </uib-tab>
+            <uib-tab heading="Contacts">
+                <crm-task-contacts task="vm.task"></crm-task-contacts>
+            </uib-tab>
+        </uib-tabset>
     </form>
 
 </crm-form-wrapper>
