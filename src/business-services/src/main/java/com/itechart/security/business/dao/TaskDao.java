@@ -1,5 +1,7 @@
 package com.itechart.security.business.dao;
 
+import com.itechart.security.business.filter.TaskFilter;
+import com.itechart.security.business.model.dto.TaskDto;
 import com.itechart.security.business.model.persistent.task.Task;
 import org.springframework.stereotype.Repository;
 
@@ -21,5 +23,5 @@ public interface TaskDao {
 
     boolean delete(Long id);
 
-    boolean delete(Task task);
+    List<Task> findTasks(TaskFilter filter);
 }

@@ -17,5 +17,6 @@
     <include file="changelog/1.6/160525-d543758_drop_not_null_constraint.xml" relativeToChangelogFile="true"/>
     <include file="changelog/1.7/160527-create_task_priopity_and_status_tables.xml" relativeToChangelogFile="true"/>
     <include file="changelog/1.7/160530-d558732_add_industry_and_skills_fields.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/1.7/160602-add_created_by_for_task_table.xml" relativeToChangelogFile="true"/>
     <include file="changelog/1.8/160531-m560521_attachments_refactoring.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

@@ -540,7 +540,7 @@ public class DtoConverter {
         task.setEndDate(dto.getEndDate());
         task.setPriority(convertToPriority(dto.getPriority()));
         task.setStatus(convertToStatus(dto.getStatus()));
-        task.setAssignee(dto.getAssignee().getId());
+        task.setAssigneeId(dto.getAssignee().getId());
         return task;
     }
 
@@ -621,22 +621,14 @@ public class DtoConverter {
             .collect(toSet());
     }
 
-    public static List<TaskDto> convert(Map<Task, PublicUserDto> tasks) {
-        if(isEmpty(tasks)){
-            return emptyList();
-        }
-        List<TaskDto> dtos = new ArrayList<>();
-        tasks.forEach((task, user) -> dtos.add(convert(task, user)));
-        return dtos;
-    }
-
-    public static TaskDto convert(Task task, PublicUserDto assignee){
+    public static TaskDto convert(Task task, PublicUserDto creator, PublicUserDto assignee){
         TaskDto dto = new TaskDto();
         dto.setId((Long)task.getId());
         dto.setName(task.getName());
         dto.setDescription(task.getDescription());
         dto.setStartDate(task.getStartDate());
         dto.setEndDate(task.getEndDate());
+        dto.setCreator(creator);
         dto.setAssignee(assignee);
         dto.setStatus(convert(task.getStatus()));
         dto.setPriority(convert(task.getPriority()));

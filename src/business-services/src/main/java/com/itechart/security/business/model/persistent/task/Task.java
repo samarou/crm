@@ -14,7 +14,7 @@ import java.util.Date;
 @Entity
 @Setter
 @Getter
-@Table(name = "`task`")
+@Table(name = "task")
 public class Task extends SecuredEntity {
 
     @Id
@@ -34,7 +34,10 @@ public class Task extends SecuredEntity {
     private Date endDate;
 
     @Column(name = "assignee_id")
-    private long assignee;
+    private long assigneeId;
+
+    @Column(name = "creator_id")
+    private long creatorId;
 
     @ManyToOne
     private Status status;

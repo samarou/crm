@@ -21,6 +21,7 @@ public class TaskDto {
     private Date startDate;
     private Date endDate;
     private PublicUserDto assignee;
+    private PublicUserDto creator;
     private NamedEntity status;
     private NamedEntity priority;
 }

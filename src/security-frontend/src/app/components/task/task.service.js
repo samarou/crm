@@ -13,22 +13,22 @@
     function taskService($http) {
         return {
             getTaskById: getTaskById,
-            getAllTasks: getAllTasks,
+            find: find,
             create: create,
             update: update,
             remove: remove,
             getPriorities: getPriorities,
             getStatuses: getStatuses
         };
-
+        
         function getTaskById(id) {
             return $http.get('rest/tasks/' + id);
         }
 
-        function getAllTasks() {
-            return $http.get('rest/tasks');
+        function find(filter){
+            return $http.get('rest/tasks/find', {params: filter})
         }
-
+        
         function create(task) {
             return $http.post('rest/tasks', task);
         }

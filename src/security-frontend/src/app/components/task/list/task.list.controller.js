@@ -10,12 +10,10 @@
         .controller('TaskListController', TaskListController);
 
     /** @ngInject */
-    function TaskListController(taskService, taskCommonService, $state, $q) {
+    function TaskListController(taskService, dialogService, searchService, $state, $q) {
         var vm = this;
 
-        vm.title = 'Add Task';
-        vm.submitText = 'Add';
-        vm.taskList = [];
+        vm.bundle = searchService.getTaskBundle();
         vm.add = add;
         vm.edit = edit;
         vm.remove = remove;
@@ -29,23 +27,25 @@
         }
 
         function remove() {
-            $q.all(
-                vm.taskList.filter(function (task) {
+            dialogService.confirm('Do you want to delete the selected task(s)?')
+                .result.then(function (answer) {
+                var checked = vm.bundle.itemsList.filter(function (task) {
                     return task.checked;
-                }).map(function (task) {
-                    return taskService.remove(task.id);
-                })
-            ).then(loadTasks);
-        }
-
-        function loadTasks() {
-            taskService.getAllTasks().then(function (response) {
-                vm.taskList = response.data;
-            })
+                });
+                if (answer) {
+                    $q.all(
+                        checked.map(function (task) {
+                            return taskService.remove(task.id);
+                        })
+                    ).then(vm.bundle.find, function () {
+                        dialogService.error('Occurred an error during removing tasks');
+                    });
+                }
+            });
         }
 
         (function () {
-            loadTasks()
+            vm.bundle.find();
         })();
     }
 

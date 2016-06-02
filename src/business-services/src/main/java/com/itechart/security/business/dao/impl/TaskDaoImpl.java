@@ -1,7 +1,9 @@
 package com.itechart.security.business.dao.impl;
 
 import com.itechart.security.business.dao.TaskDao;
+import com.itechart.security.business.filter.TaskFilter;
 import com.itechart.security.business.model.persistent.task.Task;
+import org.hibernate.Criteria;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -38,8 +40,10 @@ public class TaskDaoImpl extends AbstractHibernateDao<Task> implements TaskDao {
     }
 
     @Override
-    public boolean delete(Task task) {
-        return delete(task);
+    public List<Task> findTasks(TaskFilter filter) {
+        return getHibernateTemplate().executeWithNativeSession(session -> {
+            Criteria criteria = session.createCriteria(Task.class);
+            return executePagingDistinctCriteria(session, criteria, filter);
+        });
     }
-
 }

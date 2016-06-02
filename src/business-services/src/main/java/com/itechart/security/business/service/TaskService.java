@@ -1,10 +1,9 @@
 package com.itechart.security.business.service;
 
+import com.itechart.security.business.filter.TaskFilter;
 import com.itechart.security.business.model.dto.TaskDto;
-import com.itechart.security.business.model.persistent.task.Task;
+import com.itechart.security.model.dto.DataPageDto;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * @author yauheni.putsykovich
@@ -12,15 +11,15 @@ import java.util.List;
 @Service
 public interface TaskService {
 
+    int count();
+
     TaskDto get(Long id);
 
-    List<TaskDto> findTasks();
+    DataPageDto<TaskDto> findTasks(TaskFilter filter);
 
     Long save(TaskDto task);
 
     void update(TaskDto taskDto);
 
     void delete(Long id);
-
-    void delete(Task task);
 }

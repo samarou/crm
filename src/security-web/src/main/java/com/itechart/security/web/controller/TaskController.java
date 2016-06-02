@@ -5,6 +5,8 @@ import com.itechart.security.business.model.dto.helpers.NamedEntity;
 import com.itechart.security.business.service.PriorityService;
 import com.itechart.security.business.service.StatusService;
 import com.itechart.security.business.service.TaskService;
+import com.itechart.security.model.dto.DataPageDto;
+import com.itechart.security.web.model.dto.TaskFilterDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static com.itechart.security.web.model.dto.Converter.convert;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 /**
@@ -35,9 +38,9 @@ public class TaskController {
         return taskService.get(id);
     }
 
-    @RequestMapping(value = "/tasks", method = GET)
-    private List<TaskDto> findTasks(){
-        return taskService.findTasks();
+    @RequestMapping(value = "/tasks/find", method = GET)
+    private DataPageDto<TaskDto> findTasks(TaskFilterDto filter){
+        return taskService.findTasks(convert(filter));
     }
 
     @RequestMapping(value = "/tasks", method = POST)

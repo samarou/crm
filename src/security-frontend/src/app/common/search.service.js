@@ -6,12 +6,13 @@
         .factory('searchService', searchService);
 
     /** @ngInject */
-    function searchService(userService, contactService, companyService, util, $filter, $log) {
+    function searchService(userService, contactService, companyService, taskService, util, $filter, $log) {
         return {
             userPublicMode: getPublicBundle,
             userSecurityMode: getSecurityBundle,
             contactMode: getContactBundle,
-            companyMode: getCompanyBundle
+            companyMode: getCompanyBundle,
+            getTaskBundle: getTaskBundle
         };
 
         function getPublicBundle() {
@@ -55,6 +56,20 @@
             };
             bundle.filter.sortProperty = bundle.sortProperties.name.name;
             bundle.filter.sortAsc = bundle.sortProperties.name.asc;
+            return bundle;
+        }
+
+        function getTaskBundle(){
+            var bundle = createCommonBundle();
+            bundle.selectAll = createSelectAllAction(bundle);
+            bundle.performSeach = taskService.find;
+            bundle.sortProperties = {
+                startDate: {name: 'startDate', asc: true, enabled: true},
+                status: {name: 'status', asc: true, enabled: false},
+                priority: {name: 'priority', asc: true, enabled: false}
+            };
+            bundle.filter.sortProperty = bundle.sortProperties.startDate.name;
+            bundle.filter.sortAsc = bundle.sortProperties.startDate.asc;
             return bundle;
         }
 
@@ -138,7 +153,6 @@
             };
 
             bundle.selectOne = function () {
-                $log.debug(' current user');
                 bundle.isSelectedAll = bundle.itemsList.every(function (user) {
                     return user.checked;
                 });
