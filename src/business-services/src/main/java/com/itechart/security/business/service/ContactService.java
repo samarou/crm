@@ -3,6 +3,7 @@ package com.itechart.security.business.service;
 
 
 import com.itechart.security.business.filter.ContactFilter;
+import com.itechart.security.business.model.dto.AttachmentDto;
 import com.itechart.security.business.model.dto.ContactDto;
 
 import java.util.List;
@@ -17,6 +18,8 @@ public interface ContactService {
     Long saveContact(ContactDto contact);
 
     ContactDto get(Long id);
+
+    AttachmentDto getAttachment(Long id);
 
     List<ContactDto> getContacts();
 
@@ -35,6 +38,8 @@ public interface ContactService {
     void deleteTelephone(Long id);
 
     void deleteWorkplace(Long id);
+
+    void deleteAttachment(Long id);
 
     void deleteSkill(Long id);
 

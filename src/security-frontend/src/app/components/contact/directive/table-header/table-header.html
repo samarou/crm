@@ -1,11 +1,11 @@
 <div class="row">
-    <div class="col-xs-6"><h4>{{title}}</h4></div>
-    <div class="col-xs-6" ng-show="vm.canEdit" role="group">
-        <div class="btn-group pull-right">
-            <button class="btn btn-default" ng-click="addingFunction(vm)" type="button">
-                Add </button>
-            <button class="btn btn-default" ng-click="removingFunction(vm)" type="button">
-                Remove </button>
+    <div class="col-xs-4 col-sm-8 col-md-9"><h4>{{title}}</h4></div>
+    <div class="col-xs-8 col-sm-4 col-md-3" ng-show="vm.canEdit" role="group">
+        <div class="btn-group btn-group-justified pull-right">
+            <a class="btn btn-default" ng-click="addingFunction(vm)" type="button">
+                Add </a>
+            <a class="btn btn-default" ng-click="removingFunction(vm)" type="button">
+                Remove </a>
         </div>
     </div>
 </div>

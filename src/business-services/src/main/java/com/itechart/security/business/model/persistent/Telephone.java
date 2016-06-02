@@ -21,7 +21,7 @@ public class Telephone extends SecuredEntity {
     @Column(nullable = false, length = 100)
     private String number;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "contact_id", nullable = false)
     private Contact contact;
 

@@ -1,11 +1,11 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <crm-contact-table-header title="Attachments"
-                                  adding-function="vm.attachmentService.addAttachments"
-                                  removing-function="vm.attachmentService.removeAttachments"
+                                  adding-function="vm.details.addAttachment"
+                                  removing-function="vm.details.removeAttachments"
                                   vm="vm"></crm-contact-table-header>
     </div>
-    <table class="table table-condensed" ng-show="vm.attachments.length>0">
+    <table class="table table-condensed" ng-show="vm.contact.attachments.length > 0">
         <thead>
         <tr>
             <th></th>
@@ -15,8 +15,8 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="attachment in vm.attachments"
-            ng-dblclick="vm.attachmentService.updateAttachment(vm.contact.id, attachment)"
+        <tr ng-repeat="attachment in vm.contact.attachments"
+            ng-dblclick="vm.attachmentService.updateAttachment(attachment)"
             class="crm-hover">
             <td class="crm-narrow">
                 <input type="checkbox"

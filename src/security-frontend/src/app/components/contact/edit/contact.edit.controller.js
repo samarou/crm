@@ -11,7 +11,6 @@
 
         vm.canEdit = false;
         vm.contact = contactDetailsService.getEmptyContact();
-        vm.attachments = [];
         vm.attachmentService = contactAttachmentService;
         vm.isManager = authService.isManager();
         vm.submitText = 'Save';
@@ -30,8 +29,7 @@
                 [
                     initDictionary(),
                     isEditable(),
-                    getAcls(),
-                    getAttachments()
+                    getAcls()
                 ]
             ).then(getContact);
         }
@@ -43,18 +41,12 @@
         }
 
         function submit() {
-            contactDetailsService.submit(vm.contact, vm.aclHandler.acls, vm.attachments, false);
+            contactDetailsService.submit(vm.contact, vm.aclHandler.acls, false);
         }
 
         function getAcls() {
             return contactService.getAcls($stateParams.id).then(function (response) {
                 vm.aclHandler.acls = response.data;
-            });
-        }
-
-        function getAttachments() {
-            return contactService.getAttachments($stateParams.id).then(function (response) {
-                vm.attachments = response.data;
             });
         }
 

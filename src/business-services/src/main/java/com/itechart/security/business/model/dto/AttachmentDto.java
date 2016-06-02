@@ -13,4 +13,5 @@ public class AttachmentDto {
     private String name;
     private String comment;
     private Date dateUpload;
+    private String filePath;
 }

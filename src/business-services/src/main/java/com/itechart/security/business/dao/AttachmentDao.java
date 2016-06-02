@@ -1,8 +1,8 @@
 package com.itechart.security.business.dao;
 
 import com.itechart.security.business.model.persistent.Attachment;
+
 import java.util.List;
-import java.util.Set;
 
 public interface AttachmentDao {
     Long save(Attachment attachment);
@@ -13,7 +13,7 @@ public interface AttachmentDao {
 
     Attachment get(Long id);
 
-    void deleteById(Long id);
+    void delete(Long id);
 
     List<Attachment> getAttachments(Long contactId);
 }

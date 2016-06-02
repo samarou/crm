@@ -2,13 +2,18 @@ package com.itechart.security.business.service.impl;
 
 import com.itechart.security.business.dao.*;
 import com.itechart.security.business.filter.ContactFilter;
+import com.itechart.security.business.model.dto.AttachmentDto;
 import com.itechart.security.business.model.dto.ContactDto;
 import com.itechart.security.business.model.persistent.*;
 import com.itechart.security.business.service.ContactService;
+import com.itechart.security.business.service.FileService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 
 import static com.itechart.security.business.model.dto.utils.DtoConverter.convert;
@@ -19,6 +24,8 @@ import static com.itechart.security.business.model.dto.utils.DtoConverter.conver
  */
 @Service
 public class ContactServiceImpl implements ContactService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ContactServiceImpl.class);
 
     @Autowired
     private ContactDao contactDao;
@@ -41,6 +48,12 @@ public class ContactServiceImpl implements ContactService {
     @Autowired
     private WorkplaceDao workplaceDao;
 
+    @Autowired
+    private AttachmentDao attachmentDao;
+
+    @Autowired
+    private FileService fileService;
+
     @Override
     @Transactional
     public List<ContactDto> findContacts(ContactFilter filter) {
@@ -52,14 +65,9 @@ public class ContactServiceImpl implements ContactService {
     @Transactional
     public Long saveContact(ContactDto contactDto) {
         Contact contact = convert(contactDto);
-        Long contactId = contactDao.save(contact);
-        saveOrUpdateEmailsForContact(contact);
-        saveOrUpdateAddressesForContact(contact);
-        saveOrUpdateSocialNetworkAccountsForContact(contact);
-        saveOrUpdateTelephonesForContact(contact);
-        saveOrUpdateMessengersForContact(contact);
-        saveOrUpdateWorkplacesForContact(contact);
         setContactForFields(contact);
+        Long contactId = contactDao.save(contact);
+        moveFilesToTargetDirectory(contact);
         return contactId;
     }
 
@@ -67,6 +75,12 @@ public class ContactServiceImpl implements ContactService {
     @Transactional
     public ContactDto get(Long id) {
         return convert(contactDao.get(id));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public AttachmentDto getAttachment(Long id) {
+        return convert(attachmentDao.get(id));
     }
 
     @Override
@@ -85,83 +99,46 @@ public class ContactServiceImpl implements ContactService {
     @Transactional
     public void updateContact(ContactDto contactDto) {
         Contact contact = convert(contactDto);
-        saveOrUpdateEmailsForContact(contact);
-        saveOrUpdateAddressesForContact(contact);
-        saveOrUpdateSocialNetworkAccountsForContact(contact);
-        saveOrUpdateTelephonesForContact(contact);
-        saveOrUpdateMessengersForContact(contact);
-        saveOrUpdateWorkplacesForContact(contact);
         setContactForFields(contact);
         contactDao.update(contact);
+        moveFilesToTargetDirectory(contact);
     }
 
-    private void saveOrUpdateEmailsForContact(Contact contact){
-        for (Email email : contact.getEmails()) {
-            email.setContact(contact);
-            if (email.getId() == null) {
-                emailDao.save(email);
-            } else {
-                emailDao.update(email);
-            }
-        }
-    }
-
-    private void saveOrUpdateAddressesForContact(Contact contact){
-        for (Address address : contact.getAddresses()) {
-            address.setContact(contact);
-            if (address.getId() == null) {
-                addressDao.save(address);
-            } else {
-                addressDao.update(address);
-            }
-        }
-    }
-
-    private void saveOrUpdateSocialNetworkAccountsForContact(Contact contact){
-        for (SocialNetworkAccount account : contact.getSocialNetworks()) {
-            account.setContact(contact);
-            if (account.getId() == null) {
-                socialNetworkAccountDao.save(account);
-            } else {
-                socialNetworkAccountDao.update(account);
-            }
-        }
-    }
-
-    private void saveOrUpdateTelephonesForContact(Contact contact){
-        for (Telephone telephone : contact.getTelephones()) {
-            telephone.setContact(contact);
-            if (telephone.getId() == null) {
-                telephoneDao.save(telephone);
-            } else {
-                telephoneDao.update(telephone);
-            }
-        }
-    }
-
-    private void saveOrUpdateMessengersForContact(Contact contact){
-        for (MessengerAccount messenger : contact.getMessengers()) {
-            messenger.setContact(contact);
-            if (messenger.getId() == null) {
-                messengerAccountDao.save(messenger);
-            } else {
-                messengerAccountDao.update(messenger);
-            }
-        }
-    }
-
-    private void saveOrUpdateWorkplacesForContact(Contact contact){
-        for (Workplace workplace : contact.getWorkplaces()) {
-            workplace.setContact(contact);
-            if (workplace.getId() == null) {
-                workplaceDao.save(workplace);
-            } else {
-                workplaceDao.update(workplace);
+    private void moveFilesToTargetDirectory(Contact contact) {
+        for (Attachment attachment : contact.getAttachments()) {
+            if (attachment.getFilePath() != null) {
+                try {
+                    fileService.moveFileToContactDirectory(attachment.getFilePath(), contact.getId(), attachment.getId());
+                } catch (IOException e) {
+                    logger.error("can't save file to attachment directory for contactId: {}, attachmentId: {}, tempPath: {}", contact.getId(), attachment.getId(), attachment.getFilePath(), e);
+                    throw new RuntimeException("error while saving attachment");
+                }
             }
         }
     }
 
     private void setContactForFields(Contact contact) {
+        for (Email email : contact.getEmails()) {
+            email.setContact(contact);
+        }
+        for (Address address : contact.getAddresses()) {
+            address.setContact(contact);
+        }
+        for (SocialNetworkAccount account : contact.getSocialNetworks()) {
+            account.setContact(contact);
+        }
+        for (Telephone telephone : contact.getTelephones()) {
+            telephone.setContact(contact);
+        }
+        for (MessengerAccount messenger : contact.getMessengers()) {
+            messenger.setContact(contact);
+        }
+        for (Workplace workplace : contact.getWorkplaces()) {
+            workplace.setContact(contact);
+        }
+        for (Attachment attachment : contact.getAttachments()) {
+            attachment.setContact(contact);
+        }
         for (Skill skill : contact.getSkills()) {
             skill.setContact(contact);
         }
@@ -207,6 +184,12 @@ public class ContactServiceImpl implements ContactService {
     @Transactional
     public void deleteWorkplace(Long id) {
         workplaceDao.delete(id);
+    }
+
+    @Override
+    @Transactional
+    public void deleteAttachment(Long id) {
+        attachmentDao.delete(id);
     }
 
     @Override

@@ -23,7 +23,7 @@ public class MessengerAccount extends SecuredEntity{
     @JoinColumn(name = "messenger_id")
     private Messenger messenger;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "contact_id", nullable = false)
     private Contact contact;
 
