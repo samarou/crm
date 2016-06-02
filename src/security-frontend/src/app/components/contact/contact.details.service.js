@@ -139,19 +139,22 @@
         }
 
         function removeCheckedElementsFromList(contact, elements, removingFunction) {
-            dialogService.confirm('Do you really want to delete these fields?')
-                .result.then(function () {
-                var tasks = [];
-                getCheckedElements(elements)
-                    .forEach(function (element) {
+            var tasks = [];
+            var elementsForRemoving = getCheckedElements(elements);
+            if (elementsForRemoving.length > 0) {
+                dialogService.confirm('Do you really want to delete these fields?')
+                    .result.then(function () {
+                    elementsForRemoving.forEach(function (element) {
                         if (element.id) {
                             tasks.push(removeElementHandlingError(contact, element, elements, removingFunction));
                         } else {
                             removeElementFromArray(element, elements);
                         }
                     });
-                return $q.all(tasks);
-            });
+                });
+            }
+            return $q.all(tasks);
+
         }
 
         function removeElementHandlingError(contact, element, elements, removingFunction) {
