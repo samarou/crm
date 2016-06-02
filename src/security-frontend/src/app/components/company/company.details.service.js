@@ -6,7 +6,7 @@
         .factory('companyDetailsService', companyDetailsService);
 
     /** @ngInject */
-    function companyDetailsService(companyService, aclServiceBuilder, $state, $q) {
+    function companyDetailsService(companyService, aclServiceBuilder, $state) {
         return {
             submit: submit,
             create: create,
@@ -14,7 +14,7 @@
             updateAcls: companyService.updateAcls,
             cancel: goToList,
             createAclHandler: createAclHandler,
-            getStaticData: getStaticData
+            getStaticData: companyService.getStaticData
         };
 
         function create(company) {
@@ -37,39 +37,6 @@
 
         function goToList() {
             $state.go('companies.list');
-        }
-
-        function getCompanyTypes(staticData) {
-            return companyService.getCompanyTypes().then(function (response) {
-                staticData.companyTypes = response.data;
-            });
-        }
-
-        function getBusinessSpheres(staticData) {
-            return companyService.getBusinessSpheres().then(function (response) {
-                staticData.businessSpheres = response.data;
-            });
-        }
-
-        function getEmployeeCategories(staticData) {
-            return companyService.getEmployeeCategories().then(function (response) {
-                staticData.employeeNumberCategories = response.data;
-            });
-        }
-
-        function getStaticData() {
-            var staticData = {
-                companyTypes: [],
-                businessSpheres: [],
-                employeeNumberCategories: []
-            };
-            return $q.all([
-                getCompanyTypes(staticData),
-                getBusinessSpheres(staticData),
-                getEmployeeCategories(staticData)
-            ]).then(function () {
-                return $q.resolve(staticData);
-            });
         }
 
         function createAclHandler(getId) {
