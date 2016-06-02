@@ -30,6 +30,7 @@ public class DtoConverter {
         dto.setMessengers(convertMessengerAccounts(contact.getMessengers()));
         dto.setSocialNetworks(convertSocialNetworkAccounts(contact.getSocialNetworks()));
         dto.setWorkplaces(convertWorkplaces(contact.getWorkplaces()));
+        dto.setAttachments(convertAttachments(contact.getAttachments()));
         dto.setIndustry(contact.getIndustry());
         dto.setSkills(convertSkills(contact.getSkills()));
         return dto;
@@ -64,6 +65,7 @@ public class DtoConverter {
         contact.setMessengers(convertMessengerAccountDtos(dto.getMessengers()));
         contact.setSocialNetworks(convertSocialNetworkAccountDtos(dto.getSocialNetworks()));
         contact.setWorkplaces(convertWorkplaceDtos(dto.getWorkplaces()));
+        contact.setAttachments(convertAttachmentDtos(dto.getAttachments()));
         contact.setIndustry(dto.getIndustry());
         contact.setSkills(convertSkillDtos(dto.getSkills()));
         return contact;
@@ -428,10 +430,8 @@ public class DtoConverter {
         attachment.setId(dto.getId());
         attachment.setName(dto.getName());
         attachment.setComment(dto.getComment());
-        Contact contact = new Contact();
-        contact.setId(dto.getContactId());
-        attachment.setContact(contact);
         attachment.setDateUpload(dto.getDateUpload());
+        attachment.setFilePath(dto.getFilePath());
         return attachment;
     }
 
@@ -445,18 +445,25 @@ public class DtoConverter {
         return dto;
     }
 
-    public static List<AttachmentDto> convertAttachments(List<Attachment> attachments) {
+    public static Set<AttachmentDto> convertAttachments(Set<Attachment> attachments) {
         if (CollectionUtils.isEmpty(attachments)) {
-            return Collections.emptyList();
+            return emptySet();
         }
-        return attachments.stream().map(DtoConverter::convert).collect(Collectors.toList());
+        return attachments
+            .stream()
+            .filter(workplace -> workplace.getDateDeleted() == null)
+            .map(DtoConverter::convert)
+            .collect(toSet());
     }
 
-    public static List<Attachment> convertAttachmentDtos(List<AttachmentDto> attachmentsDto) {
+    public static Set<Attachment> convertAttachmentDtos(Set<AttachmentDto> attachmentsDto) {
         if (CollectionUtils.isEmpty(attachmentsDto)) {
-            return Collections.emptyList();
+            return emptySet();
         }
-        return attachmentsDto.stream().map(DtoConverter::convert).collect(Collectors.toList());
+        return attachmentsDto
+            .stream()
+            .map(DtoConverter::convert)
+            .collect(toSet());
     }
 
     public static EmailTypeDto convert(EmailType type) {

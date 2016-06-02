@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.itechart.security</groupId>
@@ -87,6 +88,39 @@
             <artifactId>commons-lang3</artifactId>
             <version>${apache.common.lang3.version}</version>
         </dependency>
-
     </dependencies>
+    <build>
+        <resources>
+            <resource>
+                <filtering>true</filtering>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+    </build>
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <profile.id>local</profile.id>
+                <upload.directory>c:\\SecurityFiles\\Uploaded\\${profile.id}</upload.directory>
+            </properties>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <profile.id>dev</profile.id>
+                <upload.directory>c:\\SecurityFiles\\Uploaded\\${profile.id}</upload.directory>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <profile.id>prod</profile.id>
+                <upload.directory>c:\\SecurityFiles\\Uploaded\\${profile.id}</upload.directory>
+            </properties>
+        </profile>
+    </profiles>
 </project>

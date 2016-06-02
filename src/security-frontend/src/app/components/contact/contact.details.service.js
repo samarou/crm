@@ -17,6 +17,7 @@
             addMessengerAccount: addMessengerAccount,
             addSocialNetworkAccount: addSocialNetworkAccount,
             addWorkplace: addWorkplace,
+            addAttachment: addAttachment,
             addSkill: addSkill,
             removeEmails: removeEmails,
             removeAddresses: removeAddresses,
@@ -24,6 +25,7 @@
             removeMessengerAccounts: removeMessengerAccounts,
             removeSocialNetworks: removeSocialNetworkAccounts,
             removeWorkplaces: removeWorkplaces,
+            removeAttachments: removeAttachments,
             removeSkills: removeSkills,
             getEmptyContact: getEmptyContact,
             now: new Date(),
@@ -62,6 +64,10 @@
             scope.contact.workplaces.push({});
         }
 
+        function addAttachment(scope) {
+            contactAttachmentService.addAttachment(scope);
+        }
+
         function addSkill(scope) {
             scope.contact.skills.push({});
         }
@@ -90,6 +96,10 @@
             return removeCheckedElementsFromList(scope.contact, scope.contact.workplaces, contactService.removeWorkplace);
         }
 
+        function removeAttachments(scope) {
+            return removeCheckedElementsFromList(scope.contact, scope.contact.attachments, contactService.removeAttachment);
+        }
+
         function removeSkills(scope) {
             return removeCheckedElementsFromList(scope.contact, scope.contact.skills, contactService.removeSkill);
         }
@@ -114,34 +124,37 @@
                 scope.contact.lastName = response.data.lastName;
                 scope.contact.photoUrl = response.data.photoUrl;
                 response.data.workplaces.forEach(function (workplace) {
-                    scope.contact.workplaces.push(workplace)
+                    scope.contact.workplaces.push(workplace);
                 });
                 response.data.addresses.forEach(function (address) {
-                    scope.contact.addresses.push(address)
+                    scope.contact.addresses.push(address);
                 });
-            })
+            });
         }
 
         function isLinkedInUrl(url) {
             if (url) {
-                return /.*linkedin.*/.test(url)
+                return /.*linkedin.*/.test(url);
             }
         }
 
         function removeCheckedElementsFromList(contact, elements, removingFunction) {
-            dialogService.confirm('Do you really want to delete these fields?')
-                .result.then(function () {
-                var tasks = [];
-                getCheckedElements(elements)
-                    .forEach(function (element) {
+            var tasks = [];
+            var elementsForRemoving = getCheckedElements(elements);
+            if (elementsForRemoving.length > 0) {
+                dialogService.confirm('Do you really want to delete these fields?')
+                    .result.then(function () {
+                    elementsForRemoving.forEach(function (element) {
                         if (element.id) {
                             tasks.push(removeElementHandlingError(contact, element, elements, removingFunction));
                         } else {
-                            removeElementFromArray(element, elements)
+                            removeElementFromArray(element, elements);
                         }
                     });
-                return $q.all(tasks);
-            });
+                });
+            }
+            return $q.all(tasks);
+
         }
 
         function removeElementHandlingError(contact, element, elements, removingFunction) {
@@ -175,32 +188,21 @@
             };
         }
 
-        function submit(contact, acls, attachments, isNew) {
+        function submit(contact, acls, isNew) {
             if (isNew) {
                 contactService.create(contact).then(function (response) {
                     var id = response.data;
-                    updateAclsAndAttachments(id, acls, attachments).then(goToList);
+                    updateAcls(id, acls).then(goToList);
                 });
             } else {
                 contactService.update(contact).then(function () {
-                    updateAclsAndAttachments(contact.id, acls, attachments).then(goToList);
+                    updateAcls(contact.id, acls).then(goToList);
                 });
             }
         }
 
-        function updateAclsAndAttachments(contactId, acls, attachments) {
-            return contactService.updateAcls(contactId, acls).then(function () {
-                return updateAttachments(contactId, attachments);
-            });
-        }
-
-        function updateAttachments(contactId, attachments) {
-            var tasks = [];
-            var newAttachments = contactAttachmentService.getNewAttachments(attachments);
-            newAttachments.forEach(function (attachment) {
-                tasks.push(contactService.addAttachment(contactId, attachment));
-            });
-            return $q.all(tasks);
+        function updateAcls(contactId, acls) {
+            return contactService.updateAcls(contactId, acls);
         }
 
         function goToList() {

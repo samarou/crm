@@ -41,5 +41,7 @@ public class ContactDto {
 
     private Set<EmailDto> emails;
 
+    private Set<AttachmentDto> attachments;
+
     private Set<SkillDto> skills;
 }

@@ -1,11 +1,15 @@
 package com.itechart.security.business.model.persistent;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "attachment")
 public class Attachment extends SecuredEntity {
     @Id
@@ -22,59 +26,18 @@ public class Attachment extends SecuredEntity {
     @Column(name = "date_upload", nullable = false)
     private Date dateUpload;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "contact_id", nullable = false)
     private Contact contact;
 
     @Column(name = "date_deleted")
     private Date dateDeleted;
 
+    @Transient
+    private String filePath;
+
     @Override
     public Long getId() {
-        return this.id;
-    }
-
-    public Date getDateDeleted() {
-        return this.dateDeleted;
-    }
-
-    public void setDateDeleted(Date dateDeleted) {
-        this.dateDeleted = dateDeleted;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public Date getDateUpload() {
-        return dateUpload;
-    }
-
-    public void setDateUpload(Date dateUpload) {
-        this.dateUpload = dateUpload;
-    }
-
-    public Contact getContact() {
-        return contact;
-    }
-
-    public void setContact(Contact contact) {
-        this.contact = contact;
+        return id;
     }
 }

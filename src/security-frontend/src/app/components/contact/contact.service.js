@@ -18,10 +18,7 @@
             updateAcls: updateAcls,
             removeAcl: removeAcl,
             isAllowed: isAllowed,
-            getAttachments: getAttachments,
-            addAttachments: addAttachments,
             addAttachment: addAttachment,
-            updateAttachment: updateAttachment,
             removeAttachment: removeAttachment,
             getAttachment: getAttachment,
             removeEmail: removeEmail,
@@ -76,20 +73,10 @@
         }
 
         function getAttachment(contactId, attachment) {
-            if (contactId) {
-                var url = 'rest/files/contacts/' + contactId + '/attachments/' + attachment.id;
-                return $http.get(url + '/check').then(function () {
-                    $window.open(url);
-                });
-            }
-        }
-
-        function getAttachments(id) {
-            return $http.get('rest/contacts/' + id + '/attachments');
-        }
-
-        function addAttachments(id, attachments) {
-            return $http.post('rest/contacts/' + id + '/attachments', attachments);
+            var url = 'rest/contacts/files/' + contactId + '/attachments/' + attachment.id;
+            return $http.get(url + '/check').then(function () {
+                $window.open('rest/files/contacts/' + contactId + '/attachments/' + attachment.id + '/' + attachment.name);
+            });
         }
 
         function addAttachment(id, attachment) {
@@ -97,10 +84,6 @@
                 attachment: attachment,
                 filePath: attachment.filePath
             });
-        }
-
-        function updateAttachment(id, attachment) {
-            return $http.put('rest/contacts/' + id + '/attachments', attachment);
         }
 
         function removeAttachment(id, attachmentId) {

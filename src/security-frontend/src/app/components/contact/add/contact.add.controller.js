@@ -11,8 +11,6 @@
 
         vm.canEdit = true;
         vm.contact = contactDetailsService.getEmptyContact();
-
-        vm.attachments = [];
         vm.title = 'Add contact';
         vm.submitText = 'Add';
         vm.submit = submit;
@@ -42,7 +40,7 @@
         }
 
         function submit() {
-            contactDetailsService.submit(vm.contact, vm.aclHandler.acls, vm.attachments, true);
+            contactDetailsService.submit(vm.contact, vm.aclHandler.acls, true);
         }
     }
 })();
