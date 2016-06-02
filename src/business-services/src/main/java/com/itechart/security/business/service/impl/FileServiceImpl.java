@@ -41,15 +41,9 @@ public class FileServiceImpl implements FileService {
 
     private void createDirectoryIfNotExists(File directory) {
         if (!directory.exists()) {
-            createDirectory(directory);
-        }
-    }
-
-    private void createDirectory(File directory) {
-        if (directory.mkdirs()) {
-            logger.debug("directory created: {}", directory);
-        } else {
-            if (!directory.exists()) {
+            if (directory.mkdirs()) {
+                logger.debug("directory created: {}", directory);
+            } else {
                 logger.debug("can't create directory: {}", directory);
                 throw new RuntimeException("problem with file system on server occurred");
             }

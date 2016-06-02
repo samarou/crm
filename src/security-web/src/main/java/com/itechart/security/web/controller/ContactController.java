@@ -171,8 +171,7 @@ public class ContactController extends SecuredController {
         logger.debug("checking attachment {} from contact {}", attachmentId, contactId);
         File file = fileService.getAttachment(contactId, attachmentId);
         if (!file.exists()) {
-            throw new RuntimeException("error happened d" +
-                "uring file download");
+            throw new RuntimeException("error happened during file download");
         }
     }
 

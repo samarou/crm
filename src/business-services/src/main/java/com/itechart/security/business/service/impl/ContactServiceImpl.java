@@ -2,7 +2,6 @@ package com.itechart.security.business.service.impl;
 
 import com.itechart.security.business.dao.*;
 import com.itechart.security.business.filter.ContactFilter;
-import com.itechart.security.business.model.dto.AttachmentDto;
 import com.itechart.security.business.model.dto.ContactDto;
 import com.itechart.security.business.model.persistent.*;
 import com.itechart.security.business.service.ContactService;
@@ -65,7 +64,6 @@ public class ContactServiceImpl implements ContactService {
     @Transactional
     public Long saveContact(ContactDto contactDto) {
         Contact contact = convert(contactDto);
-        setContactForFields(contact);
         Long contactId = contactDao.save(contact);
         moveFilesToTargetDirectory(contact);
         return contactId;
@@ -75,12 +73,6 @@ public class ContactServiceImpl implements ContactService {
     @Transactional
     public ContactDto get(Long id) {
         return convert(contactDao.get(id));
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public AttachmentDto getAttachment(Long id) {
-        return convert(attachmentDao.get(id));
     }
 
     @Override
@@ -99,7 +91,6 @@ public class ContactServiceImpl implements ContactService {
     @Transactional
     public void updateContact(ContactDto contactDto) {
         Contact contact = convert(contactDto);
-        setContactForFields(contact);
         contactDao.update(contact);
         moveFilesToTargetDirectory(contact);
     }
@@ -114,33 +105,6 @@ public class ContactServiceImpl implements ContactService {
                     throw new RuntimeException("error while saving attachment");
                 }
             }
-        }
-    }
-
-    private void setContactForFields(Contact contact) {
-        for (Email email : contact.getEmails()) {
-            email.setContact(contact);
-        }
-        for (Address address : contact.getAddresses()) {
-            address.setContact(contact);
-        }
-        for (SocialNetworkAccount account : contact.getSocialNetworks()) {
-            account.setContact(contact);
-        }
-        for (Telephone telephone : contact.getTelephones()) {
-            telephone.setContact(contact);
-        }
-        for (MessengerAccount messenger : contact.getMessengers()) {
-            messenger.setContact(contact);
-        }
-        for (Workplace workplace : contact.getWorkplaces()) {
-            workplace.setContact(contact);
-        }
-        for (Attachment attachment : contact.getAttachments()) {
-            attachment.setContact(contact);
-        }
-        for (Skill skill : contact.getSkills()) {
-            skill.setContact(contact);
         }
     }
 

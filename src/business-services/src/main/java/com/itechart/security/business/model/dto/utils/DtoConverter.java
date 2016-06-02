@@ -68,6 +68,30 @@ public class DtoConverter {
         contact.setAttachments(convertAttachmentDtos(dto.getAttachments()));
         contact.setIndustry(dto.getIndustry());
         contact.setSkills(convertSkillDtos(dto.getSkills()));
+        for (Email email : contact.getEmails()) {
+            email.setContact(contact);
+        }
+        for (Address address : contact.getAddresses()) {
+            address.setContact(contact);
+        }
+        for (SocialNetworkAccount account : contact.getSocialNetworks()) {
+            account.setContact(contact);
+        }
+        for (Telephone telephone : contact.getTelephones()) {
+            telephone.setContact(contact);
+        }
+        for (MessengerAccount messenger : contact.getMessengers()) {
+            messenger.setContact(contact);
+        }
+        for (Workplace workplace : contact.getWorkplaces()) {
+            workplace.setContact(contact);
+        }
+        for (Attachment attachment : contact.getAttachments()) {
+            attachment.setContact(contact);
+        }
+        for (Skill skill : contact.getSkills()) {
+            skill.setContact(contact);
+        }
         return contact;
     }
 
