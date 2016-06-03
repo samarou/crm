@@ -540,7 +540,7 @@ public class DtoConverter {
         task.setEndDate(dto.getEndDate());
         task.setPriority(convertToPriority(dto.getPriority()));
         task.setStatus(convertToStatus(dto.getStatus()));
-        task.setAssigneeId(dto.getAssignee().getId());
+        task.setAssigneeId(dto.getAssignee() != null ? dto.getAssignee().getId() : null);
         return task;
     }
 

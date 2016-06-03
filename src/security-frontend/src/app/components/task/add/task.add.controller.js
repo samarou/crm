@@ -26,8 +26,8 @@
         (function () {
             taskCommonService.loadStaticData(vm).then(function() {
                 vm.task.status = vm.statuses[0];
-                vm.task.priority = vm.priorities[0];
-                vm.task.assignee = vm.assigns[0];
+                vm.task.priority = vm.priorities[1];//maybe add special field 'defaultPriority'
+                // vm.task.assignee = vm.assigns[0];
             });
         })();
     }

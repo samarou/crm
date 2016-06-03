@@ -5,7 +5,6 @@ import com.itechart.security.business.filter.TaskFilter;
 import com.itechart.security.business.model.dto.TaskDto;
 import com.itechart.security.business.model.persistent.task.Task;
 import com.itechart.security.business.service.TaskService;
-import com.itechart.security.core.SecurityUtils;
 import com.itechart.security.model.dto.DataPageDto;
 import com.itechart.security.model.dto.PublicUserDto;
 import com.itechart.security.service.UserService;
@@ -15,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static com.itechart.security.business.model.dto.utils.DtoConverter.convert;
@@ -45,7 +45,7 @@ public class TaskServiceImpl implements TaskService {
     public TaskDto get(Long id) {
         Task task = taskDao.get(id);
         PublicUserDto creator = userService.getPublicUser(task.getCreatorId());
-        PublicUserDto assignee = userService.getPublicUser(task.getAssigneeId());
+        PublicUserDto assignee = task.getAssigneeId() != null ? userService.getPublicUser(task.getAssigneeId()) : null;
         return convert(task, creator, assignee);
     }
 
@@ -70,15 +70,12 @@ public class TaskServiceImpl implements TaskService {
         List<PublicUserDto> creators = userService.getByIds(creatorsIds);
         List<TaskDto> result = new ArrayList<>(tasks.size());
         tasks.forEach(task -> {
-            Optional<PublicUserDto> assignee = assigns.stream().filter(a -> a.getId() == task.getAssigneeId()).findFirst();
-            if (!assignee.isPresent()) {
-                throw new NullPointerException("Not found assignee for task with id = " + task.getId());
-            }
             Optional<PublicUserDto> creator = creators.stream().filter(c -> c.getId() == task.getCreatorId()).findFirst();
             if (!creator.isPresent()) {
                 throw new NullPointerException("Not found creator for task with id = " + task.getId());
             }
-            result.add(convert(task, creator.get(), assignee.get()));
+            Optional<PublicUserDto> assignee = assigns.stream().filter(a -> Objects.equals(a.getId(), task.getAssigneeId())).findFirst();
+            result.add(convert(task, creator.get(), assignee.orElse(null)));
         });
         return result;
     }
@@ -87,6 +84,7 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     public Long save(TaskDto dto) {
         Task task = convert(dto);
+        task.setAssigneeId(null);
         task.setCreatorId(getAuthenticatedUserId());
         return taskDao.save(task);
     }

@@ -68,7 +68,10 @@
 
     /** @ngInject */
     function fullName() {
-        return function (model) {
+        return function (model, defaultValue) {
+            if(!model){
+                return defaultValue;
+            }
             var fullName = model.firstName + ' ' + model.lastName;
             if (model.userName) {
                 fullName += '(' + model.userName + ')';

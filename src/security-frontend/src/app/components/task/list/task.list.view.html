@@ -50,7 +50,7 @@
                     <td><input type="checkbox" ng-click="$event.stopPropagation()" ng-model="task.checked"></td>
                     <td>{{task.name}}</td>
                     <td>{{task.creator | fullName}}</td>
-                    <td>{{task.assignee | fullName}}</td>
+                    <td>{{task.assignee | fullName:'Not assigned' }}</td>
                     <td>{{task.status.name}}</td>
                     <td>{{task.priority.name}}</td>
                     <td>{{task.startDate | date : 'yyyy-mm-dd'}}</td>

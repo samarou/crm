@@ -34,7 +34,7 @@ public class Task extends SecuredEntity {
     private Date endDate;
 
     @Column(name = "assignee_id")
-    private long assigneeId;
+    private Long assigneeId;
 
     @Column(name = "creator_id")
     private long creatorId;
