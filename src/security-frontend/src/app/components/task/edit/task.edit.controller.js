@@ -10,7 +10,7 @@
         .controller('TaskEditController', TaskEditController);
 
     /** @ngInject */
-    function TaskEditController(taskService, taskCommonService, $stateParams){
+    function TaskEditController(taskService, taskCommonService, $stateParams) {
         var vm = this;
 
         vm.title = 'Edit Task';

@@ -69,7 +69,7 @@
     /** @ngInject */
     function fullName() {
         return function (model, defaultValue) {
-            if(!model){
+            if (!model) {
                 return defaultValue;
             }
             var fullName = model.firstName + ' ' + model.lastName;
@@ -77,6 +77,6 @@
                 fullName += '(' + model.userName + ')';
             }
             return fullName;
-        }
+        };
     }
 })();

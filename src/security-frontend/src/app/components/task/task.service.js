@@ -20,15 +20,15 @@
             getPriorities: getPriorities,
             getStatuses: getStatuses
         };
-        
+
         function getTaskById(id) {
             return $http.get('rest/tasks/' + id);
         }
 
-        function find(filter){
-            return $http.get('rest/tasks/find', {params: filter})
+        function find(filter) {
+            return $http.get('rest/tasks/find', {params: filter});
         }
-        
+
         function create(task) {
             return $http.post('rest/tasks', task);
         }
@@ -40,7 +40,7 @@
         function remove(id) {
             return $http.delete('rest/tasks/' + id);
         }
-        
+
         function getPriorities() {
             return $http.get('rest/tasks/priorities');
         }

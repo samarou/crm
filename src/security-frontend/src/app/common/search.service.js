@@ -6,7 +6,7 @@
         .factory('searchService', searchService);
 
     /** @ngInject */
-    function searchService(userService, contactService, companyService, taskService, util, $filter, $log) {
+    function searchService(userService, contactService, companyService, taskService, util, $filter) {
         return {
             userPublicMode: getPublicBundle,
             userSecurityMode: getSecurityBundle,
@@ -59,7 +59,7 @@
             return bundle;
         }
 
-        function getTaskBundle(){
+        function getTaskBundle() {
             var bundle = createCommonBundle();
             bundle.selectAll = createSelectAllAction(bundle);
             bundle.performSeach = taskService.find;

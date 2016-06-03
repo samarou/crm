@@ -2,7 +2,7 @@
  * Created by yauheni.putsykovich on 01.06.2016.
  */
 
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -37,9 +37,9 @@
 
         function submit(task) {
             if (task.id) {
-                taskService.update(task).then(goToTaskList)
+                taskService.update(task).then(goToTaskList);
             } else {
-                taskService.create(task).then(goToTaskList)
+                taskService.create(task).then(goToTaskList);
             }
         }
 

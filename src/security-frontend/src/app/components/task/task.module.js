@@ -6,6 +6,6 @@
     'use strict';
 
     angular
-        .module('crm.task', ['crm.common', 'crm.validation', 'crm.formWrapper']); 
+        .module('crm.task', ['crm.common', 'crm.validation', 'crm.formWrapper']);
 })();
 
