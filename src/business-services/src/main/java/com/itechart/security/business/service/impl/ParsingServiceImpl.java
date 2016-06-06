@@ -31,6 +31,8 @@ import java.util.stream.Collectors;
 @Service
 public class ParsingServiceImpl implements ParsingService {
     private static final Logger log = LoggerFactory.getLogger(ParsingServiceImpl.class);
+    private static final String USER_AGENT = "Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6";
+    private static final String REFFERRER = "http://www.google.com";
 
     @Autowired
     private CountryDao countryDao;
@@ -43,7 +45,9 @@ public class ParsingServiceImpl implements ParsingService {
         LinkedInContactDto contact = new LinkedInContactDto();
         try {
             URI uri = new URI(URLDecoder.decode(profileUrl, "UTF-8"));
-            document = Jsoup.connect(uri.toASCIIString()).get();
+            document = Jsoup.connect(uri.toASCIIString())
+                    .userAgent(USER_AGENT)
+                    .referrer(REFFERRER).get();
             contact.setFullName(getFullName(document));
             contact.setFirstName(getFirstName(document));
             contact.setLastName(getLastName(document));
