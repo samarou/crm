@@ -5,22 +5,20 @@
         .module('crm.contact')
         .factory('contactDetailsService', contactDetailsService);
     /** @ngInject */
-    function contactDetailsService(contactService, aclServiceBuilder, $state, contactAttachmentService, contactAddressService, $log) {
+    function contactDetailsService(contactService, aclServiceBuilder, $state, contactAttachmentService, contactAddressService, contactEmailService, $log) {
 
         return {
             submit: submit,
             cancel: goToList,
             attachment: contactAttachmentService,
             address: contactAddressService,
+            email: contactEmailService,
             createAclHandler: createAclHandler,
-            addEmail: addEmail,
-            addAddress: addAddress,
             addTelephone: addTelephone,
             addMessengerAccount: addMessengerAccount,
             addSocialNetworkAccount: addSocialNetworkAccount,
             addWorkplace: addWorkplace,
             addSkill: addSkill,
-            removeEmails: removeEmails,
             removeTelephones: removeTelephones,
             removeMessengerAccounts: removeMessengerAccounts,
             removeSocialNetworks: removeSocialNetworkAccounts,
@@ -37,14 +35,6 @@
             return contactService.getDictionary().then(function (response) {
                 return response.data;
             });
-        }
-
-        function addEmail(scope) {
-            scope.contact.emails.push({});
-        }
-
-        function addAddress(scope) {
-            scope.contact.addresses.push({});
         }
 
         function addTelephone(scope) {
@@ -65,10 +55,6 @@
 
         function addSkill(scope) {
             scope.contact.skills.push({});
-        }
-
-        function removeEmails(scope) {
-            return removeCheckedElementsFromList(scope.contact, scope.contact.emails, contactService.removeEmail);
         }
 
         function removeTelephones(scope) {
