@@ -1,8 +1,8 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <crm-contact-table-header title="Attachments"
-                                  adding-function="vm.details.addAttachment"
-                                  removing-function="vm.details.removeAttachments"
+                                  adding-function="vm.details.attachment.add"
+                                  removing-function="vm.details.attachment.remove"
                                   vm="vm"></crm-contact-table-header>
     </div>
     <table class="table table-condensed" ng-show="vm.contact.attachments.length > 0">
@@ -16,7 +16,7 @@
         </thead>
         <tbody>
         <tr ng-repeat="attachment in vm.contact.attachments"
-            ng-dblclick="vm.attachmentService.updateAttachment(attachment)"
+            ng-dblclick="vm.details.attachment.edit(attachment)"
             class="crm-hover">
             <td class="crm-narrow">
                 <input type="checkbox"
@@ -26,7 +26,7 @@
             </td>
             <td>
                 <a ng-if="attachment.id"
-                   ng-click="vm.attachmentService.getAttachment(vm.contact.id, attachment)">{{attachment.name}}</a>
+                   ng-click="vm.details.attachment.get(vm.contact.id, attachment)">{{attachment.name}}</a>
                 <span ng-if="!attachment.id">{{attachment.name}}</span>
             </td>
             <td>{{attachment.dateUpload | date:'yyyy-MM-dd'}}</td>

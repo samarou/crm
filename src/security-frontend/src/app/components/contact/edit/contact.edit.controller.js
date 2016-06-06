@@ -6,7 +6,7 @@
         .controller('contactEditController', contactEditController);
 
     /** @ngInject */
-    function contactEditController($q, contactDetailsService, contactSecurityService, authService, contactService, contactAttachmentService, $stateParams) {
+    function contactEditController($q, contactDetailsService, contactSecurityService, authService, contactService, $stateParams) {
         var vm = this;
 
         vm.canEdit = false;
@@ -14,7 +14,6 @@
         vm.title = 'Edit contact';
         vm.submitText = 'Save';
         vm.submit = submit;
-        vm.attachmentService = contactAttachmentService;
         vm.details = contactDetailsService;
         vm.cancel = contactDetailsService.cancel;
         vm.isManager = authService.isManager();

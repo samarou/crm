@@ -5,11 +5,13 @@
         .module('crm.contact')
         .factory('contactDetailsService', contactDetailsService);
     /** @ngInject */
-    function contactDetailsService(contactService, aclServiceBuilder, $state, contactAttachmentService, $q, $log, dialogService) {
+    function contactDetailsService(contactService, aclServiceBuilder, $state, contactAttachmentService, contactAddressService, $log) {
 
         return {
             submit: submit,
             cancel: goToList,
+            attachment: contactAttachmentService,
+            address: contactAddressService,
             createAclHandler: createAclHandler,
             addEmail: addEmail,
             addAddress: addAddress,
@@ -17,15 +19,12 @@
             addMessengerAccount: addMessengerAccount,
             addSocialNetworkAccount: addSocialNetworkAccount,
             addWorkplace: addWorkplace,
-            addAttachment: addAttachment,
             addSkill: addSkill,
             removeEmails: removeEmails,
-            removeAddresses: removeAddresses,
             removeTelephones: removeTelephones,
             removeMessengerAccounts: removeMessengerAccounts,
             removeSocialNetworks: removeSocialNetworkAccounts,
             removeWorkplaces: removeWorkplaces,
-            removeAttachments: removeAttachments,
             removeSkills: removeSkills,
             getEmptyContact: getEmptyContact,
             now: new Date(),
@@ -64,20 +63,12 @@
             scope.contact.workplaces.push({});
         }
 
-        function addAttachment(scope) {
-            contactAttachmentService.addAttachment(scope);
-        }
-
         function addSkill(scope) {
             scope.contact.skills.push({});
         }
 
         function removeEmails(scope) {
             return removeCheckedElementsFromList(scope.contact, scope.contact.emails, contactService.removeEmail);
-        }
-
-        function removeAddresses(scope) {
-            return removeCheckedElementsFromList(scope.contact, scope.contact.addresses, contactService.removeAddress);
         }
 
         function removeTelephones(scope) {
@@ -94,10 +85,6 @@
 
         function removeWorkplaces(scope) {
             return removeCheckedElementsFromList(scope.contact, scope.contact.workplaces, contactService.removeWorkplace);
-        }
-
-        function removeAttachments(scope) {
-            return removeCheckedElementsFromList(scope.contact, scope.contact.attachments, contactService.removeAttachment);
         }
 
         function removeSkills(scope) {

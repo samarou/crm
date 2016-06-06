@@ -1,7 +1,8 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <crm-contact-table-header title="Addresses" adding-function="vm.details.addAddress"
-                                  removing-function="vm.details.removeAddresses"
+        <crm-contact-table-header title="Addresses"
+                                  adding-function="vm.details.address.add"
+                                  removing-function="vm.details.address.remove"
                                   vm="vm"></crm-contact-table-header>
     </div>
     <table class="table table-condensed" ng-show="vm.contact.addresses.length>0">
@@ -16,27 +17,16 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="address in vm.contact.addresses" ng-form="addressForm">
+        <tr ng-repeat="address in vm.contact.addresses"
+            ng-dblclick="vm.details.address.edit(address, vm)">
             <td class="crm-v-middle crm-narrow">
                 <input type="checkbox" ng-model="address.checked" ng-show="vm.canEdit" title="select address">
             </td>
-            <td><input class="form-control" ng-disabled="!vm.canEdit" name="addressAddressLine"
-                       ng-model="address.addressLine"></td>
-            <td><input class="form-control" ng-disabled="!vm.canEdit" name="addressZipcode"
-                       ng-model="address.zipcode"></td>
-            <td><input class="form-control" ng-disabled="!vm.canEdit" name="addressCity"
-                       ng-model="address.city"></td>
-            <td><input class="form-control" ng-disabled="!vm.canEdit" name="addressRegion"
-                       ng-model="address.region"></td>
-            <td>
-                <select ng-model="address.country"
-                        name="addressCountry"
-                        ng-options="option.id as option.name for option in vm.dictionary.countries"
-                        class="form-control"
-                        ng-disabled="!vm.canEdit">
-                    <option value>Please, select</option>
-                </select>
-            </td>
+            <td>{{address.addressLine}}</td>
+            <td>{{address.zipcode}}</td>
+            <td>{{address.city}}</td>
+            <td>{{address.region}}</td>
+            <td>{{(vm.dictionary.countries | filter:{id:address.country})[0].name}}</td>
         </tr>
         </tbody>
     </table>
