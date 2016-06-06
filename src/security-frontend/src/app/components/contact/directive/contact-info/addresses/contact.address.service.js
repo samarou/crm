@@ -16,7 +16,8 @@
         return {
             add: addAddress,
             edit: editAddress,
-            remove: removeAddresses
+            remove: removeAddresses,
+            getCountryName: getCountryName
         };
 
         function addAddress(scope) {
@@ -33,6 +34,16 @@
 
         function removeAddresses(scope) {
             return contactCommonService.remove(scope.contact, scope.contact.addresses, contactService.removeAddress);
+        }
+
+        function getCountryName(id, countries) {
+            var result = null;
+            countries.forEach(function (o) {
+                if (o.id == id) {
+                    result = o.name;
+                }
+            });
+            return result;
         }
 
         function openAddAttachmentDialog(scope) {

@@ -26,7 +26,7 @@
             <td>{{address.zipcode}}</td>
             <td>{{address.city}}</td>
             <td>{{address.region}}</td>
-            <td>{{(vm.dictionary.countries | filter:{id:address.country})[0].name}}</td>
+            <td>{{vm.details.address.getCountryName(address.country, vm.dictionary.countries)}}</td>
         </tr>
         </tbody>
     </table>

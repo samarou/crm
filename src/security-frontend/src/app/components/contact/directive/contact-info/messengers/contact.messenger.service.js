@@ -6,12 +6,12 @@
 
     angular
         .module('crm.contact')
-        .service('contactEmailService', contactEmailService);
+        .service('contactMessengerService', contactMessengerService);
 
     /** @ngInject */
-    function contactEmailService(contactService, dialogService, contactCommonService) {
+    function contactMessengerService(contactService, dialogService, contactCommonService) {
 
-        var detailsUrl = 'app/components/contact/directive/contact-info/emails/contact.email.details.view.html';
+        var detailsUrl = 'app/components/contact/directive/contact-info/messengers/contact.messenger.details.view.html';
 
         return {
             add: add,
@@ -22,29 +22,27 @@
 
         function add(scope) {
             openAddDialog(scope).then(function (model) {
-                scope.contact.emails.push(model.email);
+                scope.contact.messengers.push(model.account);
             });
         }
 
-        function edit(email, scope) {
-            openEditDialog(email, scope).then(function (model) {
-                angular.copy(model.email, email);
+        function edit(account, scope) {
+            openEditDialog(account, scope).then(function (model) {
+                angular.copy(model.account, account);
             });
         }
 
         function remove(scope) {
-            return contactCommonService.remove(scope.contact, scope.contact.emails, contactService.removeEmail);
+            return contactCommonService.remove(scope.contact, scope.contact.messengers, contactService.removeMessengerAccount);
         }
 
-        function getTypeName(type, types) {
+        function getTypeName(id, types) {
             var result = null;
-            if (types) {
-                types.forEach(function (o) {
-                    if (o.name == type) {
-                        result = o.value;
-                    }
-                });
-            }
+            types.forEach(function (o) {
+                if (o.id == id) {
+                    result = o.name;
+                }
+            });
             return result;
         }
 
@@ -54,18 +52,18 @@
                 size: 'modal--user-table',
                 cancelTitle: 'Cancel',
                 okTitle: 'Add',
-                emailTypes: scope.dictionary.emailTypes
+                messengers: scope.dictionary.messengers
             }).result;
         }
 
-        function openEditDialog(email, scope) {
+        function openEditDialog(account, scope) {
             return dialogService.custom(detailsUrl, {
                 title: 'Update Email',
                 size: 'modal--user-table',
                 cancelTitle: 'Cancel',
                 okTitle: 'Save',
-                email: angular.copy(email),
-                emailTypes: scope.dictionary.emailTypes
+                account: angular.copy(account),
+                messengers: scope.dictionary.messengers
             }).result;
         }
     }
