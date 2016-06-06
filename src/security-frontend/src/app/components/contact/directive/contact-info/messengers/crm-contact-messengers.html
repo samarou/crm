@@ -14,7 +14,7 @@
         </thead>
         <tbody>
         <tr ng-repeat="account in vm.contact.messengers"
-            ng-dblclick="vm.details.messenger.edit(account, vm)">
+            ng-dblclick="vm.canEdit ? vm.details.messenger.edit(account, vm) : null">
             <td class="crm-v-middle crm-narrow">
                 <input ng-model="account.checked"
                        type="checkbox"

@@ -15,7 +15,7 @@
         </thead>
         <tbody>
         <tr ng-repeat="email in vm.contact.emails"
-            ng-dblclick="vm.details.email.edit(email, vm)">
+            ng-dblclick="vm.canEdit ? vm.details.email.edit(email, vm) : null">
             <td class="crm-narrow">
                 <input ng-model="email.checked" type="checkbox" ng-show="vm.canEdit">
             </td>

@@ -18,7 +18,7 @@
         </thead>
         <tbody>
         <tr ng-repeat="address in vm.contact.addresses"
-            ng-dblclick="vm.details.address.edit(address, vm)">
+            ng-dblclick="vm.canEdit ? vm.details.address.edit(address, vm) : vm.canEdit">
             <td class="crm-narrow">
                 <input type="checkbox" ng-model="address.checked" ng-show="vm.canEdit" title="select address">
             </td>

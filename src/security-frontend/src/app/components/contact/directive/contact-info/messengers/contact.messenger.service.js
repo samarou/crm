@@ -48,7 +48,7 @@
 
         function openAddDialog(scope) {
             return dialogService.custom(detailsUrl, {
-                title: 'Add Email',
+                title: 'Add Messenger',
                 size: 'modal--user-table',
                 cancelTitle: 'Cancel',
                 okTitle: 'Add',
@@ -58,7 +58,7 @@
 
         function openEditDialog(account, scope) {
             return dialogService.custom(detailsUrl, {
-                title: 'Update Email',
+                title: 'Update Messenger',
                 size: 'modal--user-table',
                 cancelTitle: 'Cancel',
                 okTitle: 'Save',
