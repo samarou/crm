@@ -44,7 +44,7 @@ public class ContactServiceImpl implements ContactService {
     @Override
     @Transactional
     public List<ContactDto> findContacts(ContactFilter filter) {
-        List<Contact> contacts = contactDao.findContacts(filter);
+        List<Contact> contacts = contactDao.find(filter);
         return convertContacts(contacts);
     }
 
@@ -67,18 +67,6 @@ public class ContactServiceImpl implements ContactService {
     @Transactional
     public ContactDto get(Long id) {
         return convert(contactDao.get(id));
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    //@PreAuthorize("hasPrivilege('sample.Contact', 'READ') or hasRole('ROOT')")
-    //@PreAuthorize("@mySecurityService.hasPermission('special')")
-    //@PreAuthorize("hasPermission(#objectId, 'ObjectType', 'READ')")
-    //@PreFilter("filterObject.property == authentication.name")
-    //@PostFilter ("filterObject.owner == authentication.name")
-    //@PostFilter("hasPermission(filterObject, 'READ')")
-    public List<ContactDto> getContacts() {
-        return convertContacts(contactDao.loadAll());
     }
 
     @Override
@@ -170,7 +158,7 @@ public class ContactServiceImpl implements ContactService {
     @Override
     @Transactional
     public void deleteById(Long id) {
-        contactDao.deleteById(id);
+        contactDao.delete(id);
     }
 
     @Override
@@ -218,6 +206,6 @@ public class ContactServiceImpl implements ContactService {
     @Override
     @Transactional
     public int countContacts(ContactFilter filter) {
-        return contactDao.countContacts(filter);
+        return contactDao.count(filter);
     }
 }

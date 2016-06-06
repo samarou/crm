@@ -1,16 +1,12 @@
 package com.itechart.security.business.dao.impl;
 
+import com.itechart.common.dao.impl.StaticDataDaoImpl;
+import com.itechart.common.model.filter.PagingFilter;
 import com.itechart.security.business.dao.SocialNetworkDao;
 import com.itechart.security.business.model.persistent.SocialNetwork;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public class SocialNetworkDaoImpl extends AbstractHibernateDao<SocialNetwork> implements SocialNetworkDao {
-
-    @Override
-    public List<SocialNetwork> loadAll() {
-        return getHibernateTemplate().loadAll(SocialNetwork.class);
-    }
+public class SocialNetworkDaoImpl
+        extends StaticDataDaoImpl<SocialNetwork, Long, PagingFilter> implements SocialNetworkDao {
 }

@@ -19,12 +19,6 @@ public class AttachmentServiceImpl implements AttachmentService {
     private AttachmentDao attachmentDao;
 
     @Override
-    @Transactional(readOnly = true)
-    public List<AttachmentDto> loadAll() {
-        return convertAttachments(attachmentDao.loadAll());
-    }
-
-    @Override
     @Transactional
     public Long insertAttachment(AttachmentDto attachmentDto) {
         return attachmentDao.save(convert(attachmentDto));
@@ -51,6 +45,6 @@ public class AttachmentServiceImpl implements AttachmentService {
     @Override
     @Transactional
     public void deleteById(Long id) {
-        attachmentDao.deleteById(id);
+        attachmentDao.delete(id);
     }
 }

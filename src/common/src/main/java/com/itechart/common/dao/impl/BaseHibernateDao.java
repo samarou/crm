@@ -1,56 +1,86 @@
-package com.itechart.security.business.dao.impl;
+package com.itechart.common.dao.impl;
 
+import com.itechart.common.dao.BaseDao;
 import com.itechart.common.model.filter.PagingFilter;
 import com.itechart.common.model.filter.SortingFilter;
+import com.itechart.common.model.persistent.BaseEntity;
+import com.itechart.common.util.BatchExecutor;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.internal.CriteriaImpl;
 import org.hibernate.sql.JoinType;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataRetrievalFailureException;
-import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 /**
+ * Base class for hibernate data access objects
+ *
  * @author andrei.samarou
  */
 @Repository
-public abstract class AbstractHibernateDao<T> extends HibernateDaoSupport {
+public abstract class BaseHibernateDao<T extends BaseEntity, I extends Serializable, F extends PagingFilter>
+        extends AbstractHibernateDao<T> implements BaseDao<T, I, F> {
 
+    private static final int BATCH_SIZE = 100;
     private static final int MAX_PAGE_SIZE = 100;
 
-    private Class<T> persistentClass;
-
-    @Autowired
-    public void init(SessionFactory sessionFactory) {
-        setSessionFactory(sessionFactory);
+    public BaseHibernateDao() {
     }
 
-    public AbstractHibernateDao() {
-        persistentClass = resolvePersistentClass();
+    public T get(I id) {
+        return getHibernateTemplate().get(getPersistentClass(), id);
     }
 
-    protected Class<T> getPersistentClass() {
-        return persistentClass;
+    public List<T> find(F filter) {
+        return getHibernateTemplate().executeWithNativeSession(session -> {
+            Criteria criteria = createFilterCriteria(session, filter);
+            return executePagingDistinctCriteria(session, criteria, filter);
+        });
     }
 
-    public String getIdPropertyName() {
-        return getSessionFactory().getClassMetadata(getPersistentClass()).getIdentifierPropertyName();
+    public int count(F filter) {
+        return getHibernateTemplate().executeWithNativeSession(session -> {
+            Criteria criteria = createFilterCriteria(session, filter);
+            criteria.setProjection(Projections.rowCount());
+            return ((Number) criteria.uniqueResult()).intValue();
+        });
     }
 
+    @SuppressWarnings("unchecked")
+    public List<T> findByIds(List<I> ids) {
+        if (CollectionUtils.isEmpty(ids)) {
+            return Collections.emptyList();
+        }
+        return getHibernateTemplate().execute(session -> {
+            List<T> result = new ArrayList<>(ids.size());
+            BatchExecutor.execute(batch -> {
+                Criteria criteria = session.createCriteria(getPersistentClass());
+                criteria.add(Restrictions.in(getIdPropertyName(), batch));
+                criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+                result.addAll(criteria.list());
+            }, ids, BATCH_SIZE);
+            return result;
+        });
+    }
+
+    protected Criteria createFilterCriteria(Session session, F filter) {
+        return session.createCriteria(getPersistentClass(), getEntityAlias());
+    }
+
+    protected String getEntityAlias() {
+        return getPersistentClass().getSimpleName().toLowerCase();
+    }
 
     @SuppressWarnings("unchecked")
     protected List<T> executePagingDistinctCriteria(Session session, Criteria criteria, PagingFilter filter) {
@@ -84,20 +114,6 @@ public abstract class AbstractHibernateDao<T> extends HibernateDaoSupport {
         }
     }
 
-    protected Criteria appendPagingFilterConditions(Criteria criteria, PagingFilter filter) {
-        appendSortingFilterConditions(criteria, filter);
-        if (filter.getSortProperty() == null) {
-            criteria.addOrder(Order.asc(getIdPropertyName()));
-        }
-        if (filter.getFrom() != null) {
-            criteria.setFirstResult(filter.getFrom());
-        }
-        if (filter.getCount() != null) {
-            criteria.setMaxResults(filter.getCount());
-        }
-        return criteria;
-    }
-
     protected Criteria appendSortingFilterConditions(Criteria criteria, SortingFilter filter) {
         String sortProperty = filter.getSortProperty();
         if (sortProperty != null) {
@@ -110,6 +126,20 @@ public abstract class AbstractHibernateDao<T> extends HibernateDaoSupport {
                 property = criteria.getAlias() + '.' + property;
             }
             criteria.addOrder(filter.isSortAsc() ? Order.asc(property) : Order.desc(property));
+        }
+        return criteria;
+    }
+
+    protected Criteria appendPagingFilterConditions(Criteria criteria, PagingFilter filter) {
+        appendSortingFilterConditions(criteria, filter);
+        if (filter.getSortProperty() == null) {
+            criteria.addOrder(Order.asc(getIdPropertyName()));
+        }
+        if (filter.getFrom() != null) {
+            criteria.setFirstResult(filter.getFrom());
+        }
+        if (filter.getCount() != null) {
+            criteria.setMaxResults(filter.getCount());
         }
         return criteria;
     }
@@ -144,21 +174,4 @@ public abstract class AbstractHibernateDao<T> extends HibernateDaoSupport {
         return null;
     }
 
-    @SuppressWarnings("unchecked")
-    private Class<T> resolvePersistentClass() {
-        //to be this то work this class must be abstract
-        for (Type type = getClass().getGenericSuperclass(); type != null; ) {
-            if (type instanceof ParameterizedType) {
-                Type parameter = ((ParameterizedType) type).getActualTypeArguments()[0];
-                if (parameter instanceof Class) {
-                    return (Class<T>) ((ParameterizedType) type).getActualTypeArguments()[0];
-                } else {
-                    return (Class<T>) ((ParameterizedType) ((TypeVariable<?>) parameter).getBounds()[0]).getRawType();
-                }
-            } else if (type instanceof Class) {
-                type = ((Class<?>) type).getGenericSuperclass();
-            }
-        }
-        throw new RuntimeException("Can't resolve persistent class");
-    }
 }

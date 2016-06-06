@@ -5,7 +5,6 @@ import com.itechart.security.business.model.dto.AttachmentDto;
 import java.util.List;
 
 public interface AttachmentService {
-    List<AttachmentDto> loadAll();
 
     Long insertAttachment(AttachmentDto attachment);
 

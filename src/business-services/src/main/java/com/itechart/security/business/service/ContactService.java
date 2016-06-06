@@ -18,8 +18,6 @@ public interface ContactService {
 
     ContactDto get(Long id);
 
-    List<ContactDto> getContacts();
-
     void updateContact(ContactDto contact);
 
     void deleteById(Long id);

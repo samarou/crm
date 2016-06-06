@@ -1,11 +1,7 @@
 package com.itechart.security.business.dao;
 
+import com.itechart.common.dao.DynamicDataDao;
 import com.itechart.security.business.model.persistent.Email;
 
-public interface EmailDao {
-    Long save(Email email);
-
-    void update(Email email);
-
-    void delete(Long id);
+public interface EmailDao extends DynamicDataDao<Email, Long> {
 }

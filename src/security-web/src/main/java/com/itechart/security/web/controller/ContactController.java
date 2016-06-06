@@ -42,11 +42,6 @@ public class ContactController extends SecuredController {
         return super.isAllowed(contactId, value);
     }
 
-    @RequestMapping("/contacts")
-    public List<ContactDto> getContacts() {
-        return contactService.getContacts();
-    }
-
     @RequestMapping(value = "/contacts/{contactId}", method = RequestMethod.GET)
     public ContactDto get(@PathVariable Long contactId) {
         return contactService.get(contactId);
@@ -58,7 +53,7 @@ public class ContactController extends SecuredController {
         contactService.updateContact(dto);
     }
 
-    @RequestMapping("/contacts/find")
+    @RequestMapping("/contacts")
     public DataPageDto find(ContactFilterDto filterDto) {
         ContactFilter filter = convert(filterDto);
         DataPageDto<ContactDto> page = new DataPageDto<>();
