@@ -11,13 +11,13 @@
 
         vm.canEdit = false;
         vm.contact = contactDetailsService.getEmptyContact();
-        vm.attachmentService = contactAttachmentService;
-        vm.isManager = authService.isManager();
-        vm.submitText = 'Save';
         vm.title = 'Edit contact';
+        vm.submitText = 'Save';
         vm.submit = submit;
+        vm.attachmentService = contactAttachmentService;
         vm.details = contactDetailsService;
         vm.cancel = contactDetailsService.cancel;
+        vm.isManager = authService.isManager();
         vm.aclHandler = contactDetailsService.createAclHandler(function () {
             return vm.contact.id;
         });

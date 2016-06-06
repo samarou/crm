@@ -14,9 +14,9 @@
         vm.title = 'Add contact';
         vm.submitText = 'Add';
         vm.submit = submit;
-        vm.cancel = contactDetailsService.cancel;
         vm.attachmentService = contactAttachmentService;
         vm.details = contactDetailsService;
+        vm.cancel = contactDetailsService.cancel;
         vm.aclHandler = contactDetailsService.createAclHandler(function () {
             return vm.contact.id;
         });
