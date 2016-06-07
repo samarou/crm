@@ -1,8 +1,8 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <crm-contact-table-header title="Social Networks"
-                                  adding-function="vm.details.addSocialNetworkAccount"
-                                  removing-function="vm.details.removeSocialNetworks"
+                                  adding-function="vm.details.socialNetwork.add"
+                                  removing-function="vm.details.socialNetwork.remove"
                                   vm="vm"></crm-contact-table-header>
     </div>
     <table class="table table-condensed" ng-show="vm.contact.socialNetworks.length>0">
@@ -15,36 +15,16 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="account in vm.contact.socialNetworks" ng-form="socialNetworksForm">
-            <td class="crm-v-middle crm-narrow">
+        <tr ng-repeat="account in vm.contact.socialNetworks"
+            ng-dblclick="vm.canEdit ? vm.details.socialNetwork.edit(account, vm) : null">
+            <td class="crm-narrow">
                 <input ng-model="account.checked"
                        type="checkbox"
                        ng-show="vm.canEdit"
                        title="select Social Network account">
             </td>
-            <td>
-                <div crm-input-validation>
-                    <input ng-model="account.url"
-                           name="socialNetworkAccountUrl"
-                           class="form-control"
-                           ng-disabled="!vm.canEdit"
-                           required maxlength="255">
-                    <span
-                        ng-show="socialNetworksForm.socialNetworkAccountUrl.$error.required"
-                        class="help-block">URL is required</span>
-                </div>
-            </td>
-            <td>
-                <div crm-input-validation class="crm-select-validation-icon">
-                    <select ng-model="account.socialNetwork"
-                            name="socialNetworkType"
-                            class="form-control"
-                            ng-options="option.id as option.name for option in vm.dictionary.socialNetworks"
-                            ng-disabled="!vm.canEdit">
-                        <option value="">Please, select</option>
-                    </select>
-                </div>
-            </td>
+            <td style="word-wrap: break-word;">{{account.url}}</td>
+            <td>{{vm.details.socialNetwork.getTypeName(account.socialNetwork, vm.dictionary.socialNetworks)}}</td>
             <td>
                 <a ng-show="vm.details.isLinkedInUrl(account.url)" ng-click="vm.details.parseProfile(vm, account.url)"
                         class="btn btn-default pull-right">Load

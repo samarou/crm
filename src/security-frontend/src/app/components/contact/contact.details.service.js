@@ -7,7 +7,7 @@
     /** @ngInject */
     function contactDetailsService(contactService, aclServiceBuilder, $state, contactAttachmentService,
                                    contactAddressService, contactEmailService, contactMessengerService,
-                                   contactTelephoneService, $log) {
+                                   contactTelephoneService, contactSocialNetworkService, dialogService, $log) {
 
         return {
             submit: submit,
@@ -17,11 +17,10 @@
             email: contactEmailService,
             messenger: contactMessengerService,
             telephone: contactTelephoneService,
+            socialNetwork: contactSocialNetworkService,
             createAclHandler: createAclHandler,
-            addSocialNetworkAccount: addSocialNetworkAccount,
             addWorkplace: addWorkplace,
             addSkill: addSkill,
-            removeSocialNetworks: removeSocialNetworkAccounts,
             removeWorkplaces: removeWorkplaces,
             removeSkills: removeSkills,
             getEmptyContact: getEmptyContact,
@@ -37,20 +36,12 @@
             });
         }
 
-        function addSocialNetworkAccount(scope) {
-            scope.contact.socialNetworks.push({});
-        }
-
         function addWorkplace(scope) {
             scope.contact.workplaces.push({});
         }
 
         function addSkill(scope) {
             scope.contact.skills.push({});
-        }
-
-        function removeSocialNetworkAccounts(scope) {
-            return removeCheckedElementsFromList(scope.contact, scope.contact.socialNetworks, contactService.removeSocialNetworkAccount);
         }
 
         function removeWorkplaces(scope) {
