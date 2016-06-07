@@ -7,7 +7,8 @@
     /** @ngInject */
     function contactDetailsService(contactService, aclServiceBuilder, $state, contactAttachmentService,
                                    contactAddressService, contactEmailService, contactMessengerService,
-                                   contactTelephoneService, contactSocialNetworkService, dialogService, $log) {
+                                   contactTelephoneService, contactSocialNetworkService, contactWorkplaceService,
+                                   dialogService, $log) {
 
         return {
             submit: submit,
@@ -18,10 +19,9 @@
             messenger: contactMessengerService,
             telephone: contactTelephoneService,
             socialNetwork: contactSocialNetworkService,
+            workplace: contactWorkplaceService,
             createAclHandler: createAclHandler,
-            addWorkplace: addWorkplace,
             addSkill: addSkill,
-            removeWorkplaces: removeWorkplaces,
             removeSkills: removeSkills,
             getEmptyContact: getEmptyContact,
             now: new Date(),
@@ -36,16 +36,8 @@
             });
         }
 
-        function addWorkplace(scope) {
-            scope.contact.workplaces.push({});
-        }
-
         function addSkill(scope) {
             scope.contact.skills.push({});
-        }
-
-        function removeWorkplaces(scope) {
-            return removeCheckedElementsFromList(scope.contact, scope.contact.workplaces, contactService.removeWorkplace);
         }
 
         function removeSkills(scope) {
