@@ -118,18 +118,35 @@
         }
 
         function parseProfile(scope, profileUrl) {
-            contactService.parseProfile(profileUrl).then(function (response) {
-                $log.log(response.data);
-                scope.contact.firstName = response.data.firstName;
-                scope.contact.lastName = response.data.lastName;
-                scope.contact.photoUrl = response.data.photoUrl;
-                response.data.workplaces.forEach(function (workplace) {
-                    scope.contact.workplaces.push(workplace);
-                });
-                response.data.addresses.forEach(function (address) {
-                    scope.contact.addresses.push(address);
+            dialogService.confirm('Data will be merged. Do you agree?')
+                .result.then(function () {
+                contactService.parseProfile(profileUrl).then(function (response) {
+                    $log.log(response.data);
+                    merge(scope.contact, response.data);
                 });
             });
+
+        }
+
+        function merge(oldContact, newContact) {
+            angular.forEach(newContact, function (value, key) {
+                if (value) {
+                    if (angular.isArray(value)) {
+                        if (oldContact[key]) {
+                            oldContact[key] = oldContact[key].concat(value);
+                        } else {
+                            oldContact[key] = value;
+                        }
+                    } else if (!isBlank(value)) {
+                        oldContact[key] = value;
+                    }
+                }
+            });
+            return oldContact;
+        }
+
+        function isBlank(str) {
+            return (!str || /^\s*$/.test(str));
         }
 
         function isLinkedInUrl(url) {
