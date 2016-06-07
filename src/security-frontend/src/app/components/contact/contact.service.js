@@ -8,7 +8,6 @@
     /** @ngInject */
     function contactService($http, $window) {
         return {
-            getAll: getAll,
             create: create,
             get: get,
             update: update,
@@ -32,10 +31,6 @@
             parseProfile: parseProfile
         };
 
-        function getAll() {
-            return $http.get('rest/contacts');
-        }
-
         function create(contact) {
             return $http.post('rest/contacts', contact);
         }
@@ -53,7 +48,7 @@
         }
 
         function find(filter) {
-            return $http.get('rest/contacts/find', {params: filter});
+            return $http.get('rest/contacts', {params: filter});
         }
 
         function getAcls(id) {

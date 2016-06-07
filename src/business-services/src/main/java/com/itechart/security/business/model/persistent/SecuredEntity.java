@@ -1,5 +1,6 @@
 package com.itechart.security.business.model.persistent;
 
+import com.itechart.common.model.persistent.BaseEntity;
 import com.itechart.security.core.model.acl.SecuredObject;
 import lombok.EqualsAndHashCode;
 

@@ -1,5 +1,7 @@
 package com.itechart.security.business.dao.impl;
 
+import com.itechart.common.dao.impl.DynamicDataDaoImpl;
+import com.itechart.common.model.filter.PagingFilter;
 import com.itechart.security.business.dao.MessengerAccountDao;
 import com.itechart.security.business.model.persistent.MessengerAccount;
 import org.springframework.stereotype.Repository;
@@ -7,16 +9,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Date;
 
 @Repository
-public class MessengerAccountDaoImpl extends AbstractHibernateDao<MessengerAccount> implements MessengerAccountDao {
-    @Override
-    public Long save(MessengerAccount account) {
-        return (Long) getHibernateTemplate().save(account);
-    }
-
-    @Override
-    public void update(MessengerAccount account) {
-        getHibernateTemplate().update(account);
-    }
+public class MessengerAccountDaoImpl
+        extends DynamicDataDaoImpl<MessengerAccount, Long, PagingFilter> implements MessengerAccountDao {
 
     @Override
     public void delete(Long id) {
