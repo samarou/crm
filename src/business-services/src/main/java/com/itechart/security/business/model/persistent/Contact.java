@@ -42,28 +42,28 @@ public class Contact extends SecuredEntity {
     @Column(name = "industry")
     private String industry;
 
-   /* @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY, orphanRemoval = true)
+   /* @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Order> orders;*/
 
-    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<MessengerAccount> messengers;
 
-    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<SocialNetworkAccount> socialNetworks;
 
-    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Telephone> telephones;
 
-    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Address> addresses;
 
-    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Workplace> workplaces;
 
-    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Email> emails;
 
-    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Attachment> attachments;
 
     @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

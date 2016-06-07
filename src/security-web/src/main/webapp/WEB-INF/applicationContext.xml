@@ -104,14 +104,9 @@
     </bean>
 
 
-    <bean id="fileUtil" class="com.itechart.security.web.util.FileUtil">
-        <property name="uploadDir" value="${upload.directory}"/>
-    </bean>
+    <bean id="fileUtil" class="com.itechart.security.web.util.TempFileUtil"/>
 
-    <bean id="contactAttachmentService" class="com.itechart.security.web.service.impl.ContactAttachmentServiceImpl"/>
-
-
-    <context:property-placeholder location="classpath:datasource.properties,classpath:application.properties"
+    <context:property-placeholder location="classpath:datasource.properties,classpath:application.properties, classpath:businessServices.properties"
                                   order="-1"/>
 
 </beans>

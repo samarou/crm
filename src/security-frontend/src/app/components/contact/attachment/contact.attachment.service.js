@@ -6,14 +6,12 @@
         .service('contactAttachmentService', contactAttachmentService);
 
     /** @ngInject */
-    function contactAttachmentService(contactService, $q, dialogService, FileUploader, MAX_FILE_SIZE, authService) {
+    function contactAttachmentService(contactService, $q, dialogService, FileUploader, MAX_FILE_SIZE) {
 
         return {
+            addAttachment: addAttachment,
             getAttachment: getAttachment,
-            addAttachments: addAttachments,
-            updateAttachment: updateAttachment,
-            removeAttachments: removeAttachments,
-            getNewAttachments: getNewAttachments
+            updateAttachment: updateAttachment
         };
 
         function getFileUploader() {
@@ -24,7 +22,6 @@
                     url: 'rest/files',
                     onAfterAddingFile: function (item) {
                         if (item._file.size < MAX_FILE_SIZE) {
-                            item.headers['X-Auth-Token'] = authService.getAuthentication().token;
                             this.tempFile.name = item._file.name;
                             this.uploadItem(item);
                         } else {
@@ -33,7 +30,7 @@
                         }
                     },
                     onErrorItem: function (item, response) {
-                        dialogService.error('File hasn\'t been uploaded because error happened: ' + response);
+                        dialogService.error('File hasn\'t been uploaded because error happened: ' + response.message);
                         this.clearQueue();
                     },
                     onSuccessItem: function (item, response) {
@@ -42,11 +39,11 @@
                 });
         }
 
-        function addAttachments(scope) {
+        function addAttachment(scope) {
             var uploader = getFileUploader();
             openAddAttachmentDialog(uploader).then(function (model) {
                 model.attachment.dateUpload = new Date();
-                scope.attachments.push(model.attachment);
+                scope.contact.attachments.push(model.attachment);
             });
         }
 
@@ -61,13 +58,10 @@
             }).result;
         }
 
-        function updateAttachment(contactId, attachment) {
+        function updateAttachment(attachment) {
             openUpdateAttachmentDialog(attachment).then(function (model) {
                 attachment.name = model.attachment.name;
                 attachment.comment = model.attachment.comment;
-                if (attachment.id) {
-                    contactService.updateAttachment(contactId, attachment);
-                }
             });
         }
 
@@ -83,33 +77,6 @@
                 okTitle: 'Save',
                 attachment: {name: attachment.name, comment: attachment.comment}
             }).result;
-        }
-
-        function removeAttachments(scope) {
-            var tasks = [];
-            scope.attachments.forEach(function (attachment) {
-                if (attachment.checked) {
-                    dialogService.confirm('Do you really want to delete attachment ' + attachment.name + '?')
-                        .result.then(function () {
-                        if (attachment.id) {
-                            tasks.push(contactService.removeAttachment(scope.contact.id, attachment.id));
-                        }
-                        var index = scope.attachments.indexOf(attachment);
-                        scope.attachments.splice(index, 1);
-                    });
-                }
-            });
-            return $q.all(tasks);
-        }
-
-        function getNewAttachments(attachments) {
-            var newAttachments = [];
-            attachments.forEach(function (attachment) {
-                if (!attachment.id) {
-                    newAttachments.push(attachment);
-                }
-            });
-            return newAttachments;
         }
     }
 })();

@@ -31,7 +31,9 @@
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
-                <prop key="security.filter_factory_provider">com.itechart.security.hibernate.filter.FilterFactoryProviderImpl</prop>
+                <prop key="security.filter_factory_provider">
+                    com.itechart.security.hibernate.filter.FilterFactoryProviderImpl
+                </prop>
                 <!-- for development mode-->
                 <prop key="hibernate.cache.use_structured_entries">true</prop>
                 <prop key="hibernate.generate_statistics">true</prop>
@@ -43,8 +45,11 @@
 
     <bean name="contactService" class="com.itechart.security.business.service.impl.ContactServiceImpl"/>
     <bean name="companyService" class="com.itechart.security.business.service.impl.CompanyServiceImpl"/>
-    <bean name="attachmentService" class="com.itechart.security.business.service.impl.AttachmentServiceImpl"/>
     <bean name="parsingService" class="com.itechart.security.business.service.impl.ParsingServiceImpl"/>
+
+    <bean id="fileServiceImpl" class="com.itechart.security.business.service.impl.FileServiceImpl">
+        <property name="uploadDir" value="${upload.dir}"/>
+    </bean>
 
     <!-- Method Security -->
 
@@ -63,6 +68,6 @@
         </property>
     </bean>
 
-    <context:property-placeholder location="classpath:datasource.properties"/>
 
+    <context:property-placeholder location="classpath:businessServices.properties"/>
 </beans>

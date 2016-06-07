@@ -23,7 +23,7 @@ public class SocialNetworkAccount extends SecuredEntity {
     @JoinColumn(name = "social_network_id")
     private SocialNetwork socialNetwork;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "contact_id", nullable = false)
     private Contact contact;
 
