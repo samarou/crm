@@ -30,8 +30,11 @@
         }
 
         function logout() {
-            authService.logout();
-            $state.go('login');
+            authService.logout()
+                .finally(function () {
+                        $state.go('login');
+                    }
+                );
         }
     }
 })();
