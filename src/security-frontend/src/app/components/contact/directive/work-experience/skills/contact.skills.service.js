@@ -16,7 +16,8 @@
         return {
             add: add,
             edit: edit,
-            remove: remove
+            remove: remove,
+            removeOne: removeOne
         };
 
         function add(scope) {
@@ -33,6 +34,10 @@
 
         function remove(scope) {
             return contactCommonService.remove(scope.contact, scope.contact.skills, contactService.removeSkill);
+        }
+
+        function removeOne(skill, scope) {
+            contactCommonService.removeOne(scope.contact, skill, scope.contact.skills, contactService.removeSkill);
         }
 
         function openAddDialog() {

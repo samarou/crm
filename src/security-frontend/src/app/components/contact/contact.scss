@@ -29,7 +29,22 @@
 }
 
 .table.crm-table-fixed tbody > tr > td,
-.table.crm-table-fixed thead > tr > th {
+.table.crm-table-fixed thead > tr > th,
+.crm-text-overflow {
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.crm-badge {
+    margin: 2px;
+}
+
+a.crm-badge-x{
+    color: lightgrey;
+}
+a.crm-badge-x:hover{
+    color: red;
+}
+a.crm-badge-x::after{
+    content: 'x';
 }

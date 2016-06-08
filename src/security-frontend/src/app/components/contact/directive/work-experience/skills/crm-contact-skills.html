@@ -1,33 +1,17 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <crm-contact-table-header title="Skills" adding-function="vm.details.skill.add"
-                                  removing-function="vm.details.skill.remove"
+        <crm-contact-table-header title="Skills"
+                                  adding-function="vm.details.skill.add"
                                   vm="vm"></crm-contact-table-header>
     </div>
-    <table class="table table-condensed table-responsive crm-table-fixed" ng-show="vm.contact.skills.length > 0">
-        <thead>
-        <tr>
-            <th class="crm-narrow"><input type="checkbox"
-                       ng-show="vm.canEdit"
-                       title="select skills"
-                       ng-click="vm.details.checkAll(vm.contact.skills, vm.contact.skills.isSelectedAll)"
-                       ng-model="vm.contact.skills.isSelectedAll"></th>
-            <th class="col-xs-12">Name</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="skill in vm.contact.skills"
-            ng-click="vm.canEdit ? vm.details.skill.edit(skill, vm) : null"
-            class="crm-hover">
-            <td>
-                <input ng-model="skill.checked"
-                       type="checkbox"
-                       ng-show="vm.canEdit"
-                       ng-click="vm.details.isAllSelected(vm.contact.skills); $event.stopPropagation()"
-                       ng-init="vm.details.isAllSelected(vm.contact.skills)">
-            </td>
-            <td>{{skill.name}}</td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="panel-body" ng-show="vm.contact.skills.length > 0">
+        <div style="display: block;padding:0;margin:0">
+            <div class="crm-badge btn btn-info btn-xs"
+                ng-repeat="skill in vm.contact.skills"
+                ng-click="vm.canEdit ? vm.details.skill.edit(skill, vm) : null">
+                {{skill.name}}
+                <a class="crm-badge-x" ng-click="vm.details.skill.removeOne(skill, vm); $event.stopPropagation()"></a>
+            </div>
+        </div>
+    </div>
 </div>

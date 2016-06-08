@@ -8,7 +8,7 @@
     <table class="table table-condensed crm-table-fixed" ng-show="vm.contact.workplaces.length>0">
         <thead>
         <tr>
-            <th><input type="checkbox"
+            <th class="crm-narrow"><input type="checkbox"
                        ng-show="vm.canEdit"
                        title="select workplace"
                        ng-click="vm.details.checkAll(vm.contact.workplaces, vm.contact.workplaces.isSelectedAll)"
@@ -24,7 +24,7 @@
         <tr ng-repeat="workplace in vm.contact.workplaces"
             ng-click="vm.canEdit ? vm.details.workplace.edit(workplace) : null"
             class="crm-hover">
-            <td class="crm-narrow">
+            <td>
                 <input type="checkbox"
                        ng-model="workplace.checked"
                        ng-show="vm.canEdit"

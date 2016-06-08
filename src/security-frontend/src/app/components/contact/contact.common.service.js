@@ -11,7 +11,8 @@
     function contactCommonService($q, dialogService) {
 
         return {
-            remove: removeCheckedElementsFromList
+            remove: removeCheckedElementsFromList,
+            removeOne: removeOneElementFromArray
         };
 
         function removeCheckedElementsFromList(contact, elements, removingFunction) {
@@ -21,15 +22,19 @@
                 dialogService.confirm('Do you really want to delete these fields?')
                     .result.then(function () {
                     elementsForRemoving.forEach(function (element) {
-                        if (element.id) {
-                            tasks.push(removeElementHandlingError(contact, element, elements, removingFunction));
-                        } else {
-                            removeElementFromArray(element, elements);
-                        }
+                        tasks.push(removeOneElementFromArray(contact, element, elements, removingFunction));
                     });
                 });
             }
             return $q.all(tasks);
+        }
+
+        function removeOneElementFromArray(contact, element, elements, removingFunction) {
+            if (element.id) {
+                removeElementHandlingError(contact, element, elements, removingFunction);
+            } else {
+                removeElementFromArray(element, elements);
+            }
         }
 
         function removeElementHandlingError(contact, element, elements, removingFunction) {
