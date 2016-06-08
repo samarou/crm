@@ -4,23 +4,23 @@
                                   removing-function="vm.details.telephone.remove"
                                   vm="vm"></crm-contact-table-header>
     </div>
-    <table class="table table-condensed" ng-show="vm.contact.telephones.length>0">
+    <table class="table table-condensed crm-table-fixed" ng-show="vm.contact.telephones.length>0">
         <thead>
         <tr>
-            <th><input type="checkbox"
+            <th class="crm-narrow"><input type="checkbox"
                        ng-show="vm.canEdit"
                        title="select telephones"
                        ng-click="vm.details.checkAll(vm.contact.telephones, vm.contact.telephones.isSelectedAll)"
                        ng-model="vm.contact.telephones.isSelectedAll"></th>
-            <th>Number</th>
-            <th>Type</th>
+            <th class="col-xs-8">Number</th>
+            <th class="col-xs-4">Type</th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="telephone in vm.contact.telephones"
             ng-click="vm.canEdit ? vm.details.telephone.edit(telephone, vm) : null"
             class="crm-hover">
-            <td class="crm-v-middle crm-narrow">
+            <td>
                 <input ng-model="telephone.checked"
                        type="checkbox"
                        ng-show="vm.canEdit"

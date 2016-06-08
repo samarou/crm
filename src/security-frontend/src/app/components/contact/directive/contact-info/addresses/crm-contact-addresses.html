@@ -5,26 +5,26 @@
                                   removing-function="vm.details.address.remove"
                                   vm="vm"></crm-contact-table-header>
     </div>
-    <table class="table table-condensed" ng-show="vm.contact.addresses.length>0">
+    <table class="table table-condensed crm-table-fixed" ng-show="vm.contact.addresses.length>0">
         <thead>
         <tr>
-            <th><input type="checkbox"
+            <th class="crm-narrow"><input type="checkbox"
                        ng-show="vm.canEdit"
                        title="select Addresses"
                        ng-click="vm.details.checkAll(vm.contact.addresses, vm.contact.addresses.isSelectedAll)"
                        ng-model="vm.contact.addresses.isSelectedAll"></th>
-            <th>Address line</th>
-            <th>Zipcode</th>
-            <th>City</th>
-            <th>Region</th>
-            <th>Country</th>
+            <th class="col-md-4 col-sm-4 col-xs-6">Address line</th>
+            <th class="col-md-2 col-sm-2 hidden-xs">Zipcode</th>
+            <th class="col-md-2 col-sm-3 col-xs-3">City</th>
+            <th class="col-md-2 hidden-sm hidden-xs">Region</th>
+            <th class="col-md-2 col-sm-3 col-xs-3">Country</th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="address in vm.contact.addresses"
             ng-click="vm.canEdit ? vm.details.address.edit(address, vm) : vm.canEdit"
             class="crm-hover">
-            <td class="crm-narrow">
+            <td>
                 <input type="checkbox"
                        ng-model="address.checked"
                        ng-show="vm.canEdit"
@@ -33,9 +33,9 @@
                        ng-init="vm.details.isAllSelected(vm.contact.addresses)">
             </td>
             <td>{{address.addressLine}}</td>
-            <td>{{address.zipcode}}</td>
+            <td class="hidden-xs">{{address.zipcode}}</td>
             <td>{{address.city}}</td>
-            <td>{{address.region}}</td>
+            <td class="hidden-sm hidden-xs">{{address.region}}</td>
             <td>{{vm.details.address.getCountryName(address.country, vm.dictionary.countries)}}</td>
         </tr>
         </tbody>

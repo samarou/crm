@@ -5,16 +5,16 @@
                                   removing-function="vm.details.socialNetwork.remove"
                                   vm="vm"></crm-contact-table-header>
     </div>
-    <table class="table table-condensed" ng-show="vm.contact.socialNetworks.length>0">
+    <table class="table table-condensed crm-table-fixed" ng-show="vm.contact.socialNetworks.length>0">
         <thead>
         <tr>
-            <th><input type="checkbox"
+            <th class="crm-narrow"><input type="checkbox"
                        ng-show="vm.canEdit"
                        title="select Social Network accounts"
                        ng-click="vm.details.checkAll(vm.contact.socialNetworks, vm.contact.socialNetworks.isSelectedAll)"
                        ng-model="vm.contact.socialNetworks.isSelectedAll"></th>
-            <th>URL</th>
-            <th>Social Network</th>
+            <th class="col-xs-7">URL</th>
+            <th class="col-xs-4">Social Network</th>
             <th></th>
         </tr>
         </thead>
@@ -22,7 +22,7 @@
         <tr ng-repeat="account in vm.contact.socialNetworks"
             ng-click="vm.canEdit ? vm.details.socialNetwork.edit(account, vm) : null"
             class="crm-hover">
-            <td class="crm-narrow">
+            <td>
                 <input ng-model="account.checked"
                        type="checkbox"
                        ng-show="vm.canEdit"

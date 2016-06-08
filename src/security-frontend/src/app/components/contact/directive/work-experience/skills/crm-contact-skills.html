@@ -4,22 +4,22 @@
                                   removing-function="vm.details.skill.remove"
                                   vm="vm"></crm-contact-table-header>
     </div>
-    <table class="table table-condensed table-responsive" ng-show="vm.contact.skills.length > 0">
+    <table class="table table-condensed table-responsive crm-table-fixed" ng-show="vm.contact.skills.length > 0">
         <thead>
         <tr>
-            <th><input type="checkbox"
+            <th class="crm-narrow"><input type="checkbox"
                        ng-show="vm.canEdit"
                        title="select skills"
                        ng-click="vm.details.checkAll(vm.contact.skills, vm.contact.skills.isSelectedAll)"
                        ng-model="vm.contact.skills.isSelectedAll"></th>
-            <th>Name</th>
+            <th class="col-xs-12">Name</th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="skill in vm.contact.skills"
             ng-click="vm.canEdit ? vm.details.skill.edit(skill, vm) : null"
             class="crm-hover">
-            <td class="crm-narrow">
+            <td>
                 <input ng-model="skill.checked"
                        type="checkbox"
                        ng-show="vm.canEdit"

@@ -20,10 +20,16 @@
     right: 3%;
 }
 
-.table tbody > tr > td.crm-v-middle {
-    vertical-align: middle;
+.table thead > tr > th.crm-narrow {
+    width: 22px;
 }
 
-.table tbody > tr > td.crm-narrow {
-    width: 1%;
+.table.crm-table-fixed {
+    table-layout: fixed;
+}
+
+.table.crm-table-fixed tbody > tr > td,
+.table.crm-table-fixed thead > tr > th {
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

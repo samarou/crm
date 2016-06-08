@@ -4,23 +4,23 @@
                                   removing-function="vm.details.messenger.remove"
                                   vm="vm"></crm-contact-table-header>
     </div>
-    <table class="table table-condensed" ng-show="vm.contact.messengers.length > 0">
+    <table class="table table-condensed crm-table-fixed" ng-show="vm.contact.messengers.length > 0">
         <thead>
         <tr>
-            <th><input type="checkbox"
+            <th class="crm-narrow"><input type="checkbox"
                        ng-show="vm.canEdit"
                        title="select Messengers"
                        ng-click="vm.details.checkAll(vm.contact.messengers, vm.contact.messengers.isSelectedAll)"
                        ng-model="vm.contact.messengers.isSelectedAll"></th>
-            <th>Username</th>
-            <th>Messenger</th>
+            <th class="col-xs-8">Username</th>
+            <th class="col-xs-4">Messenger</th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="account in vm.contact.messengers"
             ng-click="vm.canEdit ? vm.details.messenger.edit(account, vm) : null"
             class="crm-hover">
-            <td class="crm-narrow">
+            <td>
                 <input ng-model="account.checked"
                        type="checkbox"
                        ng-show="vm.canEdit"

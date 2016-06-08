@@ -5,23 +5,23 @@
                                   removing-function="vm.details.email.remove"
                                   vm="vm"></crm-contact-table-header>
     </div>
-    <table class="table table-condensed" ng-show="vm.contact.emails.length>0">
+    <table class="table table-condensed crm-table-fixed" ng-show="vm.contact.emails.length>0">
         <thead>
         <tr>
-            <th><input type="checkbox"
+            <th class="crm-narrow"><input type="checkbox"
                        ng-show="vm.canEdit"
                        title="select Emails"
                        ng-click="vm.details.checkAll(vm.contact.emails, vm.contact.emails.isSelectedAll)"
                        ng-model="vm.contact.emails.isSelectedAll"></th>
-            <th>Email</th>
-            <th>Type</th>
+            <th class="col-xs-8">Email</th>
+            <th class="col-xs-4">Type</th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="email in vm.contact.emails"
             ng-click="vm.canEdit ? vm.details.email.edit(email, vm) : null"
             class="crm-hover">
-            <td class="crm-narrow">
+            <td>
                 <input ng-model="email.checked"
                        type="checkbox"
                        ng-show="vm.canEdit"

@@ -5,7 +5,7 @@
                                   removing-function="vm.details.workplace.remove"
                                   vm="vm"></crm-contact-table-header>
     </div>
-    <table class="table table-condensed" ng-show="vm.contact.workplaces.length>0">
+    <table class="table table-condensed crm-table-fixed" ng-show="vm.contact.workplaces.length>0">
         <thead>
         <tr>
             <th><input type="checkbox"
@@ -13,11 +13,11 @@
                        title="select workplace"
                        ng-click="vm.details.checkAll(vm.contact.workplaces, vm.contact.workplaces.isSelectedAll)"
                        ng-model="vm.contact.workplaces.isSelectedAll"></th>
-            <th>Name</th>
-            <th>Position</th>
-            <th>Start date</th>
-            <th>End date</th>
-            <th>Comment</th>
+            <th class="col-md-3 col-sm-3 col-xs-3">Name</th>
+            <th class="col-md-3 col-sm-3 col-xs-3">Position</th>
+            <th class="col-md-2 col-sm-3 col-xs-3">Start date</th>
+            <th class="col-md-2 col-sm-3 col-xs-3">End date</th>
+            <th class="col-md-2 hidden-sm hidden-xs">Comment</th>
         </tr>
         </thead>
         <tbody>
@@ -36,7 +36,7 @@
             <td>{{workplace.position}}</td>
             <td>{{workplace.startDate | date:'yyyy-MM-dd'}}</td>
             <td>{{workplace.endDate | date:'yyyy-MM-dd'}}</td>
-            <td>{{workplace.comment}}</td>
+            <td class="hidden-sm hidden-xs">{{workplace.comment}}</td>
         </tr>
         </tbody>
     </table>
