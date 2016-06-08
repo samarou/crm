@@ -8,16 +8,26 @@
     <table class="table table-condensed" ng-show="vm.contact.emails.length>0">
         <thead>
         <tr>
-            <th></th>
+            <th><input type="checkbox"
+                       ng-show="vm.canEdit"
+                       title="select attachment"
+                       ng-click="vm.details.checkAll(vm.contact.emails, vm.contact.emails.isSelectedAll)"
+                       ng-model="vm.contact.emails.isSelectedAll"></th>
             <th>Email</th>
             <th>Type</th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="email in vm.contact.emails"
-            ng-dblclick="vm.canEdit ? vm.details.email.edit(email, vm) : null">
+            ng-click="vm.canEdit ? vm.details.email.edit(email, vm) : null"
+            class="crm-hover">
             <td class="crm-narrow">
-                <input ng-model="email.checked" type="checkbox" ng-show="vm.canEdit">
+                <input ng-model="email.checked"
+                       type="checkbox"
+                       ng-show="vm.canEdit"
+                       title="select email"
+                       ng-click="vm.details.isAllSelected(vm.contact.emails); $event.stopPropagation()"
+                       ng-init="vm.details.isAllSelected(vm.contact.emails)">
             </td>
             <td>{{email.name}}</td>
             <td>{{vm.details.email.getTypeName(email.type,vm.dictionary.emailTypes)}}</td>

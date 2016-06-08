@@ -8,7 +8,7 @@
     function contactDetailsService(contactService, aclServiceBuilder, $state, contactAttachmentService,
                                    contactAddressService, contactEmailService, contactMessengerService,
                                    contactTelephoneService, contactSocialNetworkService, contactWorkplaceService,
-                                   dialogService, $log) {
+                                   dialogService, $q, $log) {
 
         return {
             submit: submit,
@@ -25,9 +25,11 @@
             removeSkills: removeSkills,
             getEmptyContact: getEmptyContact,
             now: new Date(),
+            checkAll: checkAll,
             getDictionary: getDictionary,
             parseProfile: parseProfile,
-            isLinkedInUrl: isLinkedInUrl
+            isLinkedInUrl: isLinkedInUrl,
+            isAllSelected: isAllSelected
         };
 
         function getDictionary() {
@@ -55,6 +57,24 @@
                 skills: [],
                 attachments: []
             };
+        }
+
+        function checkAll(array, checked) {
+            if (checked) {
+                array.forEach(function (element) {
+                    element.checked = true;
+                });
+            } else {
+                array.forEach(function (element) {
+                    element.checked = false;
+                });
+            }
+        }
+
+        function isAllSelected(array) {
+            array.isSelectedAll = array.every(function (element) {
+                return element.checked;
+            });
         }
 
         function parseProfile(scope, profileUrl) {
@@ -111,7 +131,6 @@
                 });
             }
             return $q.all(tasks);
-
         }
 
         function removeElementHandlingError(contact, element, elements, removingFunction) {

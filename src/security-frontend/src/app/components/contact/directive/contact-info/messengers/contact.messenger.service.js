@@ -52,6 +52,7 @@
                 size: 'modal--user-table',
                 cancelTitle: 'Cancel',
                 okTitle: 'Add',
+                account: {},
                 messengers: scope.dictionary.messengers
             }).result;
         }

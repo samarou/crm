@@ -8,7 +8,12 @@
     <table class="table table-condensed" ng-show="vm.contact.attachments.length > 0">
         <thead>
         <tr>
-            <th></th>
+            <th><input type="checkbox"
+                       ng-show="vm.canEdit"
+                       title="select attachment"
+                       ng-click="vm.details.checkAll(vm.contact.attachments, vm.contact.attachments.isSelectedAll)"
+                       ng-model="vm.contact.attachments.isSelectedAll"></th>
+            </th>
             <th>File</th>
             <th>Date of upload</th>
             <th>Comment</th>
@@ -16,13 +21,15 @@
         </thead>
         <tbody>
         <tr ng-repeat="attachment in vm.contact.attachments"
-            ng-dblclick="vm.details.attachment.edit(attachment)"
+            ng-click="vm.details.attachment.edit(attachment)"
             class="crm-hover">
             <td class="crm-narrow">
                 <input type="checkbox"
                        ng-model="attachment.checked"
                        ng-show="vm.canEdit"
-                       title="select attachment">
+                       title="select attachment"
+                       ng-click="vm.details.isAllSelected(vm.contact.attachments); $event.stopPropagation()"
+                       ng-init="vm.details.isAllSelected(vm.contact.attachments)">
             </td>
             <td>
                 <a ng-if="attachment.id"

@@ -54,6 +54,7 @@
                 size: 'modal--user-table',
                 cancelTitle: 'Cancel',
                 okTitle: 'Add',
+                telephone: {},
                 telephoneTypes: scope.dictionary.telephoneTypes
             }).result;
         }

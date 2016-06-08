@@ -8,7 +8,11 @@
     <table class="table table-condensed" ng-show="vm.contact.addresses.length>0">
         <thead>
         <tr>
-            <th></th>
+            <th><input type="checkbox"
+                       ng-show="vm.canEdit"
+                       title="select attachment"
+                       ng-click="vm.details.checkAll(vm.contact.addresses, vm.contact.addresses.isSelectedAll)"
+                       ng-model="vm.contact.addresses.isSelectedAll"></th>
             <th>Address line</th>
             <th>Zipcode</th>
             <th>City</th>
@@ -18,9 +22,15 @@
         </thead>
         <tbody>
         <tr ng-repeat="address in vm.contact.addresses"
-            ng-dblclick="vm.canEdit ? vm.details.address.edit(address, vm) : vm.canEdit">
+            ng-click="vm.canEdit ? vm.details.address.edit(address, vm) : vm.canEdit"
+            class="crm-hover">
             <td class="crm-narrow">
-                <input type="checkbox" ng-model="address.checked" ng-show="vm.canEdit" title="select address">
+                <input type="checkbox"
+                       ng-model="address.checked"
+                       ng-show="vm.canEdit"
+                       title="select address"
+                       ng-click="vm.details.isAllSelected(vm.contact.addresses); $event.stopPropagation()"
+                       ng-init="vm.details.isAllSelected(vm.contact.addresses)">
             </td>
             <td>{{address.addressLine}}</td>
             <td>{{address.zipcode}}</td>

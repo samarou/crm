@@ -25,7 +25,7 @@
             });
         }
 
-        function edit(workplace, scope) {
+        function edit(workplace) {
             openEditDialog(workplace).then(function (model) {
                 angular.copy(model.workplace, workplace);
             });
@@ -40,7 +40,8 @@
                 title: 'Add Workplace',
                 size: 'modal--user-table',
                 cancelTitle: 'Cancel',
-                okTitle: 'Add'
+                okTitle: 'Add',
+                workplace: {}
             }).result;
         }
 

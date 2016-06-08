@@ -8,7 +8,11 @@
     <table class="table table-condensed" ng-show="vm.contact.socialNetworks.length>0">
         <thead>
         <tr>
-            <th></th>
+            <th><input type="checkbox"
+                       ng-show="vm.canEdit"
+                       title="select attachment"
+                       ng-click="vm.details.checkAll(vm.contact.socialNetworks, vm.contact.socialNetworks.isSelectedAll)"
+                       ng-model="vm.contact.socialNetworks.isSelectedAll"></th>
             <th>URL</th>
             <th>Social Network</th>
             <th></th>
@@ -16,18 +20,21 @@
         </thead>
         <tbody>
         <tr ng-repeat="account in vm.contact.socialNetworks"
-            ng-dblclick="vm.canEdit ? vm.details.socialNetwork.edit(account, vm) : null">
+            ng-click="vm.canEdit ? vm.details.socialNetwork.edit(account, vm) : null"
+            class="crm-hover">
             <td class="crm-narrow">
                 <input ng-model="account.checked"
                        type="checkbox"
                        ng-show="vm.canEdit"
-                       title="select Social Network account">
+                       title="select Social Network account"
+                       ng-click="vm.details.isAllSelected(vm.contact.socialNetworks); $event.stopPropagation()"
+                       ng-init="vm.details.isAllSelected(vm.contact.socialNetworks)">
             </td>
-            <td style="word-wrap: break-word;">{{account.url}}</td>
+            <td>{{account.url}}</td>
             <td>{{vm.details.socialNetwork.getTypeName(account.socialNetwork, vm.dictionary.socialNetworks)}}</td>
             <td>
                 <a ng-show="vm.details.isLinkedInUrl(account.url)" ng-click="vm.details.parseProfile(vm, account.url)"
-                        class="btn btn-default pull-right">Load
+                   class="btn btn-default pull-right">Load
                 </a>
             </td>
         </tr>

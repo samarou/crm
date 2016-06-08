@@ -54,6 +54,7 @@
                 size: 'modal--user-table',
                 cancelTitle: 'Cancel',
                 okTitle: 'Add',
+                email: {},
                 emailTypes: scope.dictionary.emailTypes
             }).result;
         }

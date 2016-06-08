@@ -52,6 +52,7 @@
                 size: 'modal--user-table',
                 cancelTitle: 'Cancel',
                 okTitle: 'Add',
+                account: {},
                 socialNetworks: scope.dictionary.socialNetworks
             }).result;
         }

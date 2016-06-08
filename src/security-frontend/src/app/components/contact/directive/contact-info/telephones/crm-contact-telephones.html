@@ -7,16 +7,26 @@
     <table class="table table-condensed" ng-show="vm.contact.telephones.length>0">
         <thead>
         <tr>
-            <th></th>
+            <th><input type="checkbox"
+                       ng-show="vm.canEdit"
+                       title="select telephone"
+                       ng-click="vm.details.checkAll(vm.contact.telephones, vm.contact.telephones.isSelectedAll)"
+                       ng-model="vm.contact.telephones.isSelectedAll"></th>
             <th>Number</th>
             <th>Type</th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="telephone in vm.contact.telephones"
-            ng-dblclick="vm.canEdit ? vm.details.telephone.edit(telephone, vm) : null">
+            ng-click="vm.canEdit ? vm.details.telephone.edit(telephone, vm) : null"
+            class="crm-hover">
             <td class="crm-v-middle crm-narrow">
-                <input ng-model="telephone.checked" ng-show="vm.canEdit" type="checkbox">
+                <input ng-model="telephone.checked"
+                       type="checkbox"
+                       ng-show="vm.canEdit"
+                       title="select telephone"
+                       ng-click="vm.details.isAllSelected(vm.contact.telephones); $event.stopPropagation()"
+                       ng-init="vm.details.isAllSelected(vm.contact.telephones)">
             </td>
             <td>{{telephone.number}}</td>
             <td>{{vm.details.telephone.getTypeName(telephone.type, vm.dictionary.telephoneTypes)}}</td>

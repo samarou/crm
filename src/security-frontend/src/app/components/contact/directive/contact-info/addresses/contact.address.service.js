@@ -52,6 +52,7 @@
                 size: 'modal--user-table',
                 cancelTitle: 'Cancel',
                 okTitle: 'Add',
+                address: {},
                 countries: scope.dictionary.countries
             }).result;
         }

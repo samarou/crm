@@ -6,7 +6,7 @@
         .controller('contactAddController', contactAddController);
 
     /** @ngInject */
-    function contactAddController(contactDetailsService, userService, contactAttachmentService) {
+    function contactAddController(contactDetailsService, userService) {
         var vm = this;
 
         vm.canEdit = true;
