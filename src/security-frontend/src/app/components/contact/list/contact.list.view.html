@@ -22,12 +22,12 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-        <table class="table table-condensed">
+        <table class="table table-condensed crm-table-fixed">
             <thead>
             <tr>
-                <th><input type="checkbox" ng-model="vm.searchContactBundle.isSelectedAll"
+                <th class="crm-narrow"><input type="checkbox" ng-model="vm.searchContactBundle.isSelectedAll"
                            ng-click="vm.searchContactBundle.selectAll(vm.searchContactBundle.isSelectedAll)"></th>
-                <th class="crm-hover"
+                <th class="crm-hover col-sm-6 col-xs-6"
                     ng-click="vm.searchContactBundle.sortBy(vm.searchContactBundle.sortProperties.firstName)">
                         <span class="glyphicon" ng-show="vm.searchContactBundle.sortProperties.firstName.enabled"
                               ng-class="vm.searchContactBundle.sortProperties.firstName.asc ? 'glyphicon-sort-by-attributes' : 'glyphicon-sort-by-attributes-alt' ">
@@ -35,10 +35,10 @@
                         </span>
                     Full Name
                 </th>
-                <th class="crm-hover">
+                <th class="crm-hover col-sm-4 col-xs-6">
                     Email
                 </th>
-                <th class="crm-hover hidden-xs">
+                <th class="crm-hover col-sm-4 hidden-xs">
                     Address
                 </th>
             </tr>

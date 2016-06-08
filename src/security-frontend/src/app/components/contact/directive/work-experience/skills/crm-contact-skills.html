@@ -7,10 +7,11 @@
     <div class="panel-body" ng-show="vm.contact.skills.length > 0">
         <div style="display: block;padding:0;margin:0">
             <div class="crm-badge btn btn-info btn-xs"
-                ng-repeat="skill in vm.contact.skills"
-                ng-click="vm.canEdit ? vm.details.skill.edit(skill, vm) : null">
+                 ng-repeat="skill in vm.contact.skills"
+                 ng-click="vm.canEdit ? vm.details.skill.edit(skill, vm) : null">
                 {{skill.name}}
-                <a class="crm-badge-x" ng-click="vm.details.skill.removeOne(skill, vm); $event.stopPropagation()"></a>
+                <span class="crm-badge-x"
+                      ng-click="vm.details.skill.removeOne(skill, vm); $event.stopPropagation()"></span>
             </div>
         </div>
     </div>

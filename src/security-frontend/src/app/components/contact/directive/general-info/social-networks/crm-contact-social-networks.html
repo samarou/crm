@@ -8,14 +8,16 @@
     <table class="table table-condensed crm-table-fixed" ng-show="vm.contact.socialNetworks.length>0">
         <thead>
         <tr>
-            <th class="crm-narrow"><input type="checkbox"
+            <th class="crm-narrow">
+                <input type="checkbox"
                        ng-show="vm.canEdit"
                        title="select Social Network accounts"
                        ng-click="vm.details.checkAll(vm.contact.socialNetworks, vm.contact.socialNetworks.isSelectedAll)"
-                       ng-model="vm.contact.socialNetworks.isSelectedAll"></th>
-            <th class="col-xs-7">URL</th>
+                       ng-model="vm.contact.socialNetworks.isSelectedAll">
+            </th>
+            <th class="col-xs-6">URL</th>
             <th class="col-xs-4">Social Network</th>
-            <th></th>
+            <th class="col-xs-1"></th>
         </tr>
         </thead>
         <tbody>
@@ -33,7 +35,8 @@
             <td>{{account.url}}</td>
             <td>{{vm.details.socialNetwork.getTypeName(account.socialNetwork, vm.dictionary.socialNetworks)}}</td>
             <td>
-                <a ng-show="vm.details.isLinkedInUrl(account.url)" ng-click="vm.details.parseProfile(vm, account.url)"
+                <a ng-show="vm.details.isLinkedInUrl(account.url)"
+                   ng-click="vm.details.parseProfile(vm, account.url); $event.stopPropagation()"
                    class="btn btn-default pull-right">Load
                 </a>
             </td>
