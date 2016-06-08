@@ -9,7 +9,7 @@
         <tr>
             <th><input type="checkbox"
                        ng-show="vm.canEdit"
-                       title="select attachment"
+                       title="select Messengers"
                        ng-click="vm.details.checkAll(vm.contact.messengers, vm.contact.messengers.isSelectedAll)"
                        ng-model="vm.contact.messengers.isSelectedAll"></th>
             <th>Username</th>
@@ -24,7 +24,7 @@
                 <input ng-model="account.checked"
                        type="checkbox"
                        ng-show="vm.canEdit"
-                       title="select messenger"
+                       title="select Messenger"
                        ng-click="vm.details.isAllSelected(vm.contact.messengers); $event.stopPropagation()"
                        ng-init="vm.details.isAllSelected(vm.contact.messengers)">
             </td>

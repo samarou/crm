@@ -8,7 +8,7 @@
     function contactDetailsService(contactService, aclServiceBuilder, $state, contactAttachmentService,
                                    contactAddressService, contactEmailService, contactMessengerService,
                                    contactTelephoneService, contactSocialNetworkService, contactWorkplaceService,
-                                   dialogService, $q, $log) {
+                                   contactSkillService, dialogService, $log) {
 
         return {
             submit: submit,
@@ -20,9 +20,8 @@
             telephone: contactTelephoneService,
             socialNetwork: contactSocialNetworkService,
             workplace: contactWorkplaceService,
+            skill: contactSkillService,
             createAclHandler: createAclHandler,
-            addSkill: addSkill,
-            removeSkills: removeSkills,
             getEmptyContact: getEmptyContact,
             now: new Date(),
             checkAll: checkAll,
@@ -36,14 +35,6 @@
             return contactService.getDictionary().then(function (response) {
                 return response.data;
             });
-        }
-
-        function addSkill(scope) {
-            scope.contact.skills.push({});
-        }
-
-        function removeSkills(scope) {
-            return removeCheckedElementsFromList(scope.contact, scope.contact.skills, contactService.removeSkill);
         }
 
         function getEmptyContact() {
@@ -114,47 +105,6 @@
                 return /.*linkedin.*/.test(url);
             }
         }
-
-        function removeCheckedElementsFromList(contact, elements, removingFunction) {
-            var tasks = [];
-            var elementsForRemoving = getCheckedElements(elements);
-            if (elementsForRemoving.length > 0) {
-                dialogService.confirm('Do you really want to delete these fields?')
-                    .result.then(function () {
-                    elementsForRemoving.forEach(function (element) {
-                        if (element.id) {
-                            tasks.push(removeElementHandlingError(contact, element, elements, removingFunction));
-                        } else {
-                            removeElementFromArray(element, elements);
-                        }
-                    });
-                });
-            }
-            return $q.all(tasks);
-        }
-
-        function removeElementHandlingError(contact, element, elements, removingFunction) {
-            removingFunction(contact.id, element.id)
-                .then(function () {
-                    removeElementFromArray(element, elements);
-                });
-        }
-
-        function removeElementFromArray(element, elements) {
-            var index = elements.indexOf(element);
-            elements.splice(index, 1);
-        }
-
-        function getCheckedElements(elements) {
-            var checkedElements = [];
-            elements.forEach(function (element) {
-                if (element.checked) {
-                    checkedElements.push(element);
-                }
-            });
-            return checkedElements;
-        }
-
 
         function createAclHandler(getId) {
             return {

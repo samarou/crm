@@ -1,35 +1,32 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <crm-contact-table-header title="Skills" adding-function="vm.details.addSkill"
-                                  removing-function="vm.details.removeSkills"
+        <crm-contact-table-header title="Skills" adding-function="vm.details.skill.add"
+                                  removing-function="vm.details.skill.remove"
                                   vm="vm"></crm-contact-table-header>
     </div>
     <table class="table table-condensed table-responsive" ng-show="vm.contact.skills.length > 0">
         <thead>
         <tr>
-            <th></th>
+            <th><input type="checkbox"
+                       ng-show="vm.canEdit"
+                       title="select skills"
+                       ng-click="vm.details.checkAll(vm.contact.skills, vm.contact.skills.isSelectedAll)"
+                       ng-model="vm.contact.skills.isSelectedAll"></th>
             <th>Name</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="skill in vm.contact.skills" class="form-group" ng-form="skillsForm">
-            <td class="crm-v-middle crm-narrow">
+        <tr ng-repeat="skill in vm.contact.skills"
+            ng-click="vm.canEdit ? vm.details.skill.edit(skill, vm) : null"
+            class="crm-hover">
+            <td class="crm-narrow">
                 <input ng-model="skill.checked"
                        type="checkbox"
-                       ng-show="vm.canEdit">
+                       ng-show="vm.canEdit"
+                       ng-click="vm.details.isAllSelected(vm.contact.skills); $event.stopPropagation()"
+                       ng-init="vm.details.isAllSelected(vm.contact.skills)">
             </td>
-            <td>
-                <div crm-input-validation>
-                    <input ng-model="skill.name"
-                           name="skill"
-                           class="form-control"
-                           ng-disabled="!vm.canEdit"
-                           required>
-                    <span
-                        ng-show="skillsForm.skill.$error.required"
-                        class="help-block">Skill name is required</span>
-                </div>
-            </td>
+            <td>{{skill.name}}</td>
         </tr>
         </tbody>
     </table>

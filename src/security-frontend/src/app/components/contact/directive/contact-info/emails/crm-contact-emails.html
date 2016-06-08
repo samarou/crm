@@ -10,7 +10,7 @@
         <tr>
             <th><input type="checkbox"
                        ng-show="vm.canEdit"
-                       title="select attachment"
+                       title="select Emails"
                        ng-click="vm.details.checkAll(vm.contact.emails, vm.contact.emails.isSelectedAll)"
                        ng-model="vm.contact.emails.isSelectedAll"></th>
             <th>Email</th>
@@ -25,7 +25,7 @@
                 <input ng-model="email.checked"
                        type="checkbox"
                        ng-show="vm.canEdit"
-                       title="select email"
+                       title="select Email"
                        ng-click="vm.details.isAllSelected(vm.contact.emails); $event.stopPropagation()"
                        ng-init="vm.details.isAllSelected(vm.contact.emails)">
             </td>

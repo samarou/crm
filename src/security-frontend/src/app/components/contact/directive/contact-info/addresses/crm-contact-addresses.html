@@ -10,7 +10,7 @@
         <tr>
             <th><input type="checkbox"
                        ng-show="vm.canEdit"
-                       title="select attachment"
+                       title="select Addresses"
                        ng-click="vm.details.checkAll(vm.contact.addresses, vm.contact.addresses.isSelectedAll)"
                        ng-model="vm.contact.addresses.isSelectedAll"></th>
             <th>Address line</th>
@@ -28,7 +28,7 @@
                 <input type="checkbox"
                        ng-model="address.checked"
                        ng-show="vm.canEdit"
-                       title="select address"
+                       title="select Address"
                        ng-click="vm.details.isAllSelected(vm.contact.addresses); $event.stopPropagation()"
                        ng-init="vm.details.isAllSelected(vm.contact.addresses)">
             </td>
