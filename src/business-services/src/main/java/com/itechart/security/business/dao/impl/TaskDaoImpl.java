@@ -46,4 +46,13 @@ public class TaskDaoImpl extends AbstractHibernateDao<Task> implements TaskDao {
             return executePagingDistinctCriteria(session, criteria, filter);
         });
     }
+
+    @Override
+    public Task merge(Task task) {
+        return getHibernateTemplate().merge(task);
+    }
+
+    public void saveOrUpdate(Task task){
+        getHibernateTemplate().saveOrUpdate(task);
+    }
 }

@@ -24,4 +24,8 @@ public interface TaskDao {
     boolean delete(Long id);
 
     List<Task> findTasks(TaskFilter filter);
+
+    Task merge(Task task);
+
+    void saveOrUpdate(Task task);
 }

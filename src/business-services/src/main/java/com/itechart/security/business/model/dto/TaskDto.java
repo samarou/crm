@@ -1,12 +1,13 @@
 package com.itechart.security.business.model.dto;
 
+import com.itechart.security.business.model.dto.company.CompanyDto;
 import com.itechart.security.business.model.dto.helpers.NamedEntity;
-import com.itechart.security.business.model.persistent.task.Task;
 import com.itechart.security.model.dto.PublicUserDto;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author yauheni.putsykovich
@@ -24,5 +25,7 @@ public class TaskDto {
     private PublicUserDto creator;
     private NamedEntity status;
     private NamedEntity priority;
+    private List<CompanyDto> companies;
+    private List<ContactDto> contacts;
 }
 

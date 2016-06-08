@@ -1,6 +1,7 @@
 package com.itechart.security.business.model.dto.utils;
 
 import com.itechart.security.business.model.dto.*;
+import com.itechart.security.business.model.dto.company.CompanyDtoConverter;
 import com.itechart.security.business.model.dto.helpers.NamedEntity;
 import com.itechart.security.business.model.enums.EmailType;
 import com.itechart.security.business.model.enums.TelephoneType;
@@ -11,7 +12,10 @@ import com.itechart.security.business.model.persistent.task.Task;
 import com.itechart.security.model.dto.PublicUserDto;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
+import static com.itechart.security.business.model.dto.company.CompanyDtoConverter.convert;
+import static com.itechart.security.business.model.dto.company.CompanyDtoConverter.convertToCompanyDtos;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptySet;
 import static java.util.stream.Collectors.toList;
@@ -63,7 +67,6 @@ public class DtoConverter {
         contact.setDateOfBirth(dto.getDateOfBirth());
         contact.setIsMale(dto.getIsMale());
         contact.setNationality(dto.getNationality());
-        contact.setPhotoUrl(dto.getPhotoUrl());
 //        contact.setOrders(convertOrderDtos(dto.getOrders()));
         contact.setAddresses(convertAddressDtos(dto.getAddresses()));
         contact.setTelephones(convertTelephoneDtos(dto.getTelephones()));
@@ -100,7 +103,6 @@ public class DtoConverter {
         }
         return contact;
     }
-
 
     public static OrderDto convert(Order order) {
         OrderDto dto = new OrderDto();
@@ -541,6 +543,8 @@ public class DtoConverter {
         task.setPriority(convertToPriority(dto.getPriority()));
         task.setStatus(convertToStatus(dto.getStatus()));
         task.setAssigneeId(dto.getAssignee() != null ? dto.getAssignee().getId() : null);
+        task.setContacts(dto.getContacts().stream().map(DtoConverter::convert).collect(toList()));
+        task.setCompanies(dto.getCompanies().stream().map(CompanyDtoConverter::convert).collect(toList()));
         return task;
     }
 
@@ -621,7 +625,7 @@ public class DtoConverter {
             .collect(toSet());
     }
 
-    public static TaskDto convert(Task task, PublicUserDto creator, PublicUserDto assignee){
+    public static TaskDto convertTaskMainFields(Task task, PublicUserDto creator, PublicUserDto assignee) {
         TaskDto dto = new TaskDto();
         dto.setId((Long)task.getId());
         dto.setName(task.getName());
@@ -632,6 +636,13 @@ public class DtoConverter {
         dto.setAssignee(assignee);
         dto.setStatus(convert(task.getStatus()));
         dto.setPriority(convert(task.getPriority()));
+        return dto;
+    }
+
+    public static TaskDto convert(Task task, PublicUserDto creator, PublicUserDto assignee) {
+        TaskDto dto = convertTaskMainFields(task, creator, assignee);
+        dto.setCompanies(CompanyDtoConverter.convert(task.getCompanies()));
+        dto.setContacts(DtoConverter.convertContacts(task.getContacts()));
         return dto;
     }
 }

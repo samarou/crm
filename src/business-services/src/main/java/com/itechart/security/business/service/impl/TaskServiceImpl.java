@@ -3,6 +3,7 @@ package com.itechart.security.business.service.impl;
 import com.itechart.security.business.dao.TaskDao;
 import com.itechart.security.business.filter.TaskFilter;
 import com.itechart.security.business.model.dto.TaskDto;
+import com.itechart.security.business.model.dto.utils.DtoConverter;
 import com.itechart.security.business.model.persistent.task.Task;
 import com.itechart.security.business.service.TaskService;
 import com.itechart.security.model.dto.DataPageDto;
@@ -17,7 +18,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.itechart.security.business.model.dto.utils.DtoConverter.convert;
+import static com.itechart.security.business.model.dto.company.CompanyDtoConverter.convert;
+import static com.itechart.security.business.model.dto.utils.DtoConverter.*;
 import static com.itechart.security.core.SecurityUtils.getAuthenticatedUserId;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
@@ -45,8 +47,10 @@ public class TaskServiceImpl implements TaskService {
     public TaskDto get(Long id) {
         Task task = taskDao.get(id);
         PublicUserDto creator = userService.getPublicUser(task.getCreatorId());
-        PublicUserDto assignee = task.getAssigneeId() != null ? userService.getPublicUser(task.getAssigneeId()) : null;
-        return convert(task, creator, assignee);
+        PublicUserDto assignee = task.getAssigneeId() != null
+                ? userService.getPublicUser(task.getAssigneeId())
+                : null;
+        return DtoConverter.convert(task, creator, assignee);
     }
 
     @Override
@@ -75,7 +79,7 @@ public class TaskServiceImpl implements TaskService {
                 throw new NullPointerException("Not found creator for task with id = " + task.getId());
             }
             Optional<PublicUserDto> assignee = assigns.stream().filter(a -> Objects.equals(a.getId(), task.getAssigneeId())).findFirst();
-            result.add(convert(task, creator.get(), assignee.orElse(null)));
+            result.add(convertTaskMainFields(task, creator.get(), assignee.orElse(null)));
         });
         return result;
     }
@@ -83,16 +87,31 @@ public class TaskServiceImpl implements TaskService {
     @Override
     @Transactional
     public Long save(TaskDto dto) {
-        Task task = convert(dto);
-        task.setAssigneeId(null);
+        Task task = DtoConverter.convert(dto);
         task.setCreatorId(getAuthenticatedUserId());
         return taskDao.save(task);
     }
 
     @Override
     @Transactional
+    public void saveOrUpdate(TaskDto dto){
+        Task task = DtoConverter.convert(dto);
+        task.setCreatorId(getAuthenticatedUserId());
+        taskDao.saveOrUpdate(task);
+    }
+
+    @Override
+    @Transactional
+    public void merge(TaskDto dto) {
+        Task task = DtoConverter.convert(dto);
+        task.setCreatorId(getAuthenticatedUserId());
+        taskDao.merge(task);
+    }
+
+    @Override
+    @Transactional
     public void update(TaskDto taskDto) {
-        taskDao.update(convert(taskDto));
+        taskDao.update(DtoConverter.convert(taskDto));
     }
 
     @Override
