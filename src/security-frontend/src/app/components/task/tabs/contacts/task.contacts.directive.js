@@ -13,7 +13,7 @@
         return {
             restrict: 'E',
             scope: false,
-            templateUrl: 'app/components/task/tabs/contacts/task.contacts.view.html',
+            templateUrl: 'app/components/task/tabs/contacts/task-contacts.view.html',
             replace: true
         };
     }

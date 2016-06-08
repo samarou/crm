@@ -18,6 +18,7 @@
             'ngResource',
             'ui.router',
             'ui.bootstrap',
+            'ui.bootstrap.datetimepicker',
             'blockUI'
         ]);
 })();

@@ -83,6 +83,13 @@
             };
         }
 
+        function resetBundleState(bundle) {
+            bundle.isSelectedAll = false;
+            bundle.itemsList.forEach(function (item) {
+                item.checked = false;
+            });
+        }
+
         function createCommonBundle() {
             var bundle = {};
 
@@ -120,6 +127,7 @@
             bundle.filter.sortAsc = bundle.sortProperties.firstName.asc;
 
             bundle.find = function find() {
+                resetBundleState(bundle);
                 // todo: fix angular.isString and !!
                 /*eslint-disable */
                 // nulling, to prevent empty parameters in url
@@ -136,7 +144,6 @@
                     var totalPages = Math.ceil(totalCount / bundle.filter.count) || 1;
                     bundle.paging.totalCount = totalCount;
                     bundle.paging.visiblePages = totalPages;
-                    bundle.isSelectedAll = false;
                 });
             };
             bundle.typing = util.createDelayTypingListener(bundle.find, 500);

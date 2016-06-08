@@ -14,7 +14,7 @@
             restrict: 'E',
             require: 'task',
             scope: false,
-            templateUrl: 'app/components/task/tabs/general-info/task.general.info.view.html',
+            templateUrl: 'app/components/task/tabs/general-info/task-general-info.view.html',
             replace: true
         };
     }

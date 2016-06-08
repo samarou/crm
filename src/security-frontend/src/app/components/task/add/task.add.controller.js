@@ -15,19 +15,13 @@
 
         vm.title = 'Add Task';
         vm.submitText = 'Add';
-        vm.task = {};
-        vm.submit = submit;
-        vm.cancel = taskCommonService.cancel;
-
-        function submit() {
-            taskCommonService.submit(vm.task);
-        }
 
         (function () {
-            taskCommonService.loadStaticData(vm).then(function () {
-                vm.task.status = vm.statuses[0];
-                vm.task.priority = vm.priorities[1];// maybe add special field 'defaultPriority'
-                // vm.task.assignee = vm.assigns[0];
+            taskCommonService.initContext(vm).then(function () {
+                vm.task = {
+                    status: vm.statuses[0],// default is 'New', TODO: need to add some resolver
+                    priority: vm.priorities[1]// default is 'Normal', TODO: need to add some resolver
+                };
             });
         })();
     }

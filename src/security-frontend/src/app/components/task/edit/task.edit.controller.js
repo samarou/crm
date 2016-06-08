@@ -3,7 +3,7 @@
  */
 
 (function () {
-    'use stricr';
+    'use strict';
 
     angular
         .module('crm.task')
@@ -15,18 +15,14 @@
 
         vm.title = 'Edit Task';
         vm.submitText = 'Edit';
-        vm.task = {};
-        vm.cancel = taskCommonService.cancel;
-        vm.submit = submit;
-
-        function submit() {
-            taskCommonService.submit(vm.task);
-        }
 
         (function () {
-            taskCommonService.loadStaticData(vm);
+            taskCommonService.initContext(vm);
             taskService.getTaskById($stateParams.id).then(function (response) {
                 vm.task = response.data;
+                /*need converting because date have a millis format(only if date was set up)*/
+                vm.task.startDate = vm.task.startDate && new Date(vm.task.startDate);
+                vm.task.endDate = vm.task.endDate && new Date(vm.task.endDate);
             });
         })();
     }

@@ -146,19 +146,19 @@
             .state('tasks.list', {
                 url: '/list',
                 controller: 'TaskListController',
-                templateUrl: 'app/components/task/list/task.list.view.html',
+                templateUrl: 'app/components/task/list/task-list.view.html',
                 controllerAs: 'vm'
             })
             .state('tasks.add', {
                 url: '/add',
                 controller: 'TaskAddController',
-                templateUrl: 'app/components/task/task.details.view.html',
+                templateUrl: 'app/components/task/task-details.view.html',
                 controllerAs: 'vm'
             })
             .state('tasks.edit', {
                 url: '/:id',
                 controller: 'TaskEditController',
-                templateUrl: 'app/components/task/task.details.view.html',
+                templateUrl: 'app/components/task/task-details.view.html',
                 controllerAs: 'vm'
             })
         ;

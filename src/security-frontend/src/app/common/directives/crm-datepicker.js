@@ -13,11 +13,12 @@
         return {
             require: 'model',
             restrict: 'E',
+            templateUrl: 'app/common/directives/crm-datepicker.html',
+            replace: true,
             scope: {
                 model: '=',
-                options: '='
-            },
-            templateUrl: 'app/common/directives/crm-datepicker.html'
+                datepickerOptions: '=?'
+            }
         };
     }
 })();
