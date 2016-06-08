@@ -50,7 +50,7 @@ public class TaskController {
 
     @RequestMapping(value = "/tasks", method = PUT)
     private void update(@RequestBody TaskDto taskDto){
-        taskService.update(taskDto);
+        taskService.saveOrUpdate(taskDto);
     }
 
     @RequestMapping(value = "/tasks/{id}", method = DELETE)
