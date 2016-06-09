@@ -20,10 +20,33 @@
     right: 3%;
 }
 
-.table tbody > tr > td.crm-v-middle {
-    vertical-align: middle;
+.table thead > tr > th.crm-narrow {
+    width: 22px;
 }
 
-.table tbody > tr > td.crm-narrow {
-    width: 1%;
+.table.crm-table-fixed {
+    table-layout: fixed;
+}
+
+.table.crm-table-fixed tbody > tr > td,
+.table.crm-table-fixed thead > tr > th,
+.crm-text-overflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.crm-badge {
+    margin: 2px;
+}
+
+.crm-badge-x {
+    color: lightgrey;
+}
+
+.crm-badge-x:hover {
+    color: red;
+}
+
+.crm-badge-x::after {
+    content: '✖	';
 }

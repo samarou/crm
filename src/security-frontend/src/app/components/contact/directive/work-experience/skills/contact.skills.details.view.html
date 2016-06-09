@@ -1,0 +1,14 @@
+<crm-form-wrapper form-title="vm.title" submit-text="{{skillForm.$valid?'Ok':null}}" cancel-text="Cancel" submit-btn="vm.ok()"
+                  cancel-btn="vm.cancel()" modal="true" ng-form="skillForm">
+    <div class="form-group" crm-input-validation>
+        <label for="skill">Skill</label>
+        <input ng-model="vm.skill.name"
+               id="skill"
+               name="skill"
+               class="form-control"
+               required maxlength="50">
+        <span
+            ng-show="skillForm.skill.$error.required"
+            class="help-block">Skill is required</span>
+    </div>
+</crm-form-wrapper>

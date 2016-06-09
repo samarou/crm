@@ -1,53 +1,43 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <crm-contact-table-header title="Social Networks"
-                                  adding-function="vm.details.addSocialNetworkAccount"
-                                  removing-function="vm.details.removeSocialNetworks"
+                                  adding-function="vm.details.socialNetwork.add"
+                                  removing-function="vm.details.socialNetwork.remove"
                                   vm="vm"></crm-contact-table-header>
     </div>
-    <table class="table table-condensed" ng-show="vm.contact.socialNetworks.length>0">
+    <table class="table table-condensed crm-table-fixed" ng-show="vm.contact.socialNetworks.length>0">
         <thead>
         <tr>
-            <th></th>
-            <th>URL</th>
-            <th>Social Network</th>
-            <th></th>
+            <th class="crm-narrow">
+                <input type="checkbox"
+                       ng-show="vm.canEdit"
+                       title="select Social Network accounts"
+                       ng-click="vm.details.checkAll(vm.contact.socialNetworks, vm.contact.socialNetworks.isSelectedAll)"
+                       ng-model="vm.contact.socialNetworks.isSelectedAll">
+            </th>
+            <th class="col-xs-6">URL</th>
+            <th class="col-xs-4">Social Network</th>
+            <th class="col-xs-1"></th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="account in vm.contact.socialNetworks" ng-form="socialNetworksForm">
-            <td class="crm-v-middle crm-narrow">
+        <tr ng-repeat="account in vm.contact.socialNetworks"
+            ng-click="vm.canEdit ? vm.details.socialNetwork.edit(account, vm) : null"
+            class="crm-hover">
+            <td>
                 <input ng-model="account.checked"
                        type="checkbox"
                        ng-show="vm.canEdit"
-                       title="select Social Network account">
+                       title="select Social Network account"
+                       ng-click="vm.details.isAllSelected(vm.contact.socialNetworks); $event.stopPropagation()"
+                       ng-init="vm.details.isAllSelected(vm.contact.socialNetworks)">
             </td>
+            <td>{{account.url}}</td>
+            <td>{{vm.details.socialNetwork.getTypeName(account.socialNetwork, vm.dictionary.socialNetworks)}}</td>
             <td>
-                <div crm-input-validation>
-                    <input ng-model="account.url"
-                           name="socialNetworkAccountUrl"
-                           class="form-control"
-                           ng-disabled="!vm.canEdit"
-                           required maxlength="255">
-                    <span
-                        ng-show="socialNetworksForm.socialNetworkAccountUrl.$error.required"
-                        class="help-block">URL is required</span>
-                </div>
-            </td>
-            <td>
-                <div crm-input-validation class="crm-select-validation-icon">
-                    <select ng-model="account.socialNetwork"
-                            name="socialNetworkType"
-                            class="form-control"
-                            ng-options="option.id as option.name for option in vm.dictionary.socialNetworks"
-                            ng-disabled="!vm.canEdit">
-                        <option value="">Please, select</option>
-                    </select>
-                </div>
-            </td>
-            <td>
-                <a ng-show="vm.details.isLinkedInUrl(account.url)" ng-click="vm.details.parseProfile(vm, account.url)"
-                        class="btn btn-default pull-right">Load
+                <a ng-show="vm.details.isLinkedInUrl(account.url)"
+                   ng-click="vm.details.parseProfile(vm, account.url); $event.stopPropagation()"
+                   class="btn btn-default pull-right">Load
                 </a>
             </td>
         </tr>

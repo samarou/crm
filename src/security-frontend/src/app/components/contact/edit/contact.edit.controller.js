@@ -6,18 +6,17 @@
         .controller('contactEditController', contactEditController);
 
     /** @ngInject */
-    function contactEditController($q, contactDetailsService, contactSecurityService, authService, contactService, contactAttachmentService, $stateParams) {
+    function contactEditController($q, contactDetailsService, contactSecurityService, authService, contactService, $stateParams) {
         var vm = this;
 
         vm.canEdit = false;
         vm.contact = contactDetailsService.getEmptyContact();
-        vm.attachmentService = contactAttachmentService;
-        vm.isManager = authService.isManager();
-        vm.submitText = 'Save';
         vm.title = 'Edit contact';
+        vm.submitText = 'Save';
         vm.submit = submit;
         vm.details = contactDetailsService;
         vm.cancel = contactDetailsService.cancel;
+        vm.isManager = authService.isManager();
         vm.aclHandler = contactDetailsService.createAclHandler(function () {
             return vm.contact.id;
         });

@@ -1,49 +1,36 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <crm-contact-table-header title="Emails" adding-function="vm.details.addEmail"
-                                  removing-function="vm.details.removeEmails"
+        <crm-contact-table-header title="Emails"
+                                  adding-function="vm.details.email.add"
+                                  removing-function="vm.details.email.remove"
                                   vm="vm"></crm-contact-table-header>
     </div>
-    <table class="table table-condensed" ng-show="vm.contact.emails.length>0">
+    <table class="table table-condensed crm-table-fixed" ng-show="vm.contact.emails.length>0">
         <thead>
         <tr>
-            <th></th>
-            <th>Email</th>
-            <th>Type</th>
+            <th class="crm-narrow"><input type="checkbox"
+                       ng-show="vm.canEdit"
+                       title="select Emails"
+                       ng-click="vm.details.checkAll(vm.contact.emails, vm.contact.emails.isSelectedAll)"
+                       ng-model="vm.contact.emails.isSelectedAll"></th>
+            <th class="col-xs-8">Email</th>
+            <th class="col-xs-4">Type</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="email in vm.contact.emails" ng-form="emailsForm">
-            <td class="crm-v-middle crm-narrow">
+        <tr ng-repeat="email in vm.contact.emails"
+            ng-click="vm.canEdit ? vm.details.email.edit(email, vm) : null"
+            class="crm-hover">
+            <td>
                 <input ng-model="email.checked"
                        type="checkbox"
-                       ng-show="vm.canEdit">
+                       ng-show="vm.canEdit"
+                       title="select Email"
+                       ng-click="vm.details.isAllSelected(vm.contact.emails); $event.stopPropagation()"
+                       ng-init="vm.details.isAllSelected(vm.contact.emails)">
             </td>
-            <td>
-                <div crm-input-validation>
-                    <input ng-model="email.name"
-                           name="email"
-                           class="form-control"
-                           type="email"
-                           ng-disabled="!vm.canEdit"
-                           required maxlength="255">
-                    <span ng-show="emailsForm.email.$error.required"
-                          class="help-block">Email is required</span>
-                    <span ng-show="!emailsForm.email.$error.required && emailsForm.email.$dirty && !emailsForm.email.$valid"
-                          class="help-block">Email format is not correct</span>
-                </div>
-            </td>
-            <td>
-                <div crm-input-validation class="crm-select-validation-icon">
-                    <select ng-model="email.type"
-                            name="emailType"
-                            class="form-control"
-                            ng-options="option.name as option.value for option in vm.dictionary.emailTypes"
-                            ng-disabled="!vm.canEdit">
-                        <option value="">Please, select</option>
-                    </select>
-                </div>
-            </td>
+            <td>{{email.name}}</td>
+            <td>{{vm.details.email.getTypeName(email.type,vm.dictionary.emailTypes)}}</td>
         </tr>
         </tbody>
     </table>
