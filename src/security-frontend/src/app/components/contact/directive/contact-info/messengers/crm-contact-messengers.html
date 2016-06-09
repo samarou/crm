@@ -1,47 +1,35 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <crm-contact-table-header title="Messengers" adding-function="vm.details.addMessengerAccount"
-                                  removing-function="vm.details.removeMessengerAccounts"
+        <crm-contact-table-header title="Messengers" adding-function="vm.details.messenger.add"
+                                  removing-function="vm.details.messenger.remove"
                                   vm="vm"></crm-contact-table-header>
     </div>
-    <table class="table table-condensed" ng-show="vm.contact.messengers.length > 0">
+    <table class="table table-condensed crm-table-fixed" ng-show="vm.contact.messengers.length > 0">
         <thead>
         <tr>
-            <th></th>
-            <th>Username</th>
-            <th>Messenger</th>
+            <th class="crm-narrow"><input type="checkbox"
+                       ng-show="vm.canEdit"
+                       title="select Messengers"
+                       ng-click="vm.details.checkAll(vm.contact.messengers, vm.contact.messengers.isSelectedAll)"
+                       ng-model="vm.contact.messengers.isSelectedAll"></th>
+            <th class="col-xs-8">Username</th>
+            <th class="col-xs-4">Messenger</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="account in vm.contact.messengers" class="form-group" ng-form="messengersForm">
-            <td class="crm-v-middle crm-narrow">
+        <tr ng-repeat="account in vm.contact.messengers"
+            ng-click="vm.canEdit ? vm.details.messenger.edit(account, vm) : null"
+            class="crm-hover">
+            <td>
                 <input ng-model="account.checked"
                        type="checkbox"
-                       ng-show="vm.canEdit">
+                       ng-show="vm.canEdit"
+                       title="select Messenger"
+                       ng-click="vm.details.isAllSelected(vm.contact.messengers); $event.stopPropagation()"
+                       ng-init="vm.details.isAllSelected(vm.contact.messengers)">
             </td>
-            <td>
-                <div crm-input-validation>
-                    <input ng-model="account.username"
-                           name="messengerUsername"
-                           class="form-control"
-                           ng-disabled="!vm.canEdit"
-                           required>
-                    <span
-                        ng-show="messengersForm.messengerUsername.$error.required"
-                        class="help-block">Username is required</span>
-                </div>
-            </td>
-            <td>
-                <div crm-input-validation class="crm-select-validation-icon">
-                    <select ng-model="account.messenger"
-                            name="messengerType"
-                            class="form-control"
-                            ng-options="option.id as option.name for option in vm.dictionary.messengers"
-                            ng-disabled="!vm.canEdit">
-                        <option value>Please, select</option>
-                    </select>
-                </div>
-            </td>
+            <td>{{account.username}}</td>
+            <td>{{vm.details.messenger.getTypeName(account.messenger, vm.dictionary.messengers)}}</td>
         </tr>
         </tbody>
     </table>

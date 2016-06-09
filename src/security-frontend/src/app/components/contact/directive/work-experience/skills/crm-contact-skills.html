@@ -1,36 +1,18 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <crm-contact-table-header title="Skills" adding-function="vm.details.addSkill"
-                                  removing-function="vm.details.removeSkills"
+        <crm-contact-table-header title="Skills"
+                                  adding-function="vm.details.skill.add"
                                   vm="vm"></crm-contact-table-header>
     </div>
-    <table class="table table-condensed table-responsive" ng-show="vm.contact.skills.length > 0">
-        <thead>
-        <tr>
-            <th></th>
-            <th>Name</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="skill in vm.contact.skills" class="form-group" ng-form="skillsForm">
-            <td class="crm-v-middle crm-narrow">
-                <input ng-model="skill.checked"
-                       type="checkbox"
-                       ng-show="vm.canEdit">
-            </td>
-            <td>
-                <div crm-input-validation>
-                    <input ng-model="skill.name"
-                           name="skill"
-                           class="form-control"
-                           ng-disabled="!vm.canEdit"
-                           required>
-                    <span
-                        ng-show="skillsForm.skill.$error.required"
-                        class="help-block">Skill name is required</span>
-                </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="panel-body" ng-show="vm.contact.skills.length > 0">
+        <div style="display: block;padding:0;margin:0">
+            <div class="crm-badge btn btn-info btn-xs"
+                 ng-repeat="skill in vm.contact.skills"
+                 ng-click="vm.canEdit ? vm.details.skill.edit(skill, vm) : null">
+                {{skill.name}}
+                <span class="crm-badge-x"
+                      ng-click="vm.details.skill.removeOne(skill, vm); $event.stopPropagation()"></span>
+            </div>
+        </div>
+    </div>
 </div>
