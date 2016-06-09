@@ -1,22 +1,15 @@
 package com.itechart.security.business.model.dto.utils;
 
 import com.itechart.security.business.model.dto.*;
-import com.itechart.security.business.model.dto.company.CompanyDtoConverter;
-import com.itechart.security.business.model.dto.helpers.NamedEntity;
 import com.itechart.security.business.model.enums.EmailType;
 import com.itechart.security.business.model.enums.TelephoneType;
 import com.itechart.security.business.model.persistent.*;
-import com.itechart.security.business.model.persistent.task.Priority;
-import com.itechart.security.business.model.persistent.task.Status;
-import com.itechart.security.business.model.persistent.task.Task;
-import com.itechart.security.model.dto.PublicUserDto;
 import org.springframework.util.CollectionUtils;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
-import static com.itechart.security.business.model.dto.company.CompanyDtoConverter.convert;
-import static com.itechart.security.business.model.dto.company.CompanyDtoConverter.convertToCompanyDtos;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptySet;
 import static java.util.stream.Collectors.toList;

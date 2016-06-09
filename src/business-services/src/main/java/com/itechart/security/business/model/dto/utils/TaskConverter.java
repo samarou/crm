@@ -1,7 +1,6 @@
 package com.itechart.security.business.model.dto.utils;
 
 import com.itechart.security.business.model.dto.TaskDto;
-import com.itechart.security.business.model.dto.company.CompanyDtoConverter;
 import com.itechart.security.business.model.dto.helpers.NamedEntity;
 import com.itechart.security.business.model.persistent.task.Priority;
 import com.itechart.security.business.model.persistent.task.Status;
@@ -10,6 +9,7 @@ import com.itechart.security.model.dto.PublicUserDto;
 
 import java.util.List;
 
+import static com.itechart.common.model.util.CollectionConverter.convertCollection;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 import static org.springframework.util.CollectionUtils.isEmpty;
@@ -29,7 +29,7 @@ public class TaskConverter {
         task.setStatus(convertToStatus(dto.getStatus()));
         task.setAssigneeId(dto.getAssignee() != null ? dto.getAssignee().getId() : null);
         task.setContacts(dto.getContacts().stream().map(DtoConverter::convert).collect(toList()));
-        task.setCompanies(dto.getCompanies().stream().map(CompanyDtoConverter::convert).collect(toList()));
+        task.setCompanies(dto.getCompanies().stream().map(CompanyConverter::convert).collect(toList()));
         return task;
     }
 
@@ -89,7 +89,7 @@ public class TaskConverter {
 
     public static TaskDto convertTaskDto(Task task, PublicUserDto creator, PublicUserDto assignee) {
         TaskDto dto = convertTaskMainFields(task, creator, assignee);
-        dto.setCompanies(CompanyDtoConverter.convert(task.getCompanies()));
+        dto.setCompanies(convertCollection(task.getCompanies(), CompanyConverter::convert));
         dto.setContacts(DtoConverter.convertContacts(task.getContacts()));
         return dto;
     }
