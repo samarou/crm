@@ -1,5 +1,6 @@
 package com.itechart.security.business.filter;
 
+import com.itechart.common.model.filter.PagingFilter;
 import lombok.Getter;
 import lombok.Setter;
 

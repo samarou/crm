@@ -10,6 +10,7 @@ import com.itechart.security.business.model.persistent.task.Priority;
 import com.itechart.security.business.model.persistent.task.Status;
 import com.itechart.security.business.model.persistent.task.Task;
 import com.itechart.security.model.dto.PublicUserDto;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -533,63 +534,6 @@ public class DtoConverter {
             .collect(toList());
     }
 
-    public static Task convert(TaskDto dto) {
-        Task task = new Task();
-        task.setId(dto.getId());
-        task.setName(dto.getName());
-        task.setDescription(dto.getDescription());
-        task.setStartDate(dto.getStartDate());
-        task.setEndDate(dto.getEndDate());
-        task.setPriority(convertToPriority(dto.getPriority()));
-        task.setStatus(convertToStatus(dto.getStatus()));
-        task.setAssigneeId(dto.getAssignee() != null ? dto.getAssignee().getId() : null);
-        task.setContacts(dto.getContacts().stream().map(DtoConverter::convert).collect(toList()));
-        task.setCompanies(dto.getCompanies().stream().map(CompanyDtoConverter::convert).collect(toList()));
-        return task;
-    }
-
-    public static Priority convertToPriority(NamedEntity dto){
-        Priority priority = new Priority();
-        priority.setId(dto.getId());
-        priority.setName(dto.getName());
-        return priority;
-    }
-
-    public static Status convertToStatus(NamedEntity dto){
-        Status status = new Status();
-        status.setId(dto.getId());
-        status.setName(dto.getName());
-        return status;
-    }
-
-    public static List<NamedEntity> convertFromStatuses(List<Status> statuses) {
-        if(isEmpty(statuses)) {
-            return emptyList();
-        }
-        return statuses.stream().map(DtoConverter::convert).collect(toList());
-    }
-
-    public static NamedEntity convert(Status status) {
-        NamedEntity dto = new NamedEntity();
-        dto.setId((Long) status.getId());
-        dto.setName(status.getName());
-        return dto;
-    }
-
-    public static List<NamedEntity> convertFromPriorities(List<Priority> priorities) {
-        if(isEmpty(priorities)) {
-            return emptyList();
-        }
-        return priorities.stream().map(DtoConverter::convert).collect(toList());
-    }
-
-    public static NamedEntity convert(Priority priority) {
-        NamedEntity dto = new NamedEntity();
-        dto.setId((Long) priority.getId());
-        dto.setName(priority.getName());
-        return dto;
-    }
-
     public static Skill convert(SkillDto dto) {
         Skill skill = new Skill();
         skill.setId(dto.getId());
@@ -623,26 +567,5 @@ public class DtoConverter {
             .stream()
             .map(DtoConverter::convert)
             .collect(toSet());
-    }
-
-    public static TaskDto convertTaskMainFields(Task task, PublicUserDto creator, PublicUserDto assignee) {
-        TaskDto dto = new TaskDto();
-        dto.setId((Long)task.getId());
-        dto.setName(task.getName());
-        dto.setDescription(task.getDescription());
-        dto.setStartDate(task.getStartDate());
-        dto.setEndDate(task.getEndDate());
-        dto.setCreator(creator);
-        dto.setAssignee(assignee);
-        dto.setStatus(convert(task.getStatus()));
-        dto.setPriority(convert(task.getPriority()));
-        return dto;
-    }
-
-    public static TaskDto convert(Task task, PublicUserDto creator, PublicUserDto assignee) {
-        TaskDto dto = convertTaskMainFields(task, creator, assignee);
-        dto.setCompanies(CompanyDtoConverter.convert(task.getCompanies()));
-        dto.setContacts(DtoConverter.convertContacts(task.getContacts()));
-        return dto;
     }
 }

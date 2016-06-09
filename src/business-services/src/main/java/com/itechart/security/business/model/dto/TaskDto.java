@@ -5,9 +5,13 @@ import com.itechart.security.business.model.dto.helpers.NamedEntity;
 import com.itechart.security.model.dto.PublicUserDto;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.util.CollectionUtils;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import static java.util.Collections.emptyList;
 
 /**
  * @author yauheni.putsykovich
@@ -25,7 +29,7 @@ public class TaskDto {
     private PublicUserDto creator;
     private NamedEntity status;
     private NamedEntity priority;
-    private List<CompanyDto> companies;
-    private List<ContactDto> contacts;
+    private List<CompanyDto> companies = emptyList();
+    private List<ContactDto> contacts = emptyList();
 }
 

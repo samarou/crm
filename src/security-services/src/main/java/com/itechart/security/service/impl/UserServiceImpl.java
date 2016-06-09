@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<PublicUserDto> getByIds(List<Long> ids) {
-        return convertToPublicUsers(userDao.findByIds(ids));
+        return convertCollection(userDao.loadAll(), UserConverter::convertToPublicDto);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public PublicUserDto getPublicUser(Long id) {
-        return convertToPublicUser(userDao.get(id));
+        return convertToPublicDto(userDao.get(id));
     }
 
     @Override

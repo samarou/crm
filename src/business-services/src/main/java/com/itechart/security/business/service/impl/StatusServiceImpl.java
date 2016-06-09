@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.itechart.security.business.model.dto.utils.DtoConverter.convertFromStatuses;
+import static com.itechart.security.business.model.dto.utils.TaskConverter.convertFromStatuses;
 
 /**
  * @author yauheni.putsykovich
