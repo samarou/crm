@@ -9,6 +9,7 @@
             'crm.group',
             'crm.contact',
             'crm.company',
+            'crm.task',
             'crm.navbar',
             'crm.footer']);
 
@@ -17,6 +18,7 @@
             'ngResource',
             'ui.router',
             'ui.bootstrap',
+            'ui.bootstrap.datetimepicker',
             'blockUI'
         ]);
 })();

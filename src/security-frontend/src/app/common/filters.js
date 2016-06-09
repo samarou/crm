@@ -4,7 +4,8 @@
     angular.module('crm.common')
         .filter('pagingFilter', pagingFilter)
         .filter('isCurrentUser', isCurrentUser)
-        .filter('html', html);
+        .filter('html', html)
+        .filter('fullName', fullName);
 
     /** @ngInject */
     function pagingFilter($filter) {
@@ -62,6 +63,20 @@
                 return user.userName === name;
             }
             return false;
+        };
+    }
+
+    /** @ngInject */
+    function fullName() {
+        return function (model, defaultValue) {
+            if (!model) {
+                return defaultValue;
+            }
+            var fullName = model.firstName + ' ' + model.lastName;
+            if (model.userName) {
+                fullName += '(' + model.userName + ')';
+            }
+            return fullName;
         };
     }
 })();

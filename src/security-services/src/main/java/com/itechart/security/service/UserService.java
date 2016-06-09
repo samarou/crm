@@ -1,6 +1,7 @@
 package com.itechart.security.service;
 
 import com.itechart.security.model.dto.*;
+import com.itechart.security.model.persistent.Principal;
 import com.itechart.security.model.persistent.User;
 
 import java.util.List;
@@ -14,6 +15,8 @@ public interface UserService {
 
     SecuredUserDto getUser(Long userId);
 
+    List<PublicUserDto> getByIds(List<Long> ids);
+
     public void deleteAcl(Long userId, Long principalId);
 
     List<UserDefaultAclEntryDto> getDefaultAcls(Long userId);
@@ -21,6 +24,8 @@ public interface UserService {
     List<SecuredUserDto> getUsers();
 
     List<PublicUserDto> getPublicUsers();
+
+    PublicUserDto getPublicUser(Long id);
 
     User findByName(String userName);
 

@@ -24,6 +24,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import static java.lang.Math.abs;
+
 /**
  * @author andrei.samarou
  */
@@ -51,6 +53,16 @@ public abstract class AbstractHibernateDao<T> extends HibernateDaoSupport {
         return getSessionFactory().getClassMetadata(getPersistentClass()).getIdentifierPropertyName();
     }
 
+    public boolean deleteById(Serializable id) {
+        return getHibernateTemplate().executeWithNativeSession(session -> {
+            Object persistentInstance = session.get(resolvePersistentClass(), id);
+            if (persistentInstance != null) {
+                session.delete(persistentInstance);
+                return true;
+            }
+            return false;
+        });
+    }
 
     @SuppressWarnings("unchecked")
     protected List<T> executePagingDistinctCriteria(Session session, Criteria criteria, PagingFilter filter) {
@@ -123,7 +135,8 @@ public abstract class AbstractHibernateDao<T> extends HibernateDaoSupport {
             }
             String propertyAlias = findPropertyAlias(criteria, property);
             if (propertyAlias == null) {
-                propertyAlias = propertyPath[i] + '_' + propertyPath[i].hashCode();
+                //need to use abs, because sometimes hashCode is a negative and '-' symbol is cause of the InvalidDataAccessResourceUsageException
+                propertyAlias = propertyPath[i] + '_' + abs(propertyPath[i].hashCode());
                 criteria.createAlias(property, propertyAlias, JoinType.LEFT_OUTER_JOIN);
             }
             alias = propertyAlias;

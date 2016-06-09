@@ -6,12 +6,13 @@
         .factory('searchService', searchService);
 
     /** @ngInject */
-    function searchService(userService, contactService, companyService, util, $filter, $log) {
+    function searchService(userService, contactService, companyService, taskService, util, $filter) {
         return {
             userPublicMode: getPublicBundle,
             userSecurityMode: getSecurityBundle,
             contactMode: getContactBundle,
-            companyMode: getCompanyBundle
+            companyMode: getCompanyBundle,
+            getTaskBundle: getTaskBundle
         };
 
         function getPublicBundle() {
@@ -58,6 +59,20 @@
             return bundle;
         }
 
+        function getTaskBundle() {
+            var bundle = createCommonBundle();
+            bundle.selectAll = createSelectAllAction(bundle);
+            bundle.performSeach = taskService.find;
+            bundle.sortProperties = {
+                startDate: {name: 'startDate', asc: true, enabled: true},
+                status: {name: 'status', asc: true, enabled: false},
+                priority: {name: 'priority', asc: true, enabled: false}
+            };
+            bundle.filter.sortProperty = bundle.sortProperties.startDate.name;
+            bundle.filter.sortAsc = bundle.sortProperties.startDate.asc;
+            return bundle;
+        }
+
         function createSelectAllAction(bundle, predicate) {
             return function (checked) {
                 bundle.itemsList.forEach(function (item) {
@@ -66,6 +81,13 @@
                     }
                 });
             };
+        }
+
+        function resetBundleState(bundle) {
+            bundle.isSelectedAll = false;
+            bundle.itemsList.forEach(function (item) {
+                item.checked = false;
+            });
         }
 
         function createCommonBundle() {
@@ -105,6 +127,7 @@
             bundle.filter.sortAsc = bundle.sortProperties.firstName.asc;
 
             bundle.find = function find() {
+                resetBundleState(bundle);
                 // todo: fix angular.isString and !!
                 /*eslint-disable */
                 // nulling, to prevent empty parameters in url
@@ -121,7 +144,6 @@
                     var totalPages = Math.ceil(totalCount / bundle.filter.count) || 1;
                     bundle.paging.totalCount = totalCount;
                     bundle.paging.visiblePages = totalPages;
-                    bundle.isSelectedAll = false;
                 });
             };
             bundle.typing = util.createDelayTypingListener(bundle.find, 500);
@@ -138,7 +160,6 @@
             };
 
             bundle.selectOne = function () {
-                $log.debug(' current user');
                 bundle.isSelectedAll = bundle.itemsList.every(function (user) {
                     return user.checked;
                 });

@@ -6,9 +6,11 @@
         .factory('util', util);
 
     /** @ngInject */
-    function util($timeout) {
+    function util($timeout, collections) {
         return {
-            createDelayTypingListener: createDelayTypingListener
+            createDelayTypingListener: createDelayTypingListener,
+            createSelectAction: createSelectAction,
+            createRemoveAction: createRemoveAction
         };
 
         function createDelayTypingListener(action, delay) {
@@ -25,6 +27,32 @@
                     }
                 };
             })();
+        }
+
+        function createSelectAction(collectionResolver, handlerCallback) {
+            if (handlerCallback) {
+                return function () {
+                    handlerCallback(collectionResolver().every(function (item) {
+                        return item.checked;
+                    }));
+                };
+            } else {
+                return function (checked) {
+                    collectionResolver().forEach(function (item) {
+                        item.checked = checked;
+                    });
+                };
+            }
+        }
+
+        function createRemoveAction(collectionResolver, handlerCallback) {
+            return function () {
+                var items = collectionResolver();
+                var diff = collections.difference(items, items.filter(function (item) {
+                    return item.checked;
+                }));
+                handlerCallback(diff);
+            };
         }
     }
 })();

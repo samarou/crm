@@ -13,7 +13,8 @@
             propertyComparator: propertyComparator,
             difference: difference,
             sort: sort,
-            find: find
+            find: find,
+            exists: exists
         };
 
         function byId(a, b) {
@@ -61,6 +62,10 @@
             return collection.find(function (collectionItem) {
                 return comparator(item, collectionItem);
             });
+        }
+
+        function exists(item, source, comparator) {
+            return !!find(item, source, comparator);
         }
     }
 })();
