@@ -1,11 +1,8 @@
 package com.itechart.security.business.dao;
 
+import com.itechart.common.dao.BaseDao;
+import com.itechart.common.model.filter.PagingFilter;
 import com.itechart.security.business.model.persistent.MessengerAccount;
 
-public interface MessengerAccountDao {
-    Long save(MessengerAccount account);
-
-    void update(MessengerAccount account);
-
-    void delete(Long id);
+public interface MessengerAccountDao extends BaseDao<MessengerAccount, Long, PagingFilter> {
 }

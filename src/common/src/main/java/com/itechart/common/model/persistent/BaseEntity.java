@@ -1,6 +1,4 @@
-package com.itechart.security.business.model.persistent;
-
-import lombok.EqualsAndHashCode;
+package com.itechart.common.model.persistent;
 
 import java.io.Serializable;
 

@@ -1,11 +1,8 @@
 package com.itechart.security.business.dao;
 
+import com.itechart.common.dao.BaseDao;
+import com.itechart.common.model.filter.PagingFilter;
 import com.itechart.security.business.model.persistent.Email;
 
-public interface EmailDao {
-    Long save(Email email);
-
-    void update(Email email);
-
-    void delete(Long id);
+public interface EmailDao extends BaseDao<Email, Long, PagingFilter> {
 }

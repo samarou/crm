@@ -19,11 +19,6 @@ class AbstractHibernateDao extends HibernateDaoSupport {
     }
 
     @SuppressWarnings("unchecked")
-    protected <T> List<T> find(String queryString, Object... values) {
-        return (List<T>) getHibernateTemplate().find(queryString, values);
-    }
-
-    @SuppressWarnings("unchecked")
     protected <T> T findObject(String queryString, Object... values) {
         List<?> result = getHibernateTemplate().find(queryString, values);
         return !result.isEmpty() ? (T) result.get(0) : null;

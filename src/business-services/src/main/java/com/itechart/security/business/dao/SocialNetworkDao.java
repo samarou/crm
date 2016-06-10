@@ -1,10 +1,8 @@
 package com.itechart.security.business.dao;
 
+import com.itechart.common.dao.BaseDao;
+import com.itechart.common.model.filter.PagingFilter;
 import com.itechart.security.business.model.persistent.SocialNetwork;
 
-import java.util.List;
-
-
-public interface SocialNetworkDao {
-    List<SocialNetwork> loadAll();
+public interface SocialNetworkDao extends BaseDao<SocialNetwork, Long, PagingFilter> {
 }

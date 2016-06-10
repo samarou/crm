@@ -1,6 +1,6 @@
 package com.itechart.security.business.model.persistent.task;
 
-import com.itechart.security.business.model.persistent.BaseEntity;
+import com.itechart.common.model.persistent.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 

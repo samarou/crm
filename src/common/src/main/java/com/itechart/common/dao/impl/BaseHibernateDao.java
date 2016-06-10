@@ -1,10 +1,10 @@
-package com.itechart.security.business.dao.impl;
+package com.itechart.common.dao.impl;
 
+import com.itechart.common.dao.BaseDao;
 import com.itechart.common.model.filter.PagingFilter;
 import com.itechart.common.model.filter.SortingFilter;
-import com.itechart.security.business.dao.BaseDao;
-import com.itechart.security.business.model.persistent.BaseEntity;
-import com.itechart.security.util.BatchExecutor;
+import com.itechart.common.model.persistent.BaseEntity;
+import com.itechart.common.util.BatchExecutor;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
@@ -18,9 +18,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -32,20 +29,49 @@ import java.util.List;
  * @author andrei.samarou
  */
 @Repository
-abstract class BaseHibernateDao<T extends BaseEntity> extends AbstractHibernateDao implements BaseDao<T> {
+public abstract class BaseHibernateDao<T extends BaseEntity, I extends Serializable, F extends PagingFilter>
+        extends AbstractHibernateDao<T> implements BaseDao<T, I, F> {
 
     private static final int BATCH_SIZE = 100;
     private static final int MAX_PAGE_SIZE = 100;
 
-    private Class<T> persistentClass;
-
     public BaseHibernateDao() {
-        persistentClass = resolvePersistentClass();
     }
 
-    @Override
-    public T get(Serializable id) {
+    public T get(I id) {
         return getHibernateTemplate().get(getPersistentClass(), id);
+    }
+
+    public List<T> find(F filter) {
+        return getHibernateTemplate().executeWithNativeSession(session -> {
+            Criteria criteria = createFilterCriteria(session, filter);
+            return executePagingDistinctCriteria(session, criteria, filter);
+        });
+    }
+
+    public int count(F filter) {
+        return getHibernateTemplate().executeWithNativeSession(session -> {
+            Criteria criteria = createFilterCriteria(session, filter);
+            criteria.setProjection(Projections.rowCount());
+            return ((Number) criteria.uniqueResult()).intValue();
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<T> findByIds(List<I> ids) {
+        if (CollectionUtils.isEmpty(ids)) {
+            return Collections.emptyList();
+        }
+        return getHibernateTemplate().execute(session -> {
+            List<T> result = new ArrayList<>(ids.size());
+            BatchExecutor.execute(batch -> {
+                Criteria criteria = session.createCriteria(getPersistentClass());
+                criteria.add(Restrictions.in(getIdPropertyName(), batch));
+                criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+                result.addAll(criteria.list());
+            }, ids, BATCH_SIZE);
+            return result;
+        });
     }
 
     @Override
@@ -53,14 +79,9 @@ abstract class BaseHibernateDao<T extends BaseEntity> extends AbstractHibernateD
         return getHibernateTemplate().loadAll(getPersistentClass());
     }
 
-    @Override
-    public Serializable save(T object) {
-        return getHibernateTemplate().save(object);
-    }
-
-    @Override
-    public void saveOrUpdate(T object) {
-        getHibernateTemplate().saveOrUpdate(object);
+    @SuppressWarnings("unchecked")
+    public I save(T object) {
+        return (I) getHibernateTemplate().save(object);
     }
 
     @Override
@@ -79,37 +100,19 @@ abstract class BaseHibernateDao<T extends BaseEntity> extends AbstractHibernateD
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void delete(I id) {
         T entity = get(id);
         if (entity != null) {
             delete(entity);
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public List<T> findByIds(List<? extends Serializable> ids) {
-        if (CollectionUtils.isEmpty(ids)) {
-            return Collections.emptyList();
-        }
-        return getHibernateTemplate().execute(session -> {
-            List<T> result = new ArrayList<>(ids.size());
-            BatchExecutor.execute(batch -> {
-                Criteria criteria = session.createCriteria(getPersistentClass());
-                criteria.add(Restrictions.in(getIdPropertyName(), batch));
-                criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-                result.addAll(criteria.list());
-            }, ids, BATCH_SIZE);
-            return result;
-        });
+    protected Criteria createFilterCriteria(Session session, F filter) {
+        return session.createCriteria(getPersistentClass(), getEntityAlias());
     }
 
-    @Override
-    public int count() {
-        return getHibernateTemplate().execute(session -> {
-            Criteria criteria = session.createCriteria(getPersistentClass());
-            criteria.setProjection(Projections.rowCount());
-            return ((Number) criteria.uniqueResult()).intValue();
-        });
+    protected String getEntityAlias() {
+        return getPersistentClass().getSimpleName().toLowerCase();
     }
 
     @SuppressWarnings("unchecked")
@@ -204,29 +207,4 @@ abstract class BaseHibernateDao<T extends BaseEntity> extends AbstractHibernateD
         return null;
     }
 
-    public String getIdPropertyName() {
-        //todo:fix retrieving id property name
-        return "id";//getSessionFactory().getClassMetadata(getPersistentClass()).getIdentifierPropertyName();
-    }
-
-    @SuppressWarnings("unchecked")
-    private Class<T> resolvePersistentClass() {
-        for (Type type = getClass().getGenericSuperclass(); type != null; ) {
-            if (type instanceof ParameterizedType) {
-                Type parameter = ((ParameterizedType) type).getActualTypeArguments()[0];
-                if (parameter instanceof Class) {
-                    return (Class<T>) ((ParameterizedType) type).getActualTypeArguments()[0];
-                } else {
-                    return (Class<T>) ((ParameterizedType) ((TypeVariable<?>) parameter).getBounds()[0]).getRawType();
-                }
-            } else if (type instanceof Class) {
-                type = ((Class<?>) type).getGenericSuperclass();
-            }
-        }
-        throw new RuntimeException("Can't resolve persistent class");
-    }
-
-    protected Class<T> getPersistentClass() {
-        return persistentClass;
-    }
 }

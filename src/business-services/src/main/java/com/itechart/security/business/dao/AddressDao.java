@@ -1,11 +1,8 @@
 package com.itechart.security.business.dao;
 
+import com.itechart.common.dao.BaseDao;
+import com.itechart.common.model.filter.PagingFilter;
 import com.itechart.security.business.model.persistent.Address;
 
-public interface AddressDao {
-    Long save(Address address);
-
-    void update(Address address);
-
-    void delete(Long id);
+public interface AddressDao extends BaseDao<Address, Long, PagingFilter> {
 }

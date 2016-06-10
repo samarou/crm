@@ -1,5 +1,7 @@
 package com.itechart.security.business.dao.impl;
 
+import com.itechart.common.dao.impl.BaseHibernateDao;
+import com.itechart.common.model.filter.PagingFilter;
 import com.itechart.security.business.dao.SocialNetworkAccountDao;
 import com.itechart.security.business.model.persistent.SocialNetworkAccount;
 import org.springframework.stereotype.Repository;
@@ -7,16 +9,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Date;
 
 @Repository
-public class SocialNetworkAccountDaoImpl extends AbstractHibernateDao<SocialNetworkAccount>  implements SocialNetworkAccountDao {
-    @Override
-    public Long save(SocialNetworkAccount account) {
-        return (Long) getHibernateTemplate().save(account);
-    }
-
-    @Override
-    public void update(SocialNetworkAccount account) {
-        getHibernateTemplate().update(account);
-    }
+public class SocialNetworkAccountDaoImpl
+        extends BaseHibernateDao<SocialNetworkAccount, Long, PagingFilter> implements SocialNetworkAccountDao {
 
     @Override
     public void delete(Long id) {

@@ -1,13 +1,13 @@
 package com.itechart.security.business.model.persistent.company;
 
+import com.itechart.common.model.persistent.BaseEntity;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import com.itechart.security.business.model.persistent.BaseEntity;
 
 @Entity
 @Table(name = "company_type")

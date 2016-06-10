@@ -1,5 +1,7 @@
 package com.itechart.security.business.dao.impl;
 
+import com.itechart.common.dao.impl.BaseHibernateDao;
+import com.itechart.common.model.filter.PagingFilter;
 import com.itechart.security.business.dao.EmailDao;
 import com.itechart.security.business.model.persistent.Email;
 import org.springframework.stereotype.Repository;
@@ -7,16 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Date;
 
 @Repository
-public class EmailDaoImpl extends AbstractHibernateDao<Email> implements EmailDao {
-    @Override
-    public Long save(Email email) {
-        return (Long) getHibernateTemplate().save(email);
-    }
-
-    @Override
-    public void update(Email email) {
-        getHibernateTemplate().update(email);
-    }
+public class EmailDaoImpl extends BaseHibernateDao<Email, Long, PagingFilter> implements EmailDao {
 
     @Override
     public void delete(Long id) {

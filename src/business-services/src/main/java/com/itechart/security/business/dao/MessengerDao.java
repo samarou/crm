@@ -1,9 +1,8 @@
 package com.itechart.security.business.dao;
 
+import com.itechart.common.dao.BaseDao;
+import com.itechart.common.model.filter.PagingFilter;
 import com.itechart.security.business.model.persistent.Messenger;
 
-import java.util.List;
-
-public interface MessengerDao {
-    List<Messenger> loadAll();
+public interface MessengerDao extends BaseDao<Messenger, Long, PagingFilter> {
 }
