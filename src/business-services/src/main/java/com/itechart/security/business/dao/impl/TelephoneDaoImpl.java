@@ -1,6 +1,6 @@
 package com.itechart.security.business.dao.impl;
 
-import com.itechart.common.dao.impl.DynamicDataDaoImpl;
+import com.itechart.common.dao.impl.BaseHibernateDao;
 import com.itechart.common.model.filter.PagingFilter;
 import com.itechart.security.business.dao.TelephoneDao;
 import com.itechart.security.business.model.persistent.Telephone;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Date;
 
 @Repository
-public class TelephoneDaoImpl extends DynamicDataDaoImpl<Telephone, Long, PagingFilter> implements TelephoneDao{
+public class TelephoneDaoImpl extends BaseHibernateDao<Telephone, Long, PagingFilter> implements TelephoneDao{
 
     @Override
     public void delete(Long id) {

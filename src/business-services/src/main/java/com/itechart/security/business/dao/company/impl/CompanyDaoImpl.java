@@ -1,6 +1,6 @@
 package com.itechart.security.business.dao.company.impl;
 
-import com.itechart.common.dao.impl.DynamicDataDaoImpl;
+import com.itechart.common.dao.impl.BaseHibernateDao;
 import com.itechart.security.business.dao.company.CompanyDao;
 import com.itechart.security.business.filter.CompanyFilter;
 import com.itechart.security.business.model.persistent.company.Company;
@@ -17,7 +17,7 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 
 @Repository
-public class CompanyDaoImpl extends DynamicDataDaoImpl<Company, Long, CompanyFilter> implements CompanyDao {
+public class CompanyDaoImpl extends BaseHibernateDao<Company, Long, CompanyFilter> implements CompanyDao {
 
     @AclFilter(@AclFilterRule(type = Company.class, permissions = { Permission.READ }))
     public Company get(Long id) {

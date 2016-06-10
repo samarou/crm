@@ -74,6 +74,39 @@ public abstract class BaseHibernateDao<T extends BaseEntity, I extends Serializa
         });
     }
 
+    @Override
+    public List<T> loadAll() {
+        return getHibernateTemplate().loadAll(getPersistentClass());
+    }
+
+    @SuppressWarnings("unchecked")
+    public I save(T object) {
+        return (I) getHibernateTemplate().save(object);
+    }
+
+    @Override
+    public void update(T object) {
+        getHibernateTemplate().update(object);
+    }
+
+    @Override
+    public T merge(T object) {
+        return getHibernateTemplate().merge(object);
+    }
+
+    @Override
+    public void delete(T object) {
+        getHibernateTemplate().delete(object);
+    }
+
+    @Override
+    public void delete(I id) {
+        T entity = get(id);
+        if (entity != null) {
+            delete(entity);
+        }
+    }
+
     protected Criteria createFilterCriteria(Session session, F filter) {
         return session.createCriteria(getPersistentClass(), getEntityAlias());
     }

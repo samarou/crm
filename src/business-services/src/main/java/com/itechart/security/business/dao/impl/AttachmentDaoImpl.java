@@ -1,6 +1,6 @@
 package com.itechart.security.business.dao.impl;
 
-import com.itechart.common.dao.impl.DynamicDataDaoImpl;
+import com.itechart.common.dao.impl.BaseHibernateDao;
 import com.itechart.common.model.filter.PagingFilter;
 import com.itechart.security.business.dao.AttachmentDao;
 import com.itechart.security.business.model.persistent.Attachment;
@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public class AttachmentDaoImpl extends DynamicDataDaoImpl<Attachment, Long, PagingFilter> implements AttachmentDao {
+public class AttachmentDaoImpl extends BaseHibernateDao<Attachment, Long, PagingFilter> implements AttachmentDao {
 
     @Override
     public void delete(Long id) {

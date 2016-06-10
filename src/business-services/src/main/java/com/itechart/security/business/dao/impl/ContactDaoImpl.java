@@ -1,6 +1,6 @@
 package com.itechart.security.business.dao.impl;
 
-import com.itechart.common.dao.impl.DynamicDataDaoImpl;
+import com.itechart.common.dao.impl.BaseHibernateDao;
 import com.itechart.security.business.dao.ContactDao;
 import com.itechart.security.business.filter.ContactFilter;
 import com.itechart.security.business.model.persistent.Contact;
@@ -22,7 +22,7 @@ import java.util.List;
  * @author andrei.samarou
  */
 @Repository
-public class ContactDaoImpl extends DynamicDataDaoImpl<Contact, Long, ContactFilter> implements ContactDao {
+public class ContactDaoImpl extends BaseHibernateDao<Contact, Long, ContactFilter> implements ContactDao {
 
     @AclFilter(@AclFilterRule(type = Contact.class, permissions = {Permission.READ}))
     public Contact get(Long id) {

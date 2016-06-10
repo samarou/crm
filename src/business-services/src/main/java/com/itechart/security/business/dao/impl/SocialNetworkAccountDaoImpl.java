@@ -1,6 +1,6 @@
 package com.itechart.security.business.dao.impl;
 
-import com.itechart.common.dao.impl.DynamicDataDaoImpl;
+import com.itechart.common.dao.impl.BaseHibernateDao;
 import com.itechart.common.model.filter.PagingFilter;
 import com.itechart.security.business.dao.SocialNetworkAccountDao;
 import com.itechart.security.business.model.persistent.SocialNetworkAccount;
@@ -10,7 +10,7 @@ import java.util.Date;
 
 @Repository
 public class SocialNetworkAccountDaoImpl
-        extends DynamicDataDaoImpl<SocialNetworkAccount, Long, PagingFilter> implements SocialNetworkAccountDao {
+        extends BaseHibernateDao<SocialNetworkAccount, Long, PagingFilter> implements SocialNetworkAccountDao {
 
     @Override
     public void delete(Long id) {

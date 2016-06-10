@@ -18,4 +18,16 @@ public interface BaseDao<T extends BaseEntity, I extends Serializable, F extends
     int count(F filter);
 
     List<T> findByIds(List<I> ids);
+
+    List<T> loadAll();
+
+    I save(T entity);
+
+    void update(T entity);
+
+    T merge(T entity);
+
+    void delete(T entity);
+
+    void delete(I id);
 }
