@@ -1,42 +1,35 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <crm-contact-table-header title="Telephones" adding-function="vm.details.addTelephone"
-                                  removing-function="vm.details.removeTelephones"
+        <crm-contact-table-header title="Telephones" adding-function="vm.details.telephone.add"
+                                  removing-function="vm.details.telephone.remove"
                                   vm="vm"></crm-contact-table-header>
     </div>
-    <table class="table table-condensed" ng-show="vm.contact.telephones.length>0">
+    <table class="table table-condensed crm-table-fixed" ng-show="vm.contact.telephones.length>0">
         <thead>
         <tr>
-            <th></th>
-            <th>Number</th>
-            <th>Type</th>
+            <th class="crm-narrow"><input type="checkbox"
+                       ng-show="vm.canEdit"
+                       title="select telephones"
+                       ng-click="vm.details.checkAll(vm.contact.telephones, vm.contact.telephones.isSelectedAll)"
+                       ng-model="vm.contact.telephones.isSelectedAll"></th>
+            <th class="col-xs-8">Number</th>
+            <th class="col-xs-4">Type</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="telephone in vm.contact.telephones" ng-form="telephonesForm">
-            <td class="crm-v-middle crm-narrow">
-                <input ng-model="telephone.checked" ng-show="vm.canEdit" type="checkbox">
-            </td>
+        <tr ng-repeat="telephone in vm.contact.telephones"
+            ng-click="vm.canEdit ? vm.details.telephone.edit(telephone, vm) : null"
+            class="crm-hover">
             <td>
-                <div crm-input-validation>
-                    <input ng-model="telephone.number"
-                           class="form-control"
-                           ng-disabled="!vm.canEdit"
-                           name="telephone" required maxlength="100">
-                    <span
-                        ng-show="telephonesForm.telephone.$error.required"
-                        class="help-block">Telephone is required</span>
-                </div>
+                <input ng-model="telephone.checked"
+                       type="checkbox"
+                       ng-show="vm.canEdit"
+                       title="select telephone"
+                       ng-click="vm.details.isAllSelected(vm.contact.telephones); $event.stopPropagation()"
+                       ng-init="vm.details.isAllSelected(vm.contact.telephones)">
             </td>
-            <td>
-                <div crm-input-validation class="crm-select-validation-icon">
-                    <select ng-model="telephone.type" ng-disabled="!vm.canEdit" name="telephoneType"
-                            ng-options="option.name as option.value for option in vm.dictionary.telephoneTypes"
-                            class="form-control">
-                        <option value="">Please, select</option>
-                    </select>
-                </div>
-            </td>
+            <td>{{telephone.number}}</td>
+            <td>{{vm.details.telephone.getTypeName(telephone.type, vm.dictionary.telephoneTypes)}}</td>
         </tr>
         </tbody>
     </table>

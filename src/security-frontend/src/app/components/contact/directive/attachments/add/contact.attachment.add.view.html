@@ -13,11 +13,11 @@
     <div class="form-group">
         <label for="attachmentFileName">File name</label>
         <input type="text" id="attachmentFileName" class="form-control" placeholder="Type name of the file here"
-               ng-model="vm.attachment.name">
+               ng-model="vm.attachment.name" maxlength="100">
     </div>
     <div class="form-group">
         <label for="attachmentComment">Comment</label>
-        <input type="text" id="attachmentComment" class="form-control" placeholder="Type your comment here"
-               ng-model="vm.attachment.comment">
+        <textarea id="attachmentComment" class="form-control" placeholder="Type your comment here"
+        ng-model="vm.attachment.comment" rows="8"></textarea>
     </div>
 </crm-form-wrapper>

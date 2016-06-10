@@ -43,7 +43,7 @@ public class ContactController extends SecuredController {
     private FileService fileService;
 
     @Autowired
-    ParsingService parsingService;
+    private ParsingService parsingService;
 
     @RequestMapping("/contacts/{contactId}/actions/{value}")
     public boolean isAllowed(@PathVariable Long contactId, @PathVariable String value) {

@@ -1,42 +1,42 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <crm-contact-table-header title="Addresses" adding-function="vm.details.addAddress"
-                                  removing-function="vm.details.removeAddresses"
+        <crm-contact-table-header title="Addresses"
+                                  adding-function="vm.details.address.add"
+                                  removing-function="vm.details.address.remove"
                                   vm="vm"></crm-contact-table-header>
     </div>
-    <table class="table table-condensed" ng-show="vm.contact.addresses.length>0">
+    <table class="table table-condensed crm-table-fixed" ng-show="vm.contact.addresses.length>0">
         <thead>
         <tr>
-            <th></th>
-            <th>Address line</th>
-            <th>Zipcode</th>
-            <th>City</th>
-            <th>Region</th>
-            <th>Country</th>
+            <th class="crm-narrow"><input type="checkbox"
+                       ng-show="vm.canEdit"
+                       title="select Addresses"
+                       ng-click="vm.details.checkAll(vm.contact.addresses, vm.contact.addresses.isSelectedAll)"
+                       ng-model="vm.contact.addresses.isSelectedAll"></th>
+            <th class="col-md-4 col-sm-4 col-xs-6">Address line</th>
+            <th class="col-md-2 col-sm-2 hidden-xs">Zipcode</th>
+            <th class="col-md-2 col-sm-3 col-xs-3">City</th>
+            <th class="col-md-2 hidden-sm hidden-xs">Region</th>
+            <th class="col-md-2 col-sm-3 col-xs-3">Country</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="address in vm.contact.addresses" ng-form="addressForm">
-            <td class="crm-v-middle crm-narrow">
-                <input type="checkbox" ng-model="address.checked" ng-show="vm.canEdit" title="select address">
-            </td>
-            <td><input class="form-control" ng-disabled="!vm.canEdit" name="addressAddressLine"
-                       ng-model="address.addressLine"></td>
-            <td><input class="form-control" ng-disabled="!vm.canEdit" name="addressZipcode"
-                       ng-model="address.zipcode"></td>
-            <td><input class="form-control" ng-disabled="!vm.canEdit" name="addressCity"
-                       ng-model="address.city"></td>
-            <td><input class="form-control" ng-disabled="!vm.canEdit" name="addressRegion"
-                       ng-model="address.region"></td>
+        <tr ng-repeat="address in vm.contact.addresses"
+            ng-click="vm.canEdit ? vm.details.address.edit(address, vm) : vm.canEdit"
+            class="crm-hover">
             <td>
-                <select ng-model="address.country"
-                        name="addressCountry"
-                        ng-options="option.id as option.name for option in vm.dictionary.countries"
-                        class="form-control"
-                        ng-disabled="!vm.canEdit">
-                    <option value>Please, select</option>
-                </select>
+                <input type="checkbox"
+                       ng-model="address.checked"
+                       ng-show="vm.canEdit"
+                       title="select Address"
+                       ng-click="vm.details.isAllSelected(vm.contact.addresses); $event.stopPropagation()"
+                       ng-init="vm.details.isAllSelected(vm.contact.addresses)">
             </td>
+            <td>{{address.addressLine}}</td>
+            <td class="hidden-xs">{{address.zipcode}}</td>
+            <td>{{address.city}}</td>
+            <td class="hidden-sm hidden-xs">{{address.region}}</td>
+            <td>{{vm.details.address.getCountryName(address.country, vm.dictionary.countries)}}</td>
         </tr>
         </tbody>
     </table>

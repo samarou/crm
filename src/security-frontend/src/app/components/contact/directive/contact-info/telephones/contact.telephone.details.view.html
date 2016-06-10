@@ -1,0 +1,23 @@
+<crm-form-wrapper form-title="vm.title" submit-text="{{telephoneForm.$valid?'Ok':null}}" cancel-text="Cancel" submit-btn="vm.ok()"
+                  cancel-btn="vm.cancel()" modal="true" ng-form="telephoneForm">
+    <div class="form-group" crm-input-validation>
+        <label for="telephoneNumber">Number</label>
+        <input ng-model="vm.telephone.number"
+               id="telephoneNumber"
+               class="form-control"
+               name="telephone" required maxlength="100">
+        <span
+            ng-show="telephoneForm.telephone.$error.required"
+            class="help-block">Telephone is required</span>
+    </div>
+    <div class="form-group crm-select-validation-icon" crm-input-validation>
+        <label for="telephoneType">Telephone type</label>
+        <select ng-model="vm.telephone.type"
+                id="telephoneType"
+                name="telephoneType"
+                ng-options="option.name as option.value for option in vm.telephoneTypes"
+                class="form-control">
+            <option value="">Please, select</option>
+        </select>
+    </div>
+</crm-form-wrapper>

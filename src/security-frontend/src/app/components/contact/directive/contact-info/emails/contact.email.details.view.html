@@ -1,0 +1,26 @@
+<crm-form-wrapper form-title="vm.title" submit-text="{{emailForm.$valid?'Ok':null}}" cancel-text="Cancel" submit-btn="vm.ok()"
+                  cancel-btn="vm.cancel()" modal="true" ng-form="emailForm">
+    <div class="form-group" crm-input-validation>
+        <label for="emailName">Email</label>
+        <input ng-model="vm.email.name"
+               id="emailName"
+               name="email"
+               class="form-control"
+               type="email"
+               required maxlength="255">
+        <span ng-show="emailForm.email.$error.required"
+              class="help-block">Email is required</span>
+        <span ng-show="!emailForm.email.$error.required && emailForm.email.$dirty && !emailForm.email.$valid"
+              class="help-block">Email format is not correct</span>
+    </div>
+    <div class="form-group crm-select-validation-icon" crm-input-validation>
+        <label for="emailType">Email type</label>
+        <select ng-model="vm.email.type"
+                id="emailType"
+                name="emailType"
+                class="form-control"
+                ng-options="option.name as option.value for option in vm.emailTypes">
+            <option value="">Please, select</option>
+        </select>
+    </div>
+</crm-form-wrapper>

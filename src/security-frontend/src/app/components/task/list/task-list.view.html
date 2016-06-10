@@ -1,0 +1,63 @@
+<div class="page-header">
+    <h4>Contacts</h4>
+</div>
+<div class="row crm-bottom-buffer">
+    <div class="col-xs-12 col-sm-offset-8 col-sm-4 col-md-offset-9 col-md-3">
+        <div class="btn-group btn-group-justified">
+            <a class="btn btn-default" ng-click="vm.add()">
+                Add
+            </a>
+            <a class="btn btn-default" ng-click="vm.remove()">
+                Remove
+            </a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-condensed">
+            <caption></caption>
+            <thead>
+            <th><input ng-hide="vm.bundle.itemsList.length === 0" type="checkbox" ng-model="vm.bundle.isSelectedAll"
+                       ng-click="vm.bundle.selectAll(vm.bundle.isSelectedAll)"></th>
+            <th>Name</th>
+            <th>Created By</th>
+            <th>Assignee To</th>
+            <th class="crm-hover" ng-click="vm.bundle.sortBy(vm.bundle.sortProperties.status)">
+                    <span class="glyphicon"
+                          ng-show="vm.bundle.sortProperties.status.enabled"
+                          ng-class="vm.bundle.sortProperties.status.asc ? 'glyphicon-sort-by-attributes' : 'glyphicon-sort-by-attributes-alt' ">
+                    </span>
+                Status
+            </th>
+            <th class="crm-hover" ng-click="vm.bundle.sortBy(vm.bundle.sortProperties.priority)">
+                    <span class="glyphicon"
+                          ng-show="vm.bundle.sortProperties.priority.enabled"
+                          ng-class="vm.bundle.sortProperties.priority.asc ? 'glyphicon-sort-by-attributes' : 'glyphicon-sort-by-attributes-alt' ">
+                    </span>
+                Priority
+            </th>
+            <th class="crm-hover" ng-click="vm.bundle.sortBy(vm.bundle.sortProperties.startDate)">
+                    <span class="glyphicon"
+                          ng-show="vm.bundle.sortProperties.startDate.enabled"
+                          ng-class="vm.bundle.sortProperties.startDate.asc ? 'glyphicon-sort-by-attributes' : 'glyphicon-sort-by-attributes-alt' ">
+                    </span>
+                Start date
+            </th>
+            <th>End date</th>
+            </thead>
+            <tbody>
+            <tr class="crm-hover" ng-repeat="task in vm.bundle.itemsList" ng-click="vm.edit(task)">
+                <td><input type="checkbox" ng-click="$event.stopPropagation()" ng-model="task.checked"></td>
+                <td>{{task.name}}</td>
+                <td>{{task.creator | fullName}}</td>
+                <td>{{task.assignee | fullName:'Not assigned' }}</td>
+                <td>{{task.status.name}}</td>
+                <td>{{task.priority.name}}</td>
+                <td>{{task.startDate | date : 'yyyy-MM-dd HH:mm'}}</td>
+                <td>{{task.endDate | date : 'yyyy-MM-dd HH:mm'}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

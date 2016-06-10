@@ -1,0 +1,43 @@
+<crm-form-wrapper form-title="vm.title" submit-text="Ok" cancel-text="Cancel" submit-btn="vm.ok()" cancel-btn="vm.cancel()" modal="true">
+    <div class="row crm-bottom-buffer">
+        <div class="col-xs-12">
+            <div class="form-group">
+                <input ng-model="vm.bundle.filter.text" ng-keyup="vm.bundle.typing.keyUp()"
+                       ng-keydown="vm.bundle.typing.keyDown()" class="form-control"
+                       placeholder="Search by first name, last name, email, address...">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th><input type="checkbox" ng-model="vm.bundle.isSelectedAll" ng-click="vm.bundle.selectAll(vm.bundle.isSelectedAll)"></th>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th class="hidden-xs">Address</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="crm-hover" ng-click="vm.edit(contact)" ng-repeat="contact in vm.bundle.itemsList">
+                    <td><input type="checkbox" ng-model="contact.checked" ng-click="vm.bundle.selectOne(); $event.stopPropagation()"></td>
+                    <td>{{contact | fullName}}</td>
+                    <td>{{contact.emails.length > 0 ? contact.emails[0].name :''}}</td>
+                    <td class="hidden-xs">{{contact.addresses.length > 0 ? contact.addresses[0].addressLine : ''}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <span class="pull-right" ng-hide="vm.bundle.paging.totalCount === 0">Total: {{vm.bundle.paging.totalCount}}</span>
+    <div class="crm-text-center">
+        <uib-pagination class="pagination-sm" ng-change="vm.bundle.paging.onPageChanged()"
+                        ng-model="vm.bundle.paging.currentPage"
+                        total-items="vm.bundle.paging.totalCount"
+                        items-per-page="vm.bundle.paging.itemsPerPage"
+                        max-size="vm.bundle.paging.visiblePages"
+                        boundary-link-numbers="true" rotate="false">
+        </uib-pagination>
+    </div>
+</crm-form-wrapper>

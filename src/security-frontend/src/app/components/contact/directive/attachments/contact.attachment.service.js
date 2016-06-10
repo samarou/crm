@@ -6,12 +6,13 @@
         .service('contactAttachmentService', contactAttachmentService);
 
     /** @ngInject */
-    function contactAttachmentService(contactService, $q, dialogService, FileUploader, MAX_FILE_SIZE) {
+    function contactAttachmentService(contactService, dialogService, FileUploader, MAX_FILE_SIZE, contactCommonService) {
 
         return {
-            addAttachment: addAttachment,
-            getAttachment: getAttachment,
-            updateAttachment: updateAttachment
+            add: addAttachment,
+            get: getAttachment,
+            edit: editAttachment,
+            remove: removeAttachments
         };
 
         function getFileUploader() {
@@ -47,9 +48,24 @@
             });
         }
 
+        function getAttachment(contactId, attachment) {
+            return contactService.getAttachment(contactId, attachment);
+        }
+
+        function editAttachment(attachment) {
+            openUpdateAttachmentDialog(attachment).then(function (model) {
+                attachment.name = model.attachment.name;
+                attachment.comment = model.attachment.comment;
+            });
+        }
+
+        function removeAttachments(scope) {
+            return contactCommonService.remove(scope.contact, scope.contact.attachments, contactService.removeAttachment);
+        }
+
         function openAddAttachmentDialog(uploader) {
-            return dialogService.custom('app/components/contact/attachment/add/contact.attachment.add.view.html', {
-                title: 'Add Attachments',
+            return dialogService.custom('app/components/contact/directive/attachments/add/contact.attachment.add.view.html', {
+                title: 'Add Attachment',
                 size: 'modal--user-table',
                 cancelTitle: 'Cancel',
                 okTitle: 'Add',
@@ -58,19 +74,8 @@
             }).result;
         }
 
-        function updateAttachment(attachment) {
-            openUpdateAttachmentDialog(attachment).then(function (model) {
-                attachment.name = model.attachment.name;
-                attachment.comment = model.attachment.comment;
-            });
-        }
-
-        function getAttachment(contactId, attachment) {
-            return contactService.getAttachment(contactId, attachment);
-        }
-
         function openUpdateAttachmentDialog(attachment) {
-            return dialogService.custom('app/components/contact/attachment/edit/contact.attachment.edit.view.html', {
+            return dialogService.custom('app/components/contact/directive/attachments/edit/contact.attachment.edit.view.html', {
                 title: 'Update Attachment',
                 size: 'modal--user-table',
                 cancelTitle: 'Cancel',

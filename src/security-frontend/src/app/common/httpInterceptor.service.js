@@ -10,6 +10,7 @@
         return {
             responseError: catchError
         };
+
         function catchError(response) {
             switch (response.status) {
                 case 401: {
@@ -26,7 +27,7 @@
         function catchAuthError() {
             var AuthService = $injector.get('authService');
             if (AuthService.isAuthenticated()) {
-                AuthService.logout();
+                AuthService.setAuthentication(null);
             }
             $injector.get('$state').transitionTo('login');
             toastr.error('Authentication problem', 'Error');

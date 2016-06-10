@@ -106,7 +106,7 @@
         }
 
         function getDictionary() {
-            return $http.get('rest/dictionary');
+            return $http.get('rest/dictionary', {cache: true});
         }
 
         function removeWorkplace(id, workplaceId) {

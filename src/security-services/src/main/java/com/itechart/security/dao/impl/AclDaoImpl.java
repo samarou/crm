@@ -23,7 +23,7 @@ public class AclDaoImpl extends BaseHibernateDao<Acl> implements AclDao {
     @Override
     @SuppressWarnings("unchecked")
     public List<Long> findChildrenIds(Long parentId) {
-        return getHibernateTemplate().execute(session ->
+        return (List<Long>) getHibernateTemplate().execute(session ->
                 session.createCriteria(Acl.class)
                         .add(Restrictions.eq("parentId", parentId))
                         .setProjection(Projections.property("id"))

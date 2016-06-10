@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,9 +24,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -45,7 +49,7 @@ public class LoginController {
 
     @ResponseBody
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public SessionInfoDto login(@RequestBody LoginDataDto data, HttpServletRequest request) {
+    public SessionInfoDto login(@RequestBody LoginDataDto data, HttpServletRequest request, HttpServletResponse response) {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(data.getUsername(), data.getPassword());
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
@@ -55,10 +59,32 @@ public class LoginController {
         tokenData.setUsername(userDetails.getUsername());
         tokenData.setRemoteAddr(request.getRemoteAddr());
         String token = tokenService.generateToken(tokenData);
+        tokenService.setTokenToResponse(response, token);
+
+        return getRoles();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    public void logout(HttpServletResponse response) {
+        tokenService.deleteTokenFromResponse(response);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/login/check", method = RequestMethod.GET)
+    public boolean getLoginStatus(HttpServletRequest request) {
+        String token = tokenService.getTokenFromRequest(request);
+        return !Objects.isNull(token);
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/login/roles", method = RequestMethod.GET)
+    public SessionInfoDto getRoles() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         SessionInfoDto sessionInfo = new SessionInfoDto();
         sessionInfo.setUsername(authentication.getName());
         sessionInfo.setRoles(getRoleNames(authentication));
-        sessionInfo.setToken(token);
         return sessionInfo;
     }
 
