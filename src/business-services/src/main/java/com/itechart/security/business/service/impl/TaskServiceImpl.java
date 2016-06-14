@@ -57,7 +57,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional(readOnly = true)
-    public DataPageDto<TaskDto> findTasks(TaskFilter filter) {
+    public DataPageDto<TaskDto> find(TaskFilter filter) {
         List<Task> tasks = taskDao.find(filter);
         List<TaskDto> result = joinUsers(tasks);
         DataPageDto<TaskDto> dataPage = new DataPageDto<>();
