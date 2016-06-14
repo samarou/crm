@@ -11,20 +11,9 @@
     /** @ngInject */
     function taskSecurityService(taskService, permissions, $q, dialogService, $log) {
         return {
-            checkReadPermission: checkReadPermission,
             checkDeletePermissionForList: checkDeletePermissionForList,
             checkEditPermission: checkEditPermission
         };
-
-        function checkReadPermission(securedObject) {
-            return service.isAllowed(securedObject.id, permissions.read).then(function (response) {
-                if (!response.data) {
-                    dialogService.notify('You haven\'t permissions to edit that item!');
-                    return $q.reject(response);
-                }
-                return $q.resolve(response);
-            });
-        }
 
         function checkDeletePermissionForList(securedObjects) {
             var tasks = [];
