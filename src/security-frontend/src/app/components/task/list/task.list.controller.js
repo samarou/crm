@@ -10,7 +10,7 @@
         .controller('TaskListController', TaskListController);
 
     /** @ngInject */
-    function TaskListController(taskService, dialogService, searchService, $state, $q) {
+    function TaskListController(taskService, taskSecurityService, dialogService, collections, searchService, $state, $q) {
         var vm = this;
 
         vm.bundle = searchService.getTaskBundle();
@@ -23,24 +23,17 @@
         }
 
         function edit(task) {
-            $state.go('tasks.edit', {id: task.id});
+            taskSecurityService.checkEditPermission(task.id).then(function () {
+                $state.go('tasks.edit', {id: task.id});
+            });
         }
 
         function remove() {
-            dialogService.confirm('Do you want to delete the selected task(s)?')
-                .result.then(function (answer) {
-                var checked = vm.bundle.itemsList.filter(function (task) {
-                    return task.checked;
+            dialogService.confirm('Do you want to delete the selected task(s)?').result.then(function () {
+                var checked = vm.bundle.itemsList.filter(collections.getChecked);
+                taskSecurityService.checkDeletePermissionForList(checked).then(function () {
+                    $q.all(checked.map(collections.getId).map(taskService.remove)).then(vm.bundle.find);
                 });
-                if (answer) {
-                    $q.all(
-                        checked.map(function (task) {
-                            return taskService.remove(task.id);
-                        })
-                    ).then(vm.bundle.find, function () {
-                        dialogService.error('Occurred an error during removing tasks');
-                    });
-                }
             });
         }
 

@@ -1,10 +1,10 @@
-<div class="crm-top-buffer">
+<div class="crm-top-buffer outline-none">
     <uib-accordion close-others="false">
         <uib-accordion-group is-open="true">
             <uib-accordion-heading>
-                <div class="panel-heading" ng-init="options={canEdit:true}" ng-click="options.canEdit = !options.canEdit">
+                <div class="panel-heading">
                     <crm-contact-table-header title="Contacts" adding-function="vm.addContact"
-                                              removing-function="vm.removeContacts" vm="options"/>
+                                              removing-function="vm.removeContacts" vm="vm"/>
                 </div>
             </uib-accordion-heading>
             <div class="row">
@@ -12,7 +12,7 @@
                     <table class="table table-condensed">
                         <thead>
                         <tr>
-                            <th><input ng-hide="vm.task.contacts.length === 0" type="checkbox"
+                            <th><input ng-show="vm.canEdit && vm.task.contacts.length > 0" type="checkbox"
                                        ng-model="vm.isSelectedAllContacts"
                                        ng-click="vm.selectAllContacts(vm.isSelectedAllContacts)"></th>
                             <th>Full Name</th>
@@ -22,7 +22,7 @@
                         </thead>
                         <tbody>
                         <tr class="crm-hover" ng-repeat="contact in vm.task.contacts">
-                            <td><input type="checkbox" ng-model="contact.checked" ng-click="vm.selectOneContact();$event.stopPropagation()"></td>
+                            <td><input ng-show="vm.canEdit" type="checkbox" ng-model="contact.checked" ng-click="vm.selectOneContact();$event.stopPropagation()"></td>
                             <td>{{contact.firstName + ' ' + contact.lastName}}</td>
                             <td>{{contact.emails.length > 0 ? contact.emails[0].name :''}}</td>
                             <td class="hidden-xs">{{contact.addresses.length > 0 ? contact.addresses[0].addressLine : ''}}</td>
@@ -36,9 +36,9 @@
         <uib-accordion-group is-open="true">
             <div class="accordion--header">
                 <uib-accordion-heading>
-                    <div class="panel-heading" ng-init="options={canEdit:true}" ng-click="options.canEdit = !options.canEdit">
+                    <div class="panel-heading">
                         <crm-contact-table-header title="Companies" adding-function="vm.addCompany"
-                                                  removing-function="vm.removeCompanies" vm="options"/>
+                                                  removing-function="vm.removeCompanies" vm="vm"/>
                     </div>
                 </uib-accordion-heading>
             </div>
@@ -47,7 +47,7 @@
                     <table class="table table-condensed">
                         <thead>
                         <tr>
-                            <th><input ng-hide="vm.task.companies.length === 0" type="checkbox"
+                            <th><input ng-show="vm.canEdit && vm.task.companies.length > 0" type="checkbox"
                                        ng-model="vm.isSelectedAllCompanies"
                                        ng-click="vm.selectAllCompanies(vm.isSelectedAllCompanies)"></th>
                             <th>Name</th>
@@ -56,7 +56,7 @@
                         </thead>
                         <tbody>
                         <tr class="crm-hover" ng-repeat="company in vm.task.companies">
-                            <td><input type="checkbox" ng-model="company.checked" ng-click="vm.selectOneCompany();$event.stopPropagation()"></td>
+                            <td><input ng-show="vm.canEdit" type="checkbox" ng-model="company.checked" ng-click="vm.selectOneCompany();$event.stopPropagation()"></td>
                             <td>{{company.name}}</td>
                             <td>{{company.employeeNumberCategory.description}}</td>
                         </tr>

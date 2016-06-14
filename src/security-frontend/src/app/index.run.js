@@ -6,8 +6,10 @@
     /** @ngInject */
     function run($rootScope, $state, authService) {
         authService.getAuthStatus().then(authService.restore,
-            function () {
-                event.preventDefault();
+            function (event) {
+                if (event && event.preventDefault) {
+                    event.preventDefault();
+                }
                 $state.go('login');
             });
 
