@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author yauheni.putsykovich
  */
-@Service
+
 public interface StatusService {
 
     List<NamedEntity> getAllStatuses();

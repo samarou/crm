@@ -1,5 +1,6 @@
 package com.itechart.security.business.model.persistent.task;
 
+import com.itechart.security.business.model.enums.ObjectTypes;
 import com.itechart.security.business.model.persistent.Contact;
 import com.itechart.security.business.model.persistent.SecuredEntity;
 import com.itechart.security.business.model.persistent.company.Company;
@@ -63,5 +64,10 @@ public class Task extends SecuredEntity {
     @Override
     public Long getId() {
         return id;
+    }
+
+    @Override
+    public String getObjectType() {
+        return ObjectTypes.TASK.getName();
     }
 }
