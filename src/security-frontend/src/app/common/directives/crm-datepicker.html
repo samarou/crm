@@ -7,7 +7,7 @@
                is-open="isOpen"
                close-text="Close" readonly/>
         <span class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-click="isOpen = true">
+            <button type="button" class="btn btn-default" ng-click="isOpen = true" ng-disabled="!canEdit">
                 <i class="glyphicon glyphicon-calendar"></i>
             </button>
         </span>

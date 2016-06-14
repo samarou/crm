@@ -8,6 +8,8 @@
     /** @ngInject */
     function collections() {
         return {
+            getChecked: getChecked,
+            getId: getId,
             byId: byId,
             compare: compare,
             propertyComparator: propertyComparator,
@@ -16,6 +18,14 @@
             find: find,
             exists: exists
         };
+
+        function getChecked(item) {
+            return item.checked;
+        }
+
+        function getId(item) {
+            return item.id;
+        }
 
         function byId(a, b) {
             return a.id === b.id;

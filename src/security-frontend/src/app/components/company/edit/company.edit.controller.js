@@ -10,7 +10,7 @@
                                    $stateParams, $q) {
         var vm = this;
 
-        vm.canEdit = false;
+        vm.canEdit = true;
         vm.company = {};
         vm.submitText = 'Edit';
         vm.title = 'Edit company';
@@ -20,6 +20,7 @@
         vm.aclHandler = companyDetailsService.createAclHandler(function () {
             return vm.company.id;
         });
+        vm.aclHandler.canEdit = vm.canEdit;
 
         init();
 
