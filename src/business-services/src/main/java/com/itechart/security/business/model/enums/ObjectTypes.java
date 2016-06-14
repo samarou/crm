@@ -9,7 +9,8 @@ public enum ObjectTypes {
 
     CONTACT("sample.Contact"),
     ORDER("sample.Order"),
-    COMPANY("sample.Company");
+    COMPANY("sample.Company"),
+    TASK("sample.Task");
 
     private String name;
 
