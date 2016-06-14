@@ -37,13 +37,16 @@ public class TaskServiceImpl implements TaskService {
     private UserService userService;
 
     @Override
-    public int count() {
-        return taskDao.loadAll().size();
+    @Transactional
+    public long save(TaskDto dto) {
+        Task task = convertTaskDto(dto);
+        task.setCreatorId(getAuthenticatedUserId());
+        return taskDao.save(task);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public TaskDto get(Long id) {
+    public TaskDto get(long id) {
         Task task = taskDao.get(id);
         PublicUserDto creator = userService.getPublicUser(task.getCreatorId());
         PublicUserDto assignee = task.getAssigneeId() != null
@@ -85,32 +88,10 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
-    public Long save(TaskDto dto) {
-        Task task = convertTaskDto(dto);
-        task.setCreatorId(getAuthenticatedUserId());
-        return taskDao.save(task);
-    }
-
-    @Override
-    @Transactional
-    public void saveOrUpdate(TaskDto dto){
-        Task task = convertTaskDto(dto);
-        task.setCreatorId(getAuthenticatedUserId());
-        taskDao.saveOrUpdate(task);
-    }
-
-    @Override
-    @Transactional
-    public void merge(TaskDto dto) {
-        Task task = convertTaskDto(dto);
-        task.setCreatorId(getAuthenticatedUserId());
-        taskDao.merge(task);
-    }
-
-    @Override
-    @Transactional
     public void update(TaskDto taskDto) {
-        taskDao.update(convertTaskDto(taskDto));
+        Task task = convertTaskDto(taskDto);
+        task.setCreatorId(taskDto.getCreator().getId());
+        taskDao.update(task);
     }
 
     @Override
