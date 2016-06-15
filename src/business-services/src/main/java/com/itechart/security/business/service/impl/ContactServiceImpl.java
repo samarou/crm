@@ -30,6 +30,8 @@ import static com.itechart.security.business.model.dto.utils.DtoConverter.conver
 @Service
 public class ContactServiceImpl implements ContactService {
 
+    private static final Logger logger = LoggerFactory.getLogger(ContactServiceImpl.class);
+
     @Autowired
     private ContactDao contactDao;
 
@@ -75,6 +77,7 @@ public class ContactServiceImpl implements ContactService {
     public Long saveContact(ContactDto contactDto) {
         Contact contact = convert(contactDto);
         Long contactId = contactDao.save(contact);
+        historyEntryService.startHistory(buildObjectKey(contactId));
         moveFilesToTargetDirectory(contact);
         return contactId;
     }
@@ -94,18 +97,17 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<ContactDto> getContacts() {
-        return convertContacts(contactDao.loadAll());
-    }
-
-    @Override
     @Transactional
     public void updateContact(ContactDto contactDto) {
         Contact contact = convert(contactDto);
         contactDao.update(contact);
         moveFilesToTargetDirectory(contact);
-        historyEntryService.updateHistory(contact.getId());
+        historyEntryService.updateHistory(getObjectIdentityId(contact.getId()));
+    }
+
+    private ObjectKey getObjectIdentityId(long contactId) {
+        ObjectType objectType = objectTypeService.getObjectTypeByName(ObjectTypes.CONTACT.getName());
+        return new ObjectKey(objectType.getId(), contactId);
     }
 
     private void moveFilesToTargetDirectory(Contact contact) {

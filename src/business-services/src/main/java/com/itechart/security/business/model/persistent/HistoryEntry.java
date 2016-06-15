@@ -1,5 +1,7 @@
 package com.itechart.security.business.model.persistent;
 
+import com.itechart.security.model.persistent.BaseEntity;
+
 import javax.persistence.*;
 import java.util.Date;
 

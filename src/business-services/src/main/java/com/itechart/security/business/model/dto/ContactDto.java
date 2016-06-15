@@ -45,11 +45,5 @@ public class ContactDto {
 
     private Set<SkillDto> skills;
 
-    public HistoryEntryDto getHistory() {
-        return history;
-    }
-
-    public void setHistory(HistoryEntryDto history) {
-        this.history = history;
-    }
+    private HistoryEntryDto history;
 }
