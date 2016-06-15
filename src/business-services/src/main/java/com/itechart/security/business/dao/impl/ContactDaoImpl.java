@@ -18,6 +18,10 @@ import org.springframework.util.StringUtils;
 import java.util.Date;
 import java.util.List;
 
+import static org.hibernate.criterion.MatchMode.ANYWHERE;
+import static org.hibernate.criterion.Restrictions.disjunction;
+import static org.hibernate.criterion.Restrictions.ilike;
+
 /**
  * @author andrei.samarou
  */
@@ -62,14 +66,14 @@ public class ContactDaoImpl extends BaseHibernateDao<Contact, Long, ContactFilte
     protected Criteria createFilterCriteria(Session session, ContactFilter filter) {
         Criteria criteria = session.createCriteria(Contact.class, "u");
         if (StringUtils.hasText(filter.getText())) {
-            criteria.add(
-                Restrictions.disjunction(
-                    Restrictions.ilike("u.address.name", filter.getText(), MatchMode.ANYWHERE),
-                    Restrictions.ilike("u.firstName", filter.getText(), MatchMode.ANYWHERE),
-                    Restrictions.ilike("u.lastName", filter.getText(), MatchMode.ANYWHERE),
-                    Restrictions.ilike("u.email.name", filter.getText(), MatchMode.ANYWHERE)
-                )
-            );
+            criteria.createAlias("emails", "e")
+                    .createAlias("addresses", "a")
+                    .add(disjunction(
+                            ilike("a.addressLine", filter.getText(), ANYWHERE),
+                            ilike("u.firstName", filter.getText(), ANYWHERE),
+                            ilike("u.lastName", filter.getText(), ANYWHERE),
+                            ilike("e.name", filter.getText(), ANYWHERE)
+                    ));
         }
         return criteria;
     }
