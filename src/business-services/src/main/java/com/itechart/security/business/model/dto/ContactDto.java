@@ -44,4 +44,6 @@ public class ContactDto {
     private Set<AttachmentDto> attachments;
 
     private Set<SkillDto> skills;
+
+    private HistoryEntryDto history;
 }

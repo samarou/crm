@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="yauheni.putsykovich" id="1">
+        <createTable tableName="history">
+            <column autoIncrement="true" name="id" type="BIGINT UNSIGNED" remarks="Identifier">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="object_id" type="BIGINT UNSIGNED" remarks="Identifier of business object">
+                <constraints nullable="false"/>
+            </column>
+            <column name="object_type_id" type="BIGINT UNSIGNED" remarks="Type of business object">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creator_id" type="BIGINT UNSIGNED" remarks="Identifier of creator"/>
+            <column name="created_date" type="DATETIME" remarks="Date when object was created">
+                <constraints nullable="false"/>
+            </column>
+            <column name="editor_id" type="BIGINT UNSIGNED" remarks="Identifier of editor"/>
+            <column name="modification_date" type="DATETIME" remarks="Date of last modification">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="yauheni.putsykovich" id="2">
+        <addForeignKeyConstraint baseColumnNames="object_type_id" baseTableName="history"
+                                 referencedColumnNames="id" referencedTableName="object_type" constraintName="fk_history_object_type_id"
+                                 deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+    <changeSet author="yauheni.putsykovich" id="3">
+        <addForeignKeyConstraint baseColumnNames="creator_id" baseTableName="history"
+                                 referencedColumnNames="id" referencedTableName="user" constraintName="fk_history__creator_id__user__id"
+                                 deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+    <changeSet author="yauheni.putsykovich" id="4">
+        <addForeignKeyConstraint baseColumnNames="editor_id" baseTableName="history"
+                                 referencedColumnNames="id" referencedTableName="user" constraintName="fk_history__editor_id__user__id"
+                                 deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+    <changeSet author="yauheni.putsykovich" id="5">
+        <createIndex tableName="history" indexName="idx_history__object_id__object_type_id" unique="true">
+            <column name="object_id"/>
+            <column name="object_type_id"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

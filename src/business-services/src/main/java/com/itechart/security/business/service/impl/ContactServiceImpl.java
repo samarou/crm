@@ -3,11 +3,17 @@ package com.itechart.security.business.service.impl;
 import com.itechart.security.business.dao.*;
 import com.itechart.security.business.filter.ContactFilter;
 import com.itechart.security.business.model.dto.ContactDto;
+import com.itechart.security.business.model.dto.HistoryEntryDto;
+import com.itechart.security.business.model.enums.ObjectTypes;
 import com.itechart.security.business.model.persistent.*;
+import com.itechart.security.business.model.persistent.ObjectKey;
 import com.itechart.security.business.service.ContactService;
 import com.itechart.security.business.service.FileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.itechart.security.business.service.HistoryEntryService;
+import com.itechart.security.model.persistent.ObjectType;
+import com.itechart.security.service.ObjectTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,6 +59,12 @@ public class ContactServiceImpl implements ContactService {
     @Autowired
     private FileService fileService;
 
+    @Autowired
+    private HistoryEntryService historyEntryService;
+
+    @Autowired
+    private ObjectTypeService objectTypeService;
+
     @Override
     @Transactional
     public List<ContactDto> findContacts(ContactFilter filter) {
@@ -65,6 +77,7 @@ public class ContactServiceImpl implements ContactService {
     public Long saveContact(ContactDto contactDto) {
         Contact contact = convert(contactDto);
         Long contactId = contactDao.save(contact);
+        historyEntryService.startHistory(buildObjectKey(contactId));
         moveFilesToTargetDirectory(contact);
         return contactId;
     }
@@ -72,7 +85,15 @@ public class ContactServiceImpl implements ContactService {
     @Override
     @Transactional
     public ContactDto get(Long id) {
-        return convert(contactDao.get(id));
+        ContactDto contactDto = convert(contactDao.get(id));
+        HistoryEntryDto historyEntry = historyEntryService.getLastModification(buildObjectKey(id));
+        contactDto.setHistory(historyEntry);
+        return contactDto;
+    }
+
+    private ObjectKey buildObjectKey(long contactId) {
+        ObjectType objectType = objectTypeService.getObjectTypeByName(ObjectTypes.CONTACT.getName());
+        return new ObjectKey(objectType.getId(), contactId);
     }
 
     @Override
@@ -81,6 +102,12 @@ public class ContactServiceImpl implements ContactService {
         Contact contact = convert(contactDto);
         contactDao.update(contact);
         moveFilesToTargetDirectory(contact);
+        historyEntryService.updateHistory(getObjectIdentityId(contact.getId()));
+    }
+
+    private ObjectKey getObjectIdentityId(long contactId) {
+        ObjectType objectType = objectTypeService.getObjectTypeByName(ObjectTypes.CONTACT.getName());
+        return new ObjectKey(objectType.getId(), contactId);
     }
 
     private void moveFilesToTargetDirectory(Contact contact) {

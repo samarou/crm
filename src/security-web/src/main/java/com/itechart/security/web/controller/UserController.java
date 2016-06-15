@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.itechart.security.core.SecurityUtils.getAuthenticatedUserId;
 import static java.util.stream.Collectors.toList;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
@@ -103,6 +104,6 @@ public class UserController {
     @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/users/current/acls", method = GET)
     public List<UserDefaultAclEntryDto> getDefaultAcls() {
-        return userService.getDefaultAcls();
+        return userService.getDefaultAcls(getAuthenticatedUserId());
     }
 }

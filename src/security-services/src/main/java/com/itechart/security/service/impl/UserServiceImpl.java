@@ -1,6 +1,5 @@
 package com.itechart.security.service.impl;
 
-import com.itechart.security.core.SecurityUtils;
 import com.itechart.security.dao.UserDao;
 import com.itechart.security.model.dto.*;
 import com.itechart.security.model.filter.UserFilter;
@@ -24,7 +23,6 @@ import static com.itechart.common.model.util.CollectionConverter.convertCollecti
 import static com.itechart.security.model.util.AclConverter.convert;
 import static com.itechart.security.model.util.UserConverter.convertToPublicDto;
 import static com.itechart.security.model.util.UserConverter.convertToSecuredDto;
-import static com.itechart.security.model.util.UserConverter.convert;
 import static com.itechart.security.model.util.UserFilterConverter.convert;
 import static java.util.stream.Collectors.toList;
 
@@ -104,7 +102,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public Long createUser(SecuredUserDto userDto) {
-        User user = convert(userDto);
+        User user = UserConverter.convert(userDto);
         user.setAcls(getDefaultAcls(user, userDto.getAcls()));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return (Long) userDao.save(user);
@@ -115,7 +113,7 @@ public class UserServiceImpl implements UserService {
     public void updateUser(SecuredUserDto userDto) {
         //todo: try resolve saving user by using 'update'
 //        userDao.update(user);
-        User user = convert(userDto);
+        User user = UserConverter.convert(userDto);
         user.setAcls(getDefaultAcls(user, userDto.getAcls()));
         userDao.merge(user);
     }
@@ -139,7 +137,7 @@ public class UserServiceImpl implements UserService {
         if (user != null) {
             userDao.setUserActivity(userId, true);
         }
-        return convertToPublicDto(user);
+        return UserConverter.convertToPublicDto(user);
     }
 
     @Override
@@ -163,14 +161,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public List<UserDefaultAclEntryDto> getDefaultAcls(Long userId) {
-        User user = userDao.get(userId);
-        return convertCollection(user.getAcls(), AclConverter::convert);
-    }
-
-    @Override
-    @Transactional
-    public List<UserDefaultAclEntryDto> getDefaultAcls() {
-        long userId = SecurityUtils.getAuthenticatedUserId();
         User user = userDao.get(userId);
         return convertCollection(user.getAcls(), AclConverter::convert);
     }

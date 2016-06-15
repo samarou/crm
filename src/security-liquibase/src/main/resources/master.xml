@@ -15,6 +15,7 @@
     <include file="changelog/1.6/160502-d543758_contact_new_fields.xml" relativeToChangelogFile="true"/>
     <include file="changelog/1.6/160519-d543758_contact_new_fields_data.xml" relativeToChangelogFile="true"/>
     <include file="changelog/1.6/160525-d543758_drop_not_null_constraint.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/1.6/160519-add_history_table.xml" relativeToChangelogFile="true"/>
     <include file="changelog/1.7/160530-d558732_add_industry_and_skills_fields.xml" relativeToChangelogFile="true"/>
     <include file="changelog/1.8/160603-create_task_and_related_tables.xml" relativeToChangelogFile="true"/>
     <include file="changelog/1.8/160531-m560521_attachments_refactoring.xml" relativeToChangelogFile="true"/>
