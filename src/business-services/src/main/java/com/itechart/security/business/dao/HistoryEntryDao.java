@@ -14,4 +14,5 @@ public interface HistoryEntryDao {
 
     void update(HistoryEntry object);
 
+    void delete(ObjectKey objectKey);
 }

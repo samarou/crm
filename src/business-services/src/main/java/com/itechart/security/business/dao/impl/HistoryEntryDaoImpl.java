@@ -32,4 +32,10 @@ public class HistoryEntryDaoImpl extends AbstractHibernateDao<HistoryEntry> impl
         getHibernateTemplate().update(object);
     }
 
+    @Override
+    public void delete(ObjectKey objectKey) {
+        HistoryEntry historyEntry = getLastModification(objectKey);
+        getHibernateTemplate().delete(historyEntry);
+    }
+
 }

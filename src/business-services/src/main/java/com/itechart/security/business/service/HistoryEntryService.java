@@ -14,4 +14,5 @@ public interface HistoryEntryService {
 
     void updateHistory(ObjectKey objectKey);
 
+    void deleteHistory(ObjectKey objectKey);
 }

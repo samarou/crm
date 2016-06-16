@@ -127,6 +127,7 @@ public class ContactServiceImpl implements ContactService {
     @Transactional
     public void deleteById(Long id) {
         contactDao.delete(id);
+        historyEntryService.deleteHistory(buildObjectKey(id));
     }
 
     @Override

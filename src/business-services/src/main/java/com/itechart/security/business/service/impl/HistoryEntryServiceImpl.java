@@ -55,4 +55,9 @@ public class HistoryEntryServiceImpl implements HistoryEntryService {
         historyEntry.setEditorId(getAuthenticatedUserId());
         historyDao.update(historyEntry);
     }
+
+    @Override
+    public void deleteHistory(ObjectKey objectKey) {
+        historyDao.delete(objectKey);
+    }
 }
