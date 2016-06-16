@@ -8,8 +8,5 @@ import org.springframework.stereotype.Repository;
 /**
  * @author yauheni.putsykovich
  */
-@Repository
 public interface TaskDao extends BaseDao<Task, Long, TaskFilter> {
-
-    void saveOrUpdate(Task task);
 }

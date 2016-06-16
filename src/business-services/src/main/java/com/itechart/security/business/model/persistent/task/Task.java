@@ -1,5 +1,6 @@
 package com.itechart.security.business.model.persistent.task;
 
+import com.itechart.security.business.model.enums.ObjectTypes;
 import com.itechart.security.business.model.persistent.Contact;
 import com.itechart.security.business.model.persistent.SecuredEntity;
 import com.itechart.security.business.model.persistent.company.Company;
@@ -9,6 +10,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+
+import static javax.persistence.FetchType.LAZY;
 
 /**
  * @author yauheni.putsykovich
@@ -48,13 +51,13 @@ public class Task extends SecuredEntity {
     @ManyToOne
     private Priority priority;
 
-    @ManyToMany
+    @ManyToMany(fetch = LAZY)
     @JoinTable(name = "task_company",
             joinColumns = {@JoinColumn(name = "task_id", updatable = false)},
             inverseJoinColumns = {@JoinColumn(name = "company_id", updatable = false)})
     private List<Company> companies;
 
-    @ManyToMany
+    @ManyToMany(fetch = LAZY)
     @JoinTable(name = "task_contact",
             joinColumns = {@JoinColumn(name = "task_id", updatable = false)},
             inverseJoinColumns = {@JoinColumn(name = "contact_id", updatable = false)})
@@ -63,5 +66,10 @@ public class Task extends SecuredEntity {
     @Override
     public Long getId() {
         return id;
+    }
+
+    @Override
+    public String getObjectType() {
+        return ObjectTypes.TASK.getName();
     }
 }

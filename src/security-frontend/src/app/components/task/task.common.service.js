@@ -10,17 +10,21 @@
         .service('taskCommonService', taskCommonService);
 
     /** @ngInject */
-    function taskCommonService($log, taskService, searchService, $state, $q, userService, dialogService, collections, util) {
+    function taskCommonService(aclServiceBuilder, taskService, taskSecurityService, searchService, $state, $q, userService, dialogService, collections, util) {
         var openSearchContactDialog = createAddAction('app/components/task/tabs/contacts/search-contact-dialog.view.html', 'Add Contact for Task', searchService.contactMode());
         var openSearchCompanyDialog = createAddAction('app/components/task/tabs/contacts/search-company-dialog.view.html', 'Add Company for Task', searchService.companyMode());
         var datepickerOptions = {
         };
 
         return {
-            initContext: initContext
+            initContext: initContext,
+            createAclHandler: createAclHandler
         };
 
         function initContext(context) {
+            function contextResolver() {
+                return context;
+            }
             function taskResolver() {
                 return context.task;
             }
@@ -33,9 +37,14 @@
                 return context.task.companies = context.task.companies || [];
             }
 
+            function aclsHandler() {
+                return context.aclHandler.acls || [];
+            }
+
             context.datepickerOptions = datepickerOptions;
 
-            context.submit = createSubmitAction(taskResolver);
+            context.aclHandler = createAclHandler(taskResolver, contextResolver);
+            context.submit = createSaveOrUpdateAction(taskResolver, aclsHandler);
             context.cancel = goToTaskList;
 
             context.addCompany = createAddCompaniesForTaskAction(companiesResolver);
@@ -59,6 +68,14 @@
             });
 
             return loadStaticData(context);
+        }
+
+        function createAclHandler(getid) {
+            return {
+                canEdit: true,
+                acls: [],
+                actions: aclServiceBuilder(getid, taskService)
+            };
         }
 
         function loadStaticData(scope) {
@@ -88,7 +105,7 @@
         function createRemoveAction(collectionResolver, handler) {
             var remove = util.createRemoveAction(collectionResolver, handler);
             return function () {
-                if (arguments.length > 0 && arguments[arguments.length - 1]) {
+                if (arguments.length > 0 && arguments[arguments.length - 1] && arguments[arguments.length - 1].stopPropagation) {
                     arguments[arguments.length - 1].stopPropagation();// to prevent collapsing of panel
                 }
                 remove();
@@ -99,13 +116,18 @@
             $state.go('tasks.list');
         }
 
-        function createSubmitAction(taskResolver) {
+        function createSaveOrUpdateAction(taskResolver, aclsHandler) {
             return function () {
                 var task = taskResolver();
                 if (task.id) {
-                    taskService.update(task).then(goToTaskList);
+                    taskService.update(task).then(function () {
+                        taskService.updateAcls(task.id, aclsHandler()).then(goToTaskList);
+                    });
                 } else {
-                    taskService.create(task).then(goToTaskList);
+                    taskService.create(task).then(function (response) {
+                        var id = response.data;
+                        taskService.updateAcls(id, aclsHandler()).then(goToTaskList);
+                    });
                 }
             };
         }

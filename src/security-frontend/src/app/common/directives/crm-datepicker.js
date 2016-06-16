@@ -17,7 +17,8 @@
             replace: true,
             scope: {
                 model: '=',
-                datepickerOptions: '=?'
+                datepickerOptions: '=?',
+                isEdit: '='
             }
         };
     }

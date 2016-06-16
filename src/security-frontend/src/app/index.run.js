@@ -7,7 +7,9 @@
     function run($rootScope, $state, authService) {
         authService.getAuthStatus().then(authService.restore,
             function (event) {
-                event.preventDefault();
+                if (event && event.preventDefault) {
+                    event.preventDefault();
+                }
                 $state.go('login');
             });
 
