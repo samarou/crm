@@ -20,4 +20,5 @@
     <include file="changelog/1.8/160603-create_task_and_related_tables.xml" relativeToChangelogFile="true"/>
     <include file="changelog/1.8/160531-m560521_attachments_refactoring.xml" relativeToChangelogFile="true"/>
     <include file="changelog/1.9/160614-add_task_object_type_and_privileges.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/1.9/160614-add_history_entry_for_existring_contacts.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
