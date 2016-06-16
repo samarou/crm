@@ -9,6 +9,7 @@ import com.itechart.security.model.dto.DataPageDto;
  */
 public interface TaskService {
 
+    //methods declaration
     long save(TaskDto taskDto);
 
     TaskDto get(long id);
