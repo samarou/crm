@@ -13,7 +13,7 @@
         vm.isSpecialist = authService.isSpecialist;
         vm.isActive = isActive;
         vm.isLoggedUser = isLoggedUser;
-        vm.getUserName = getUserName;
+        vm.getUserName = authService.getUserName;
         vm.logout = logout;
 
         function isActive(path) {
@@ -22,11 +22,6 @@
 
         function isLoggedUser() {
             return authService.isAuthenticated();
-        }
-
-        function getUserName() {
-            var auth = authService.getAuthentication();
-            return auth ? auth.username : null;
         }
 
         function logout() {
