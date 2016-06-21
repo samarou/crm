@@ -4,7 +4,7 @@
             <input type="text" class="form-control"
                    uib-datepicker-popup
                    ng-model="model"
-                   ng-change="onchange()"
+                   ng-change="onchange({newValue: model})"
                    is-open="isOpen"
                    datepicker-options="datepickerOptions"
                    close-text="Close" readonly/>

@@ -10,7 +10,7 @@
         .controller('TaskAddController', TaskAddController);
 
     /** @ngInject */
-    function TaskAddController(taskCommonService, authService) {
+    function TaskAddController(taskCommonService, authService, util, $log) {
         var vm = this;
 
         vm.canEdit = true;
@@ -18,8 +18,18 @@
         vm.title = 'Add Task';
         vm.submitText = 'Add';
 
-        vm.onStartDateChange = function () {
+        vm.onStartDateChange = function (newValue) {
             vm.task.endDate = new Date(vm.task.startDate);
+        };
+
+        vm.onDateTimeChange = function (newValue) {
+            var pass = util.shouldBeLess(newValue, vm.task.startDate);
+            if (!pass) {
+                var date = new Date(vm.task.startDate.getTime());
+                date.setHours(vm.task.startDate.getHours());
+                date.setMinutes(vm.task.startDate.getMinutes());
+                vm.task.endDate = date;
+            }
         };
 
         (function () {
