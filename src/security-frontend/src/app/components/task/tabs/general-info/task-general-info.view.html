@@ -46,6 +46,14 @@
                 </div>
             </div>
             <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="task-description">Details</label>
+                        <textarea id="task-description" class="form-control" ng-model="vm.task.description" rows="7" ng-maxlength="500"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-md-6 form-group">
                     <label for="task-status">Status</label>
                     <select id="task-status" class="form-control" ng-model="vm.task.status" ng-disabled="!vm.canEdit"
