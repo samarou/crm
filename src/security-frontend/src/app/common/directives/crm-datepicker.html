@@ -1,15 +1,19 @@
 <div class="datetime-picker">
-    <div class="pull-left input-group" ng-init="isOpen = false" title="Set up a date">
-        <input type="text" class="form-control"
-               datetime-picker
-               datepickerOptions="datepickerOptions"
-               ng-model="model"
-               is-open="isOpen"
-               close-text="Close" readonly/>
-        <span class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-click="isOpen = true" ng-disabled="!isEdit">
-                <i class="glyphicon glyphicon-calendar"></i>
-            </button>
-        </span>
+    <div class="input-group" ng-init="isOpen = false" title="Set up a date">
+        <p class="input-group">
+            <input type="text" class="form-control"
+                   uib-datepicker-popup
+                   ng-model="model"
+                   ng-change="onchange()"
+                   is-open="isOpen"
+                   datepicker-options="datepickerOptions"
+                   ng-required="true"
+                   close-text="Close" readonly/>
+          <span class="input-group-btn" ng-disabled="!isEdit">
+                <button type="button" class="btn btn-default" ng-click="isOpen = true">
+                    <i class="glyphicon glyphicon-calendar"></i>
+                </button>
+          </span>
+        </p>
     </div>
 </div>

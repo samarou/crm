@@ -29,7 +29,7 @@
             var auth = getAuthentication();
             return auth ? auth.username : null;
         }
-        
+
         function setAuthentication(authData) {
             service.authentication = authData;
         }
