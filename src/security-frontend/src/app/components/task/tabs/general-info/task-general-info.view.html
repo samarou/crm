@@ -12,7 +12,7 @@
         <div class="col-md-12">
             <div class="form-group" crm-input-validation>
                 <label for="task-location">Location</label>
-                <input id="task-location" type="text" name="taskLocation" class="form-control" ng-model="vm.task.location" required ng-maxlength="500" ng-readonly="!vm.canEdit">
+                <input id="task-location" type="text" name="taskLocation" class="form-control" ng-model="vm.task.location" ng-maxlength="500" ng-readonly="!vm.canEdit">
                 <span ng-show="taskForm.taskName.$dirty && taskForm.taskName.$error.required" class="help-block">Task location is required</span>
             </div>
         </div>
