@@ -61,3 +61,12 @@
         </table>
     </div>
 </div>
+<div class="crm-text-center">
+    <uib-pagination class="pagination-sm" ng-change="vm.bundle.paging.onPageChanged()"
+                    ng-model="vm.bundle.paging.currentPage"
+                    total-items="vm.bundle.paging.totalCount"
+                    items-per-page="vm.bundle.paging.itemsPerPage"
+                    max-size="vm.bundle.paging.visiblePages"
+                    boundary-link-numbers="true" rotate="false">
+    </uib-pagination>
+</div>
