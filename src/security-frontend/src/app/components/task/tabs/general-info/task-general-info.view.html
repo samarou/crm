@@ -7,6 +7,13 @@
         </div>
     </div>
     <div class="row">
+        <div class="form-group col-md-12" crm-input-validation>
+            <label for="task-location">Location</label>
+            <input id="task-location" type="text" name="taskLocation" class="form-control" ng-model="vm.task.location" required ng-readonly="!vm.canEdit">
+            <span ng-show="taskForm.taskName.$dirty && taskForm.taskName.$error.required" class="help-block">Task location is required</span>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-1">
             <div class="form-group">
                 <label for="timeless">Timeless</label>
