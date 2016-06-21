@@ -59,10 +59,11 @@ public class TaskServiceImpl implements TaskService {
     @Transactional(readOnly = true)
     public DataPageDto<TaskDto> find(TaskFilter filter) {
         List<Task> tasks = taskDao.find(filter);
+        int totalCount = taskDao.count(filter);
         List<TaskDto> result = joinUsers(tasks);
         DataPageDto<TaskDto> dataPage = new DataPageDto<>();
         dataPage.setData(result);
-        dataPage.setTotalCount(result.size());
+        dataPage.setTotalCount(totalCount);
         return dataPage;
     }
 
