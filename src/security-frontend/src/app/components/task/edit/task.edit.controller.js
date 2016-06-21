@@ -10,12 +10,18 @@
         .controller('TaskEditController', TaskEditController);
 
     /** @ngInject */
-    function TaskEditController(taskService, taskSecurityService, taskCommonService, $stateParams, $q) {
+    function TaskEditController(taskService, taskSecurityService, taskCommonService, $stateParams, $q, $log) {
         var vm = this;
 
         vm.canEdit = false;
+        vm.timeless = true;
         vm.title = 'Edit Task';
         vm.submitText = 'Edit';
+        
+
+        vm.onStartDateChange = function () {
+            vm.task.endDate = new Date(vm.task.startDate);
+        };
 
         (function () {
             taskCommonService.initContext(vm);

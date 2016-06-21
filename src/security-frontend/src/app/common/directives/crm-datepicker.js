@@ -17,6 +17,7 @@
             replace: true,
             scope: {
                 model: '=',
+                onchange: '&?',
                 datepickerOptions: '=?',
                 isEdit: '='
             }
