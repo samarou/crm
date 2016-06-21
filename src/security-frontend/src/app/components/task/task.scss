@@ -6,14 +6,16 @@
 }
 
 .datetime-group {
-    label{
+    label {
         display: inline-block;
         margin-bottom: 0;
         padding-bottom: 0;
         height: 34px;
     }
-    .form-group{
+
+    .datetime-group--date {
         float: left;
         margin-right: 10px;
     }
 }
+

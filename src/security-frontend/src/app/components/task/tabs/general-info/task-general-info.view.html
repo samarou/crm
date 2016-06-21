@@ -22,7 +22,7 @@
         </div>
         <div ng-class="vm.timeless ? 'collapse' : 'col-md-4'">
             <div class="datetime-group">
-                <div class="form-group">
+                <div class="datetime-group--date form-group">
                     <label>Start date/time</label>
                     <crm-datepicker model="vm.task.startDate" onchange="vm.onStartDateChange()" datepickerOptions="vm.datepickerOptions" is-edit="vm.canEdit"></crm-datepicker>
                 </div>
@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="datetime-group">
-                <div class="form-group">
+                <div class="datetime-group--date form-group">
                     <label>End date/time</label>
                     <crm-datepicker model="vm.task.endDate" datepickerOptions="vm.datepickerOptions" is-edit="vm.canEdit"></crm-datepicker>
                 </div>
