@@ -46,14 +46,6 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label for="task-description">Details</label>
-                        <textarea id="task-description" class="form-control" ng-model="vm.task.description" rows="7" ng-maxlength="500"></textarea>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
                 <div class="col-md-6 form-group">
                     <label for="task-status">Status</label>
                     <select id="task-status" class="form-control" ng-model="vm.task.status" ng-disabled="!vm.canEdit"
@@ -70,6 +62,14 @@
                     <label for="task-assignee">Assignee</label>
                     <select id="task-assignee" class="form-control" ng-model="vm.task.assignee" ng-disabled="!vm.canEdit"
                             ng-options="x as x | fullName for x in vm.assigns track by x.id"></select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="task-description">Details</label>
+                        <textarea id="task-description" class="form-control" ng-model="vm.task.description" rows="7" ng-maxlength="500"></textarea>
+                    </div>
                 </div>
             </div>
         </div>
