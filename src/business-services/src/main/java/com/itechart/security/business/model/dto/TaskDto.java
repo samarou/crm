@@ -22,6 +22,7 @@ import static java.util.Collections.emptyList;
 public class TaskDto {
     private Long id;
     private String name;
+    private String location;
     private String description;
     private Date startDate;
     private Date endDate;

@@ -28,6 +28,9 @@ public class Task extends SecuredEntity {
     @Column(name = "name", nullable = false, length = 150)
     private String name;
 
+    @Column(name = "location", length = 500)
+    private String location;
+
     @Column(name = "description", length = 300)
     private String description;
 
