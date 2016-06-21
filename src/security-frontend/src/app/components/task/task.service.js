@@ -46,11 +46,11 @@
         }
 
         function getPriorities() {
-            return $http.get('rest/tasks/priorities');
+            return $http.get('rest/tasks/priorities', {cache: true});
         }
 
         function getStatuses() {
-            return $http.get('rest/tasks/statuses');
+            return $http.get('rest/tasks/statuses', {cache: true});
         }
 
         function getAcls(id) {
