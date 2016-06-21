@@ -18,7 +18,6 @@
         vm.title = 'Edit Task';
         vm.submitText = 'Edit';
         
-
         vm.onStartDateChange = function () {
             vm.task.endDate = new Date(vm.task.startDate);
         };
