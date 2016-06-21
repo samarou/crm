@@ -10,7 +10,8 @@
         return {
             createDelayTypingListener: createDelayTypingListener,
             createSelectAction: createSelectAction,
-            createRemoveAction: createRemoveAction
+            createRemoveAction: createRemoveAction,
+            dateShouldBeLess: dateShouldBeLess
         };
 
         function createDelayTypingListener(action, delay) {
@@ -53,6 +54,14 @@
                 }));
                 handlerCallback(diff);
             };
+        }
+
+        function dateShouldBeLess(time, target) {
+            if (!angular.isDate(time) || !angular.isDate(target)) {
+                return false;
+            }
+
+            return time.getTime() >= target.getTime();
         }
     }
 })();

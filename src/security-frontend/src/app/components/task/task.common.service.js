@@ -43,6 +43,8 @@
 
             context.datepickerOptions = datepickerOptions;
 
+            context.onStartDateChange = createStartDateChangeListener(taskResolver);
+            context.onDateTimeChange = createDateTimeChangeListener(taskResolver);
             context.aclHandler = createAclHandler(taskResolver, contextResolver);
             context.submit = createSaveOrUpdateAction(taskResolver, aclsHandler);
             context.cancel = goToTaskList;
@@ -70,6 +72,26 @@
             return loadStaticData(context);
         }
 
+        function createStartDateChangeListener(taskResolver) {
+            return function () {
+                var task = taskResolver();
+                task.endDate = new Date(task.startDate);
+            }
+        }
+
+        function createDateTimeChangeListener(taskResolver) {
+            return function(newValue){
+                var task = taskResolver();
+                var pass = util.dateShouldBeLess(newValue, task.startDate);
+                if (!pass) {
+                    var date = new Date(task.startDate.getTime());
+                    date.setHours(task.startDate.getHours());
+                    date.setMinutes(task.startDate.getMinutes());
+                    task.endDate = date;
+                }
+            }
+        }
+        
         function createAclHandler(getid) {
             return {
                 canEdit: true,
