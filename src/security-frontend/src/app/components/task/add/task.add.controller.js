@@ -14,7 +14,7 @@
         var vm = this;
 
         vm.canEdit = true;
-        vm.timeless = true;
+        vm.timeless = false;
         vm.title = 'Add Task';
         vm.submitText = 'Add';
 
@@ -30,9 +30,12 @@
                     startDate.setMinutes(0);
                     startDate.setHours(startDate.getHours() + 1);
                 }
+                var endDate = new Date(startDate.getTime());
+                endDate.setHours(endDate.getHours() + 1);
 
                 vm.task = {
                     startDate: startDate,
+                    endDate: endDate,
                     status: vm.statuses[0],// default is 'New', TODO: need to add some resolver
                     priority: vm.priorities[1],// default is 'Normal', TODO: need to add some resolver
                     assignee: currentUser

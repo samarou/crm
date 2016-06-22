@@ -71,9 +71,11 @@
                 var task = context.task;
                 if (isDate) {
                     task.endDate = new Date(newStartDateTime.getTime());
+                    task.endDate.setHours(task.endDate.getHours() + 1);
                 } else {
-                    if (task.endDate < newStartDateTime) {
+                    if (task.endDate <= newStartDateTime) {
                         task.endDate = new Date(newStartDateTime.getTime());
+                        task.endDate.setHours(task.endDate.getHours() + 1);
                     }
                 }
             }
@@ -82,9 +84,9 @@
         function createEndDateTimeChangeListener(context) {
             return function (newEndDateTime) {
                 var task = context.task;
-                if (newEndDateTime < task.startDate) {
+                if (newEndDateTime <= task.startDate) {
                     var date = new Date(task.startDate.getTime());
-                    date.setHours(task.startDate.getHours());
+                    date.setHours(task.startDate.getHours() + 1);
                     date.setMinutes(task.startDate.getMinutes());
                     task.endDate = date;
                 }
