@@ -14,7 +14,7 @@
         var vm = this;
 
         vm.canEdit = true;
-        vm.timeless = true;
+        vm.timeless = false;
         vm.title = 'Edit Task';
         vm.submitText = 'Save';
 
@@ -25,9 +25,6 @@
                 /*need converting because date have a millis format*/
                 vm.task.startDate = vm.task.startDate && new Date(vm.task.startDate);
                 vm.task.endDate = vm.task.endDate && new Date(vm.task.endDate);
-                vm.aclHandler = taskCommonService.createAclHandler(function () {
-                    return vm.task.id;
-                });
                 $q.all([
                     taskService.getAcls(vm.task.id),
                     taskSecurityService.checkAdminPermission(vm.task.id),
@@ -36,6 +33,8 @@
                     vm.aclHandler.acls = responses[0].data;
                     vm.aclHandler.canEdit = responses[1];
                     vm.canEdit = responses[2];
+                    
+                    vm.canEditDateTime = vm.canEdit;
                 });
             });
         })();

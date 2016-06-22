@@ -20,14 +20,6 @@
         };
 
         function initContext(context) {
-            function taskResolver() {
-                return context.task;
-            }
-
-            function aclHandlerResolver() {
-                return context.aclHandler;
-            }
-
             function contactsResolver() {
                 return context.task.contacts = context.task.contacts || [];
             }
@@ -36,10 +28,11 @@
                 return context.task.companies = context.task.companies || [];
             }
 
-            context.onStartDateTimeChange = createStartDateTimeChangeListener(taskResolver);
-            context.onEndDateTimeChange = createEndDateTimeChangeListener(taskResolver);
-            context.aclHandler = createAclHandler(taskResolver);
-            context.submit = createSaveOrUpdateAction(taskResolver, aclHandlerResolver);
+            context.onTimeless = createOnTimeless(context);
+            context.onStartDateTimeChange = createStartDateTimeChangeListener(context);
+            context.onEndDateTimeChange = createEndDateTimeChangeListener(context);
+            context.aclHandler = createAclHandler(context);
+            context.submit = createSaveOrUpdateAction(context);
             context.cancel = goToTaskList;
 
             context.addCompany = createAddCompaniesForTaskAction(companiesResolver);
@@ -65,9 +58,17 @@
             return loadStaticData(context);
         }
 
-        function createStartDateTimeChangeListener(taskResolver) {
+        function createOnTimeless(context) {
+            return function () {
+                if (context.canEdit) {
+                    context.canEditDateTime = !context.timeless;
+                }
+            }
+        }
+
+        function createStartDateTimeChangeListener(context) {
             return function (newStartDateTime, isDate) {
-                var task = taskResolver();
+                var task = context.task;
                 if (isDate) {
                     task.endDate = new Date(newStartDateTime.getTime());
                 } else {
@@ -78,9 +79,9 @@
             }
         }
 
-        function createEndDateTimeChangeListener(taskResolver) {
+        function createEndDateTimeChangeListener(context) {
             return function (newEndDateTime) {
-                var task = taskResolver();
+                var task = context.task;
                 if (newEndDateTime < task.startDate) {
                     var date = new Date(task.startDate.getTime());
                     date.setHours(task.startDate.getHours());
@@ -90,11 +91,13 @@
             }
         }
 
-        function createAclHandler(getid) {
+        function createAclHandler(context) {
             return {
                 canEdit: true,
                 acls: [],
-                actions: aclServiceBuilder(getid, taskService)
+                actions: aclServiceBuilder(function () {
+                    return context.task.id;
+                }, taskService)
             };
         }
 
@@ -136,10 +139,14 @@
             $state.go('tasks.list');
         }
 
-        function createSaveOrUpdateAction(taskResolver, aclHandlerResolver) {
+        function createSaveOrUpdateAction(context) {
             return function () {
-                var task = taskResolver();
-                var acl = aclHandlerResolver();
+                var acl = context.aclHandler;
+                var task = context.task;
+                if (!context.canEditDateTime) {
+                    task.startDate = null;
+                    task.endDate = null;
+                }
                 if (task.id) {
                     taskService.update(task).then(function () {
                         if (acl.canEdit) {
