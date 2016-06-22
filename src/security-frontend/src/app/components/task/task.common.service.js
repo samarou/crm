@@ -86,7 +86,7 @@
                 var task = context.task;
                 if (newEndDateTime <= task.startDate) {
                     var date = new Date(task.startDate.getTime());
-                    date.setHours(task.startDate.getHours() + 1);
+                    date.setHours(task.startDate.getHours());
                     date.setMinutes(task.startDate.getMinutes());
                     task.endDate = date;
                 }
@@ -130,7 +130,7 @@
         function createRemoveAction(collectionResolver, handler) {
             var remove = util.createRemoveAction(collectionResolver, handler);
             return function () {
-                if (arguments.length > 0 && arguments[arguments.length - 1] && arguments[arguments.length - 1].stopPropagation) {
+                if (arguments.length > 0 && arguments[arguments.length - 1].stopPropagation) {
                     arguments[arguments.length - 1].stopPropagation();// to prevent collapsing of panel
                 }
                 remove();
