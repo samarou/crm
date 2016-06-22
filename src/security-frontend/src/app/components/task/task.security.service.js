@@ -12,7 +12,8 @@
     function taskSecurityService(taskService, permissions, $q, dialogService, $log) {
         return {
             checkDeletePermissionForList: checkDeletePermissionForList,
-            checkEditPermission: checkEditPermission
+            checkEditPermission: checkEditPermission,
+            checkAdminPermission: checkAdminPermission
         };
 
         function checkDeletePermissionForList(securedObjects) {
@@ -31,6 +32,12 @@
             );
         }
 
+        function checkAdminPermission(id) {
+            return taskService.isAllowed(id, permissions.admin).then(function (response) {
+                return $q.resolve(!!response.data);
+            });
+        }
+        
         function checkEditPermission(id) {
             return taskService.isAllowed(id, permissions.write).then(function (response) {
                 return $q.resolve(!!response.data);
