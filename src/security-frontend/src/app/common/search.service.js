@@ -64,7 +64,7 @@
             bundle.selectAll = createSelectAllAction(bundle);
             bundle.performSeach = taskService.find;
             bundle.sortProperties = {
-                startDate: {name: 'startDate', asc: true, enabled: true},
+                startDate: {name: 'startDate', asc: false, enabled: true},
                 status: {name: 'status', asc: true, enabled: false},
                 priority: {name: 'priority', asc: true, enabled: false}
             };
