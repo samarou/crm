@@ -18,20 +18,6 @@
         vm.title = 'Add Task';
         vm.submitText = 'Add';
 
-        vm.onStartDateChange = function (newValue) {
-            vm.task.endDate = new Date(vm.task.startDate);
-        };
-
-        vm.onDateTimeChange = function (newValue) {
-            var pass = util.shouldBeLess(newValue, vm.task.startDate);
-            if (!pass) {
-                var date = new Date(vm.task.startDate.getTime());
-                date.setHours(vm.task.startDate.getHours());
-                date.setMinutes(vm.task.startDate.getMinutes());
-                vm.task.endDate = date;
-            }
-        };
-
         (function () {
             taskCommonService.initContext(vm).then(function () {
                 var currentUsername = authService.getUserName();
@@ -39,11 +25,15 @@
                     return currentUsername === item.userName;
                 });
 
+
                 var startDate = new Date();
                 if (startDate.getMinutes() > 0) {
                     startDate.setMinutes(0);
                     startDate.setHours(startDate.getHours() + 1);
                 }
+
+                vm.datepickerOptions.minDate = startDate;
+
                 vm.task = {
                     startDate: startDate,
                     status: vm.statuses[0],// default is 'New', TODO: need to add some resolver
