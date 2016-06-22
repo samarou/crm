@@ -1,0 +1,19 @@
+.datetime-group {
+    .date-group {
+        label {
+            display: inline-block;
+            margin-bottom: 0;
+            padding-bottom: 0;
+            height: 34px;
+        }
+        float: left;
+        margin-right: 10px;
+        display: inline-block;
+    }
+    .time-group {
+        display: inline-block;
+    }
+    .top-buffer table.uib-timepicker {
+        margin-top: 34px;
+    }
+}

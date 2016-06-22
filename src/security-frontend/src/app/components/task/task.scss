@@ -5,21 +5,6 @@
     }
 }
 
-.datetime-group {
-    .date-group {
-        label {
-            display: inline-block;
-            margin-bottom: 0;
-            padding-bottom: 0;
-            height: 34px;
-        }
-        float: left;
-        margin-right: 10px;
-    }
-    .time-group {
-    }
-}
-
 /*hack to increase specificity*/
 .timeless.timeless {
     margin: 0 auto;

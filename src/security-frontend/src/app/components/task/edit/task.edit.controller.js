@@ -10,10 +10,10 @@
         .controller('TaskEditController', TaskEditController);
 
     /** @ngInject */
-    function TaskEditController(taskService, taskSecurityService, taskCommonService, $stateParams, util, $q, $log) {
+    function TaskEditController(taskService, taskSecurityService, taskCommonService, $stateParams, $q) {
         var vm = this;
 
-        vm.canEdit = false;
+        vm.canEdit = true;
         vm.timeless = true;
         vm.title = 'Edit Task';
         vm.submitText = 'Save';

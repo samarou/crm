@@ -13,8 +13,6 @@
     function taskCommonService(aclServiceBuilder, taskService, taskSecurityService, searchService, $state, $q, userService, dialogService, collections, util) {
         var openSearchContactDialog = createAddAction('app/components/task/tabs/contacts/search-contact-dialog.view.html', 'Add Contact for Task', searchService.contactMode());
         var openSearchCompanyDialog = createAddAction('app/components/task/tabs/contacts/search-company-dialog.view.html', 'Add Company for Task', searchService.companyMode());
-        var datepickerOptions = {
-        };
 
         return {
             initContext: initContext,
@@ -25,6 +23,7 @@
             function contextResolver() {
                 return context;
             }
+
             function taskResolver() {
                 return context.task;
             }
@@ -40,8 +39,6 @@
             function aclsHandler() {
                 return context.aclHandler.acls || [];
             }
-
-            context.datepickerOptions = datepickerOptions;
 
             context.onStartDateTimeChange = createStartDateTimeChangeListener(taskResolver);
             context.onEndDateTimeChange = createEndDateTimeChangeListener(taskResolver);
@@ -73,22 +70,21 @@
         }
 
         function createStartDateTimeChangeListener(taskResolver) {
-            return function (newStartDateTime) {
+            return function (newStartDateTime, isDate) {
                 var task = taskResolver();
-                if (newStartDateTime) {
+                if (isDate) {
                     task.endDate = new Date(newStartDateTime.getTime());
                 } else {
-                    if (task.endDate < task.startDate) {
-                        task.endDate = new Date(task.startDate.getTime());
+                    if (task.endDate < newStartDateTime) {
+                        task.endDate = new Date(newStartDateTime.getTime());
                     }
                 }
             }
         }
 
         function createEndDateTimeChangeListener(taskResolver) {
-            return function(newEndDateTime){
+            return function (newEndDateTime) {
                 var task = taskResolver();
-                newEndDateTime = newEndDateTime || task.endDate;
                 if (newEndDateTime < task.startDate) {
                     var date = new Date(task.startDate.getTime());
                     date.setHours(task.startDate.getHours());
