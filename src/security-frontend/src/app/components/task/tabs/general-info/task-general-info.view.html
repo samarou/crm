@@ -29,19 +29,19 @@
                 <div class="col-md-6">
                     <div class="date-group form-group">
                         <label>Start date/time</label>
-                        <crm-datepicker model="vm.task.startDate" onchange="vm.onStartDateChange(newValue)" datepickerOptions="vm.datepickerOptions" is-edit="vm.canEdit"></crm-datepicker>
+                        <crm-datepicker model="vm.task.startDate" onchange="vm.onStartDateTimeChange(newValue)" datepickerOptions="vm.datepickerOptions" is-edit="vm.canEdit"></crm-datepicker>
                     </div>
                     <div class="time-group form-group">
-                        <uib-timepicker ng-model="vm.task.startDate" show-meridian="false"></uib-timepicker>
+                        <uib-timepicker ng-model="vm.task.startDate" ng-change="vm.onStartDateTimeChange()" show-meridian="false"></uib-timepicker>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="date-group form-group">
                         <label>End date/time</label>
-                        <crm-datepicker model="vm.task.endDate" onchange="vm.onDateTimeChange(newValue)" datepickerOptions="vm.datepickerOptions" is-edit="vm.canEdit"></crm-datepicker>
+                        <crm-datepicker model="vm.task.endDate" onchange="vm.onEndDateTimeChange(newValue)" datepickerOptions="vm.datepickerOptions" is-edit="vm.canEdit"></crm-datepicker>
                     </div>
                     <div class="time-group form-group">
-                        <uib-timepicker ng-model="vm.task.endDate" ng-change="vm.onDateTimeChange(vm.task.endDate)" show-meridian="false"></uib-timepicker>
+                        <uib-timepicker ng-model="vm.task.endDate" ng-change="vm.onEndDateTimeChange()" show-meridian="false"></uib-timepicker>
                     </div>
                 </div>
             </div>

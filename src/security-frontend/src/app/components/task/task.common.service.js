@@ -43,8 +43,8 @@
 
             context.datepickerOptions = datepickerOptions;
 
-            context.onStartDateChange = createStartDateChangeListener(taskResolver);
-            context.onDateTimeChange = createDateTimeChangeListener(taskResolver);
+            context.onStartDateTimeChange = createStartDateTimeChangeListener(taskResolver);
+            context.onEndDateTimeChange = createEndDateTimeChangeListener(taskResolver);
             context.aclHandler = createAclHandler(taskResolver, contextResolver);
             context.submit = createSaveOrUpdateAction(taskResolver, aclsHandler);
             context.cancel = goToTaskList;
@@ -72,18 +72,27 @@
             return loadStaticData(context);
         }
 
-        function createStartDateChangeListener(taskResolver) {
-            return function () {
+        function createStartDateTimeChangeListener(taskResolver) {
+            return function (newValue) {
                 var task = taskResolver();
-                task.endDate = new Date(task.startDate);
+                if (newValue) {
+                    task.endDate = new Date(newValue.getTime());
+                } else {
+                    newValue = task.startDate;
+                    var isLess = util.dateShouldBeLess(task.endDate, newValue);
+                    if (!isLess) {
+                        task.endDate = new Date(newValue.getTime());
+                    }
+                }
             }
         }
 
-        function createDateTimeChangeListener(taskResolver) {
+        function createEndDateTimeChangeListener(taskResolver) {
             return function(newValue){
                 var task = taskResolver();
-                var pass = util.dateShouldBeLess(newValue, task.startDate);
-                if (!pass) {
+                newValue = newValue || task.endDate;
+                var isLess = util.dateShouldBeLess(newValue, task.startDate);
+                if (!isLess) {
                     var date = new Date(task.startDate.getTime());
                     date.setHours(task.startDate.getHours());
                     date.setMinutes(task.startDate.getMinutes());
@@ -91,7 +100,7 @@
                 }
             }
         }
-        
+
         function createAclHandler(getid) {
             return {
                 canEdit: true,
