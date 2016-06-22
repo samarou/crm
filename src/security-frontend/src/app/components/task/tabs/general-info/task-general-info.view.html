@@ -17,14 +17,14 @@
             </div>
         </div>
     </div>
-    <div class="row row--fixed-height">
-        <div class="col-md-1">
+    <div class="row" ng-class="{'row--fixed-height': vm.canEdit}">
+        <div ng-show="vm.canEdit" class="col-md-1">
             <div class="form-group">
                 <label for="timeless">Timeless</label>
                 <input id="timeless" type="checkbox" class="timeless" ng-change="vm.onTimeless()" ng-model="vm.timeless" value="Timeless">
             </div>
         </div>
-        <div class="col-md-11">
+        <div ng-class="vm.canEdit ? 'col-md-11' : 'col-md-12'">
             <div class="row datetime-group">
                 <div class="col-md-6">
                     <crm-date-time-picker model="vm.task.startDate" label="Start date/time" onchange="vm.onStartDateTimeChange(newValue, isDate)" is-edit="vm.canEditDateTime"></crm-date-time-picker>
