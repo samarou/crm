@@ -28,6 +28,10 @@
                 return context.task;
             }
 
+            function aclHandlerResolver() {
+                return context.aclHandler;
+            }
+
             function contactsResolver() {
                 return context.task.contacts = context.task.contacts || [];
             }
@@ -36,14 +40,10 @@
                 return context.task.companies = context.task.companies || [];
             }
 
-            function aclsHandler() {
-                return context.aclHandler.acls || [];
-            }
-
             context.onStartDateTimeChange = createStartDateTimeChangeListener(taskResolver);
             context.onEndDateTimeChange = createEndDateTimeChangeListener(taskResolver);
-            context.aclHandler = createAclHandler(taskResolver, contextResolver);
-            context.submit = createSaveOrUpdateAction(taskResolver, aclsHandler);
+            context.aclHandler = createAclHandler(taskResolver);
+            context.submit = createSaveOrUpdateAction(taskResolver, aclHandlerResolver);
             context.cancel = goToTaskList;
 
             context.addCompany = createAddCompaniesForTaskAction(companiesResolver);
@@ -140,17 +140,20 @@
             $state.go('tasks.list');
         }
 
-        function createSaveOrUpdateAction(taskResolver, aclsHandler) {
+        function createSaveOrUpdateAction(taskResolver, aclHandlerResolver) {
             return function () {
                 var task = taskResolver();
+                var acl = aclHandlerResolver();
                 if (task.id) {
                     taskService.update(task).then(function () {
-                        taskService.updateAcls(task.id, aclsHandler()).then(goToTaskList);
-                    });
+                        if (acl.canEdit) {
+                            taskService.updateAcls(task.id, acl.acls);
+                        }
+                    }).then(goToTaskList);
                 } else {
                     taskService.create(task).then(function (response) {
                         var id = response.data;
-                        taskService.updateAcls(id, aclsHandler()).then(goToTaskList);
+                        taskService.updateAcls(id, acl.acls).then(goToTaskList);
                     });
                 }
             };

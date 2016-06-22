@@ -30,11 +30,12 @@
                 });
                 $q.all([
                     taskService.getAcls(vm.task.id),
+                    taskSecurityService.checkAdminPermission(vm.task.id),
                     taskSecurityService.checkEditPermission(vm.task.id)
                 ]).then(function (responses) {
                     vm.aclHandler.acls = responses[0].data;
                     vm.aclHandler.canEdit = responses[1];
-                    vm.canEdit = responses[1];
+                    vm.canEdit = responses[2];
                 });
             });
         })();
