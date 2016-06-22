@@ -10,7 +10,7 @@
         .controller('TaskAddController', TaskAddController);
 
     /** @ngInject */
-    function TaskAddController(taskCommonService, authService, util, $log) {
+    function TaskAddController(taskCommonService, authService) {
         var vm = this;
 
         vm.canEdit = true;
@@ -25,14 +25,11 @@
                     return currentUsername === item.userName;
                 });
 
-
                 var startDate = new Date();
                 if (startDate.getMinutes() > 0) {
                     startDate.setMinutes(0);
                     startDate.setHours(startDate.getHours() + 1);
                 }
-
-                vm.datepickerOptions.minDate = startDate;
 
                 vm.task = {
                     startDate: startDate,

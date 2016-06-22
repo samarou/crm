@@ -1,0 +1,23 @@
+<div class="datetime-group">
+    <div class="date-group form-group">
+        <label>{{label}}</label>
+        <div class="input-group" ng-init="isOpen = false" title="Set up a date">
+            <p class="input-group">
+                <input type="text" class="form-control" uib-datepicker-popup
+                       ng-model="model" ng-change="onchange({newValue: model, isDate: true})"
+                       is-open="isOpen" datepicker-options="datepickerOptions"
+                       close-text="Close" readonly/>
+              <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-disabled="!isEdit" ng-click="isOpen = true">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                    </button>
+              </span>
+            </p>
+        </div>
+    </div>
+    <div class="time-group form-group" ng-class="{'top-buffer': !isEdit}">
+        <uib-timepicker ng-model="model" ng-change="onchange({newValue: model, isDate: false})"
+                        show-spinners="isEdit" readonly-input="!isEdit" show-meridian="false">
+        </uib-timepicker>
+    </div>
+</div>

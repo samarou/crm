@@ -7,19 +7,20 @@
 
     angular
         .module('crm.common')
-        .directive('crmDatepicker', crmDatepicker);
+        .directive('crmDateTimePicker', crmDateTimePicker);
 
-    function crmDatepicker() {
+    function crmDateTimePicker() {
         return {
             require: 'model',
             restrict: 'E',
-            templateUrl: 'app/common/directives/crm-datepicker.html',
+            templateUrl: 'app/common/directives/crm-datetimepicker.html',
             replace: true,
             scope: {
                 model: '=',
                 onchange: '&?',
                 datepickerOptions: '=?',
-                isEdit: '='
+                isEdit: '=',
+                label: '@?'
             }
         };
     }
