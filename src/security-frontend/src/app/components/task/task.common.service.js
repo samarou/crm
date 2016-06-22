@@ -10,7 +10,7 @@
         .service('taskCommonService', taskCommonService);
 
     /** @ngInject */
-    function taskCommonService(aclServiceBuilder, taskService, taskSecurityService, searchService, $state, $q, userService, dialogService, collections, util) {
+    function taskCommonService(aclServiceBuilder, taskService, searchService, $state, $q, userService, dialogService, collections, util) {
         var openSearchContactDialog = createAddAction('app/components/task/tabs/contacts/search-contact-dialog.view.html', 'Add Contact for Task', searchService.contactMode());
         var openSearchCompanyDialog = createAddAction('app/components/task/tabs/contacts/search-company-dialog.view.html', 'Add Company for Task', searchService.companyMode());
 
@@ -20,10 +20,6 @@
         };
 
         function initContext(context) {
-            function contextResolver() {
-                return context;
-            }
-
             function taskResolver() {
                 return context.task;
             }
