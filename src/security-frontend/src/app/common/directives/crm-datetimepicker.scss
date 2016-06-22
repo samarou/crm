@@ -12,6 +12,9 @@
     }
     .time-group {
         display: inline-block;
+        a.btn-link {
+            outline: none;
+        }
     }
     .top-buffer table.uib-timepicker {
         margin-top: 34px;

@@ -17,6 +17,9 @@
 .navbar-nav > li > a {
   color: #383838;
   text-transform: uppercase;
+  &:focus {
+      outline: none;
+  }
 }
 
 
