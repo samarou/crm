@@ -73,26 +73,23 @@
         }
 
         function createStartDateTimeChangeListener(taskResolver) {
-            return function (newValue) {
+            return function (newStartDateTime) {
                 var task = taskResolver();
-                if (newValue) {
-                    task.endDate = new Date(newValue.getTime());
+                if (newStartDateTime) {
+                    task.endDate = new Date(newStartDateTime.getTime());
                 } else {
-                    newValue = task.startDate;
-                    var isLess = util.dateShouldBeLess(task.endDate, newValue);
-                    if (!isLess) {
-                        task.endDate = new Date(newValue.getTime());
+                    if (task.endDate < task.startDate) {
+                        task.endDate = new Date(task.startDate.getTime());
                     }
                 }
             }
         }
 
         function createEndDateTimeChangeListener(taskResolver) {
-            return function(newValue){
+            return function(newEndDateTime){
                 var task = taskResolver();
-                newValue = newValue || task.endDate;
-                var isLess = util.dateShouldBeLess(newValue, task.startDate);
-                if (!isLess) {
+                newEndDateTime = newEndDateTime || task.endDate;
+                if (newEndDateTime < task.startDate) {
                     var date = new Date(task.startDate.getTime());
                     date.setHours(task.startDate.getHours());
                     date.setMinutes(task.startDate.getMinutes());
