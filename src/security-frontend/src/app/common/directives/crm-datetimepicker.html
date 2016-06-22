@@ -16,8 +16,16 @@
         </div>
     </div>
     <div class="time-group form-group" ng-class="{'top-buffer': !isEdit}">
-        <uib-timepicker ng-model="model" ng-change="onchange({newValue: model, isDate: false})"
-                        show-spinners="isEdit" readonly-input="!isEdit" show-meridian="false">
-        </uib-timepicker>
+        <!--use two blocks, because properties 'show-spinners' and 'readonly-input' not updated after isEdit changed-->
+        <div ng-show="isEdit">
+            <uib-timepicker ng-model="model" ng-change="onchange({newValue: model, isDate: false})"
+                            show-spinners="true" readonly-input="false" show-meridian="false">
+            </uib-timepicker>
+        </div>
+        <div ng-show="!isEdit">
+            <uib-timepicker ng-model="model" ng-change="onchange({newValue: model, isDate: false})"
+                            show-spinners="false" readonly-input="true" show-meridian="false">
+            </uib-timepicker>
+        </div>
     </div>
 </div>

@@ -1,6 +1,7 @@
 <crm-form-wrapper form-title="vm.title" submit-text="{{vm.submitText}}" submit-btn="vm.submit(vm.task)" cancel-btn="vm.cancel()" crm-form-validation="taskForm">
 
     <form name="taskForm" class="form-group">
+        <button ng-click="vm.canEdit=!vm.canEdit">click</button>
         <uib-tabset active="active">
             <uib-tab heading="General Info"> <crm-task-general-info/> </uib-tab>
             <uib-tab heading="Contacts"> <crm-task-contacts/> </uib-tab>
