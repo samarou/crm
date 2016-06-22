@@ -42,6 +42,8 @@
                     return vm.task.id;
                 });
                 vm.aclHandler.canEdit = vm.canEdit;
+
+                vm.canEditDateTime = vm.canEdit;
             });
         })();
     }
