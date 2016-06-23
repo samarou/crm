@@ -10,8 +10,7 @@ import com.itechart.security.core.annotation.AclFilterRule;
 import com.itechart.security.core.model.acl.Permission;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -66,8 +65,8 @@ public class ContactDaoImpl extends BaseHibernateDao<Contact, Long, ContactFilte
     protected Criteria createFilterCriteria(Session session, ContactFilter filter) {
         Criteria criteria = session.createCriteria(Contact.class, "u");
         if (StringUtils.hasText(filter.getText())) {
-            criteria.createAlias("emails", "e")
-                    .createAlias("addresses", "a")
+            criteria.createAlias("emails", "e", JoinType.LEFT_OUTER_JOIN)
+                    .createAlias("addresses", "a", JoinType.LEFT_OUTER_JOIN)
                     .add(disjunction(
                             ilike("a.addressLine", filter.getText(), ANYWHERE),
                             ilike("u.firstName", filter.getText(), ANYWHERE),
