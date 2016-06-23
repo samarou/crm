@@ -1,8 +1,8 @@
-package com.itechart.crawler;
+package com.itechart.scraper.impl;
 
-import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
+import com.itechart.scraper.Crawler;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,9 +15,6 @@ import java.util.stream.Collectors;
 import static java.nio.file.StandardOpenOption.APPEND;
 import static java.nio.file.StandardOpenOption.CREATE;
 
-/**
- * Created by anton.charnou on 27.05.2016.
- */
 public class GooglePageCrawler implements Crawler {
     private final String SEARCH_QUERY = "site:www.linkedin.com See who you know in common";
     private String fileName = "./google_profiles.txt";
@@ -26,11 +23,11 @@ public class GooglePageCrawler implements Crawler {
     public void crawl(String fileName) throws IOException {
         if (!Objects.isNull(fileName)) this.fileName = fileName;
         try (final WebClient webClient = new WebClient()) {
-            final HtmlPage page = webClient.getPage("https://www.google.by");
-            final HtmlForm form = page.getFormByName("f");
+            HtmlPage page = webClient.getPage("https://www.google.by");
+            HtmlForm form = page.getFormByName("f");
 
-            final HtmlButton button = form.getButtonsByName("btnG").get(0);
-            final HtmlTextInput textField = form.getInputByName("q");
+            HtmlButton button = form.getButtonsByName("btnG").get(0);
+            HtmlTextInput textField = form.getInputByName("q");
 
             textField.setValueAttribute(SEARCH_QUERY);
 
@@ -51,14 +48,14 @@ public class GooglePageCrawler implements Crawler {
             searchPage = button.click();
             List<String> strings = getLinksFromPage(searchPage);
             bufferLinkList.addAll(strings);
-            Files.write(Paths.get(this.fileName), strings, APPEND, CREATE);
+            Files.write(Paths.get(fileName), strings, APPEND, CREATE);
         }
         return bufferLinkList;
     }
 
     private List<String> getLinksFromPage(HtmlPage resultPage) {
-        final DomElement resultDiv = resultPage.getHtmlElementById("rso");
-        final List<?> links = resultDiv.getByXPath("//h3[@class='r']");
+        DomElement resultDiv = resultPage.getHtmlElementById("rso");
+        List<?> links = resultDiv.getByXPath("//h3[@class='r']");
         return links.stream()
                 .map(link -> ((HtmlElement) link).getFirstChild().getAttributes().getNamedItem("href").getTextContent())
                 .collect(Collectors.toList());

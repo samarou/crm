@@ -16,7 +16,7 @@
         <module>business-services</module>
         <module>security-frontend</module>
         <module>common</module>
-        <module>linkedin-crawler</module>
+        <module>web-scraper</module>
     </modules>
     <scm>
         <connection>scm:git:git@github.com/samarou/crm.git</connection>

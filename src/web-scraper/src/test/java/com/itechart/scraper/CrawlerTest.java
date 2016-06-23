@@ -1,5 +1,7 @@
-package com.itechart.crawler;
+package com.itechart.scraper;
 
+import com.itechart.scraper.impl.BingSearchApiCrawler;
+import com.itechart.scraper.impl.GooglePageCrawler;
 import org.junit.Test;
 
 import java.io.IOException;

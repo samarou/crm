@@ -12,6 +12,7 @@
         vm.user = {active: true};
         vm.groups = [];
         vm.roles = [];
+        vm.smgProfile = '';
         vm.submitText = 'Add';
         vm.title = 'Add user';
         vm.submit = submit;
@@ -19,6 +20,7 @@
         vm.aclHandler = userDetailsService.createAclHandler(function () {
             return vm.user.id;
         });
+        vm.loadProfile = userDetailsService.loadProfile;
 
         init();
 

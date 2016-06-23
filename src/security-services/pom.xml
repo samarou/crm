@@ -19,6 +19,11 @@
         </dependency>
         <dependency>
             <groupId>com.itechart.security</groupId>
+            <artifactId>web-scraper</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.itechart.security</groupId>
             <artifactId>security-hibernate-support</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -85,6 +90,7 @@
             <artifactId>hibernate-ehcache</artifactId>
             <version>${hibernate.version}</version>
         </dependency>
+
 
         <!-- Other stuff -->
         <dependency>

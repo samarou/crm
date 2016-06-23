@@ -2,12 +2,14 @@ package com.itechart.security.web.controller;
 
 import com.itechart.security.model.dto.*;
 import com.itechart.security.service.PrincipalService;
+import com.itechart.security.service.SmgService;
 import com.itechart.security.service.UserService;
 import com.itechart.security.web.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -29,6 +31,9 @@ public class UserController {
     @Autowired
     private PrincipalService principalService;
 
+    @Autowired
+    private SmgService smgService;
+
     @RequestMapping("/users")
     public List<SecuredUserDto> findAll() {
         return userService.getUsers();
@@ -38,6 +43,13 @@ public class UserController {
     @RequestMapping("/users/public")
     public List<PublicUserDto> getPublicUsers() {
         return userService.getPublicUsers();
+    }
+
+
+    @PreAuthorize("hasRole('USER')")
+    @RequestMapping("/users/public/smg")
+    public PublicUserDto getPublicUserFromSmg(@RequestParam String url) throws IOException {
+        return smgService.parseSMG(url);
     }
 
     @RequestMapping("/users/{id}")

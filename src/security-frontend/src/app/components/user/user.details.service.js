@@ -6,13 +6,22 @@
         .factory('userDetailsService', userDetailsService);
 
     /** @ngInject */
-    function userDetailsService(userService, groupService, roleService, aclServiceBuilder, $state, $q) {
+    function userDetailsService(userService, groupService, roleService, aclServiceBuilder, $state, $q, $log) {
         return {
             save: save,
             cancel: goToList,
             getGroupsAndRoles: getGroupsAndRoles,
-            createAclHandler: createAclHandler
+            createAclHandler: createAclHandler,
+            loadProfile: loadProfile
         };
+
+        function loadProfile(scope) {
+            return userService.getPublicUserFromSmg(scope.smgProfile)
+                .then(function (response) {
+                    $log.log(response);
+                    scope.user = response.data
+                });
+        }
 
         function createAclHandler(getId) {
             return {
