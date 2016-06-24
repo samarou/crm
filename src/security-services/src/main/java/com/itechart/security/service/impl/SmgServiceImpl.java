@@ -1,8 +1,8 @@
 package com.itechart.security.service.impl;
 
-import com.itechart.scraper.model.Person;
+import com.itechart.scraper.model.SmgProfile;
 import com.itechart.scraper.parser.Parser;
-import com.itechart.scraper.parser.impl.SmgPersonParser;
+import com.itechart.scraper.parser.impl.SmgProfileParser;
 import com.itechart.security.model.dto.PublicUserDto;
 import com.itechart.security.service.SmgService;
 import org.slf4j.Logger;
@@ -11,24 +11,23 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
-/**
- * Created by anton.charnou on 07.06.2016.
- */
 @Service
 public class SmgServiceImpl implements SmgService {
     private static final Logger log = LoggerFactory.getLogger(SmgServiceImpl.class);
 
     @Override
     public PublicUserDto parseSMG(String profileUrl) throws IOException {
-        Parser parser = new SmgPersonParser();
-        Person person = parser.parse(profileUrl);
-        return convert(person);
+        Parser parser = new SmgProfileParser();
+        SmgProfile smgProfile = parser.parse(profileUrl);
+        return convert(smgProfile);
     }
 
-    private PublicUserDto convert(Person person) {
+    private PublicUserDto convert(SmgProfile smgProfile) {
         PublicUserDto publicUserDto = new PublicUserDto();
-        publicUserDto.setFirstName(person.getFirstName());
-        publicUserDto.setLastName(person.getLastName());
+        publicUserDto.setFirstName(smgProfile.getFirstName());
+        publicUserDto.setLastName(smgProfile.getLastName());
+        publicUserDto.setEmail(smgProfile.getEmail());
+        publicUserDto.setUserName(smgProfile.getUserName());
         return publicUserDto;
     }
 

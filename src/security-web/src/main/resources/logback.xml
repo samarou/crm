@@ -17,15 +17,22 @@
     </appender>
 
     <logger name="com.itechart.security" level="DEBUG">
-        <appender-ref ref="FILE"/>
-        <appender-ref ref="STDOUT"/>
-
+        <appender-ref ref="FILE" />
     </logger>
     <logger name="org.springframework.security" level="DEBUG">
         <appender-ref ref="FILE"/>
     </logger>
     <logger name="org.hibernate.SQL" level="DEBUG">
         <appender-ref ref="FILE"/>
+    </logger>
+    <logger name="com..itechart.security" level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="org.springframework.security" level="ERROR">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="org.hibernate.SQL" level="ERROR">
+        <appender-ref ref="STDOUT"/>
     </logger>
     <root level="INFO">
         <appender-ref ref="FILE"/>

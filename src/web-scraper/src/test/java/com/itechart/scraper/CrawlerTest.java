@@ -6,9 +6,6 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-/**
- * Created by anton.charnou on 30.05.2016.
- */
 public class CrawlerTest {
 
     @Test
