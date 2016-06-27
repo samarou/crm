@@ -1,6 +1,6 @@
 package com.itechart.security.service.impl;
 
-import com.itechart.scraper.model.SmgProfile;
+import com.itechart.scraper.model.smg.SmgProfile;
 import com.itechart.scraper.parser.Parser;
 import com.itechart.scraper.parser.impl.SmgProfileParser;
 import com.itechart.security.model.dto.PublicUserDto;
@@ -16,9 +16,9 @@ public class SmgServiceImpl implements SmgService {
     private static final Logger log = LoggerFactory.getLogger(SmgServiceImpl.class);
 
     @Override
-    public PublicUserDto parseSMG(String profileUrl) throws IOException {
+    public PublicUserDto parseSMG(String profileId) throws IOException {
         Parser parser = new SmgProfileParser();
-        SmgProfile smgProfile = parser.parse(profileUrl);
+        SmgProfile smgProfile = parser.getProfile(profileId);
         return convert(smgProfile);
     }
 
@@ -27,7 +27,7 @@ public class SmgServiceImpl implements SmgService {
         publicUserDto.setFirstName(smgProfile.getFirstName());
         publicUserDto.setLastName(smgProfile.getLastName());
         publicUserDto.setEmail(smgProfile.getEmail());
-        publicUserDto.setUserName(smgProfile.getUserName());
+        publicUserDto.setUserName(smgProfile.getDomenName());
         return publicUserDto;
     }
 
