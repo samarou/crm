@@ -1,7 +1,6 @@
 package com.itechart.security.service;
 
 import com.itechart.security.model.dto.*;
-import com.itechart.security.model.persistent.Principal;
 import com.itechart.security.model.persistent.User;
 
 import java.util.List;
@@ -14,6 +13,8 @@ import java.util.List;
 public interface UserService {
 
     SecuredUserDto getUser(Long userId);
+
+    Boolean checkUserIfExists(String userName);
 
     List<PublicUserDto> getByIds(List<Long> ids);
 

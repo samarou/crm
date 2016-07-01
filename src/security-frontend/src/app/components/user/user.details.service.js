@@ -11,17 +11,8 @@
             save: save,
             cancel: goToList,
             getGroupsAndRoles: getGroupsAndRoles,
-            createAclHandler: createAclHandler,
-            loadProfile: loadProfile
+            createAclHandler: createAclHandler
         };
-
-        function loadProfile(scope) {
-            return userService.getPublicUserFromSmg(scope.smgProfile)
-                .then(function (response) {
-                    $log.log(response);
-                    scope.user = response.data
-                });
-        }
 
         function createAclHandler(getId) {
             return {

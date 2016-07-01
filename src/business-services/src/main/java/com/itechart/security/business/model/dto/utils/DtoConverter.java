@@ -60,6 +60,7 @@ public class DtoConverter {
         contact.setPatronymic(dto.getPatronymic());
         contact.setDateOfBirth(dto.getDateOfBirth());
         contact.setIsMale(dto.getIsMale());
+        contact.setPhotoUrl(dto.getPhotoUrl());
         contact.setNationality(dto.getNationality());
 //        contact.setOrders(convertOrderDtos(dto.getOrders()));
         contact.setAddresses(convertAddressDtos(dto.getAddresses()));

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.itechart.security</groupId>
     <artifactId>security-project</artifactId>
@@ -16,14 +17,13 @@
         <module>business-services</module>
         <module>security-frontend</module>
         <module>common</module>
-        <module>web-scraper</module>
     </modules>
     <scm>
         <connection>scm:git:git@github.com/samarou/crm.git</connection>
         <developerConnection>scm:git:git@github.com/samarou/crm.git</developerConnection>
         <url>https://github.com/samarou/crm</url>
         <tag>HEAD</tag>
-  </scm>
+    </scm>
     <properties>
         <spring.version>4.2.2.RELEASE</spring.version>
         <spring-security.version>4.0.3.RELEASE</spring-security.version>

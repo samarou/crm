@@ -20,16 +20,11 @@
             deactivate: deactivate,
             removeAcl: removeAcl,
             getAcls: getAcls,
-            getDefaultAcls: getDefaultAcls,
-            getPublicUserFromSmg: getPublicUserFromSmg
+            getDefaultAcls: getDefaultAcls
         };
 
         function getPublicUsers() {
             return $http.get('rest/users/public');
-        }
-
-        function getPublicUserFromSmg(profileUrl) {
-            return $http.get('rest/users/public/smg', {params: {url: profileUrl}});
         }
 
         function getAll() {
@@ -41,7 +36,7 @@
         }
 
         function create(user) {
-            return $http.post('rest/users', user);
+            return $http.post('rest/users/notify', user);
         }
 
         function update(user) {

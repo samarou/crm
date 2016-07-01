@@ -58,12 +58,12 @@ public class NotificationServiceImpl implements NotificationService {
             String message = notificationProvider.buildNotificationMessage(notification, DEFAULT_LOCALE);
             sendMailAsync(notification.getToAddr(), subject, message);
         } catch (Exception e) {
-            log.error("Exception occured while sending notification: " + e.getMessage(), e);
+            log.error("Exception occurred while sending notification: " + e.getMessage(), e);
             throw new RuntimeException(e.getMessage(), e);
         }
     }
 
-    private void sendMailAsync(final String toAddr, final String subject, final String message) {
+    private void sendMailAsync(String toAddr, String subject, String message) {
         taskExecutor.execute(() -> sendMail(toAddr, subject, message));
     }
 

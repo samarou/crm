@@ -8,5 +8,4 @@
             'crm.validation',
             'crm.formWrapper',
             'crm.search']);
-
 })();

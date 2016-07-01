@@ -19,9 +19,9 @@
         vm.cancel = userDetailsService.cancel;
         vm.aclHandler = userDetailsService.createAclHandler(function () {
             return vm.user.id;
-        });
+        });/*
         vm.loadProfile = userDetailsService.loadProfile;
-
+*/
         init();
 
         function init() {
