@@ -32,7 +32,7 @@ public class TokenService {
 
     private static final Logger logger = LoggerFactory.getLogger(TokenService.class);
 
-    private static final String HEADER_AUTH_TOKEN = "X-Auth-Token";
+    static final String HEADER_AUTH_TOKEN = "X-Auth-Token";
 
     private KeyBasedPersistenceTokenService tokenHelper;
 

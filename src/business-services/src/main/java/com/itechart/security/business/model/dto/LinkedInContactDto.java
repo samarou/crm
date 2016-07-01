@@ -1,12 +1,11 @@
 package com.itechart.security.business.model.dto;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Set;
 
-/**
- * Created by anton.charnou on 26.05.2016.
- */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class LinkedInContactDto extends ContactDto {
     public String fullName;

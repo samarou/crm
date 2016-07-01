@@ -12,14 +12,16 @@
         vm.user = {};
         vm.groups = [];
         vm.roles = [];
+        vm.smgProfile = '';
         vm.submitText = 'Save';
         vm.title = 'Edit user';
         vm.submit = submit;
         vm.cancel = userDetailsService.cancel;
         vm.aclHandler = userDetailsService.createAclHandler(function () {
             return vm.user.id;
-        });
-
+        });/*
+        vm.loadProfile = userDetailsService.loadProfile;
+*/
         init();
 
         function init() {

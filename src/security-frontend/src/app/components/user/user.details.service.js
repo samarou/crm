@@ -6,7 +6,7 @@
         .factory('userDetailsService', userDetailsService);
 
     /** @ngInject */
-    function userDetailsService(userService, groupService, roleService, aclServiceBuilder, $state, $q) {
+    function userDetailsService(userService, groupService, roleService, aclServiceBuilder, $state, $q, $log) {
         return {
             save: save,
             cancel: goToList,

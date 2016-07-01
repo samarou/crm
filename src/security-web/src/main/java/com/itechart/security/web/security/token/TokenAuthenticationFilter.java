@@ -20,6 +20,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Objects;
 
+import static com.itechart.security.web.security.token.TokenService.HEADER_AUTH_TOKEN;
+
 /**
  * Authentication filter that processes requests to stateless services,
  * extracts and validates authentication tokens, performs authentication
@@ -46,8 +48,11 @@ public class TokenAuthenticationFilter extends GenericFilterBean {
     }
 
     public Authentication authenticate(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        String token = tokenService.getTokenFromRequest(request);
-        if (Objects.isNull(token)) throw new InvalidTokenException("Authentication token is required");
+        String tokenFromCookie = tokenService.getTokenFromRequest(request);
+        String token = Objects.nonNull(tokenFromCookie) ? tokenFromCookie : request.getHeader(HEADER_AUTH_TOKEN);
+        if (Objects.isNull(token)) {
+            throw new InvalidTokenException("Authentication token is required");
+        }
         logger.debug("Process token {} for request {}", token, request.getQueryString());
         TokenData tokenData = tokenService.parseToken(token);
         String remoteAddr = request.getRemoteAddr();

@@ -19,6 +19,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import static com.itechart.common.model.util.CollectionConverter.convertCollection;
 import static com.itechart.security.model.util.AclConverter.convert;
@@ -50,6 +51,10 @@ public class UserServiceImpl implements UserService {
     public SecuredUserDto getUser(Long userId) {
         return convertToSecuredDto(userDao.get(userId));
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Boolean checkUserIfExists(String userName) {return Objects.nonNull(userDao.findByName(userName));}
 
     @Override
     public List<PublicUserDto> getByIds(List<Long> ids) {

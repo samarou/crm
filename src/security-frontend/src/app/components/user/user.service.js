@@ -36,7 +36,7 @@
         }
 
         function create(user) {
-            return $http.post('rest/users', user);
+            return $http.post('rest/users/notify', user);
         }
 
         function update(user) {
