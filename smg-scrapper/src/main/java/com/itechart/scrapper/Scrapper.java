@@ -36,12 +36,12 @@ public class Scrapper {
 
     private static final String IMPORTED_PROFILE_IDS_FILEPATH = "./imported_profiles.txt";
 
-    private static final String BASE_URL = "http://localhost:8080/security-web/rest";
-    private static final String GROUPS_URL = BASE_URL + "/groups";
-    private static final String USERS_URL = BASE_URL + "/users";
-    private static final String LOGIN_URL = BASE_URL + "/login";
-    private static final String CONTACT_URL = BASE_URL + "/contacts";
-    private static final String CHECK_IF_USER_EXISTS_URL = USERS_URL + "/check";
+    private static String BASE_URL;
+    private static String GROUPS_URL;
+    private static String USERS_URL;
+    private static String LOGIN_URL;
+    private static String CONTACT_URL;
+    private static String CHECK_IF_USER_EXISTS_URL;
 
     private String AUTH_TOKEN_ADMIN;
     private String AUTH_TOKEN_SPECIALIST;
@@ -62,10 +62,20 @@ public class Scrapper {
     private Scrapper() {
         rest = new RestTemplate();
         smgParser = new SmgParser();
+        setURLs();
         AUTH_TOKEN_ADMIN = logInCRM(getCrmUser("admin"));
         AUTH_TOKEN_SPECIALIST = logInCRM(getCrmUser("manager"));
         departmentsMap = getMapOfDepartments();
         importedProfileIDs = getImportedProfileIDs();
+    }
+
+    private void setURLs(){
+        BASE_URL = smgParser.getProperties().getProperty("crm.address");
+        GROUPS_URL = BASE_URL + "/groups";
+        USERS_URL = BASE_URL + "/users";
+        LOGIN_URL = BASE_URL + "/login";
+        CONTACT_URL = BASE_URL + "/contacts";
+        CHECK_IF_USER_EXISTS_URL = USERS_URL + "/check";
     }
 
     private void scrapAllUsersFromSmgToCrm(Integer smgProfileId) {
