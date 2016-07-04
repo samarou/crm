@@ -128,16 +128,11 @@
 
             bundle.find = function find() {
                 resetBundleState(bundle);
-                // todo: fix angular.isString and !!
-                /*eslint-disable */
-                // nulling, to prevent empty parameters in url
                 angular.forEach(bundle.filter, function (value, key) {
-                    if (typeof(value) !== 'string') {
-                        return;
+                    if (angular.isString(value)) {
+                        bundle.filter[key] = value ? value : null;
                     }
-                    bundle.filter[key] = !!value ? value : null;
                 });
-                /*eslint-enable */
                 bundle.performSeach(bundle.filter).then(function (response) {
                     bundle.itemsList = response.data.data;
                     bundle.paging.totalCount = response.data.totalCount;
