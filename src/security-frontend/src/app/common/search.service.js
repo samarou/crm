@@ -140,10 +140,7 @@
                 /*eslint-enable */
                 bundle.performSeach(bundle.filter).then(function (response) {
                     bundle.itemsList = response.data.data;
-                    var totalCount = response.data.totalCount;
-                    var totalPages = Math.ceil(totalCount / bundle.filter.count) || 1;
-                    bundle.paging.totalCount = totalCount;
-                    bundle.paging.visiblePages = totalPages;
+                    bundle.paging.totalCount = response.data.totalCount;
                 });
             };
             bundle.typing = util.createDelayTypingListener(bundle.find, 500);
