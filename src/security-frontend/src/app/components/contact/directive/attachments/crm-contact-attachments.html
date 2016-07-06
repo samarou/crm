@@ -1,5 +1,5 @@
-<div class="panel panel-default">
-    <div class="panel-heading">
+<div class="panel panel-default" ng-if="vm.canEdit || (!vm.canEdit && vm.contact.attachments.length>0)">
+<div class="panel-heading">
         <crm-contact-table-header title="Attachments"
                                   adding-function="vm.details.attachment.add"
                                   removing-function="vm.details.attachment.remove"

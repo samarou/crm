@@ -1,5 +1,5 @@
-<div class="panel panel-default">
-    <div class="panel-heading">
+<div class="panel panel-default" ng-if="vm.canEdit || (!vm.canEdit && vm.contact.skills.length>0)">
+<div class="panel-heading">
         <crm-contact-table-header title="Skills"
                                   adding-function="vm.details.skill.add"
                                   vm="vm"></crm-contact-table-header>

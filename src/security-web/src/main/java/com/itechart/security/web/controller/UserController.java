@@ -48,6 +48,11 @@ public class UserController {
         return Objects.nonNull(userName) ? userService.checkUserIfExists(userName) : null;
     }
 
+    @RequestMapping(value = "/users/get/{userName}", method = GET)
+    public SecuredUserDto getUserByUserName(@PathVariable String userName) {
+        return userName != null ? userService.getUser(userName) : null;
+    }
+
     @RequestMapping(value = "/users", method = PUT)
     public void update(@RequestBody SecuredUserDto dto) {
         userService.updateUser(dto);
@@ -59,8 +64,8 @@ public class UserController {
         List<String> roleNames;
         if (dto.getRoles() != null) {
             roleNames = dto.getRoles().stream()
-                    .map(RoleDto::getName)
-                    .collect(toList());
+                .map(RoleDto::getName)
+                .collect(toList());
         } else {
             roleNames = Collections.emptyList();
         }
@@ -68,8 +73,8 @@ public class UserController {
         return userId;
     }
 
-    @RequestMapping(value = "/users",method = POST)
-    public Long addUser(@RequestBody SecuredUserDto dto){
+    @RequestMapping(value = "/users", method = POST)
+    public Long addUser(@RequestBody SecuredUserDto dto) {
         return userService.createUser(dto);
     }
 

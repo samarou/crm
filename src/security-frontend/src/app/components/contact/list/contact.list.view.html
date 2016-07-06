@@ -2,16 +2,16 @@
     <h4>Contacts</h4>
 </div>
 <div class="row crm-bottom-buffer">
-    <div class="col-xs-12 col-sm-8 col-md-9">
+    <div ng-class="vm.isManager ? 'col-xs-12 col-sm-8 col-md-9' : 'col-xs-12'">
         <div class="form-group">
             <input ng-model="vm.searchContactBundle.filter.text" ng-keyup="vm.searchContactBundle.typing.keyUp()"
                    ng-keydown="vm.searchContactBundle.typing.keyDown()" class="form-control"
                    placeholder="Search by first name, last name, email, address...">
         </div>
     </div>
-    <div class="col-xs-12 col-sm-4 col-md-3">
+    <div class="col-xs-12 col-sm-4 col-md-3" ng-if="vm.isManager">
         <div class="btn-group btn-group-justified pull-right">
-            <a ng-show="vm.isManager" class="btn btn-default" ng-click="vm.add()">
+            <a class="btn btn-default" ng-click="vm.add()">
                 Add
             </a>
             <a class="btn btn-default" ng-click="vm.remove()">

@@ -18,6 +18,8 @@ public interface ContactService {
 
     ContactDto get(Long id);
 
+    ContactDto getByEmail(String email);
+
     void updateContact(ContactDto contact);
 
     void deleteById(Long id);

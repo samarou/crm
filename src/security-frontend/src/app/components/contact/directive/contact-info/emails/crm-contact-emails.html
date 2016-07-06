@@ -1,4 +1,4 @@
-<div class="panel panel-default">
+<div class="panel panel-default" ng-if="vm.canEdit || (!vm.canEdit && vm.contact.emails.length>0)">
     <div class="panel-heading">
         <crm-contact-table-header title="Emails"
                                   adding-function="vm.details.email.add"

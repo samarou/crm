@@ -1,5 +1,5 @@
-<div class="panel panel-default">
-    <div class="panel-heading">
+<div class="panel panel-default" ng-if="vm.canEdit || (!vm.canEdit && vm.contact.socialNetworks.length>0)">
+<div class="panel-heading">
         <crm-contact-table-header title="Social Networks"
                                   adding-function="vm.details.socialNetwork.add"
                                   removing-function="vm.details.socialNetwork.remove"
