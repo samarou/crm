@@ -33,6 +33,12 @@ public class ContactDaoImpl extends BaseHibernateDao<Contact, Long, ContactFilte
     }
 
     @AclFilter(@AclFilterRule(type = Contact.class, permissions = {Permission.READ}))
+    public Contact getByEmail(String email){
+        List<?> result = getHibernateTemplate().find("from Contact c JOIN FETCH c.emails e where e.name = ?", email);
+        return !result.isEmpty() ? (Contact) result.get(0) : null;
+    }
+
+    @AclFilter(@AclFilterRule(type = Contact.class, permissions = {Permission.READ}))
     public List<Contact> find(ContactFilter filter) {
         return super.find(filter);
     }

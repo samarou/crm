@@ -14,6 +14,8 @@ public interface UserService {
 
     SecuredUserDto getUser(Long userId);
 
+    SecuredUserDto getUser(String userName);
+
     Boolean checkUserIfExists(String userName);
 
     List<PublicUserDto> getByIds(List<Long> ids);

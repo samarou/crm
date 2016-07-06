@@ -72,7 +72,6 @@
             dialogService.confirm('Data will be merged. Do you agree?')
                 .result.then(function () {
                 contactService.parseProfile(profileUrl).then(function (response) {
-                    $log.log(response.data);
                     merge(scope.contact, response.data);
                 });
             });

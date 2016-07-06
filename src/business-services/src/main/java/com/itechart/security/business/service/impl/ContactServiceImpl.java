@@ -70,9 +70,15 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public ContactDto get(Long id) {
         return convert(contactDao.get(id));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ContactDto getByEmail(String email){
+        return convert(contactDao.getByEmail(email));
     }
 
     @Override

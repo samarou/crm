@@ -11,4 +11,5 @@ public interface ContactDao extends BaseDao<Contact, Long, ContactFilter> {
 
     void deleteSkill(Long id);
 
+    Contact getByEmail(String email);
 }

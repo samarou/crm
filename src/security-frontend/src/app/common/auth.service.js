@@ -70,7 +70,6 @@
         function getAuthStatus() {
             return $http.get('rest/login/check').then(
                 function (response) {
-                    $log.log(response);
                     if (response.data) {
                         return $q.resolve();
                     } else {

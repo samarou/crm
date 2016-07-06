@@ -1,7 +1,6 @@
 package com.itechart.scrapper;
 
-import com.itechart.scrapper.parser.Parser;
-import com.itechart.scrapper.parser.impl.SmgParser;
+import com.itechart.scrapper.utils.SmgParser;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -20,7 +19,7 @@ public class SmgServiceTest {
 
     @Test
     public void parseProfile() throws IOException, InterruptedException {
-        Parser smgParser = new SmgParser();
+        SmgParser smgParser = new SmgParser();
         int i=0;
         for(;i<1000;i++){
             smgParser.getProfile(828);

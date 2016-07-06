@@ -1,5 +1,8 @@
 package com.itechart.security.web.controller;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itechart.security.business.filter.ContactFilter;
 import com.itechart.security.business.model.dto.ContactDto;
 import com.itechart.security.business.model.dto.ContactFilterDto;
@@ -53,6 +56,14 @@ public class ContactController extends SecuredController {
     @RequestMapping(value = "/contacts/{contactId}", method = GET)
     public ContactDto get(@PathVariable Long contactId) {
         return contactService.get(contactId);
+    }
+
+    @RequestMapping(value = "/contacts/email/{email}", method = GET)
+    public String getContactByEmail(@PathVariable String email) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.getFactory().configure(JsonGenerator.Feature.ESCAPE_NON_ASCII, true);
+        ContactDto contact = contactService.getByEmail(email);
+        return mapper.writeValueAsString(contact);
     }
 
     @PreAuthorize("hasPermission(#dto.getId(), 'sample.Contact', 'WRITE')")

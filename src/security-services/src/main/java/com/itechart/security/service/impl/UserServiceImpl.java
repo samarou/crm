@@ -54,6 +54,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
+    public SecuredUserDto getUser(String userName) {
+        return convertToSecuredDto(userDao.findByName(userName));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Boolean checkUserIfExists(String userName) {return Objects.nonNull(userDao.findByName(userName));}
 
     @Override
