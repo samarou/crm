@@ -6,23 +6,21 @@
         </encoder>
     </appender>
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>./logs/web-scraper.log</file>
+        <file>logs/web-scraper.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>./logs/application_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>logs/web-scraper_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>5MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
-        <encoder>
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
             <charset>UTF-8</charset>
-            <pattern>%d %-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+            <pattern>%d %-4relative [%thread] %-5level %logger{10} - %msg%n</pattern>
         </encoder>
     </appender>
     <root level="DEBUG">
         <appender-ref ref="FILE"/>
-    </root>
-    <root level="INFO">
         <appender-ref ref="STDOUT"/>
     </root>
 </configuration>

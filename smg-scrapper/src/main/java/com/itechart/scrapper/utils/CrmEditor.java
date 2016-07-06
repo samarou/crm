@@ -100,9 +100,11 @@ public class CrmEditor {
         if (!isEmpty(profile.getEmail())) {
             ContactDto contact = profile.convertToContact();
             ContactDto originalContact = getContactFromCrm(profile.getEmail());
-            originalContact.addFields(contact);
-            updateContactInCrm(originalContact);
-            contactId = originalContact.getId();
+            if (originalContact != null) {
+                originalContact.addFields(contact);
+                updateContactInCrm(originalContact);
+                contactId = originalContact.getId();
+            }
         } else {
             log.info("profile {} has no email, not updating", profile.getDomenName());
         }

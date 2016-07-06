@@ -78,7 +78,8 @@ public class ContactServiceImpl implements ContactService {
     @Override
     @Transactional(readOnly = true)
     public ContactDto getByEmail(String email){
-        return convert(contactDao.getByEmail(email));
+        Contact contact = contactDao.getByEmail(email);
+        return contact != null? convert(contact):null;
     }
 
     @Override
