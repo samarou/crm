@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
 
 import static com.itechart.scrapper.model.smg.response.SmgResponse.getResponse;
@@ -42,8 +43,13 @@ public class SmgParser {
         return smgProfile;
     }
 
-    public List<SmgProfile> getAllProfiles() throws IOException {
-        return getAllProfiles(smgSessionId);
+    public List<SmgProfile> getAllProfiles() {
+        try {
+            return getAllProfiles(smgSessionId);
+        } catch (IOException e) {
+            log.error("can't read SMG profiles", e);
+        }
+        return Collections.emptyList();
     }
 
     public List<SmgDepartment> getDepartments() throws IOException {

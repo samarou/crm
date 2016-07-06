@@ -68,21 +68,21 @@ public class SmgProfile extends SmgShortProfile {
         contact.setPhotoUrl(getImage());
         contact.setIndustry("Information Technologies");
 
+        Set<TelephoneDto> telephoneDtos = new HashSet<>();
+        Set<EmailDto> emailDtos = new HashSet<>();
+        Set<MessengerAccountDto> messengerAccountDtos = new HashSet<>();
         if (!isEmpty(getPhone())) {
-            Set<TelephoneDto> telephoneDtos = new HashSet<>();
             telephoneDtos.add(new TelephoneDto(null, getPhone(), "WORK"));
-            contact.setTelephones(telephoneDtos);
         }
         if (!isEmpty(getEmail())) {
-            Set<EmailDto> emailDtos = new HashSet<>();
             emailDtos.add(new EmailDto(null, getEmail(), "WORK"));
-            contact.setEmails(emailDtos);
         }
         if (!isEmpty(getSkype())) {
-            Set<MessengerAccountDto> messengerAccountDtos = new HashSet<>();
             messengerAccountDtos.add(new MessengerAccountDto(null, SKYPE_ID, getSkype()));
-            contact.setMessengers(messengerAccountDtos);
         }
+        contact.setTelephones(telephoneDtos);
+        contact.setEmails(emailDtos);
+        contact.setMessengers(messengerAccountDtos);
         return contact;
     }
 

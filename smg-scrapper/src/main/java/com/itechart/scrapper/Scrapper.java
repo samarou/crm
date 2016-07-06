@@ -8,10 +8,15 @@ import com.itechart.scrapper.utils.SmgParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.nio.file.StandardOpenOption.APPEND;
+import static java.nio.file.StandardOpenOption.CREATE;
 
 public class Scrapper {
 
@@ -19,6 +24,8 @@ public class Scrapper {
 
     private SmgParser smgParser;
     private CrmEditor crmEditor;
+
+    private static final String IMPORTED_PROFILE_IDS_FILEPATH = "./imported_profiles.txt";
 
     private static Map<Integer, SecuredGroupDto> departmentsMap;
 
@@ -34,6 +41,7 @@ public class Scrapper {
     private Scrapper() {
         smgParser = new SmgParser();
         crmEditor = new CrmEditor();
+        crmEditor.initImportedProfiles(getImportedProfileIDs());
         departmentsMap = getMapOfDepartments();
     }
 
@@ -43,6 +51,18 @@ public class Scrapper {
         } else {
             importAllProfiles();
         }
+    }
+
+    private Set<Integer> getImportedProfileIDs() {
+        Set<Integer> set = new HashSet<>();
+        try (Scanner scanner = new Scanner(new File(IMPORTED_PROFILE_IDS_FILEPATH))) {
+            while (scanner.hasNext()) {
+                set.add(scanner.nextInt());
+            }
+        } catch (IOException e) {
+            log.error("can't read imported profiles from file", e);
+        }
+        return set;
     }
 
     private Map<Integer, SecuredGroupDto> getMapOfDepartments() {
@@ -69,9 +89,23 @@ public class Scrapper {
             List<SmgProfile> profiles = smgParser.getAllProfiles();
             importDepManagers(profiles);
             importEverybody(profiles);
-        } catch (IOException e) {
-            log.error("can't read SMG profile", e);
+        } catch (Exception e) {
+            try {
+                Files.write(Paths.get(IMPORTED_PROFILE_IDS_FILEPATH), convertToStrings(crmEditor.getImportedProfileIDs()), APPEND, CREATE);
+            } catch (IOException ex) {
+                log.error("can't write ids of imported profiles to file", ex);
+            }
+            throw e;
         }
+        try {
+            Files.delete(Paths.get(IMPORTED_PROFILE_IDS_FILEPATH));
+        } catch (IOException e) {
+            log.error("can't delete file because it doesn't exist");
+        }
+    }
+
+    private List<String> convertToStrings(Set<Integer> ints) {
+        return ints.stream().map(Object::toString).collect(Collectors.toList());
     }
 
     private void importDepManagers(List<SmgProfile> profiles) {

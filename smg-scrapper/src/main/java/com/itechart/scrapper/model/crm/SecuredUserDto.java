@@ -20,13 +20,20 @@ public class SecuredUserDto extends PublicUserDto implements ACLable {
     private Set<UserDefaultAclDto> acls;
     private Set<RoleDto> roles;
 
-    public void addFields(SecuredUserDto another) {
-        super.addFields(another);
-        setPassword(!isEmpty(getPassword()) ? getPassword() : another.getPassword());
+    public boolean addFields(SecuredUserDto another) {
+        boolean isEdited = super.addFields(another);
+        if(isEmpty(getPassword())){
+            setPassword(another.getPassword());
+        }
         setActive(!isEmpty(getActive()) ? getActive() : another.getActive());
-        addElementsToSet(groups, another.getGroups());
+        if(addElementsToSet(groups, another.getGroups())){
+            isEdited = true;
+        }
         addElementsToSet(acls, another.getAcls());
-        addElementsToSet(roles, another.getRoles());
+        if(addElementsToSet(roles, another.getRoles())){
+            isEdited = true;
+        }
+        return isEdited;
     }
 
     @Override

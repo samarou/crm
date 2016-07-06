@@ -36,18 +36,45 @@ public class ContactDto {
 
     private Set<EmailDto> emails;
 
-    public void addFields(ContactDto another) {
-        setId(!isEmpty(getId()) ? getId() : another.getId());
-        setFirstName(!isEmpty(getFirstName()) ? getFirstName() : another.getFirstName());
-        setLastName(!isEmpty(getLastName()) ? getLastName() : another.getLastName());
-        setPatronymic(!isEmpty(getPatronymic()) ? getPatronymic() : another.getPatronymic());
-        setDateOfBirth(!isEmpty(getDateOfBirth()) ? getDateOfBirth() : another.getDateOfBirth());
-        setIsMale(!isEmpty(getIsMale()) ? getIsMale() : another.getIsMale());
-        setNationality(!isEmpty(getNationality()) ? getNationality() : another.getNationality());
-        setPhotoUrl(!isEmpty(getPhotoUrl()) ? getPhotoUrl() : another.getPhotoUrl());
-        setIndustry(!isEmpty(getIndustry()) ? getIndustry() : another.getIndustry());
-        addElementsToSet(messengers, another.getMessengers());
-        addElementsToSet(telephones, another.getTelephones());
-        addElementsToSet(emails, another.getEmails());
+    public boolean addFields(ContactDto another) {
+        boolean isEdited = false;
+        if (isEmpty(getId())) {
+            setId(another.getId());
+        }
+        if (isEmpty(getFirstName())) {
+            setFirstName(another.getFirstName());
+            isEdited = true;
+        }
+        if (isEmpty(getLastName())) {
+            setLastName(another.getLastName());
+            isEdited = true;
+        }
+        if (isEmpty(getPatronymic())) {
+            setPatronymic(another.getPatronymic());
+            isEdited = true;
+        }
+        if (isEmpty(getNationality())) {
+            setNationality(another.getNationality());
+        }
+        if (isEmpty(getPhotoUrl())) {
+            setPhotoUrl(another.getPhotoUrl());
+            isEdited = true;
+        }
+        if (isEmpty(getIndustry())) {
+            setIndustry(another.getIndustry());
+            isEdited = true;
+        }
+        setDateOfBirth(getDateOfBirth() != null ? getDateOfBirth() : another.getDateOfBirth());
+        setIsMale(getIsMale() != null ? getIsMale() : another.getIsMale());
+        if (addElementsToSet(messengers, another.getMessengers())) {
+            isEdited = true;
+        }
+        if (addElementsToSet(telephones, another.getTelephones())) {
+            isEdited = true;
+        }
+        if (addElementsToSet(emails, another.getEmails())) {
+            isEdited = true;
+        }
+        return isEdited;
     }
 }
