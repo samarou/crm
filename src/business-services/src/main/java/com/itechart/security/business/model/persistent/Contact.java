@@ -69,6 +69,9 @@ public class Contact extends SecuredEntity {
     @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Skill> skills;
 
+    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<UniversityEducation> universityEducations;
+
     @Override
     public Long getId() {
         return id;

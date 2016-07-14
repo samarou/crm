@@ -7,6 +7,7 @@ import com.itechart.security.business.model.dto.CountryDto;
 import com.itechart.security.business.model.dto.DictionaryDto;
 import com.itechart.security.business.model.dto.MessengerDto;
 import com.itechart.security.business.model.dto.SocialNetworkDto;
+import com.itechart.security.business.model.enums.CertificateType;
 import com.itechart.security.business.model.enums.EmailType;
 import com.itechart.security.business.model.enums.TelephoneType;
 import com.itechart.security.business.service.DictionaryService;
@@ -57,6 +58,7 @@ public class DictionaryServiceImpl implements DictionaryService {
         dictionaryDto.setMessengers(getMessengers());
         dictionaryDto.setEmailTypes(convertEmailTypes(EmailType.values()));
         dictionaryDto.setTelephoneTypes(convertTelephoneTypes(TelephoneType.values()));
+        dictionaryDto.setCertificateTypes(convertCertificateTypes(CertificateType.values()));
         return dictionaryDto;
     }
 }

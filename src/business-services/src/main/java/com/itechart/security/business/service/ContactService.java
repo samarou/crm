@@ -41,4 +41,6 @@ public interface ContactService {
     void deleteSkill(Long id);
 
     int countContacts(ContactFilter filter);
+
+    void deleteUniversityEducation(Long id);
 }

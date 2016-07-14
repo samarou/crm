@@ -181,4 +181,11 @@ public class ContactController extends SecuredController {
         }
     }
 
+    @RequestMapping(value = "/contacts/{contactId}/educations/{educationId}", method = DELETE)
+    @PreAuthorize("hasPermission(#contactId, 'sample.Contact', 'DELETE')")
+    public void deleteEducationInfo(@PathVariable Long contactId, @PathVariable Long educationId){
+        logger.debug("deleting info about universities education for contact {}, education id {}",
+                contactId, educationId);
+        contactService.deleteUniversityEducation(educationId);
+    }
 }

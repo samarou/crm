@@ -28,7 +28,8 @@
             getDictionary: getDictionary,
             removeWorkplace: removeWorkplace,
             removeSkill: removeSkill,
-            parseProfile: parseProfile
+            parseProfile: parseProfile,
+            removeEducation: removeEducation
         };
 
         function create(contact) {
@@ -119,6 +120,10 @@
 
         function parseProfile(profileUrl) {
             return $http.get('rest/parser/linkedIn', {params: {url: profileUrl}});
+        }
+
+        function removeEducation(id, educationId) {
+            return $http.delete('rest/contacts/' + id + '/educations/' + educationId);
         }
     }
 })();

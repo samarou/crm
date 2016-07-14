@@ -51,6 +51,9 @@ public class ContactServiceImpl implements ContactService {
     private AttachmentDao attachmentDao;
 
     @Autowired
+    private UniversityEducationDao universityEducationDao;
+
+    @Autowired
     private FileService fileService;
 
     @Override
@@ -161,5 +164,11 @@ public class ContactServiceImpl implements ContactService {
     @Transactional
     public int countContacts(ContactFilter filter) {
         return contactDao.count(filter);
+    }
+
+    @Override
+    @Transactional
+    public void deleteUniversityEducation(Long id){
+        universityEducationDao.delete(id);
     }
 }
