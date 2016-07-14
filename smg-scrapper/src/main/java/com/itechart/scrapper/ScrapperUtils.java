@@ -4,12 +4,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ScrapperUtils {
-    public static <T> void addElementsToSet(Set<T> firstSet, Set<T> secondSet) {
+    public static <T> boolean addElementsToSet(Set<T> firstSet, Set<T> secondSet) {
         if (firstSet == null) {
             firstSet = new HashSet<>();
         }
-        if (secondSet != null) {
-            firstSet.addAll(secondSet);
-        }
+        return secondSet != null && firstSet.addAll(secondSet);
     }
 }

@@ -14,11 +14,25 @@ class PublicUserDto {
     private String firstName;
     private String lastName;
 
-    void addFields(PublicUserDto another) {
+    boolean addFields(PublicUserDto another) {
+        boolean isEdited = false;
         setId(!isEmpty(getId()) ? getId() : another.getId());
-        setUserName(!isEmpty(getUserName()) ? getUserName() : another.getUserName());
-        setEmail(!isEmpty(getEmail()) ? getEmail() : another.getEmail());
-        setFirstName(!isEmpty(getFirstName()) ? getFirstName() : another.getFirstName());
-        setLastName(!isEmpty(getLastName()) ? getLastName() : another.getLastName());
+        if(isEmpty(getUserName())){
+            setUserName(another.getUserName());
+            isEdited = true;
+        }
+        if(isEmpty(getEmail())){
+            setEmail(another.getEmail());
+            isEdited = true;
+        }
+        if(isEmpty(getFirstName())){
+            setFirstName(another.getFirstName());
+            isEdited = true;
+        }
+        if(isEmpty(getLastName())){
+            setLastName(another.getLastName());
+            isEdited = true;
+        }
+        return isEdited;
     }
 }

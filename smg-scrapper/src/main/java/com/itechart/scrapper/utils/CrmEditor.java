@@ -90,8 +90,9 @@ public class CrmEditor {
     private SecuredUserDto updateUser(SmgProfile profile, SecuredGroupDto department, Set<UserDefaultAclDto> newAcls) {
         SecuredUserDto user = createUserForSaving(profile, department, newAcls);
         SecuredUserDto originalUser = getUserFromCrm(profile.getDomenName());
-        originalUser.addFields(user);
-        updateUserInCrm(originalUser);
+        if (originalUser.addFields(user)) {
+            updateUserInCrm(originalUser);
+        }
         return originalUser;
     }
 
@@ -100,8 +101,7 @@ public class CrmEditor {
         if (!isEmpty(profile.getEmail())) {
             ContactDto contact = profile.convertToContact();
             ContactDto originalContact = getContactFromCrm(profile.getEmail());
-            if (originalContact != null) {
-                originalContact.addFields(contact);
+            if (originalContact != null && originalContact.addFields(contact)) {
                 updateContactInCrm(originalContact);
                 contactId = originalContact.getId();
             }
@@ -289,5 +289,13 @@ public class CrmEditor {
 
     public Boolean wasProfileImported(Integer id) {
         return importedProfileIDs.contains(id);
+    }
+
+    public void initImportedProfiles(Set<Integer> importedProfileIDs) {
+        this.importedProfileIDs = importedProfileIDs;
+    }
+
+    public Set<Integer> getImportedProfileIDs() {
+        return importedProfileIDs;
     }
 }
