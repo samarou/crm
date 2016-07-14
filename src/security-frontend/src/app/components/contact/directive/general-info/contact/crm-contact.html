@@ -37,7 +37,9 @@
                        id="contact-date-of-birth"
                        uib-datepicker-popup
                        placeholder="yyyy-MM-dd" min="1900-01-01"
-                       max="{{vm.details.now|date:'yyyy-MM-dd'}}"
+                       crm-custom-date-validation
+                       max-date="{{vm.details.now|date:'yyyy-MM-dd'}}"
+                       min-date="1900-01-01"
                        pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
                        class="form-control"
                        name="dateOfBirth"

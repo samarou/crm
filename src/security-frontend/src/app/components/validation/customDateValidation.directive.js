@@ -37,10 +37,10 @@
                         var minDate = regex.test(min) ? new Date(min) : undefined;
                         var maxDate = regex.test(max) ? new Date(max) : undefined;
                         var enteredDate = regex.test(value) ? new Date(value) : undefined;
-                      
+
                         if(enteredDate != undefined){
                             var min = (minDate < enteredDate)||(minDate === undefined);
-                            var max = (maxDate>enteredDate)||(maxDate === undefined);
+                            var max = (maxDate >= enteredDate)||(maxDate === undefined);
                             if(!min || !max){
                                 valid = false;
                             }

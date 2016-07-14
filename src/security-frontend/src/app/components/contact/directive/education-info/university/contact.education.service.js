@@ -58,8 +58,7 @@
                 certificateTypes:scope.dictionary.certificateTypes,
                 details:{
                     now:new Date()
-                },
-                changed: function(){console.log('changed WAS CALLED');}
+                }
             }).result;
 
 
