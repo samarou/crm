@@ -8,7 +8,7 @@
     function contactDetailsService(contactService, aclServiceBuilder, $state, contactAttachmentService,
                                    contactAddressService, contactEmailService, contactMessengerService,
                                    contactTelephoneService, contactSocialNetworkService, contactWorkplaceService,
-                                   contactSkillService, dialogService, $log) {
+                                   contactSkillService, dialogService, contactEducationService, $log) {
 
         return {
             submit: submit,
@@ -21,6 +21,7 @@
             socialNetwork: contactSocialNetworkService,
             workplace: contactWorkplaceService,
             skill: contactSkillService,
+            education:contactEducationService,
             createAclHandler: createAclHandler,
             getEmptyContact: getEmptyContact,
             now: new Date(),
@@ -46,6 +47,7 @@
                 messengers: [],
                 workplaces: [],
                 skills: [],
+                educations: [],
                 attachments: []
             };
         }

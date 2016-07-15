@@ -17,4 +17,6 @@ public class DictionaryDto {
     private List<EmailTypeDto> emailTypes;
 
     private List<TelephoneTypeDto> telephoneTypes;
+
+    private List<UniversityCertificateTypeDto> certificateTypes;
 }

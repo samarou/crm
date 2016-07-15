@@ -1,6 +1,7 @@
 package com.itechart.security.business.model.dto.utils;
 
 import com.itechart.security.business.model.dto.*;
+import com.itechart.security.business.model.enums.CertificateType;
 import com.itechart.security.business.model.enums.EmailType;
 import com.itechart.security.business.model.enums.TelephoneType;
 import com.itechart.security.business.model.persistent.*;
@@ -37,6 +38,7 @@ public class DtoConverter {
         dto.setAttachments(convertAttachments(contact.getAttachments()));
         dto.setIndustry(contact.getIndustry());
         dto.setSkills(convertSkills(contact.getSkills()));
+        dto.setEducations(convertUniversityEducations(contact.getUniversityEducations()));
         return dto;
     }
 
@@ -72,6 +74,7 @@ public class DtoConverter {
         contact.setAttachments(convertAttachmentDtos(dto.getAttachments()));
         contact.setIndustry(dto.getIndustry());
         contact.setSkills(convertSkillDtos(dto.getSkills()));
+        contact.setUniversityEducations(convertUnivercityEducationDtos(dto.getEducations()));
         for (Email email : contact.getEmails()) {
             email.setContact(contact);
         }
@@ -95,6 +98,9 @@ public class DtoConverter {
         }
         for (Skill skill : contact.getSkills()) {
             skill.setContact(contact);
+        }
+        for (UniversityEducation education : contact.getUniversityEducations()){
+            education.setContact(contact);
         }
         return contact;
     }
@@ -561,5 +567,62 @@ public class DtoConverter {
             .stream()
             .map(DtoConverter::convert)
             .collect(toSet());
+    }
+
+    public static List<UniversityCertificateTypeDto> convertCertificateTypes(CertificateType[] types){
+        if(types.length == 0){
+            return emptyList();
+        }
+        return Arrays.asList(types)
+            .stream()
+            .map(DtoConverter::convert)
+            .collect(toList());
+    }
+
+    public static UniversityCertificateTypeDto convert(CertificateType type){
+        UniversityCertificateTypeDto dto = new UniversityCertificateTypeDto();
+        dto.setName(type.name());
+        dto.setValue(type.getValue());
+        return dto;
+    }
+
+    public static UniversityEducationDto convert(UniversityEducation education){
+        UniversityEducationDto dto = new UniversityEducationDto();
+        dto.setId(education.getId());
+        dto.setEndDate(education.getEndDate());
+        dto.setStartDate(education.getStartDate());
+        dto.setName(education.getName());
+        dto.setSpeciality(education.getSpeciality());
+        dto.setType(education.getType().name());
+        return dto;
+    }
+
+    public static UniversityEducation convert(UniversityEducationDto dto){
+        UniversityEducation education = new UniversityEducation();
+        education.setId(dto.getId());
+        education.setName(dto.getName());
+        education.setStartDate(dto.getStartDate());
+        education.setEndDate(dto.getEndDate());
+        education.setSpeciality(dto.getSpeciality());
+        education.setType(CertificateType.findByName(dto.getType()));
+        return education;
+    }
+
+    public static Set<UniversityEducationDto> convertUniversityEducations(Set<UniversityEducation> educations){
+        if(isEmpty(educations)){
+            return emptySet();
+        }
+        return educations
+            .stream()
+            .filter(education -> education.getDateDeleted() == null)
+            .map(DtoConverter::convert)
+            .collect(toSet());
+    }
+
+    public static Set<UniversityEducation> convertUnivercityEducationDtos(Set<UniversityEducationDto> educations){
+        if(isEmpty(educations)){
+            return emptySet();
+        }
+        return educations.stream().map(DtoConverter::convert).collect(toSet());
     }
 }

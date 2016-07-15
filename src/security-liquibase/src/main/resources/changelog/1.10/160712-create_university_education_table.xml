@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="001" author="yury.sauchuk">
+        <createTable tableName="university_education" remarks="Contact's university education">
+            <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" remarks="University name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_start" remarks="Date of start education" type="DATETIME"/>
+            <column name="date_end" remarks="Date of end education" type="DATETIME"/>
+            <column name="type" remarks="Type of certificate of degree" type="ENUM('WITH_HONORS','SIMPLE', 'NOT_COMPLETE')"/>
+            <column name="speciality" remarks="Speciality" type="VARCHAR(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="contact_id" remarks="Contact identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="university_education"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="002" author="yury.sauchuk">
+        <createIndex tableName="university_education" indexName="fk_education_contact_id">
+            <column name="contact_id"/>
+        </createIndex>
+        <rollback>
+            <dropIndex tableName="university_education" indexName="fk_education_contact_id"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="003" author="yury.sauchuk">
+        <addForeignKeyConstraint baseTableName="university_education" baseColumnNames="contact_id"
+                                 constraintName="fk_education_contact_id"
+                                 referencedTableName="contact"
+                                 referencedColumnNames="id"/>
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="university_education"
+                                      constraintName="fk_education_contact_id"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="004" author="yury.sauchuk">
+        <addColumn tableName="university_education">
+            <column name="date_deleted" remarks="Date of university education info deletion" type="DATETIME"></column>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

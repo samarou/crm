@@ -18,4 +18,5 @@
     <include file="changelog/1.7/160530-d558732_add_industry_and_skills_fields.xml" relativeToChangelogFile="true"/>
     <include file="changelog/1.8/160603-create_task_and_related_tables.xml" relativeToChangelogFile="true"/>
     <include file="changelog/1.8/160531-m560521_attachments_refactoring.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/1.10/160712-create_university_education_table.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

@@ -1,0 +1,78 @@
+<crm-form-wrapper form-title="vm.title" submit-text="{{educationForm.$valid?'Ok':null}}" cancel-text="Cancel"
+                  submit-btn="vm.ok()" cancel-btn="vm.cancel()" modal="true" ng-form="educationForm">
+    <div class="form-group" crm-input-validation>
+        <label for="universityName">University</label>
+        <input ng-model="vm.education.name"
+               id="universityName"
+               name="university"
+               class="form-control"
+               type="text"
+               required maxlength="255">
+        <span ng-show="educationForm.university.$error.required"
+              class="help-block">University name is required</span>
+        <span ng-show="!educationForm.university.$error.required && educationForm.university.$dirty &&
+              !educationForm.university.$valid" class="help-block">Education name format isn't correct</span>
+    </div>
+    <div class="form-group" crm-input-validation="">
+        <label for="startDate">Start Date</label>
+        <input ng-model="vm.education.startDate"
+               id="startDate"
+               name="startDate"
+               class="form-control"
+               uib-datepicker-popup
+               crm-custom-date-validation
+               crm-min-date
+               dependentField = "endDate"
+               placeholder="yyyy-MM-dd"
+               pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
+               min-date="1900-01-01"
+               max-date="{{vm.details.now|date:'yyyy-MM-dd'}}">
+        <span
+            ng-show="!educationForm.startDate.$valid && !educationForm.startDate.$error.date_validation"
+            class="help-block">Enter date in format: yyyy-MM-dd</span>
+         <span ng-show="!educationForm.startDate.$valid && educationForm.startDate.$error.date_validation" class="help-block">
+            Start date has not correct value
+        </span>
+    </div>
+    <div class="form-group" crm-input-validation="">
+        <label for="endDate">End Date</label>
+        <input ng-model="vm.education.endDate"
+               id="endDate"
+               name="endDate"
+               class="form-control"
+               uib-datepicker-popup
+               crm-custom-date-validation
+               placeholder="yyyy-MM-dd"
+               pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
+               min-date="{{vm.education.startDate|date:'yyyy-MM-dd'}}">
+        <span
+            ng-show="!educationForm.endDate.$valid && !educationForm.endDate.$error.date_validation"
+            class="help-block">Enter date in format: yyyy-MM-dd</span>
+        <span ng-show="!educationForm.endDate.$valid && educationForm.endDate.$error.date_validation" class="help-block">
+            End date has not correct value
+        </span>
+    </div>
+    <div class="form-group crm-select-validation-icon" crm-input-validation>
+        <label for="diplomaType">Type</label>
+        <select ng-model="vm.education.type"
+                id="diplomaType"
+                name="diplomaType"
+                class="form-control"
+                ng-options="option.name as option.value for option in vm.certificateTypes">
+            <option value="">Please, select</option>
+        </select>
+    </div>
+    <div class="form-group" crm-input-validation>
+        <label for="speciality">Speciality</label>
+        <input ng-model="vm.education.speciality"
+               id="speciality"
+               name="speciality"
+               class="form-control"
+               type="text"
+               required maxlength="255">
+        <span ng-show="educationForm.speciality.$error.required"
+              class="help-block">Speciality is required</span>
+        <span ng-show="!educationForm.speciality.$error.required && educationform.speciality.$dirty &&
+              !educationForm.speciality.$valid" class="help-block">Speciality format isn't correct</span>
+    </div>
+</crm-form-wrapper>

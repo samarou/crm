@@ -1,0 +1,44 @@
+<div class="panel panel-default" ng-if="vm.canEdit || (!vm.canEdit && vm.contact.educations.length>0)">
+    <div class="panel-heading">
+        <crm-contact-table-header title="Education"
+                                  adding-function="vm.details.education.add"
+                                  removing-function="vm.details.education.remove"
+                                  vm="vm"></crm-contact-table-header>
+    </div>
+    <table class="table table-condensed crm-table-fixed" ng-show="vm.contact.educations.length>0">
+        <thead>
+        <tr>
+            <th class="crm-narrow"><input type="checkbox"
+                       ng-show="vm.canEdit"
+                       title="select education"
+                       ng-click="vm.details.checkAll(vm.contact.educations, vm.contact.educations.isSelectedAll)"
+                       ng-model="vm.contact.educations.isSelectedAll"></th>
+            <th class="col-xs-3">Name</th>
+            <th class="col-xs-2">Date beginning</th>
+            <th class="col-xs-2">Date ending</th>
+            <th class="col-xs-2">Type of diploma</th>
+            <th class="col-xs-3">Specialization</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="education in vm.contact.educations"
+            ng-click="vm.canEdit ? vm.details.education.edit(education, vm):null"
+            class="crm-hover">
+            <td>
+                <input ng-model="education.checked"
+                       type="checkbox"
+                       ng-show="vm.canEdit"
+                       title="select education"
+                       ng-click="vm.details.isAllSelected(vm.contact.educations); $event.stopPropagation()"
+                       ng-init="vm.details.isAllSelected(vm.contact.educations)">
+            </td>
+            <td>{{education.name}}</td>
+            <td>{{education.startDate|date:"yyyy-MM-dd"}}</td>
+            <td>{{education.endDate|date:"yyyy-MM-dd"}}</td>
+            <td>{{vm.details.education.getTypeName(education.type, vm.dictionary.certificateTypes)}}</td>
+            <td>{{education.speciality}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+

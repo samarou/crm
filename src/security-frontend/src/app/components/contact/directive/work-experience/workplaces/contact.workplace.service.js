@@ -41,7 +41,8 @@
                 size: 'modal--user-table',
                 cancelTitle: 'Cancel',
                 okTitle: 'Add',
-                workplace: {}
+                workplace: {},
+                details:{now:new Date()}
             }).result;
         }
 
