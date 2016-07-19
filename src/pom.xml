@@ -16,6 +16,7 @@
         <module>security-web</module>
         <module>business-services</module>
         <module>security-frontend</module>
+        <module>web-crawler</module>
         <module>common</module>
     </modules>
     <scm>

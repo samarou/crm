@@ -50,3 +50,16 @@
 .crm-badge-x::after {
     content: '✖	';
 }
+
+.crm-table-condensed {
+    > thead,
+    > tbody,
+    > tfoot {
+        > tr {
+            > th,
+            > td {
+                padding: 1px;
+            }
+        }
+    }
+}

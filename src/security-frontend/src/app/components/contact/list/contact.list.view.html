@@ -1,15 +1,15 @@
 <div class="page-header">
     <h4>Contacts</h4>
 </div>
-<div class="row crm-bottom-buffer">
-    <div ng-class="vm.isManager ? 'col-xs-12 col-sm-8 col-md-9' : 'col-xs-12'">
+<div class="row">
+    <div ng-class="vm.isManager() ? 'col-xs-12 col-sm-8 col-md-9' : 'col-xs-12'">
         <div class="form-group">
             <input ng-model="vm.searchContactBundle.filter.text" ng-keyup="vm.searchContactBundle.typing.keyUp()"
                    ng-keydown="vm.searchContactBundle.typing.keyDown()" class="form-control"
                    placeholder="Search by first name, last name, email, address...">
         </div>
     </div>
-    <div class="col-xs-12 col-sm-4 col-md-3" ng-if="vm.isManager">
+    <div class="col-xs-12 col-sm-4 col-md-3" ng-if="vm.isManager()">
         <div class="btn-group btn-group-justified pull-right">
             <a class="btn btn-default" ng-click="vm.add()">
                 Add
@@ -22,10 +22,10 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-        <table class="table table-condensed crm-table-fixed">
+        <table class="table crm-table-condensed crm-table-fixed">
             <thead>
             <tr>
-                <th class="crm-narrow"><input type="checkbox" ng-model="vm.searchContactBundle.isSelectedAll"
+                <th class="crm-narrow" ng-if="vm.isManager()"><input type="checkbox" ng-model="vm.searchContactBundle.isSelectedAll"
                            ng-click="vm.searchContactBundle.selectAll(vm.searchContactBundle.isSelectedAll)"></th>
                 <th class="crm-hover col-sm-6 col-xs-6"
                     ng-click="vm.searchContactBundle.sortBy(vm.searchContactBundle.sortProperties.firstName)">
@@ -46,7 +46,7 @@
             <tbody>
             <tr class="crm-hover" ng-click="vm.edit(contact)"
                 ng-repeat="contact in vm.searchContactBundle.itemsList">
-                <td><input type="checkbox" ng-model="contact.checked"
+                <td ng-if="vm.isManager()"><input type="checkbox" ng-model="contact.checked"
                            ng-click="vm.searchContactBundle.selectOne();$event.stopPropagation()">
                 </td>
                 <td>{{contact.firstName + ' ' + contact.lastName}}</td>
@@ -61,6 +61,7 @@
       ng-hide="vm.bundle.paging.totalCount === 0">Total: {{vm.searchContactBundle.paging.totalCount}}</span>
 <div class="crm-text-center">
     <uib-pagination class="pagination-sm" ng-change="vm.searchContactBundle.paging.onPageChanged()"
+                    ng-init="3"
                     ng-model="vm.searchContactBundle.paging.currentPage"
                     total-items="vm.searchContactBundle.paging.totalCount"
                     items-per-page="vm.searchContactBundle.paging.itemsPerPage"
@@ -68,3 +69,6 @@
                     boundary-link-numbers="true" rotate="false">
     </uib-pagination>
 </div>
+{{vm.searchContactBundle.paging.totalCount}}
+{{vm.searchContactBundle.paging.currentPage}}
+{{vm.searchContactBundle.filter.text}}

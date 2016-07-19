@@ -39,9 +39,16 @@
         }
 
         function getContactBundle() {
-            var bundle = createCommonBundle();
+            var params = {
+                itemsPerPage: 24,
+                currentPage: 3,
+                text: 'p'
+            };
+            var bundle = createCommonBundle(params);
             bundle.selectAll = createSelectAllAction(bundle);
             bundle.performSeach = contactService.find;
+            console.log('4', bundle.paging.currentPage);
+
             bundle.sortProperties.address = {name: 'address', asc: true, enabled: false};
             return bundle;
         }
@@ -90,24 +97,28 @@
             });
         }
 
-        function createCommonBundle() {
+        function createCommonBundle(params) {
             var bundle = {};
-
-            var pageSize = 5;
+            console.log(params);
+            var itemsPerPage = params && params.itemsPerPage || 10;
+            var currentPage = params && params.currentPage || 1;
+            var initialSearchText = params && params.text || null;
 
             bundle.isSelectAll = false;
             bundle.itemsList = [];
 
             bundle.paging = {
                 totalCount: 0,
-                itemsPerPage: pageSize,
-                currentPage: 1,
+                itemsPerPage: itemsPerPage,
+                currentPage: currentPage,
                 visiblePages: 5
             };
-
+            console.log('1', bundle.paging.currentPage);
             bundle.paging.onPageChanged = function () {
-                bundle.filter.from = (bundle.paging.currentPage - 1) * pageSize;
+                console.log('somewere1_1', bundle.paging.currentPage);
+                bundle.filter.from = (bundle.paging.currentPage - 1) * itemsPerPage;
                 bundle.find();
+                console.log('somewere1_2', bundle.paging.currentPage);
             };
 
             bundle.sortProperties = {
@@ -118,15 +129,17 @@
 
             bundle.filter = {
                 from: 0,
-                count: pageSize,// todo: extract to config
-                text: null,
+                count: itemsPerPage,
+                text: initialSearchText,
                 sortProperty: null,
                 sortAsc: true
             };
             bundle.filter.sortProperty = bundle.sortProperties.firstName.name;
             bundle.filter.sortAsc = bundle.sortProperties.firstName.asc;
+            console.log('2', bundle.paging.currentPage);
 
             bundle.find = function find() {
+                console.log('somewere2_1', bundle.paging.currentPage);
                 resetBundleState(bundle);
                 angular.forEach(bundle.filter, function (value, key) {
                     if (angular.isString(value)) {
@@ -137,6 +150,7 @@
                     bundle.itemsList = response.data.data;
                     bundle.paging.totalCount = response.data.totalCount;
                 });
+                console.log('somewere2_2', bundle.paging.currentPage);
             };
             bundle.typing = util.createDelayTypingListener(bundle.find, 500);
 
@@ -156,6 +170,7 @@
                     return user.checked;
                 });
             };
+            console.log('3', bundle.paging.currentPage);
 
             return bundle;
         }

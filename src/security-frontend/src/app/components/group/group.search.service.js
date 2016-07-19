@@ -29,7 +29,7 @@
 
             bundle.searchText = '';
             bundle.pageGroups = [];
-
+console.log('fuck it');
             // todo: resolve problem with filtering
             bundle.pagingFilterConfig = {
                 currentPage: 1,

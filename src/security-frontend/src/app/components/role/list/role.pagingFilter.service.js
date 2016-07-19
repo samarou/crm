@@ -8,6 +8,7 @@
     /** @ngInject */
     function pagingFilter() {
         var service = this;
+        console.log('fuck it');
 
         service.config = {
             currentPage: 1,

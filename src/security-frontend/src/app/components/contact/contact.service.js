@@ -48,6 +48,7 @@
         }
 
         function find(filter) {
+            console.log('getting contacts', filter);
             return $http.get('rest/contacts', {params: filter});
         }
 

@@ -8,7 +8,7 @@
     function contactDetailsService(contactService, aclServiceBuilder, $state, contactAttachmentService,
                                    contactAddressService, contactEmailService, contactMessengerService,
                                    contactTelephoneService, contactSocialNetworkService, contactWorkplaceService,
-                                   contactSkillService, dialogService, $log) {
+                                   contactSkillService, dialogService) {
 
         return {
             submit: submit,

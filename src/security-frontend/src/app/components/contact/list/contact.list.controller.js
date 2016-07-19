@@ -8,21 +8,22 @@
     /** @ngInject */
     function contactListController($q, authService, contactService, searchService, dialogService, $state, contactSecurityService) {
         var vm = this;
-
-        vm.isManager = authService.isManager();
+        vm.isManager = authService.isManager;
         vm.searchContactBundle = searchService.contactMode();
         vm.add = add;
         vm.edit = edit;
         vm.remove = remove;
 
-        init();
+        // init();
 
         function init() {
             vm.searchContactBundle.find();
+            console.log('5', vm.searchContactBundle.paging.currentPage);
         }
 
         function add() {
             $state.go('contacts.add');
+            console.log('6', vm.searchContactBundle.paging.currentPage);
         }
 
         function edit(contact) {
