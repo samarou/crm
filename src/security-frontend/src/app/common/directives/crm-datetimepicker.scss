@@ -7,13 +7,13 @@
             margin: 0;
             height: 33px;
         }
-        a.btn-link {
-            outline: none;
-        }
     }
 
     .time-group {
         display: inline-block;
+        a.btn.btn-link {
+            outline: none;
+        }
     }
 
     .time-group .spinners-buffer {
