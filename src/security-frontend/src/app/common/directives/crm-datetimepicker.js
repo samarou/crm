@@ -11,7 +11,6 @@
 
     function crmDateTimePicker() {
         return {
-            require: 'model',
             restrict: 'E',
             templateUrl: 'app/common/directives/crm-datetimepicker.html',
             replace: true,
@@ -21,6 +20,23 @@
                 datepickerOptions: '=?',
                 isEdit: '=',
                 label: '@?'
+            },
+            link: function (scope, element) {
+                function nullOrPrependZeros(value) {
+                    return angular.isNumber(value)
+                        ? value < 10 ? '0' + value : value
+                        : null;
+                }
+
+                function resetTimepicker(timepicker, newValue) {
+                    timepicker.find('input[ng-model="hours"]').val(nullOrPrependZeros(newValue && newValue.getHours()));
+                    timepicker.find('input[ng-model="minutes"]').val(nullOrPrependZeros(newValue && newValue.getMinutes()));
+                }
+
+                scope.$watch('model', function (newValue) {
+                    resetTimepicker(element.find('[uib-timepicker].ng-hide'), newValue);
+                    resetTimepicker(element.find('[uib-timepicker]:not(.ng-hide)'), newValue);
+                });
             }
         };
     }

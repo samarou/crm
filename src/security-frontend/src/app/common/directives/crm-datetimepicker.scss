@@ -1,22 +1,23 @@
 .datetime-group {
     .date-group {
-        label {
-            display: inline-block;
-            margin-bottom: 0;
-            padding-bottom: 0;
-            height: 34px;
-        }
         float: left;
         margin-right: 10px;
-        display: inline-block;
-    }
-    .time-group {
-        display: inline-block;
+        label {
+            padding: 0;
+            margin: 0;
+            height: 33px;
+        }
         a.btn-link {
             outline: none;
         }
     }
-    .top-buffer table.uib-timepicker {
-        margin-top: 34px;
+
+    .time-group {
+        display: inline-block;
+    }
+
+    .time-group .spinners-buffer {
+        margin-top: 33px;
+        margin-bottom: 33px;
     }
 }

@@ -1,5 +1,5 @@
 <div class="datetime-group">
-    <div class="date-group form-group">
+    <div class="date-group">
         <label>{{label}}</label>
         <div class="input-group" ng-init="isOpen = false" title="Set up a date">
             <p class="input-group">
@@ -15,17 +15,13 @@
             </p>
         </div>
     </div>
-    <div class="time-group form-group" ng-class="{'top-buffer': !isEdit}">
-        <!--use two blocks, because properties 'show-spinners' and 'readonly-input' not updated after isEdit changed-->
-        <div ng-show="isEdit">
-            <uib-timepicker ng-model="model" ng-change="onchange({newValue: model, isDate: false})"
-                            show-spinners="true" readonly-input="false" minute-step="5" show-meridian="false">
-            </uib-timepicker>
+    <div class="time-group">
+        <!--using two blocks, because properties 'show-spinners' and 'readonly-input' do not updated when isEdit was changed-->
+        <div ng-show="isEdit" uib-timepicker ng-model="model" ng-change="onchange({newValue: model, isDate: false})"
+             show-spinners="true" readonly-input="false" minute-step="5" show-meridian="false">
         </div>
-        <div ng-show="!isEdit">
-            <uib-timepicker ng-model="model" ng-change="onchange({newValue: model, isDate: false})"
-                            show-spinners="false" readonly-input="true" minute-step="5" show-meridian="false">
-            </uib-timepicker>
+        <div ng-show="!isEdit" class="spinners-buffer" uib-timepicker ng-model="model" ng-change="onchange({newValue: model, isDate: false})"
+             show-spinners="false" readonly-input="false" minute-step="5" show-meridian="false">
         </div>
     </div>
 </div>

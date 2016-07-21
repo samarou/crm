@@ -10,7 +10,7 @@
         .service('taskCommonService', taskCommonService);
 
     /** @ngInject */
-    function taskCommonService(aclServiceBuilder, taskService, searchService, $state, $q, userService, dialogService, collections, util) {
+    function taskCommonService(aclServiceBuilder, taskService, searchService, $state, $q, userService, dialogService, collections, util, $log) {
         var openSearchContactDialog = createAddAction('app/components/task/tabs/contacts/search-contact-dialog.view.html', 'Add Contact for Task', searchService.contactMode());
         var openSearchCompanyDialog = createAddAction('app/components/task/tabs/contacts/search-company-dialog.view.html', 'Add Company for Task', searchService.companyMode());
 
@@ -60,8 +60,14 @@
 
         function createOnTimeless(context) {
             return function () {
-                if (context.canEdit) {
-                    context.canEditDateTime = !context.timeless;
+                context.canEditDateTime = !context.timeless;
+                if (context.timeless) {
+                    context.task.startDate = null;
+                    context.task.endDate = null;
+                } else {
+                    var newDate = util.getDateTrimMinutes();
+                    context.task.startDate = newDate;
+                    context.onStartDateTimeChange(newDate);
                 }
             }
         }
@@ -69,14 +75,9 @@
         function createStartDateTimeChangeListener(context) {
             return function (newStartDateTime, isDate) {
                 var task = context.task;
-                if (isDate) {
+                if (isDate || task.endDate <= newStartDateTime) {
                     task.endDate = new Date(newStartDateTime.getTime());
                     task.endDate.setHours(task.endDate.getHours() + 1);
-                } else {
-                    if (task.endDate <= newStartDateTime) {
-                        task.endDate = new Date(newStartDateTime.getTime());
-                        task.endDate.setHours(task.endDate.getHours() + 1);
-                    }
                 }
             }
         }
@@ -145,7 +146,7 @@
             return function () {
                 var acl = context.aclHandler;
                 var task = context.task;
-                if (!context.canEditDateTime) {
+                if (context.timeless) {
                     task.startDate = null;
                     task.endDate = null;
                 }
