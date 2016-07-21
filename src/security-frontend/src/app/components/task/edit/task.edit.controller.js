@@ -23,8 +23,8 @@
             taskService.getTaskById($stateParams.id).then(function (response) {
                 vm.task = response.data;
                 /*need converting because date have a millis format*/
-                vm.task.startDate = vm.task.startDate && new Date(vm.task.startDate);
-                vm.task.endDate = vm.task.endDate && new Date(vm.task.endDate);
+                vm.task.startDate = vm.task.startDate ? new Date(vm.task.startDate) : null;
+                vm.task.endDate = vm.task.endDate ? new Date(vm.task.endDate)  : null;
                 $q.all([
                     taskService.getAcls(vm.task.id),
                     taskSecurityService.checkAdminPermission(vm.task.id),
@@ -33,7 +33,7 @@
                     vm.aclHandler.acls = responses[0].data;
                     vm.aclHandler.canEdit = responses[1];
                     vm.canEdit = responses[2];
-                    
+
                     vm.canEditDateTime = vm.canEdit;
                 });
             });
