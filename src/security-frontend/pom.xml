@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.itechart.security</groupId>
         <artifactId>security-project</artifactId>
-        <version>1.9-SNAPSHOT</version>
+        <version>1.9</version>
     </parent>
 
     <name>Security frontend</name>
