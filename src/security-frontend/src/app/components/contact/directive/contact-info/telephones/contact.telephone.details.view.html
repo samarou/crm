@@ -5,10 +5,14 @@
         <input ng-model="vm.telephone.number"
                id="telephoneNumber"
                class="form-control"
+               pattern="\+?((\s?\()?\d+-*(\)\s?)?)*\d+"
                name="telephone" required maxlength="100">
-        <span
-            ng-show="telephoneForm.telephone.$error.required"
-            class="help-block">Telephone is required</span>
+        <span ng-show="telephoneForm.telephone.$dirty">
+            <span ng-show="telephoneForm.telephone.$error.required"
+                  class="help-block">Telephone is required</span>
+            <span ng-show="telephoneForm.telephone.$error.pattern"
+                  class="help-block">Incorrect telephone number format</span>
+        </span>
     </div>
     <div class="form-group crm-select-validation-icon" crm-input-validation>
         <label for="telephoneType">Telephone type</label>
