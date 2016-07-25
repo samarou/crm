@@ -9,9 +9,11 @@
         .service('contactAddressService', contactAddressService);
 
     /** @ngInject */
-    function contactAddressService(contactService, dialogService, contactCommonService, collections) {
+    function contactAddressService(contactService, dialogService, contactCommonService) {
 
         var detailsUrl = 'app/components/contact/directive/contact-info/addresses/contact.address.details.view.html';
+        var propertiesToCheck = ['addressLine', 'city', 'region', 'country', 'zipcode'];
+        var existenceErrorMessage = 'Address already exists';
 
         return {
             add: addAddress,
@@ -22,8 +24,8 @@
 
         function addAddress(scope) {
             openAddAttachmentDialog(scope).then(function (model) {
-                if (!collections.exists(model.address, scope.contact.addresses,
-                        collections.propertyListComparator(['addressLine', 'city', 'region', 'country', 'zipcode']))){
+                if (contactCommonService.infoItemCanBeAdded(model.address, scope.contact.addresses,
+                        propertiesToCheck, existenceErrorMessage)) {
                     scope.contact.addresses.push(model.address);
                 }
             });
@@ -31,8 +33,8 @@
 
         function editAddress(address, scope) {
             openEditAttachmentDialog(address, scope).then(function (model) {
-                if (!collections.exists(model.address, scope.contact.addresses,
-                        collections.propertyListComparator(['addressLine', 'city', 'region', 'country', 'zipcode']))){
+                if (contactCommonService.infoItemCanBeAdded(model.address, scope.contact.addresses,
+                        propertiesToCheck, existenceErrorMessage)){
                     angular.copy(model.address, address);
                 }
             });
