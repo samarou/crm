@@ -1,5 +1,6 @@
 package com.itechart.security.business.model.persistent.task;
 
+import com.itechart.security.business.model.enums.ObjectTypes;
 import com.itechart.security.business.model.persistent.Contact;
 import com.itechart.security.business.model.persistent.SecuredEntity;
 import com.itechart.security.business.model.persistent.company.Company;
@@ -26,6 +27,9 @@ public class Task extends SecuredEntity {
 
     @Column(name = "name", nullable = false, length = 150)
     private String name;
+
+    @Column(name = "location", length = 500)
+    private String location;
 
     @Column(name = "description", length = 300)
     private String description;
@@ -63,5 +67,10 @@ public class Task extends SecuredEntity {
     @Override
     public Long getId() {
         return id;
+    }
+
+    @Override
+    public String getObjectType() {
+        return ObjectTypes.TASK.getName();
     }
 }

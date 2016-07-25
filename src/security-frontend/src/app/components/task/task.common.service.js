@@ -10,21 +10,16 @@
         .service('taskCommonService', taskCommonService);
 
     /** @ngInject */
-    function taskCommonService($log, taskService, searchService, $state, $q, userService, dialogService, collections, util) {
+    function taskCommonService(aclServiceBuilder, taskService, searchService, $state, $q, userService, dialogService, collections, util, $log) {
         var openSearchContactDialog = createAddAction('app/components/task/tabs/contacts/search-contact-dialog.view.html', 'Add Contact for Task', searchService.contactMode());
         var openSearchCompanyDialog = createAddAction('app/components/task/tabs/contacts/search-company-dialog.view.html', 'Add Company for Task', searchService.companyMode());
-        var datepickerOptions = {
-        };
 
         return {
-            initContext: initContext
+            initContext: initContext,
+            createAclHandler: createAclHandler
         };
 
         function initContext(context) {
-            function taskResolver() {
-                return context.task;
-            }
-
             function contactsResolver() {
                 return context.task.contacts = context.task.contacts || [];
             }
@@ -33,9 +28,11 @@
                 return context.task.companies = context.task.companies || [];
             }
 
-            context.datepickerOptions = datepickerOptions;
-
-            context.submit = createSubmitAction(taskResolver);
+            context.onTimeless = createOnTimeless(context);
+            context.onStartDateTimeChange = createStartDateTimeChangeListener(context);
+            context.onEndDateTimeChange = createEndDateTimeChangeListener(context);
+            context.aclHandler = createAclHandler(context);
+            context.submit = createSaveOrUpdateAction(context);
             context.cancel = goToTaskList;
 
             context.addCompany = createAddCompaniesForTaskAction(companiesResolver);
@@ -59,6 +56,52 @@
             });
 
             return loadStaticData(context);
+        }
+
+        function createOnTimeless(context) {
+            return function () {
+                context.canEditDateTime = !context.timeless;
+                if (context.timeless) {
+                    context.task.startDate = null;
+                    context.task.endDate = null;
+                } else {
+                    var newDate = util.getDateTrimMinutes();
+                    context.task.startDate = newDate;
+                    context.onStartDateTimeChange(newDate);
+                }
+            }
+        }
+
+        function createStartDateTimeChangeListener(context) {
+            return function (newStartDateTime, isDate) {
+                var task = context.task;
+                if (isDate || task.endDate <= newStartDateTime) {
+                    task.endDate = new Date(newStartDateTime.getTime());
+                    task.endDate.setHours(task.endDate.getHours() + 1);
+                }
+            }
+        }
+
+        function createEndDateTimeChangeListener(context) {
+            return function (newEndDateTime) {
+                var task = context.task;
+                if (newEndDateTime <= task.startDate) {
+                    var date = new Date(task.startDate.getTime());
+                    date.setHours(task.startDate.getHours());
+                    date.setMinutes(task.startDate.getMinutes());
+                    task.endDate = date;
+                }
+            }
+        }
+
+        function createAclHandler(context) {
+            return {
+                canEdit: true,
+                acls: [],
+                actions: aclServiceBuilder(function () {
+                    return context.task.id;
+                }, taskService)
+            };
         }
 
         function loadStaticData(scope) {
@@ -88,7 +131,7 @@
         function createRemoveAction(collectionResolver, handler) {
             var remove = util.createRemoveAction(collectionResolver, handler);
             return function () {
-                if (arguments.length > 0 && arguments[arguments.length - 1]) {
+                if (arguments.length > 0 && arguments[arguments.length - 1].stopPropagation) {
                     arguments[arguments.length - 1].stopPropagation();// to prevent collapsing of panel
                 }
                 remove();
@@ -99,13 +142,25 @@
             $state.go('tasks.list');
         }
 
-        function createSubmitAction(taskResolver) {
+        function createSaveOrUpdateAction(context) {
             return function () {
-                var task = taskResolver();
+                var acl = context.aclHandler;
+                var task = context.task;
+                if (context.timeless) {
+                    task.startDate = null;
+                    task.endDate = null;
+                }
                 if (task.id) {
-                    taskService.update(task).then(goToTaskList);
+                    taskService.update(task).then(function () {
+                        if (acl.canEdit) {
+                            taskService.updateAcls(task.id, acl.acls);
+                        }
+                    }).then(goToTaskList);
                 } else {
-                    taskService.create(task).then(goToTaskList);
+                    taskService.create(task).then(function (response) {
+                        var id = response.data;
+                        taskService.updateAcls(id, acl.acls).then(goToTaskList);
+                    });
                 }
             };
         }

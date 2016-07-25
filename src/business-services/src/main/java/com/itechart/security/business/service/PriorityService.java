@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author yauheni.putsykovich
  */
-@Service
+
 public interface PriorityService {
 
     List<NamedEntity> getAllPriorities();

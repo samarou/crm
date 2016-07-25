@@ -1,0 +1,23 @@
+.datetime-group {
+    .date-group {
+        float: left;
+        margin-right: 10px;
+        label {
+            padding: 0;
+            margin: 0;
+            height: 33px;
+        }
+    }
+
+    .time-group {
+        display: inline-block;
+        a.btn.btn-link {
+            outline: none;
+        }
+    }
+
+    .time-group .spinners-buffer {
+        margin-top: 33px;
+        margin-bottom: 33px;
+    }
+}

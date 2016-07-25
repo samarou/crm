@@ -4,12 +4,8 @@
 <div class="row crm-bottom-buffer">
     <div class="col-xs-12 col-sm-offset-8 col-sm-4 col-md-offset-9 col-md-3">
         <div class="btn-group btn-group-justified">
-            <a class="btn btn-default" ng-click="vm.add()">
-                Add
-            </a>
-            <a class="btn btn-default" ng-click="vm.remove()">
-                Remove
-            </a>
+            <a class="btn btn-default" ng-click="vm.add()">Add</a>
+            <a class="btn btn-default" ng-click="vm.remove()">Remove</a>
         </div>
     </div>
 </div>
@@ -18,33 +14,29 @@
         <table class="table table-condensed">
             <caption></caption>
             <thead>
-            <th><input ng-hide="vm.bundle.itemsList.length === 0" type="checkbox" ng-model="vm.bundle.isSelectedAll"
-                       ng-click="vm.bundle.selectAll(vm.bundle.isSelectedAll)"></th>
+            <th><input ng-hide="vm.bundle.itemsList.length === 0" type="checkbox" ng-model="vm.bundle.isSelectedAll" ng-click="vm.bundle.selectAll(vm.bundle.isSelectedAll)"></th>
             <th>Name</th>
             <th>Created By</th>
             <th>Assignee To</th>
-            <th class="crm-hover" ng-click="vm.bundle.sortBy(vm.bundle.sortProperties.status)">
-                    <span class="glyphicon"
-                          ng-show="vm.bundle.sortProperties.status.enabled"
-                          ng-class="vm.bundle.sortProperties.status.asc ? 'glyphicon-sort-by-attributes' : 'glyphicon-sort-by-attributes-alt' ">
-                    </span>
-                Status
+            <th class="crm-hover column column--sortable column--status" ng-click="vm.bundle.sortBy(vm.bundle.sortProperties.status)">
+                <div class="column__icon" ng-show="vm.bundle.sortProperties.status.enabled">
+                    <span class="glyphicon" ng-class="vm.bundle.sortProperties.status.asc ? 'glyphicon-sort-by-attributes' : 'glyphicon-sort-by-attributes-alt' "></span>
+                </div>
+                <div class="column__text">Status</div>
             </th>
-            <th class="crm-hover" ng-click="vm.bundle.sortBy(vm.bundle.sortProperties.priority)">
-                    <span class="glyphicon"
-                          ng-show="vm.bundle.sortProperties.priority.enabled"
-                          ng-class="vm.bundle.sortProperties.priority.asc ? 'glyphicon-sort-by-attributes' : 'glyphicon-sort-by-attributes-alt' ">
-                    </span>
-                Priority
+            <th class="crm-hover column column--sortable column--priority" ng-click="vm.bundle.sortBy(vm.bundle.sortProperties.priority)">
+                <div class="column__icon" ng-show="vm.bundle.sortProperties.priority.enabled">
+                    <span class="glyphicon " ng-class="vm.bundle.sortProperties.priority.asc ? 'glyphicon-sort-by-attributes' : 'glyphicon-sort-by-attributes-alt' "></span>
+                </div>
+                <div class="column__text">Priority</div>
             </th>
-            <th class="crm-hover" ng-click="vm.bundle.sortBy(vm.bundle.sortProperties.startDate)">
-                    <span class="glyphicon"
-                          ng-show="vm.bundle.sortProperties.startDate.enabled"
-                          ng-class="vm.bundle.sortProperties.startDate.asc ? 'glyphicon-sort-by-attributes' : 'glyphicon-sort-by-attributes-alt' ">
-                    </span>
-                Start date
+            <th class="crm-hover column column--sortable column--date" ng-click="vm.bundle.sortBy(vm.bundle.sortProperties.startDate)">
+                <div class="column__icon" ng-show="vm.bundle.sortProperties.startDate.enabled">
+                    <span class="glyphicon" ng-class="vm.bundle.sortProperties.startDate.asc ? 'glyphicon-sort-by-attributes-alt' : 'glyphicon-sort-by-attributes' "></span>
+                </div>
+                <div class="column__text">Start date</div>
             </th>
-            <th>End date</th>
+            <th class="column column--date">End date</th>
             </thead>
             <tbody>
             <tr class="crm-hover" ng-repeat="task in vm.bundle.itemsList" ng-click="vm.edit(task)">
@@ -60,4 +52,13 @@
             </tbody>
         </table>
     </div>
+</div>
+<div class="crm-text-center">
+    <uib-pagination class="pagination-sm" ng-change="vm.bundle.paging.onPageChanged()"
+                    ng-model="vm.bundle.paging.currentPage"
+                    total-items="vm.bundle.paging.totalCount"
+                    items-per-page="vm.bundle.paging.itemsPerPage"
+                    max-size="vm.bundle.paging.visiblePages"
+                    boundary-link-numbers="true" rotate="false">
+    </uib-pagination>
 </div>

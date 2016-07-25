@@ -10,7 +10,8 @@
         return {
             createDelayTypingListener: createDelayTypingListener,
             createSelectAction: createSelectAction,
-            createRemoveAction: createRemoveAction
+            createRemoveAction: createRemoveAction,
+            getDateTrimMinutes: getDateTrimMinutes
         };
 
         function createDelayTypingListener(action, delay) {
@@ -53,6 +54,15 @@
                 }));
                 handlerCallback(diff);
             };
+        }
+
+        function getDateTrimMinutes(date) {
+            var newDate = new Date(date || new Date());
+            if (newDate.getMinutes() > 0) {
+                newDate.setMinutes(0);
+                newDate.setHours(newDate.getHours() + 1);
+            }
+            return newDate;
         }
     }
 })();

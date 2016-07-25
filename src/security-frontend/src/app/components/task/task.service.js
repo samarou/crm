@@ -18,7 +18,11 @@
             update: update,
             remove: remove,
             getPriorities: getPriorities,
-            getStatuses: getStatuses
+            getStatuses: getStatuses,
+            getAcls: getAcls,
+            updateAcls: updateAcls,
+            removeAcl: removeAcl,
+            isAllowed: isAllowed
         };
 
         function getTaskById(id) {
@@ -42,11 +46,27 @@
         }
 
         function getPriorities() {
-            return $http.get('rest/tasks/priorities');
+            return $http.get('rest/tasks/priorities', {cache: true});
         }
 
         function getStatuses() {
-            return $http.get('rest/tasks/statuses');
+            return $http.get('rest/tasks/statuses', {cache: true});
+        }
+
+        function getAcls(id) {
+            return $http.get('rest/tasks/' + id + '/acls');
+        }
+
+        function updateAcls(id, acls) {
+            return $http.put('rest/tasks/' + id + '/acls', acls);
+        }
+
+        function removeAcl(id, aclId) {
+            return $http.delete('rest/tasks/' + id + '/acls/' + aclId);
+        }
+
+        function isAllowed(contactId, permission) {
+            return $http.get('rest/tasks/' + contactId + '/actions/' + permission);
         }
     }
 

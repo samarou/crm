@@ -18,6 +18,7 @@
         vm.aclHandler = companyDetailsService.createAclHandler(function () {
             return vm.company.id;
         });
+        vm.aclHandler.canEdit = vm.canEdit;
         vm.staticData = {};
 
         init();

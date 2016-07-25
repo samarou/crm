@@ -15,6 +15,7 @@
             login: login,
             logout: logout,
             restore: restore,
+            getUserName: getUserName,
             isAuthenticated: isAuthenticated,
             getAuthentication: getAuthentication,
             setAuthentication: setAuthentication,
@@ -23,6 +24,11 @@
             isSpecialist: isSpecialist,
             getAuthStatus: getAuthStatus
         };
+
+        function getUserName() {
+            var auth = getAuthentication();
+            return auth ? auth.username : null;
+        }
 
         function setAuthentication(authData) {
             service.authentication = authData;

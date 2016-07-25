@@ -23,6 +23,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import static java.lang.Math.abs;
+
 /**
  * Base class for hibernate data access objects
  *
@@ -186,7 +188,7 @@ public abstract class BaseHibernateDao<T extends BaseEntity, I extends Serializa
             }
             String propertyAlias = findPropertyAlias(criteria, property);
             if (propertyAlias == null) {
-                propertyAlias = propertyPath[i] + '_' + propertyPath[i].hashCode();
+                propertyAlias = propertyPath[i] + '_' + abs(propertyPath[i].hashCode());
                 criteria.createAlias(property, propertyAlias, JoinType.LEFT_OUTER_JOIN);
             }
             alias = propertyAlias;
