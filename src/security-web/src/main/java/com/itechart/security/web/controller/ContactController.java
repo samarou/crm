@@ -8,10 +8,7 @@ import com.itechart.security.business.model.dto.ContactDto;
 import com.itechart.security.business.model.dto.ContactFilterDto;
 import com.itechart.security.business.model.dto.DictionaryDto;
 import com.itechart.security.business.model.enums.ObjectTypes;
-import com.itechart.security.business.service.ContactService;
-import com.itechart.security.business.service.DictionaryService;
-import com.itechart.security.business.service.FileService;
-import com.itechart.security.business.service.ParsingService;
+import com.itechart.security.business.service.*;
 import com.itechart.security.model.dto.AclEntryDto;
 import com.itechart.security.web.model.dto.DataPageDto;
 import org.slf4j.Logger;
@@ -47,6 +44,9 @@ public class ContactController extends SecuredController {
 
     @Autowired
     private ParsingService parsingService;
+
+    @Autowired
+    private HistoryEntryService historyEntryService;
 
     @RequestMapping("/contacts/{contactId}/actions/{value}")
     public boolean isAllowed(@PathVariable Long contactId, @PathVariable String value) {

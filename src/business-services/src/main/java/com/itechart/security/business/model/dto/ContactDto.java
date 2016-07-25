@@ -45,5 +45,7 @@ public class ContactDto {
 
     private Set<SkillDto> skills;
 
+    private HistoryEntryDto history;
+
     private Set<UniversityEducationDto> educations;
 }
