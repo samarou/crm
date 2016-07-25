@@ -11,6 +11,7 @@
             byId: byId,
             compare: compare,
             propertyComparator: propertyComparator,
+            propertyListComparator: propertyListComparator,
             difference: difference,
             sort: sort,
             find: find,
@@ -25,10 +26,21 @@
             return a > b ? 1 : a === b ? 0 : -1;
         }
 
+
         function propertyComparator(propertyName) {
             return function (a, b) {
                 return compare(a[propertyName], b[propertyName]);
             };
+        }
+
+        function propertyListComparator(propertyList) {
+            return function (a, b) {
+                var result = true;
+                propertyList.forEach( function(propertyName) {
+                    result &= !compare(a[propertyName], b[propertyName]);
+                });
+                return result;
+            }
         }
 
         function difference(from, what, comparator) {
