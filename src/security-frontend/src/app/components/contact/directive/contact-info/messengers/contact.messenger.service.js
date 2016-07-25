@@ -9,7 +9,7 @@
         .service('contactMessengerService', contactMessengerService);
 
     /** @ngInject */
-    function contactMessengerService(contactService, dialogService, contactCommonService) {
+    function contactMessengerService(contactService, dialogService, contactCommonService, collections) {
 
         var detailsUrl = 'app/components/contact/directive/contact-info/messengers/contact.messenger.details.view.html';
 
@@ -22,7 +22,10 @@
 
         function add(scope) {
             openAddDialog(scope).then(function (model) {
-                scope.contact.messengers.push(model.account);
+                if (!collections.exists(model.account, scope.contact.messengers,
+                        collections.propertyListComparator(['messenger', 'username']))){
+                    scope.contact.messengers.push(model.account);
+                }
             });
         }
 

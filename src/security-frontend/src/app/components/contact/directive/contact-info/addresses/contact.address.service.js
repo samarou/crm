@@ -9,7 +9,7 @@
         .service('contactAddressService', contactAddressService);
 
     /** @ngInject */
-    function contactAddressService(contactService, dialogService, contactCommonService) {
+    function contactAddressService(contactService, dialogService, contactCommonService, collections) {
 
         var detailsUrl = 'app/components/contact/directive/contact-info/addresses/contact.address.details.view.html';
 
@@ -22,7 +22,10 @@
 
         function addAddress(scope) {
             openAddAttachmentDialog(scope).then(function (model) {
-                scope.contact.addresses.push(model.address);
+                if (!collections.exists(model.address, scope.contact.addresses,
+                        collections.propertyListComparator(['addressLine', 'city', 'region', 'country', 'zipcode']))){
+                    scope.contact.addresses.push(model.address);
+                }
             });
         }
 

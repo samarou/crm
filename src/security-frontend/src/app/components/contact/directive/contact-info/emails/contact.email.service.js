@@ -9,7 +9,7 @@
         .service('contactEmailService', contactEmailService);
 
     /** @ngInject */
-    function contactEmailService(contactService, dialogService, contactCommonService) {
+    function contactEmailService(contactService, dialogService, contactCommonService, collections) {
 
         var detailsUrl = 'app/components/contact/directive/contact-info/emails/contact.email.details.view.html';
 
@@ -22,7 +22,10 @@
 
         function add(scope) {
             openAddDialog(scope).then(function (model) {
-                scope.contact.emails.push(model.email);
+                if (!collections.exists(model.email, scope.contact.emails,
+                        collections.propertyListComparator(['name']))) {
+                    scope.contact.emails.push(model.email);
+                }
             });
         }
 

@@ -9,7 +9,7 @@
         .service('contactTelephoneService', contactTelephoneService);
 
     /** @ngInject */
-    function contactTelephoneService(contactService, dialogService, contactCommonService) {
+    function contactTelephoneService(contactService, dialogService, contactCommonService, collections) {
 
         var detailsUrl = 'app/components/contact/directive/contact-info/telephones/contact.telephone.details.view.html';
 
@@ -22,7 +22,10 @@
 
         function add(scope) {
             openAddDialog(scope).then(function (model) {
-                scope.contact.telephones.push(model.telephone);
+                if (!collections.exists(model.telephone, scope.contact.telephones,
+                        collections.propertyListComparator(['number']))) {
+                    scope.contact.telephones.push(model.telephone);
+                }
             });
         }
 
