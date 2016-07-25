@@ -31,7 +31,10 @@
 
         function edit(email, scope) {
             openEditDialog(email, scope).then(function (model) {
-                angular.copy(model.email, email);
+                if (!collections.exists(model.email, scope.contact.emails,
+                        collections.propertyListComparator(['name']))) {
+                    angular.copy(model.email, email);
+                }
             });
         }
 

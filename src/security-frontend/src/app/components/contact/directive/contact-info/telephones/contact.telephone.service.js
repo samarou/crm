@@ -31,7 +31,9 @@
 
         function edit(telephone, scope) {
             openEditDialog(telephone, scope).then(function (model) {
-                angular.copy(model.telephone, telephone);
+                if (!collections.exists(model.telephone, scope.contact.telephones, collections.propertyListComparator(['number']))) {
+                    angular.copy(model.telephone, telephone);
+                }
             });
         }
 
