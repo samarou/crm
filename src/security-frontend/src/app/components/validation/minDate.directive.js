@@ -20,7 +20,7 @@
                 });
 
                 function watch() {
-                    scope.$watch(formName + '.' + controlName + '.$invalid', function (newval) {
+                    scope.$watch(formName + '.' + controlName + '.$invalid', function () {
                         var dependentFieldName = elem.attr('dependentField');
                         var dependentField = form[dependentFieldName];
                         angular.forEach(dependentField.$parsers, function (parser) {
@@ -29,6 +29,6 @@
                     });
                 }
             }
-        }
+        };
     }
 })();

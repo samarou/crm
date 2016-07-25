@@ -26,11 +26,11 @@
                 ngModel.$formatters.unshift(function(value){
                     ngModel.$setValidity('date_validation', isValid(value));
                     return value;
-                })
+                });
 
                 function isValid(value){
                     var valid = true;
-                    if(!angular.isUndefined(element.attr('min-date'))){
+                    if(angular.isDefined(element.attr('min-date'))){
                         var min = element.attr('min-date');
                         var max = element.attr('max-date');
 
@@ -39,9 +39,9 @@
                         var enteredDate = regex.test(value) ? new Date(value) : undefined;
 
                         if(enteredDate != undefined){
-                            var min = (minDate < enteredDate)||(minDate === undefined);
-                            var max = (maxDate >= enteredDate)||(maxDate === undefined);
-                            if(!min || !max){
+                            var minValue = (minDate < enteredDate)||(angular.isUndefined(minDate));
+                            var maxValue = (maxDate >= enteredDate)||(angular.isUndefined(maxDate));
+                            if(!minValue || !maxValue){
                                 valid = false;
                             }
                         }
@@ -51,6 +51,6 @@
                     return true;
                 }
             }
-        }
+        };
     }
 })();
