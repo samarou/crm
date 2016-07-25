@@ -31,7 +31,10 @@
 
         function editAddress(address, scope) {
             openEditAttachmentDialog(address, scope).then(function (model) {
-                angular.copy(model.address, address);
+                if (!collections.exists(model.address, scope.contact.addresses,
+                        collections.propertyListComparator(['addressLine', 'city', 'region', 'country', 'zipcode']))){
+                    angular.copy(model.address, address);
+                }
             });
         }
 

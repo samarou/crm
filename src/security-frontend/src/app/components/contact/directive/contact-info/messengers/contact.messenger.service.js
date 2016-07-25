@@ -31,7 +31,10 @@
 
         function edit(account, scope) {
             openEditDialog(account, scope).then(function (model) {
-                angular.copy(model.account, account);
+                if (!collections.exists(model.account, scope.contact.messengers,
+                        collections.propertyListComparator(['messenger', 'username']))) {
+                    angular.copy(model.account, account);
+                }
             });
         }
 
