@@ -12,4 +12,6 @@ public class MessengerAccountDto {
     private Long messenger;
 
     private String username;
+
+    private String description;
 }

@@ -33,6 +33,9 @@ public class MessengerAccount extends SecuredEntity{
     @Column(name = "date_deleted")
     private Date dateDeleted;
 
+    @Column(name = "description")
+    private String description;
+
     @Override
     public Long getId() {
         return id;
