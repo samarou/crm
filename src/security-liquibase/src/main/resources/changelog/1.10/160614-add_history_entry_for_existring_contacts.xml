@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="001" author="yauheni.putsykovich">
+        <insert tableName="history">
+            <column name="id" value="1"/>
+            <column name="object_id" value="1"/>
+            <column name="object_type_id" value="1"/>
+            <column name="creator_id" value="1"/>
+            <column name="editor_id" value="1"/>
+            <column name="created_date" value="2016-06-16 16:35:16"/>
+            <column name="modification_date" value="2016-06-16 16:35:16"/>
+        </insert>
+        <insert tableName="history">
+            <column name="id" value="2"/>
+            <column name="object_id" value="2"/>
+            <column name="object_type_id" value="1"/>
+            <column name="creator_id" value="1"/>
+            <column name="editor_id" value="1"/>
+            <column name="created_date" value="2016-06-16 16:35:16"/>
+            <column name="modification_date" value="2016-06-16 16:35:16"/>
+        </insert>
+        <insert tableName="history">
+            <column name="id" value="3"/>
+            <column name="object_id" value="3"/>
+            <column name="object_type_id" value="1"/>
+            <column name="creator_id" value="1"/>
+            <column name="editor_id" value="1"/>
+            <column name="created_date" value="2016-06-16 16:35:16"/>
+            <column name="modification_date" value="2016-06-16 16:35:16"/>
+        </insert>
+        <insert tableName="history">
+            <column name="id" value="4"/>
+            <column name="object_id" value="4"/>
+            <column name="object_type_id" value="1"/>
+            <column name="creator_id" value="1"/>
+            <column name="editor_id" value="1"/>
+            <column name="created_date" value="2016-06-16 16:35:16"/>
+            <column name="modification_date" value="2016-06-16 16:35:16"/>
+        </insert>
+        <insert tableName="history">
+            <column name="id" value="5"/>
+            <column name="object_id" value="5"/>
+            <column name="object_type_id" value="1"/>
+            <column name="creator_id" value="1"/>
+            <column name="editor_id" value="1"/>
+            <column name="created_date" value="2016-06-16 16:35:16"/>
+            <column name="modification_date" value="2016-06-16 16:35:16"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
