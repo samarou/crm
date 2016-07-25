@@ -46,11 +46,11 @@
         function propertyListComparator(propertyList) {
             return function (a, b) {
                 var result = true;
-                propertyList.forEach( function(propertyName) {
+                propertyList.forEach(function (propertyName) {
                     result &= !compare(a[propertyName], b[propertyName]);
                 });
                 return result;
-            }
+            };
         }
 
         function difference(from, what, comparator) {
