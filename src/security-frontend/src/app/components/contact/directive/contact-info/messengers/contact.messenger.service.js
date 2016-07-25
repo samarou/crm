@@ -9,9 +9,11 @@
         .service('contactMessengerService', contactMessengerService);
 
     /** @ngInject */
-    function contactMessengerService(contactService, dialogService, contactCommonService, collections) {
+    function contactMessengerService(contactService, dialogService, contactCommonService) {
 
         var detailsUrl = 'app/components/contact/directive/contact-info/messengers/contact.messenger.details.view.html';
+        var propertiesToCheck = ['messenger', 'username'];
+        var existenceErrorMessage = 'Messenger account already exists';
 
         return {
             add: add,
@@ -22,8 +24,8 @@
 
         function add(scope) {
             openAddDialog(scope).then(function (model) {
-                if (!collections.exists(model.account, scope.contact.messengers,
-                        collections.propertyListComparator(['messenger', 'username']))){
+                if (contactCommonService.infoItemCanBeAdded(model.account, scope.contact.messengers,
+                        propertiesToCheck, existenceErrorMessage)){
                     scope.contact.messengers.push(model.account);
                 }
             });
@@ -31,8 +33,8 @@
 
         function edit(account, scope) {
             openEditDialog(account, scope).then(function (model) {
-                if (!collections.exists(model.account, scope.contact.messengers,
-                        collections.propertyListComparator(['messenger', 'username']))) {
+                if (contactCommonService.infoItemCanBeAdded(model.account, scope.contact.messengers,
+                        propertiesToCheck, existenceErrorMessage)) {
                     angular.copy(model.account, account);
                 }
             });

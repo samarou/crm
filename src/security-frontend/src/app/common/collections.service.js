@@ -47,7 +47,9 @@
             return function (a, b) {
                 var result = true;
                 propertyList.forEach(function (propertyName) {
-                    result &= !compare(a[propertyName], b[propertyName]);
+                    if (a[propertyName] != b[propertyName]) {
+                        result = false;
+                    }
                 });
                 return result;
             };

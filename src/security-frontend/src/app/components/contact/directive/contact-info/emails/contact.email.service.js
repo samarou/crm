@@ -9,9 +9,11 @@
         .service('contactEmailService', contactEmailService);
 
     /** @ngInject */
-    function contactEmailService(contactService, dialogService, contactCommonService, collections) {
+    function contactEmailService(contactService, dialogService, contactCommonService) {
 
         var detailsUrl = 'app/components/contact/directive/contact-info/emails/contact.email.details.view.html';
+        var propertiesToCheck = ['name'];
+        var existenceErrorMessage = 'Email address already exists';
 
         return {
             add: add,
@@ -22,8 +24,8 @@
 
         function add(scope) {
             openAddDialog(scope).then(function (model) {
-                if (!collections.exists(model.email, scope.contact.emails,
-                        collections.propertyListComparator(['name']))) {
+                if (contactCommonService.infoItemCanBeAdded(model.email, scope.contact.emails,
+                        propertiesToCheck, existenceErrorMessage)) {
                     scope.contact.emails.push(model.email);
                 }
             });
@@ -31,8 +33,8 @@
 
         function edit(email, scope) {
             openEditDialog(email, scope).then(function (model) {
-                if (!collections.exists(model.email, scope.contact.emails,
-                        collections.propertyListComparator(['name']))) {
+                if (contactCommonService.infoItemCanBeAdded(model.email, scope.contact.emails,
+                        propertiesToCheck, existenceErrorMessage)) {
                     angular.copy(model.email, email);
                 }
             });

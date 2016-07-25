@@ -9,9 +9,11 @@
         .service('contactTelephoneService', contactTelephoneService);
 
     /** @ngInject */
-    function contactTelephoneService(contactService, dialogService, contactCommonService, collections) {
+    function contactTelephoneService(contactService, dialogService, contactCommonService) {
 
         var detailsUrl = 'app/components/contact/directive/contact-info/telephones/contact.telephone.details.view.html';
+        var propertiesToCheck = ['number'];
+        var existenceErrorMessage = 'Telephone number already exists';
 
         return {
             add: add,
@@ -22,8 +24,8 @@
 
         function add(scope) {
             openAddDialog(scope).then(function (model) {
-                if (!collections.exists(model.telephone, scope.contact.telephones,
-                        collections.propertyListComparator(['number']))) {
+                if (contactCommonService.infoItemCanBeAdded(model.telephone, scope.contact.telephones,
+                        propertiesToCheck, existenceErrorMessage)) {
                     scope.contact.telephones.push(model.telephone);
                 }
             });
@@ -31,7 +33,8 @@
 
         function edit(telephone, scope) {
             openEditDialog(telephone, scope).then(function (model) {
-                if (!collections.exists(model.telephone, scope.contact.telephones, collections.propertyListComparator(['number']))) {
+                if (contactCommonService.infoItemCanBeAdded(model.telephone, scope.contact.telephones,
+                        propertiesToCheck, existenceErrorMessage)) {
                     angular.copy(model.telephone, telephone);
                 }
             });
