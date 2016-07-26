@@ -12,7 +12,7 @@
     function contactMessengerService(contactService, dialogService, contactCommonService) {
 
         var detailsUrl = 'app/components/contact/directive/contact-info/messengers/contact.messenger.details.view.html';
-        var otherMessengerCode = 6;
+        var otherMessengerTypeId = 6;
 
         return {
             add: add,
@@ -36,7 +36,7 @@
         }
 
         function removeUnusedDescription(model) {
-            if (model.account.messenger != otherMessengerCode) {
+            if (model.account.messenger != otherMessengerTypeId) {
                 delete model.account.description;
             }
         }
@@ -45,13 +45,16 @@
             return contactCommonService.remove(scope.contact, scope.contact.messengers, contactService.removeMessengerAccount);
         }
 
-        function getTypeName(id, types) {
+        function getTypeName(id, description, types) {
             var result = null;
             types.forEach(function (o) {
                 if (o.id == id) {
                     result = o.name;
                 }
             });
+            if (id == otherMessengerTypeId) {
+                result += " (" + description + ")";
+            }
             return result;
         }
 

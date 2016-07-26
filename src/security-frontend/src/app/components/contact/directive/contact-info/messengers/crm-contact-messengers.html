@@ -29,7 +29,7 @@
                        ng-init="vm.details.isAllSelected(vm.contact.messengers)">
             </td>
             <td>{{account.username}}</td>
-            <td>{{vm.details.messenger.getTypeName(account.messenger, vm.dictionary.messengers)}}</td>
+            <td>{{vm.details.messenger.getTypeName(account.messenger, account.description, vm.dictionary.messengers)}}</td>
         </tr>
         </tbody>
     </table>
