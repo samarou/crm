@@ -12,6 +12,7 @@
     function contactMessengerService(contactService, dialogService, contactCommonService) {
 
         var detailsUrl = 'app/components/contact/directive/contact-info/messengers/contact.messenger.details.view.html';
+        var otherMessengerCode = 6;
 
         return {
             add: add,
@@ -22,14 +23,22 @@
 
         function add(scope) {
             openAddDialog(scope).then(function (model) {
+                removeUnusedDescription(model);
                 scope.contact.messengers.push(model.account);
             });
         }
 
         function edit(account, scope) {
             openEditDialog(account, scope).then(function (model) {
+                removeUnusedDescription(model);
                 angular.copy(model.account, account);
             });
+        }
+
+        function removeUnusedDescription(model) {
+            if (model.account.messenger != otherMessengerCode) {
+                delete model.account.description;
+            }
         }
 
         function remove(scope) {
