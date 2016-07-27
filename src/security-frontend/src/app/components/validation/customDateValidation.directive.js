@@ -38,9 +38,9 @@
                         var maxDate = regex.test(max) ? new Date(max) : undefined;
                         var enteredDate = regex.test(value) ? new Date(value) : undefined;
 
-                        if(enteredDate != undefined){
-                            var minValue = (minDate < enteredDate)||(angular.isUndefined(minDate));
-                            var maxValue = (maxDate >= enteredDate)||(angular.isUndefined(maxDate));
+                        if(enteredDate){
+                            var minValue = (angular.isUndefined(minDate))||(minDate < enteredDate);
+                            var maxValue = (angular.isUndefined(maxDate))||(maxDate >= enteredDate);
                             if(!minValue || !maxValue){
                                 valid = false;
                             }
