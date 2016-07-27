@@ -7,11 +7,14 @@
                name="email"
                class="form-control"
                type="email"
-               required maxlength="255">
-        <span ng-show="emailForm.email.$error.required"
-              class="help-block">Email is required</span>
-        <span ng-show="!emailForm.email.$error.required && emailForm.email.$dirty && !emailForm.email.$valid"
-              class="help-block">Email format is not correct</span>
+               required maxlength="255"
+               pattern="([a-zA-Z0-9][a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]{0,}){0,}[a-zA-Z0-9]@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,62}[a-zA-Z0-9])?\.){1,8}[a-zA-Z]{2,63}">
+        <span ng-show="emailForm.email.$dirty">
+            <span ng-show="emailForm.email.$error.required"
+                  class="help-block">Email is required</span>
+            <span ng-show="!emailForm.email.$error.required && (!emailForm.email.$valid || userForm.email.$error.pattern)"
+                  class="help-block">Email format is not correct</span>
+        </span>
     </div>
     <div class="form-group crm-select-validation-icon" crm-input-validation>
         <label for="emailType">Email type</label>
