@@ -9,7 +9,7 @@
     <div class="form-group" ng-form name="urlForm"
          ng-class="{'has-error':urlForm.$dirty && !urlForm.imageUrl.$valid}">
         <label for="imageUrl">Enter url:</label>
-        <input type="text" class="form-control input-sm" id="imageUrl" name="imageUrl" ng-model="vm.photoUrl"
+        <input type="text" class="form-control input-sm" id="imageUrl" name="imageUrl" ng-model="vm.contact.photoUrl"
                crm-image-url-validator />
         <span ng-show="urlForm.imageUrl.$dirty && !urlForm.imageUrl.$valid"
               class="help-block has-error">Url hasn't correct form</span>

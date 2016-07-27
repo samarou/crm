@@ -21,8 +21,7 @@
                     }
                 });
                 scope.ok = function(){
-                    angular.element('#imageID').attr('src',scope.vm.photoUrl);
-                    scope.vm.contact.photoUrl = scope.vm.photoUrl;
+                    angular.element('#imageID').attr('src',scope.vm.contact.photoUrl);
                     hidePopover();
                 };
                 scope.cancel = function(){
