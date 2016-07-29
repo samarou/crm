@@ -1,6 +1,7 @@
 package com.itechart.security.business.model.persistent.task;
 
 
+import com.itechart.common.model.persistent.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +12,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Table(name = "task_comment")
-public class TaskComment {
+public class TaskComment extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
