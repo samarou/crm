@@ -5,11 +5,13 @@ import com.itechart.security.business.model.enums.CertificateType;
 import com.itechart.security.business.model.enums.EmailType;
 import com.itechart.security.business.model.enums.TelephoneType;
 import com.itechart.security.business.model.persistent.*;
+import com.itechart.security.business.model.persistent.task.TaskComment;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptySet;
@@ -626,5 +628,34 @@ public class DtoConverter {
             return emptySet();
         }
         return educations.stream().map(DtoConverter::convert).collect(toSet());
+    }
+
+    public static TaskCommentDto convert(TaskComment comment) {
+        TaskCommentDto dto = new TaskCommentDto();
+        dto.setId(comment.getId());
+        dto.setDateCreated(comment.getDateCreated());
+        dto.setTaskId(comment.getTaskId());
+        dto.setText(comment.getText());
+        return dto;
+    }
+
+    public static TaskComment convert(TaskCommentDto commentDto) {
+        TaskComment comment = new TaskComment();
+        comment.setId(commentDto.getId());
+        comment.setDateCreated(commentDto.getDateCreated());
+        comment.setTaskId(commentDto.getTaskId());
+        comment.setText(commentDto.getText());
+        return comment;
+    }
+
+    public static List<TaskCommentDto> convertTaskComments(List<TaskComment> taskComments) {
+        if(isEmpty(taskComments)) {
+            return emptyList();
+        }
+        return taskComments
+                .stream()
+                .filter(comment -> comment.getDateDeleted() == null)
+                .map(DtoConverter::convert)
+                .collect(Collectors.toList());
     }
 }

@@ -64,6 +64,11 @@ public class Task extends SecuredEntity {
             inverseJoinColumns = {@JoinColumn(name = "contact_id", updatable = false)})
     private List<Contact> contacts;
 
+    @ManyToMany
+    @JoinTable(name = "task_comment",
+            joinColumns = {@JoinColumn(name = "task_id", updatable = false)})
+    private List<TaskComment> comments;
+
     @Override
     public Long getId() {
         return id;

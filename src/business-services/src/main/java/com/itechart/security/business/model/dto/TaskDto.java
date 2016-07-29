@@ -32,5 +32,6 @@ public class TaskDto {
     private NamedEntity priority;
     private List<CompanyDto> companies = emptyList();
     private List<ContactDto> contacts = emptyList();
+    private List<TaskCommentDto> comments = emptyList();
 }
 
