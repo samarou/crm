@@ -6,7 +6,8 @@
         .controller('contactEditController', contactEditController);
 
     /** @ngInject */
-    function contactEditController($q, contactDetailsService, contactSecurityService, authService, contactService, $stateParams) {
+    function contactEditController($q, $scope, contactDetailsService, contactSecurityService, authService, contactService,
+                                    $stateParams) {
         var vm = this;
 
         vm.canEdit = false;
@@ -65,5 +66,6 @@
                 vm.contact = response.data;
             });
         }
+        
     }
 })();

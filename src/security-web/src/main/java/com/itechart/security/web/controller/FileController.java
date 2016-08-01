@@ -1,6 +1,7 @@
 package com.itechart.security.web.controller;
 
 import com.itechart.security.business.service.FileService;
+import com.itechart.security.web.util.FileUtil;
 import com.itechart.security.web.util.TempFileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,24 +42,10 @@ public class FileController {
             String mimeType = Files.probeContentType(new File(fileName).toPath());
             response.setContentType(mimeType);
             File file = fileService.getAttachment(contactId, attachmentId);
-            copyFileToResponse(file, response);
+            FileUtil.copyFileToResponse(file, response);
         } catch (IOException ex) {
             logger.error("can't download attachment with id {} for contact {} in {}", attachmentId, contactId, ex);
             throw new RuntimeException("error happened during file download", ex);
-        }
-    }
-
-    private void copyFileToResponse(File file, HttpServletResponse response) throws IOException {
-        BufferedInputStream inputStream = null;
-        ServletOutputStream outputStream = null;
-        try {
-            inputStream = new BufferedInputStream(new FileInputStream(file));
-            outputStream = response.getOutputStream();
-            FileCopyUtils.copy(inputStream, outputStream);
-            outputStream.flush();
-        } finally {
-            closeStream(inputStream);
-            closeStream(outputStream);
         }
     }
 

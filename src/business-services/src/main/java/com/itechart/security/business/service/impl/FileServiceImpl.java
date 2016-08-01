@@ -1,14 +1,22 @@
 package com.itechart.security.business.service.impl;
 
+import com.itechart.security.business.model.persistent.Contact;
 import com.itechart.security.business.service.FileService;
+import com.sun.deploy.util.URLUtil;
+import org.apache.commons.validator.routines.UrlValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class FileServiceImpl implements FileService {
     private static final Logger logger = LoggerFactory.getLogger(FileService.class);
@@ -20,6 +28,22 @@ public class FileServiceImpl implements FileService {
         Path attachmentPath = getAttachment(contactId, attachmentId).toPath();
         Path tempFile = new File(tempFilePath).toPath();
         Files.move(tempFile, attachmentPath, StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    @Override
+    public void moveImageToContactDirectory(Contact contact) throws IOException{
+        Path attachmentPath = new File(getContactDirectory(contact.getId()), "avatar").toPath();
+        Path tempFile = new File(contact.getPhotoUrl()).toPath();
+        Files.move(tempFile, attachmentPath, StandardCopyOption.REPLACE_EXISTING);
+        String path = attachmentPath.toString();
+        try {
+            File file = new File(path);
+            URL url = file.toURI().toURL();
+            contact.setPhotoUrl(url.toString());
+        }catch(Exception e){
+            logger.error("can't move image to directory");
+            throw new RuntimeException("can't upload image", e);
+        }
     }
 
     @Override

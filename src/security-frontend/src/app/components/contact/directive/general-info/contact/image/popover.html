@@ -1,0 +1,26 @@
+<div>
+    <p>
+        <button class="btn btn-primary btn-xs btn-block glyphicon glyphicon-folder-open"
+                ng-click="selectImage()"> Select image
+        </button>
+    </p>
+</div>
+<div >
+    <div class="form-group" ng-form name="urlForm"
+         ng-class="{'has-error':urlForm.$dirty && !urlForm.imageUrl.$valid}">
+        <label for="imageUrl">Enter url:</label>
+        <input type="text" class="form-control input-sm" id="imageUrl" name="imageUrl" ng-model="vm.contact.photoUrl"
+               crm-image-url-validator />
+        <span ng-show="urlForm.imageUrl.$dirty && !urlForm.imageUrl.$valid"
+              class="help-block has-error">Url hasn't correct form</span>
+    </div>
+</div>
+<div class="btn-group btn-group-justified" role="group">
+    <div class="btn-group">
+        <button type="button" class="btn btn-default ng-binding btn-xs btn-block" ng-click="cancel()">Cancel</button>
+    </div>
+    <div class="btn-group">
+        <button type="button" class="btn btn-primary ng-binding btn-xs btn-block" ng-click="ok()"
+                ng-disabled="!urlForm.imageUrl.$valid">Ok</button>
+    </div>
+</div>
