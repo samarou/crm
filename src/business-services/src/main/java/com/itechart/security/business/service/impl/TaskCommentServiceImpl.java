@@ -5,9 +5,11 @@ import com.itechart.security.business.model.dto.TaskCommentDto;
 import com.itechart.security.business.model.persistent.task.TaskComment;
 import com.itechart.security.business.service.TaskCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import static com.itechart.security.business.model.dto.utils.DtoConverter.convert;
 
+@Service
 public class TaskCommentServiceImpl implements TaskCommentService{
 
     @Autowired
