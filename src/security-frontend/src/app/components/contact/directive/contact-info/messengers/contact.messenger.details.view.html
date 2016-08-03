@@ -7,9 +7,8 @@
                name="messengerUsername"
                class="form-control"
                required maxlength="255">
-        <span
-            ng-show="messengerForm.messengerUsername.$error.required"
-            class="help-block">Username is required</span>
+        <span ng-show="messengerForm.messengerUsername.$error.required"
+              class="help-block">Username is required</span>
     </div>
     <div class="form-group crm-select-validation-icon" crm-input-validation>
         <label for="messengerType">Messenger</label>
@@ -20,5 +19,20 @@
                 ng-options="option.id as option.name for option in vm.messengers">
             <option value>Please, select</option>
         </select>
+    </div>
+
+    <div ng-if="vm.account.messenger == 6" class="form-group crm-select-validation-icon" crm-input-validation>
+        <label for="description">Description</label>
+        <input class="form-control"
+               ng-model="vm.account.description"
+               id="description"
+               name="description"
+               maxlength="50"
+               required>
+        <span ng-show="messengerForm.description.$dirty"
+              class="help-block">
+            <span ng-show="messengerForm.description.$error.required">
+                Description for messenger type 'Other' is required </span>
+        </span>
     </div>
 </crm-form-wrapper>

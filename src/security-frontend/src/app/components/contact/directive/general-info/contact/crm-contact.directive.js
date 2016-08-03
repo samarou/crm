@@ -9,11 +9,16 @@
         .directive('crmContact', crmContact);
 
     /** @ngInject */
-    function crmContact() {
+    function crmContact(imageUploadService) {
         return {
             restrict: 'E',
             templateUrl: 'app/components/contact/directive/general-info/contact/crm-contact.html',
-            scope: false
+            scope: false,
+            controller: function ($scope) {
+                $scope.vm.uploader = imageUploadService.getFileUploader($scope.vm);
+                $scope.vm.attachment = $scope.vm.uploader.tempFile;
+            }
         };
+
     }
 })();

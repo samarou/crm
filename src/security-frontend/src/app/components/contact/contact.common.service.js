@@ -8,11 +8,12 @@
         .module('crm.contact')
         .factory('contactCommonService', contactCommonService);
     /** @ngInject */
-    function contactCommonService($q, dialogService) {
+    function contactCommonService($q, dialogService, collections, toastr) {
 
         return {
             remove: removeCheckedElementsFromList,
-            removeOne: removeOneElementFromArray
+            removeOne: removeOneElementFromArray,
+            infoItemCanBeAdded: infoItemCanBeAdded
         };
 
         function removeCheckedElementsFromList(contact, elements, removingFunction) {
@@ -57,6 +58,14 @@
                 }
             });
             return checkedElements;
+        }
+
+        function infoItemCanBeAdded(element, elements, propertyList, toastrMessage) {
+            if (collections.exists(element, elements, collections.propertyListComparator(propertyList))) {
+                toastr.error(toastrMessage, 'Error');
+                return false;
+            }
+            return true;
         }
     }
 })();

@@ -315,6 +315,7 @@ public class DtoConverter {
         dto.setId(messengerAccount.getId());
         dto.setMessenger(messengerAccount.getMessenger() != null ? messengerAccount.getMessenger().getId() : null);
         dto.setUsername(messengerAccount.getUsername());
+        dto.setDescription(messengerAccount.getDescription());
         return dto;
     }
 
@@ -327,6 +328,7 @@ public class DtoConverter {
             messengerAccount.setMessenger(messenger);
         }
         messengerAccount.setUsername(dto.getUsername());
+        messengerAccount.setDescription(dto.getDescription());
         return messengerAccount;
     }
 

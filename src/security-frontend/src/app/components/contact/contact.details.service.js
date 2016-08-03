@@ -48,7 +48,7 @@
                 workplaces: [],
                 skills: [],
                 educations: [],
-                attachments: []
+                attachments: [],
             };
         }
 

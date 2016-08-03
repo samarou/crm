@@ -26,6 +26,7 @@
 
     <sec:authentication-manager id="authenticationManager">
         <sec:authentication-provider ref="daoAuthenticationProvider"/>
+        <sec:authentication-provider ref="ldapAuthProvider"/>
         <sec:authentication-provider ref="tokenAuthenticationProvider"/>
     </sec:authentication-manager>
 
@@ -105,6 +106,33 @@
 
 
     <bean id="fileUtil" class="com.itechart.security.web.util.TempFileUtil"/>
+
+    <bean id="contextSource"
+          class="org.springframework.security.ldap.DefaultSpringSecurityContextSource">
+        <constructor-arg value="${ldap.server}"/>
+        <property name="anonymousReadOnly" value="false"/>
+        <property name="userDn" value="${ldap.user}"/>
+        <property name="password" value="${ldap.password}"/>
+    </bean>
+    <bean id="userSearch"
+          class="org.springframework.security.ldap.search.FilterBasedLdapUserSearch">
+        <constructor-arg index="0" value=""/>
+        <constructor-arg index="1" value="(userprincipalname={0}@itechart-group.com)"/>
+        <constructor-arg index="2" ref="contextSource"/>
+    </bean>
+    <bean id="userDetailsContextMapper" class="com.itechart.security.web.security.ldap.LdapUserDetailsContextMapper"/>
+
+    <bean id="ldapAuthProvider"
+          class="org.springframework.security.ldap.authentication.LdapAuthenticationProvider">
+        <constructor-arg>
+            <bean class="org.springframework.security.ldap.authentication.BindAuthenticator">
+                <constructor-arg ref="contextSource"/>
+                <property name="userSearch" ref="userSearch"/>
+            </bean>
+        </constructor-arg>
+        <property name="userDetailsContextMapper"
+                  ref="userDetailsContextMapper"/>
+     </bean>
 
     <context:property-placeholder location="classpath:datasource.properties,classpath:application.properties, classpath:businessServices.properties"
                                   order="-1"/>

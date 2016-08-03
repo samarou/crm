@@ -9,6 +9,8 @@ import com.itechart.security.business.model.persistent.*;
 import com.itechart.security.business.model.persistent.ObjectKey;
 import com.itechart.security.business.service.ContactService;
 import com.itechart.security.business.service.FileService;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.validator.routines.UrlValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.itechart.security.business.service.HistoryEntryService;
@@ -17,6 +19,7 @@ import com.itechart.security.service.ObjectTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.io.IOException;
 import java.util.List;
@@ -79,6 +82,7 @@ public class ContactServiceImpl implements ContactService {
     @Transactional
     public Long saveContact(ContactDto contactDto) {
         Contact contact = convert(contactDto);
+        moveAvatarImageToTargetDirectory(contact);
         Long contactId = contactDao.save(contact);
         historyEntryService.startHistory(buildObjectKey(contactId));
         moveFilesToTargetDirectory(contact);
@@ -110,6 +114,7 @@ public class ContactServiceImpl implements ContactService {
     @Transactional
     public void updateContact(ContactDto contactDto) {
         Contact contact = convert(contactDto);
+        moveAvatarImageToTargetDirectory(contact);
         contactDao.update(contact);
         moveFilesToTargetDirectory(contact);
         historyEntryService.updateHistory(getObjectIdentityId(contact.getId()));
@@ -131,6 +136,23 @@ public class ContactServiceImpl implements ContactService {
                 }
             }
         }
+    }
+
+    private void moveAvatarImageToTargetDirectory(Contact contact){
+        if(StringUtils.isNotBlank(contact.getPhotoUrl())
+                && !isCorrectWebUrl(contact.getPhotoUrl())){
+            try {
+                fileService.moveImageToContactDirectory(contact);
+            }catch(IOException e){
+                logger.error("can't save image to attachment directory for contact: {}, tempPath: {}", contact.getId(), contact.getPhotoUrl());
+            }
+        }
+    }
+
+    private boolean isCorrectWebUrl(String url){
+        String[] schemes = {"http", "https"};
+        UrlValidator urlValidator = new UrlValidator(schemes);
+        return urlValidator.isValid(url);
     }
 
     @Override

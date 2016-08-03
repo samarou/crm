@@ -48,10 +48,13 @@
                         <div class="form-group" crm-input-validation>
                             <label for="email">Email</label>
                             <input type="email" id="email" class="form-control" name="email" ng-model="vm.user.email"
+                                   pattern="([a-zA-Z0-9][a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]{0,}){0,}[a-zA-Z0-9]@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,62}[a-zA-Z0-9])?\.){1,8}[a-zA-Z]{2,63}"
                                    required>
                       <span ng-show="userForm.email.$dirty">
-                          <span ng-show="userForm.email.$error.required" class="help-block">Email is required</span>
-                          <span ng-show="userForm.email.$error.email" class="help-block">Enter valid email</span>
+                          <span ng-show="userForm.email.$error.required"
+                                class="help-block">Email is required</span>
+                          <span ng-show="!userForm.email.$error.required && (!userForm.email.$valid || userForm.email.$error.pattern)"
+                                class="help-block">Enter valid email</span>
                       </span>
                         </div>
                     </div>
