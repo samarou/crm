@@ -82,7 +82,7 @@
 
     <changeSet id="008" author="yauheni.putsykovich">
         <sql dbms="mysql">
-            insert into `status` (id, name, description) values
+            insert into `security_sample`.`status` (id, name, description) values
             (1, 'New', 'Status New'),
             (2, 'In Progress', 'Status In Progress'),
             (3, 'Resolved', 'Status Resolved'),
@@ -93,7 +93,7 @@
 
     <changeSet id="09" author="yauheni.putsykovich">
         <sql dbms="mysql">
-            insert into `priority` (id, name, description) values
+            insert into `security_sample`.`priority` (id, name, description) values
             (1, 'Low', 'Priority Low'),
             (2, 'Normal', 'Priority Normal'),
             (3, 'High', 'Priority High')
