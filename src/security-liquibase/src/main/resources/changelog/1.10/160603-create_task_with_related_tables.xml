@@ -80,9 +80,8 @@
                                  constraintName="fk_task__priority_id__priority_id" onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
 
-    <changeSet id="08" author="yauheni.putsykovich">
-        <preConditions onFail="CONTINUE"><tableExists tableName="status"/></preConditions>
-        <sql>
+    <changeSet id="008" author="yauheni.putsykovich">
+        <sql dbms="mysql">
             insert into `status` (id, name, description) values
             (1, 'New', 'Status New'),
             (2, 'In Progress', 'Status In Progress'),
@@ -93,7 +92,7 @@
     </changeSet>
 
     <changeSet id="09" author="yauheni.putsykovich">
-        <sql>
+        <sql dbms="mysql">
             insert into `priority` (id, name, description) values
             (1, 'Low', 'Priority Low'),
             (2, 'Normal', 'Priority Normal'),
