@@ -4,6 +4,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
     <changeSet id="001" author="yauheni.putsykovich">
+        <preConditions onFail="MARK_RAN"><not><tableExists tableName="status"/></not></preConditions>
         <comment>creating the table status</comment>
         <createTable tableName="status">
             <column name="id" type="BIGINT UNSIGNED">
@@ -17,6 +18,7 @@
     </changeSet>
 
     <changeSet id="002" author="yauheni.putsykovich">
+        <preConditions onFail="MARK_RAN"><not><tableExists tableName="priority"/></not></preConditions>
         <comment>creating the table priority</comment>
         <createTable tableName="priority">
             <column name="id" type="BIGINT UNSIGNED">
@@ -30,6 +32,7 @@
     </changeSet>
 
     <changeSet id="003" author="yauheni.putsykovich">
+        <preConditions onFail="MARK_RAN"><not><tableExists tableName="task"/></not></preConditions>
         <comment>creating the table task</comment>
         <createTable tableName="task">
             <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
@@ -49,24 +52,28 @@
     </changeSet>
 
     <changeSet id="004" author="yauheni.putsykovich">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task__assignee_id__user_id"/></not></preConditions>
         <comment>create foreign key constraint for assignee_id field</comment>
         <addForeignKeyConstraint baseTableName="task" baseColumnNames="assignee_id"
                                  referencedTableName="user" referencedColumnNames="id"
                                  constraintName="fk_task__assignee_id__user_id" onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
     <changeSet id="005" author="yauheni.putsykovich">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task__creator_id__user_id"/></not></preConditions>
         <comment>create foreign key constraint for creator_id field</comment>
         <addForeignKeyConstraint baseTableName="task" baseColumnNames="creator_id"
                                  referencedTableName="user" referencedColumnNames="id"
                                  constraintName="fk_task__creator_id__user_id" onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
     <changeSet id="006" author="yauheni.putsykovich">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task__status_id__status_id"/></not></preConditions>
         <comment>create foreign key constraint for status_id field</comment>
         <addForeignKeyConstraint baseTableName="task" baseColumnNames="status_id"
                                  referencedTableName="status" referencedColumnNames="id"
                                  constraintName="fk_task__status_id__status_id" onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
     <changeSet id="007" author="yauheni.putsykovich">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task__priority_id__priority_id"/></not></preConditions>
         <comment>create foreign key constraint for priority_id field</comment>
         <addForeignKeyConstraint baseTableName="task" baseColumnNames="priority_id"
                                  referencedTableName="priority" referencedColumnNames="id"
@@ -74,50 +81,31 @@
     </changeSet>
 
     <changeSet id="08" author="yauheni.putsykovich">
-        <insert tableName="status">
-            <column name="id" value="1"/>
-            <column name="name" value="New"/>
-            <column name="description" value="Status New"/>
-        </insert>
-        <insert tableName="status">
-            <column name="id" value="2"/>
-            <column name="name" value="In Progress"/>
-            <column name="description" value="Status In Progress"/>
-        </insert>
-        <insert tableName="status">
-            <column name="id" value="3"/>
-            <column name="name" value="Resolved"/>
-            <column name="description" value="Status Resolved"/>
-        </insert>
-        <insert tableName="status">
-            <column name="id" value="4"/>
-            <column name="name" value="Closed"/>
-            <column name="description" value="Status Closed"/>
-        </insert>
+        <preConditions onFail="CONTINUE"><tableExists tableName="status"/></preConditions>
+        <sql>
+            insert into `status` (id, name, description) values
+            (1, 'New', 'Status New'),
+            (2, 'In Progress', 'Status In Progress'),
+            (3, 'Resolved', 'Status Resolved'),
+            (4, 'Closed', 'Status Closed')
+            on duplicate key update `name` = `name`;
+        </sql>
     </changeSet>
 
     <changeSet id="09" author="yauheni.putsykovich">
-        <insert tableName="priority">
-            <column name="id" value="1"/>
-            <column name="name" value="Low"/>
-            <column name="description" value="Priority Low"/>
-        </insert>
-        <insert tableName="priority">
-            <column name="id" value="2"/>
-            <column name="name" value="Normal"/>
-            <column name="description" value="Priority Normal"/>
-        </insert>
-        <insert tableName="priority">
-            <column name="id" value="3"/>
-            <column name="name" value="High"/>
-            <column name="description" value="Priority High"/>
-        </insert>
+        <sql>
+            insert into `priority` (id, name, description) values
+            (1, 'Low', 'Priority Low'),
+            (2, 'Normal', 'Priority Normal'),
+            (3, 'High', 'Priority High')
+            on duplicate key update `name` = `name`;
+        </sql>
     </changeSet>
-
 
     <!-- task_company table -->
 
     <changeSet id="010" author="yauheni.putsykovich">
+        <preConditions onFail="MARK_RAN"><not><tableExists tableName="task_company"/></not></preConditions>
         <createTable tableName="task_company">
             <column name="task_id" type="BIGINT UNSIGNED"/>
             <column name="company_id" type="BIGINT UNSIGNED"/>
@@ -125,16 +113,19 @@
     </changeSet>
 
     <changeSet id="011" author="yauheni.putsykovich">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists tableName="task_company" /></not></preConditions>
         <addPrimaryKey tableName="task_company" columnNames="task_id, company_id" constraintName="pk_task_company"/>
     </changeSet>
 
     <changeSet id="012" author="yauheni.putsykovich">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task_company__task_id__task_id"/></not></preConditions>
         <addForeignKeyConstraint baseTableName="task_company" baseColumnNames="task_id"
                                  referencedTableName="task" referencedColumnNames="id"
                                  constraintName="fk_task_company__task_id__task_id" onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
 
     <changeSet id="013" author="yauheni.putsykovich">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task_company__company_id__company_id"/></not></preConditions>
         <addForeignKeyConstraint baseTableName="task_company" baseColumnNames="company_id"
                                  referencedTableName="company" referencedColumnNames="id"
                                  constraintName="fk_task_company__company_id__company_id" onDelete="NO ACTION" onUpdate="NO ACTION"/>
@@ -143,6 +134,7 @@
     <!-- task_contact table -->
 
     <changeSet id="014" author="yauheni.putsykovich">
+        <preConditions onFail="MARK_RAN"><not><tableExists tableName="task_contact"/></not></preConditions>
         <createTable tableName="task_contact">
             <column name="task_id" type="BIGINT UNSIGNED"/>
             <column name="contact_id" type="BIGINT UNSIGNED"/>
@@ -150,15 +142,18 @@
     </changeSet>
 
     <changeSet id="015" author="yauheni.putsykovich">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists tableName="task_contact"/></not></preConditions>
         <addPrimaryKey tableName="task_contact" columnNames="task_id, contact_id" constraintName="pk_task_contact"/>
     </changeSet>
 
     <changeSet id="016" author="yauheni.putsykovich">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task_contact__task_id__task_id"/></not></preConditions>
         <addForeignKeyConstraint baseTableName="task_contact" baseColumnNames="task_id" referencedTableName="task" referencedColumnNames="id"
                                  constraintName="fk_task_contact__task_id__task_id" onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
 
     <changeSet id="017" author="yauheni.putsykovich">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task_contact__contact_id__contact_id"/></not></preConditions>
         <addForeignKeyConstraint baseTableName="task_contact" baseColumnNames="contact_id"
                                  referencedTableName="contact" referencedColumnNames="id"
                                  constraintName="fk_task_contact__contact_id__contact_id" onDelete="NO ACTION" onUpdate="NO ACTION"/>
