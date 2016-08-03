@@ -52,29 +52,29 @@
     </changeSet>
 
     <changeSet id="004" author="yauheni.putsykovich">
-        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task__assignee_id__user_id" schemaName="${schema_name}"/></not></preConditions>
         <comment>create foreign key constraint for assignee_id field</comment>
+        <dropForeignKeyConstraint constraintName="fk_task__assignee_id__user_id" baseTableName="task"/>
         <addForeignKeyConstraint baseTableName="task" baseColumnNames="assignee_id" baseTableSchemaName="${schema_name}"
                                  referencedTableName="user" referencedColumnNames="id" referencedTableSchemaName="${schema_name}"
                                  constraintName="fk_task__assignee_id__user_id" onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
     <changeSet id="005" author="yauheni.putsykovich">
-        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task__creator_id__user_id" schemaName="${schema_name}"/></not></preConditions>
         <comment>create foreign key constraint for creator_id field</comment>
+        <dropForeignKeyConstraint baseTableName="task" constraintName="fk_task__creator_id__user_id"/>
         <addForeignKeyConstraint baseTableName="task" baseColumnNames="creator_id" baseTableSchemaName="${schema_name}"
                                  referencedTableName="user" referencedColumnNames="id" referencedTableSchemaName="${schema_name}"
                                  constraintName="fk_task__creator_id__user_id" onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
     <changeSet id="006" author="yauheni.putsykovich">
-        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task__status_id__status_id" schemaName="${schema_name}"/></not></preConditions>
         <comment>create foreign key constraint for status_id field</comment>
+        <dropForeignKeyConstraint baseTableName="task" constraintName="fk_task__status_id__status_id" baseTableSchemaName="${schema_name}"/>
         <addForeignKeyConstraint baseTableName="task" baseColumnNames="status_id" baseTableSchemaName="${schema_name}"
                                  referencedTableName="status" referencedColumnNames="id" referencedTableSchemaName="${schema_name}"
                                  constraintName="fk_task__status_id__status_id" onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
     <changeSet id="007" author="yauheni.putsykovich">
-        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task__priority_id__priority_id" schemaName="${schema_name}"/></not></preConditions>
         <comment>create foreign key constraint for priority_id field</comment>
+        <dropForeignKeyConstraint baseTableName="task" constraintName="fk_task__priority_id__priority_id" baseTableSchemaName="${schema_name}"/>
         <addForeignKeyConstraint baseTableName="task" baseColumnNames="priority_id" baseTableSchemaName="${schema_name}"
                                  referencedTableName="priority" referencedColumnNames="id" referencedTableSchemaName="${schema_name}"
                                  constraintName="fk_task__priority_id__priority_id" onDelete="NO ACTION" onUpdate="NO ACTION"/>
