@@ -6,7 +6,7 @@
     <changeSet id="001" author="yauheni.putsykovich">
         <preConditions onFail="MARK_RAN"><not><tableExists tableName="status"/></not></preConditions>
         <comment>creating the table status</comment>
-        <createTable tableName="status">
+        <createTable tableName="status" schemaName="security_sample">
             <column name="id" type="BIGINT UNSIGNED">
                 <constraints primaryKey="true"/>
             </column>
@@ -20,7 +20,7 @@
     <changeSet id="002" author="yauheni.putsykovich">
         <preConditions onFail="MARK_RAN"><not><tableExists tableName="priority"/></not></preConditions>
         <comment>creating the table priority</comment>
-        <createTable tableName="priority">
+        <createTable tableName="priority" schemaName="security_sample">
             <column name="id" type="BIGINT UNSIGNED">
                 <constraints primaryKey="true"/>
             </column>
@@ -34,7 +34,7 @@
     <changeSet id="003" author="yauheni.putsykovich">
         <preConditions onFail="MARK_RAN"><not><tableExists tableName="task"/></not></preConditions>
         <comment>creating the table task</comment>
-        <createTable tableName="task">
+        <createTable tableName="task" schemaName="security_sample">
             <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
                 <constraints primaryKey="true"/>
             </column>
@@ -54,29 +54,29 @@
     <changeSet id="004" author="yauheni.putsykovich">
         <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task__assignee_id__user_id"/></not></preConditions>
         <comment>create foreign key constraint for assignee_id field</comment>
-        <addForeignKeyConstraint baseTableName="task" baseColumnNames="assignee_id"
-                                 referencedTableName="user" referencedColumnNames="id"
+        <addForeignKeyConstraint baseTableName="task" baseColumnNames="assignee_id" baseTableSchemaName="security_sample"
+                                 referencedTableName="user" referencedColumnNames="id" referencedTableSchemaName="security_sample"
                                  constraintName="fk_task__assignee_id__user_id" onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
     <changeSet id="005" author="yauheni.putsykovich">
         <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task__creator_id__user_id"/></not></preConditions>
         <comment>create foreign key constraint for creator_id field</comment>
-        <addForeignKeyConstraint baseTableName="task" baseColumnNames="creator_id"
-                                 referencedTableName="user" referencedColumnNames="id"
+        <addForeignKeyConstraint baseTableName="task" baseColumnNames="creator_id" baseTableSchemaName="security_sample"
+                                 referencedTableName="user" referencedColumnNames="id" referencedTableSchemaName="security_sample"
                                  constraintName="fk_task__creator_id__user_id" onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
     <changeSet id="006" author="yauheni.putsykovich">
         <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task__status_id__status_id"/></not></preConditions>
         <comment>create foreign key constraint for status_id field</comment>
-        <addForeignKeyConstraint baseTableName="task" baseColumnNames="status_id"
-                                 referencedTableName="status" referencedColumnNames="id"
+        <addForeignKeyConstraint baseTableName="task" baseColumnNames="status_id" baseTableSchemaName="security_sample"
+                                 referencedTableName="status" referencedColumnNames="id" referencedTableSchemaName="security_sample"
                                  constraintName="fk_task__status_id__status_id" onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
     <changeSet id="007" author="yauheni.putsykovich">
         <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task__priority_id__priority_id"/></not></preConditions>
         <comment>create foreign key constraint for priority_id field</comment>
-        <addForeignKeyConstraint baseTableName="task" baseColumnNames="priority_id"
-                                 referencedTableName="priority" referencedColumnNames="id"
+        <addForeignKeyConstraint baseTableName="task" baseColumnNames="priority_id" baseTableSchemaName="security_sample"
+                                 referencedTableName="priority" referencedColumnNames="id" referencedTableSchemaName="security_sample"
                                  constraintName="fk_task__priority_id__priority_id" onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
 
@@ -104,57 +104,58 @@
     <!-- task_company table -->
 
     <changeSet id="010" author="yauheni.putsykovich">
-        <preConditions onFail="MARK_RAN"><not><tableExists tableName="task_company"/></not></preConditions>
-        <createTable tableName="task_company">
+        <preConditions onFail="MARK_RAN"><not><tableExists tableName="task_company" schemaName="security_sample"/></not></preConditions>
+        <createTable tableName="task_company" schemaName="security_sample">
             <column name="task_id" type="BIGINT UNSIGNED"/>
             <column name="company_id" type="BIGINT UNSIGNED"/>
         </createTable>
     </changeSet>
 
     <changeSet id="011" author="yauheni.putsykovich">
-        <preConditions onFail="MARK_RAN"><not><primaryKeyExists tableName="task_company" /></not></preConditions>
-        <addPrimaryKey tableName="task_company" columnNames="task_id, company_id" constraintName="pk_task_company"/>
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists tableName="task_company" schemaName="security_sample"/></not></preConditions>
+        <addPrimaryKey tableName="task_company" columnNames="task_id, company_id" constraintName="pk_task_company" schemaName="security_sample"/>
     </changeSet>
 
     <changeSet id="012" author="yauheni.putsykovich">
         <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task_company__task_id__task_id"/></not></preConditions>
-        <addForeignKeyConstraint baseTableName="task_company" baseColumnNames="task_id"
-                                 referencedTableName="task" referencedColumnNames="id"
+        <addForeignKeyConstraint baseTableName="task_company" baseColumnNames="task_id" baseTableSchemaName="security_sample"
+                                 referencedTableName="task" referencedColumnNames="id" referencedTableSchemaName="security_sample"
                                  constraintName="fk_task_company__task_id__task_id" onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
 
     <changeSet id="013" author="yauheni.putsykovich">
-        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task_company__company_id__company_id"/></not></preConditions>
-        <addForeignKeyConstraint baseTableName="task_company" baseColumnNames="company_id"
-                                 referencedTableName="company" referencedColumnNames="id"
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task_company__company_id__company_id" schemaName="security_sample"/></not></preConditions>
+        <addForeignKeyConstraint baseTableName="task_company" baseColumnNames="company_id" baseTableSchemaName="security_sample"
+                                 referencedTableName="company" referencedColumnNames="id" referencedTableSchemaName="security_sample"
                                  constraintName="fk_task_company__company_id__company_id" onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
 
     <!-- task_contact table -->
 
     <changeSet id="014" author="yauheni.putsykovich">
-        <preConditions onFail="MARK_RAN"><not><tableExists tableName="task_contact"/></not></preConditions>
-        <createTable tableName="task_contact">
+        <preConditions onFail="MARK_RAN"><not><tableExists tableName="task_contact" schemaName="security_sample"/></not></preConditions>
+        <createTable tableName="task_contact" schemaName="security_sample">
             <column name="task_id" type="BIGINT UNSIGNED"/>
             <column name="contact_id" type="BIGINT UNSIGNED"/>
         </createTable>
     </changeSet>
 
     <changeSet id="015" author="yauheni.putsykovich">
-        <preConditions onFail="MARK_RAN"><not><primaryKeyExists tableName="task_contact"/></not></preConditions>
-        <addPrimaryKey tableName="task_contact" columnNames="task_id, contact_id" constraintName="pk_task_contact"/>
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists tableName="task_contact" schemaName="security_sample"/></not></preConditions>
+        <addPrimaryKey tableName="task_contact" columnNames="task_id, contact_id" constraintName="pk_task_contact" schemaName="security_sample"/>
     </changeSet>
 
     <changeSet id="016" author="yauheni.putsykovich">
-        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task_contact__task_id__task_id"/></not></preConditions>
-        <addForeignKeyConstraint baseTableName="task_contact" baseColumnNames="task_id" referencedTableName="task" referencedColumnNames="id"
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task_contact__task_id__task_id" schemaName="security_sample"/></not></preConditions>
+        <addForeignKeyConstraint baseTableName="task_contact" baseColumnNames="task_id" baseTableSchemaName="security_sample"
+                                 referencedTableName="task" referencedColumnNames="id" referencedTableSchemaName="security_sample"
                                  constraintName="fk_task_contact__task_id__task_id" onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
 
     <changeSet id="017" author="yauheni.putsykovich">
-        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task_contact__contact_id__contact_id"/></not></preConditions>
-        <addForeignKeyConstraint baseTableName="task_contact" baseColumnNames="contact_id"
-                                 referencedTableName="contact" referencedColumnNames="id"
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task_contact__contact_id__contact_id" schemaName="security_sample"/></not></preConditions>
+        <addForeignKeyConstraint baseTableName="task_contact" baseColumnNames="contact_id" baseTableSchemaName="security_sample"
+                                 referencedTableName="contact" referencedColumnNames="id" referencedTableSchemaName="security_sample"
                                  constraintName="fk_task_contact__contact_id__contact_id" onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
 
