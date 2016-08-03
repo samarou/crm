@@ -4,7 +4,8 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
     <changeSet id="001" author="yauheni.putsykovich">
-        <addColumn tableName="task">
+        <preConditions onFail="MARK_RAN"><not><columnExists tableName="task" columnName="location" schemaName="${schema_name}"/></not></preConditions>
+        <addColumn tableName="task" schemaName="${schema_name}">
             <column name="location" type="varchar(500)"/>
         </addColumn>
     </changeSet>
