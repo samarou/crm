@@ -3,6 +3,8 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
+    <property name="schema_name" value="security_sample" dbms="mysql"></property>
+
     <changeSet id="001" author="yauheni.putsykovich">
         <preConditions onFail="MARK_RAN"><not><tableExists tableName="status"/></not></preConditions>
         <comment>creating the table status</comment>
@@ -52,28 +54,28 @@
     </changeSet>
 
     <changeSet id="004" author="yauheni.putsykovich">
-        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task__assignee_id__user_id"/></not></preConditions>
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task__assignee_id__user_id" schemaName="security_sample"/></not></preConditions>
         <comment>create foreign key constraint for assignee_id field</comment>
         <addForeignKeyConstraint baseTableName="task" baseColumnNames="assignee_id" baseTableSchemaName="security_sample"
                                  referencedTableName="user" referencedColumnNames="id" referencedTableSchemaName="security_sample"
                                  constraintName="fk_task__assignee_id__user_id" onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
     <changeSet id="005" author="yauheni.putsykovich">
-        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task__creator_id__user_id"/></not></preConditions>
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task__creator_id__user_id" schemaName="security_sample"/></not></preConditions>
         <comment>create foreign key constraint for creator_id field</comment>
         <addForeignKeyConstraint baseTableName="task" baseColumnNames="creator_id" baseTableSchemaName="security_sample"
                                  referencedTableName="user" referencedColumnNames="id" referencedTableSchemaName="security_sample"
                                  constraintName="fk_task__creator_id__user_id" onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
     <changeSet id="006" author="yauheni.putsykovich">
-        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task__status_id__status_id"/></not></preConditions>
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task__status_id__status_id" schemaName="security_sample"/></not></preConditions>
         <comment>create foreign key constraint for status_id field</comment>
         <addForeignKeyConstraint baseTableName="task" baseColumnNames="status_id" baseTableSchemaName="security_sample"
                                  referencedTableName="status" referencedColumnNames="id" referencedTableSchemaName="security_sample"
                                  constraintName="fk_task__status_id__status_id" onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
     <changeSet id="007" author="yauheni.putsykovich">
-        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task__priority_id__priority_id"/></not></preConditions>
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="fk_task__priority_id__priority_id" schemaName="security_sample"/></not></preConditions>
         <comment>create foreign key constraint for priority_id field</comment>
         <addForeignKeyConstraint baseTableName="task" baseColumnNames="priority_id" baseTableSchemaName="security_sample"
                                  referencedTableName="priority" referencedColumnNames="id" referencedTableSchemaName="security_sample"
