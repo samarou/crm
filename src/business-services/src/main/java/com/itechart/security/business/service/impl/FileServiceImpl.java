@@ -2,21 +2,17 @@ package com.itechart.security.business.service.impl;
 
 import com.itechart.security.business.model.persistent.Contact;
 import com.itechart.security.business.service.FileService;
-import com.sun.deploy.util.URLUtil;
-import org.apache.commons.validator.routines.UrlValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 
 public class FileServiceImpl implements FileService {
     private static final Logger logger = LoggerFactory.getLogger(FileService.class);
