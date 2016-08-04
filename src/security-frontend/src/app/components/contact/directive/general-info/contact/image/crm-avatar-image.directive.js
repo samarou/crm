@@ -3,21 +3,27 @@
 
     angular
         .module('crm.contact')
-        .directive('crmAvatarImage', crmAvatarImage);
+        .directive('crmAvatarImage', ['$http',crmAvatarImage]);
 
     /** @ngInject */
-    function crmAvatarImage() {
+    function crmAvatarImage($http) {
         return {
             restrict: 'A',
             link: function (scope, element, attrs) {
-                var photoUrl = "/rest/images/contact/";
-                var defaultImagePath = "/assets/images/default-avatar.png";
                 element.on('error', function () {
-                    attrs.$set('src', defaultImagePath);
+                    attrs.$set('src', "./assets/images/default-avatar.png");
                 });
                 attrs.$observe('contact', function (value) {
                     if (value) {
-                        attrs.$set('ngSrc', photoUrl + value + '?' + getCurrentTime());
+                        $http.get("rest/images/contact/" + value + '?' + getCurrentTime(),
+                            {responseType:"arraybuffer"})
+                            .success(function(data){
+                                var arrayBufferView = new Uint8Array( data );
+                                var blob = new Blob( [ arrayBufferView ], { type: "image/png" } );
+                                var urlCreator = window.URL || window.webkitURL;
+                                var imageUrl = urlCreator.createObjectURL( blob );
+                                attrs.$set('ngSrc', imageUrl);
+                            });
                     }
                 });
                 scope.ok = function(){
