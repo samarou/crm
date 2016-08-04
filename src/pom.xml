@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.itechart.security</groupId>
     <artifactId>security-project</artifactId>
-    <version>1.11-SNAPSHOT</version>
+    <version>1.10.1</version>
     <packaging>pom</packaging>
     <name>Security Project</name>
     <description>Role/privilege-based and ACL security support</description>
@@ -21,7 +21,7 @@
         <connection>scm:git:git@github.com/samarou/crm.git</connection>
         <developerConnection>scm:git:git@github.com/samarou/crm.git</developerConnection>
         <url>https://github.com/samarou/crm</url>
-        <tag>HEAD</tag>
+        <tag>release/1.10.1</tag>
     </scm>
     <properties>
         <spring.version>4.2.2.RELEASE</spring.version>
