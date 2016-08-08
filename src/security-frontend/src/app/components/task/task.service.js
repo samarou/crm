@@ -17,6 +17,9 @@
             create: create,
             update: update,
             remove: remove,
+            addComment: addComment,
+            removeComment: removeComment,
+            editComment: editComment,
             getPriorities: getPriorities,
             getStatuses: getStatuses,
             getAcls: getAcls,
@@ -43,6 +46,18 @@
 
         function remove(id) {
             return $http.delete('rest/tasks/' + id);
+        }
+
+        function removeComment(commentId) {
+            return $http.delete('rest/tasks/comments/' + commentId + '/delete');
+        }
+
+        function addComment(taskId, comment) {
+            return $http.post('rest/tasks/' + taskId + '/addComment', comment);
+        }
+
+        function editComment(comment) {
+            return $http.post('rest/tasks/comments/update', comment);
         }
 
         function getPriorities() {

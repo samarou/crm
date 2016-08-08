@@ -10,13 +10,16 @@
         .controller('TaskEditController', TaskEditController);
 
     /** @ngInject */
-    function TaskEditController(taskService, taskSecurityService, taskCommonService, $stateParams, $q) {
+    function TaskEditController(taskService, taskSecurityService, authService, taskCommonService, $stateParams, $q) {
         var vm = this;
 
         vm.canEdit = true;
         vm.timeless = false;
         vm.title = 'Edit Task';
         vm.submitText = 'Save';
+
+        vm.addComment = addComment;
+        vm.deleteComment = deleteComment;
 
         (function () {
             taskCommonService.initContext(vm);
@@ -25,6 +28,7 @@
                 /*need converting because date have a millis format*/
                 vm.task.startDate = vm.task.startDate ? new Date(vm.task.startDate) : null;
                 vm.task.endDate = vm.task.endDate ? new Date(vm.task.endDate)  : null;
+                vm.canComment = vm.task.assignee.userName == authService.getUserName();
                 $q.all([
                     taskService.getAcls(vm.task.id),
                     taskSecurityService.checkAdminPermission(vm.task.id),
@@ -38,5 +42,23 @@
                 });
             });
         })();
+
+        function addComment() {
+            var comment = {
+                taskId: vm.task.id,
+                text: vm.newComment,
+                dateCreated: Date.now()
+            };
+            taskService.addComment(vm.task.id, comment).then(function (response) {
+                vm.task.comments.push(comment);
+                vm.newComment = '';
+            });
+        }
+
+        function deleteComment(comment) {
+            taskService.removeComment(comment.id).then(function (response) {
+                vm.task.comments.slice(vm.task.comments.indexOf(comment), 1);
+            });
+        }
     }
 })();

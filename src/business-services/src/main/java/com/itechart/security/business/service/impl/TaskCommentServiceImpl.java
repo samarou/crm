@@ -6,6 +6,7 @@ import com.itechart.security.business.model.persistent.task.TaskComment;
 import com.itechart.security.business.service.TaskCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.itechart.security.business.model.dto.utils.DtoConverter.convert;
 
@@ -16,12 +17,14 @@ public class TaskCommentServiceImpl implements TaskCommentService{
     private TaskCommentDao taskCommentDao;
 
     @Override
+    @Transactional
     public Long saveComment(TaskCommentDto taskCommentDto) {
         TaskComment comment = convert(taskCommentDto);
         return taskCommentDao.save(comment);
     }
 
     @Override
+    @Transactional
     public void delete(Long taskCommentId) {
         taskCommentDao.delete(taskCommentId);
     }

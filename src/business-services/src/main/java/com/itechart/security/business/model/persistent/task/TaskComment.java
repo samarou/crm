@@ -18,16 +18,20 @@ public class TaskComment extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "task_id", nullable = true, insertable = false, updatable = false)
+    private Task task;
+
+    @Column(name = "task_id")
+    private Long taskId;
+
+    @Column(name = "text", length = 500)
+    private String text;
+
     @Column(name = "date_created")
     private Date dateCreated;
 
     @Column(name = "date_deleted")
     private Date dateDeleted;
-
-    @Column(name = "text", length = 2000)
-    private String text;
-
-    @Column(name = "task_id")
-    private Long taskId;
 
 }

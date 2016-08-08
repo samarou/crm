@@ -10,7 +10,7 @@
             <column name="task_id" remarks="Task identifier" type="BIGINT UNSIGNED">
                 <constraints nullable="false"/>
             </column>
-            <column name="text" remarks="Comment text" type="VARCHAR(2000)">
+            <column name="text" remarks="Comment text" type="VARCHAR(500)">
                 <constraints nullable="false"/>
             </column>
             <column name="date_created" type="DATETIME">
