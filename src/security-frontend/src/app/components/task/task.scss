@@ -35,3 +35,38 @@
 .column.column--date {
     width: 9em;
 }
+
+.comment {
+    padding: 19px;
+}
+
+.comment .comment__button {
+    visibility: hidden;
+}
+
+.comment:hover .comment__button {
+    visibility: visible;
+    display: inline-block;
+}
+
+.comment__content {
+    word-wrap: break-word;
+}
+
+.comment__button {
+    margin-left: 3px;
+}
+
+.comment__button--remove {
+    background: url("../assets/icons/delete.svg");
+    background-size: contain;
+    width: 18px;
+    height: 18px;
+}
+
+.comment__button--edit {
+    background: url("../assets/icons/edit.svg");
+    background-size: contain;
+    width: 18px;
+    height: 18px;
+}

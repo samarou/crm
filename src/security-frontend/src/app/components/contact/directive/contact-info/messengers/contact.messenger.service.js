@@ -61,7 +61,7 @@
                 }
             });
             if (id == otherMessengerTypeId) {
-                result += " (" + description + ")";
+                result += ' (' + description + ')';
             }
             return result;
         }
