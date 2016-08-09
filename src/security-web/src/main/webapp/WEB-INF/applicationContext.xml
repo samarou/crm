@@ -17,17 +17,19 @@
     <sec:http pattern="/rest/login/check" security="none"/>
 
     <sec:http pattern="/rest/**" create-session="stateless" auto-config="false"
-              entry-point-ref="unauthorizedEntryPoint">
+              entry-point-ref="unauthorizedEntryPoint" use-expressions="true">
         <sec:expression-handler ref="webSecurityExpressionHandler"/>
-        <sec:custom-filter ref="tokenAuthenticationFilter" position="FORM_LOGIN_FILTER"/>
+        <sec:custom-filter ref="customFilters" position="FORM_LOGIN_FILTER"/>
+
         <sec:intercept-url pattern="/**" access="hasRole('USER')"/>
         <sec:csrf disabled="true"/>
+        <sec:remember-me services-ref="rememberMeService" key="${remember.me.key}"/>
     </sec:http>
-
     <sec:authentication-manager id="authenticationManager">
         <sec:authentication-provider ref="daoAuthenticationProvider"/>
         <sec:authentication-provider ref="ldapAuthProvider"/>
         <sec:authentication-provider ref="tokenAuthenticationProvider"/>
+        <sec:authentication-provider ref="rememberMeAuthenticationProvider"/>
     </sec:authentication-manager>
 
     <bean id="unauthorizedEntryPoint" class="com.itechart.security.web.security.UnauthorizedEntryPoint"/>
@@ -133,6 +135,30 @@
         <property name="userDetailsContextMapper"
                   ref="userDetailsContextMapper"/>
      </bean>
+
+    <bean id="rememberMeService" class="com.itechart.security.web.security.remember.CustomRememberMeService">
+        <constructor-arg index="0" value="${remember.me.key}"/>
+        <constructor-arg index="1" ref="userDetailsService"/>
+        <property name="cookieName" value="${remember.me.cookie.name}"/>
+        <property name="parameter" value="${remember.me.cookie.name}"/>
+    </bean>
+    <bean id="rememberMeAuthenticationProvider"
+          class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
+        <constructor-arg index="0" value="${remember.me.key}"/>
+    </bean>
+    <bean id="rememberMeFilter" class=
+            "org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
+        <constructor-arg index="0" ref="authenticationManager"/>
+        <constructor-arg index="1" ref="rememberMeService"/>
+    </bean>
+    <bean id="customFilters" class="org.springframework.web.filter.CompositeFilter">
+        <property name="filters">
+            <list>
+                <ref bean="rememberMeFilter"/>
+                <ref bean="tokenAuthenticationFilter"/>
+            </list>
+        </property>
+    </bean>
 
     <context:property-placeholder location="classpath:datasource.properties,classpath:application.properties, classpath:businessServices.properties"
                                   order="-1"/>

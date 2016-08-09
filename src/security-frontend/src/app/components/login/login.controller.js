@@ -9,7 +9,7 @@
         var vm = this;
 
         vm.login = function () {
-            authService.login(vm.username, vm.password).then(goToHomePage).catch(showError);
+            authService.login(vm.username, vm.password, vm.rememberMe).then(goToHomePage).catch(showError);
         };
 
         function goToHomePage() {
