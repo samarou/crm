@@ -10,6 +10,9 @@
             <column name="task_id" remarks="Task identifier" type="BIGINT UNSIGNED">
                 <constraints nullable="false"/>
             </column>
+            <column name="comment_author_id" remarks="Comment author identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
             <column name="text" remarks="Comment text" type="VARCHAR(500)">
                 <constraints nullable="false"/>
             </column>
@@ -38,6 +41,24 @@
                                  constraintName="fk_comment_task_id"/>
         <rollback>
             <dropForeignKeyConstraint baseTableName="task_comment" constraintName="fk_comment_task_id"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="mary.kuchumova" id="004">
+        <createIndex tableName="task_comment" indexName="fk_comment_user_id">
+            <column name="comment_author_id"/>
+        </createIndex>
+        <rollback>
+            <dropIndex tableName="task_comment" indexName="fk_comment_user_id"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="mary.kuchumova" id="005">
+        <addForeignKeyConstraint baseTableName="task_comment" baseColumnNames="comment_author_id"
+                                 referencedTableName="user" referencedColumnNames="id"
+                                 constraintName="fk_comment_user_id"/>
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="task_comment" constraintName="fk_comment_user_id"/>
         </rollback>
     </changeSet>
 

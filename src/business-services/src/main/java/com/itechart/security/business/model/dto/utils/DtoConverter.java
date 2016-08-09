@@ -5,6 +5,7 @@ import com.itechart.security.business.model.enums.CertificateType;
 import com.itechart.security.business.model.enums.EmailType;
 import com.itechart.security.business.model.enums.TelephoneType;
 import com.itechart.security.business.model.persistent.*;
+import com.itechart.security.business.model.persistent.task.Task;
 import com.itechart.security.business.model.persistent.task.TaskComment;
 import org.springframework.util.CollectionUtils;
 
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.itechart.security.model.util.UserConverter.convertToPublicDto;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptySet;
 import static java.util.stream.Collectors.toList;
@@ -634,7 +636,8 @@ public class DtoConverter {
         TaskCommentDto dto = new TaskCommentDto();
         dto.setId(comment.getId());
         dto.setDateCreated(comment.getDateCreated());
-        dto.setTaskId(comment.getTaskId());
+        dto.setCommentAuthorId(comment.getCommentAuthorId());
+        dto.setTaskId(comment.getTask().getId());
         dto.setText(comment.getText());
         return dto;
     }
@@ -643,7 +646,9 @@ public class DtoConverter {
         TaskComment comment = new TaskComment();
         comment.setId(commentDto.getId());
         comment.setDateCreated(commentDto.getDateCreated());
-        comment.setTaskId(commentDto.getTaskId());
+        comment.setTask(new Task());
+        comment.getTask().setId(commentDto.getTaskId());
+        comment.setCommentAuthorId(commentDto.getCommentAuthorId());
         comment.setText(commentDto.getText());
         return comment;
     }

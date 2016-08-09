@@ -2,6 +2,7 @@ package com.itechart.security.business.service.impl;
 
 import com.itechart.security.business.dao.TaskDao;
 import com.itechart.security.business.filter.TaskFilter;
+import com.itechart.security.business.model.dto.TaskCommentDto;
 import com.itechart.security.business.model.dto.TaskDto;
 import com.itechart.security.business.model.persistent.task.Task;
 import com.itechart.security.business.service.TaskService;
@@ -12,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 import static com.itechart.security.business.model.dto.utils.TaskConverter.convertTaskDto;
 import static com.itechart.security.business.model.dto.utils.TaskConverter.convertTaskMainFields;
@@ -52,7 +50,18 @@ public class TaskServiceImpl implements TaskService {
         PublicUserDto assignee = task.getAssigneeId() != null
                 ? userService.getPublicUser(task.getAssigneeId())
                 : null;
-        return convertTaskDto(task, creator, assignee);
+        TaskDto taskDto = convertTaskDto(task, creator, assignee);
+        Map<Long, PublicUserDto> commentAuthors = new HashMap<>();
+        for(TaskCommentDto taskCommentDto: taskDto.getComments()) {
+            if(commentAuthors.get(taskCommentDto.getCommentAuthorId()) != null) {
+                taskCommentDto.setCommentAuthor(commentAuthors.get(taskCommentDto.getCommentAuthorId()));
+            } else {
+                PublicUserDto commentAuthor = userService.getPublicUser(taskCommentDto.getCommentAuthorId());
+                taskCommentDto.setCommentAuthor(commentAuthor);
+                commentAuthors.put(taskCommentDto.getCommentAuthorId(), commentAuthor);
+            }
+        }
+        return taskDto;
     }
 
     @Override

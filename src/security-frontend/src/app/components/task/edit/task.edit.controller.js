@@ -19,6 +19,7 @@
         vm.timeless = false;
         vm.title = 'Edit Task';
         vm.submitText = 'Save';
+        vm.authService = authService;
 
         vm.addComment = addComment;
         vm.removeComment = removeComment;
@@ -49,11 +50,17 @@
         function addComment() {
             var comment = {
                 taskId: vm.task.id,
+                commentAuthorId: vm.task.assignee.id,
                 text: vm.newComment,
                 dateCreated: Date.now()
             };
             taskService.addComment(vm.task.id, comment).then(function (response) {
                 comment.id = response.data;
+                comment.commentAuthor = {
+                    firstName: vm.task.assignee.firstName,
+                    lastName: vm.task.assignee.lastName,
+                    userName: vm.task.assignee.userName
+                };
                 vm.task.comments.push(comment);
                 vm.newComment = '';
             });
