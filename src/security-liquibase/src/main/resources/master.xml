@@ -24,5 +24,5 @@
     <include file="changelog/1.10/160614-add_task_object_type_and_privileges.xml" relativeToChangelogFile="true"/>
     <include file="changelog/1.10/160712-create_university_education_table.xml" relativeToChangelogFile="true"/>
     <include file="changelog/1.10/160725-d575822_add_description_field_for_messenger.xml" relativeToChangelogFile="true"/>
-    <include file="changelog/1.10/160727-d577362_add_task_comments_table.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/1.11/160727-d577362_add_task_comments_table.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
