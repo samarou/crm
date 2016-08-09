@@ -6,6 +6,8 @@ public interface TaskCommentService {
 
     Long saveComment(TaskCommentDto taskCommentDto);
 
+    void updateComment(TaskCommentDto taskCommentDto);
+
     void delete(Long taskCommentId);
 
 }

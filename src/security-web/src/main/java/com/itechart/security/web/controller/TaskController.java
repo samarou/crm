@@ -86,7 +86,7 @@ public class TaskController extends SecuredController {
 
     @RequestMapping(value = "/tasks/comments/update", method = RequestMethod.POST)
     public void editComment(@RequestBody TaskCommentDto taskCommentDto) {
-        taskCommentService.saveComment(taskCommentDto);
+        taskCommentService.updateComment(taskCommentDto);
     }
 
     @RequestMapping(value = "/tasks/comments/{commentId}/delete", method = RequestMethod.DELETE)

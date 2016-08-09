@@ -19,5 +19,4 @@ public class TaskCommentDaoImpl extends BaseHibernateDao<TaskComment, Long, Pagi
             getHibernateTemplate().update(comment);
         }
     }
-
 }

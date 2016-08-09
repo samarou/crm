@@ -25,6 +25,13 @@ public class TaskCommentServiceImpl implements TaskCommentService{
 
     @Override
     @Transactional
+    public void updateComment(TaskCommentDto taskCommentDto) {
+        TaskComment comment = convert(taskCommentDto);
+        taskCommentDao.update(comment);
+    }
+
+    @Override
+    @Transactional
     public void delete(Long taskCommentId) {
         taskCommentDao.delete(taskCommentId);
     }
