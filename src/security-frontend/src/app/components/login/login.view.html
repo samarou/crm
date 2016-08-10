@@ -14,6 +14,9 @@
             <input type="password" name="password" id="password" class="form-control" ng-model="vm.password" required/>
             <span ng-show="form.password.$dirty && form.password.$error.required" class="help-block">Password is required</span>
         </div>
+        <div class="form-group">
+            <input type="checkbox" name="remember-me" class="" ng-model="vm.rememberMe"/>&nbsp;Remember me?
+        </div>
         <div class="form-actions">
             <button crm-custom-submit="vm.login()" id="login_submit" crm-form-validation="form" class="btn btn-primary">
                 Login
