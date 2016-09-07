@@ -21,7 +21,7 @@ public class ContactDto {
 
     private Boolean isMale;
 
-    private String nationality;
+    private Long nationalityId;
 
     private String photoUrl;
 

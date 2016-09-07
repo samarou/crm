@@ -58,8 +58,15 @@
         <div class="col-sm-4">
             <div class="form-group" crm-input-validation>
                 <label for="contact-nationality">Nationality</label>
-                <input ng-disabled="!vm.canEdit" id="contact-nationality" class="form-control"
-                       name="nationality" ng-model="vm.contact.nationality" maxlength="255">
+
+                <select ng-model="vm.contact.nationalities"
+                        ng-disabled="!vm.canEdit"
+                        ng-init="vm.nationalities"
+                        ng-options="x.name for x in vm.nationalities"
+                        id="contact-nationality"
+                        class="form-control" name="nationality-type">
+                </select>
+
             </div>
         </div>
     </div>

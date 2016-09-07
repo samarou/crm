@@ -24,7 +24,7 @@
         init();
 
         function init() {
-            return initAcls().then(initDictionary);
+            return initAcls().then(initDictionary).then(initNationality);
         }
 
         function initAcls() {
@@ -37,6 +37,12 @@
             return vm.details.getDictionary().then(function (response) {
                 vm.dictionary = response;
             });
+        }
+
+        function initNationality() {
+            return vm.details.getNationalities().then(function (response) {
+                vm.nationalities = response;
+            })
         }
 
         function submit() {

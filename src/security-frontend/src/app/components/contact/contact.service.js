@@ -6,7 +6,7 @@
         .factory('contactService', contactService);
 
     /** @ngInject */
-    function contactService($http, $window) {
+    function contactService($http, $window, $q) {
         return {
             create: create,
             get: get,
@@ -29,7 +29,8 @@
             removeWorkplace: removeWorkplace,
             removeSkill: removeSkill,
             parseProfile: parseProfile,
-            removeEducation: removeEducation
+            removeEducation: removeEducation,
+            getNationalityCategories: getNationalityCategories
         };
 
         function create(contact) {
@@ -124,6 +125,10 @@
 
         function removeEducation(id, educationId) {
             return $http.delete('rest/contacts/' + id + '/educations/' + educationId);
+        }
+
+        function getNationalityCategories() {
+            return $http.get('rest/contacts/nationalities', {cache: true});
         }
     }
 })();

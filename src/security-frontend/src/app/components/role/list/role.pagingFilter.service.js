@@ -11,7 +11,7 @@
 
         service.config = {
             currentPage: 1,
-            itemsPerPage: 10,
+            itemsPerPage: 5,
             visiblePages: 5,
             totalItems: null,
             privilegeSearchText: null,

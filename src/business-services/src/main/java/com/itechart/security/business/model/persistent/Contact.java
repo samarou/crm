@@ -34,7 +34,8 @@ public class Contact extends SecuredEntity {
     @Column(name = "is_male")
     private Boolean isMale;
 
-    private String nationality;
+    @Column(name = "nationality_id")
+    private Long nationalityId;
 
     @Column(name = "photo_url")
     private String photoUrl;
@@ -71,6 +72,8 @@ public class Contact extends SecuredEntity {
 
     @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<UniversityEducation> universityEducations;
+
+
 
     @Override
     public Long getId() {

@@ -36,7 +36,7 @@
                    ng-keyup="$ctrl.scope.bundle.typing.keyUp()"
                    ng-keydown="$ctrl.scope.bundle.typing.keyDown()"
                    placeholder="Search by first name, last name, username, email..."/>
-                <span class="input-group-btn">
+            <span class="input-group-btn">
                     <button type="button" class="btn btn-default" data-toggle="collapse" aria-hidden="true"
                             data-target="#filter-panel">
                         <span class="glyphicon glyphicon-cog"></span>
@@ -49,10 +49,12 @@
             <a class="btn btn-default" ng-click="$ctrl.scope.add()">
                 Add
             </a>
-            <a class="btn btn-default" ng-click="$ctrl.scope.activate(true)">
+            <a class="btn btn-default" ng-disabled="$ctrl.scope.bundle.isSelectNone"
+               ng-click="$ctrl.scope.activate(true)">
                 Activate
             </a>
-            <a class="btn btn-default" ng-click="$ctrl.scope.activate(false)">
+            <a class="btn btn-default" ng-disabled="$ctrl.scope.bundle.isSelectNone"
+               ng-click="$ctrl.scope.activate(false)">
                 Deactivate
             </a>
         </div>

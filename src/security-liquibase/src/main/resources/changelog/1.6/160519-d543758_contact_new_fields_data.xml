@@ -33,7 +33,7 @@
     </changeSet>
     <changeSet id="002" author="maksim.kalenik">
         <sql dbms="mysql">
-            insert into social_network(name) values('Facebook'),('LinkedIn'),('Twitter'),('VK'),('LiveJournal'),('Other');
+            insert into social_network(name) values('Facebook'),('LinkedIn'),('Twitter'),('VK'),('LiveJournal'),(Pinterest),('Other');
         </sql>
         <rollback>
             <delete tableName="social_network"/>

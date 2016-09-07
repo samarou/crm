@@ -80,14 +80,29 @@
                         item.checked = checked;
                     }
                 });
+                bundle.isSelectNone = !checkActivationStateTasks(bundle);
+
             };
         }
 
         function resetBundleState(bundle) {
             bundle.isSelectedAll = false;
+            bundle.isSelectNone = true;
             bundle.itemsList.forEach(function (item) {
                 item.checked = false;
             });
+        }
+
+        function checkActivationStateTasks(bundle) {
+            var counter = 0;
+
+            bundle.itemsList.forEach(function (item) {
+                if (item.checked) {
+                    counter++;
+                }
+            });
+
+            return counter > 0;
         }
 
         function createCommonBundle() {
@@ -96,6 +111,8 @@
             var pageSize = 5;
 
             bundle.isSelectAll = false;
+            bundle.isSelectNone = true;
+
             bundle.itemsList = [];
 
             bundle.paging = {
@@ -153,6 +170,7 @@
 
             bundle.selectOne = function () {
                 bundle.isSelectedAll = bundle.itemsList.every(function (user) {
+                    bundle.isSelectNone = !checkActivationStateTasks(bundle);
                     return user.checked;
                 });
             };

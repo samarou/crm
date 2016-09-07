@@ -33,7 +33,7 @@
             // todo: resolve problem with filtering
             bundle.pagingFilterConfig = {
                 currentPage: 1,
-                itemsPerPage: 10,
+                itemsPerPage: 5,
                 visiblePages: 5,
                 totalCount: null,
                 filterObject: {
@@ -52,15 +52,9 @@
             };
 
             bundle.selectAll = function (checked) {
-                if (checked) {
-                    bundle.pageGroups.forEach(function (group) {
-                        group.checked = true;
-                    });
-                } else {
-                    bundle.groupList.forEach(function (group) {
-                        group.checked = false;
-                    });
-                }
+                bundle.pageGroups.forEach(function (group) {
+                    group.checked = checked;
+                });
             };
 
             bundle.selectOne = function () {

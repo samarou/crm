@@ -33,7 +33,7 @@ public class DtoConverter {
         ContactDto dto = convertMainFields(contact);
         dto.setDateOfBirth(contact.getDateOfBirth());
         dto.setIsMale(contact.getIsMale());
-        dto.setNationality(contact.getNationality());
+        dto.setNationalityId(contact.getNationalityId());
         dto.setPhotoUrl(contact.getPhotoUrl());
 //        dto.setOrders(convertOrders(contact.getOrders()));
         dto.setMessengers(convertMessengerAccounts(contact.getMessengers()));
@@ -67,7 +67,7 @@ public class DtoConverter {
         contact.setDateOfBirth(dto.getDateOfBirth());
         contact.setIsMale(dto.getIsMale());
         contact.setPhotoUrl(dto.getPhotoUrl());
-        contact.setNationality(dto.getNationality());
+        contact.setNationalityId(dto.getNationalityId());
 //        contact.setOrders(convertOrderDtos(dto.getOrders()));
         contact.setAddresses(convertAddressDtos(dto.getAddresses()));
         contact.setTelephones(convertTelephoneDtos(dto.getTelephones()));
@@ -663,4 +663,27 @@ public class DtoConverter {
                 .map(DtoConverter::convert)
                 .collect(Collectors.toList());
     }
+
+    public static List<NationalityDto> convertNationalities(List<Nationality> nationalities) {
+        if (isEmpty(nationalities)) {
+            return emptyList();
+        }
+        return nationalities.stream().map(DtoConverter::convert).collect(toList());
+    }
+
+    public static NationalityDto convert(Nationality nationality) {
+        NationalityDto dto = new NationalityDto();
+        dto.setId(nationality.getId());
+        dto.setName(nationality.getName());
+        return dto;
+    }
+
+    public static Nationality convert(NationalityDto dto) {
+        Nationality nationality = new Nationality();
+        nationality.setId(dto.getId());
+        nationality.setName(dto.getName());
+        return nationality;
+    }
+
+
 }

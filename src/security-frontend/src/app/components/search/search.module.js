@@ -4,4 +4,6 @@
     angular
         .module('crm.search', []);
 
+
 })();
+

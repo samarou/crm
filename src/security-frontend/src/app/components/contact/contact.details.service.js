@@ -27,8 +27,10 @@
             now: new Date(),
             checkAll: checkAll,
             getDictionary: getDictionary,
+            getNationalities: getNationalities,
             parseProfile: parseProfile,
             isLinkedInUrl: isLinkedInUrl,
+            isFacebookUrl: isFacebookUrl,
             isAllSelected: isAllSelected
         };
 
@@ -38,7 +40,14 @@
             });
         }
 
+        function getNationalities() {
+            return contactService.getNationalityCategories().then(function (response) {
+                return response.data;
+            });
+        }
+
         function getEmptyContact() {
+
             return {
                 socialNetworks: [],
                 addresses: [],
@@ -48,7 +57,7 @@
                 workplaces: [],
                 skills: [],
                 educations: [],
-                attachments: [],
+                attachments: []
             };
         }
 
@@ -103,8 +112,16 @@
 
         function isLinkedInUrl(url) {
             if (url) {
-                return /.*linkedin.*/.test(url);
+                return ("/.*linkedin.*/").test(url);
             }
+        }
+
+        function isFacebookUrl(url) {
+            var reg =/^(http\:\/\/|https\:\/\/)?(?:www\.)?facebook\.com\/(?:(?:\w\.)*#!\/)?(?:pages\/)?(?:[\w\-\.]*\/)*([\w\-\.]*)/;
+            if (url){
+                return reg.test(url);
+            }
+            return false;
         }
 
         function createAclHandler(getId) {

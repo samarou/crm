@@ -19,6 +19,7 @@
 
         function init() {
             vm.searchContactBundle.find();
+
         }
 
         function add() {
