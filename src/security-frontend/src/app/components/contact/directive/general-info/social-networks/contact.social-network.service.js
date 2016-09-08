@@ -17,8 +17,7 @@
             add: add,
             edit: edit,
             remove: remove,
-            getTypeName: getTypeName,
-            checkUrl: checkUrl
+            getTypeName: getTypeName
         };
 
         function add(scope) {
@@ -67,10 +66,6 @@
                 account: angular.copy(account),
                 socialNetworks: scope.dictionary.socialNetworks
             }).result;
-        }
-
-        function checkUrl() {
-
         }
     }
 })();

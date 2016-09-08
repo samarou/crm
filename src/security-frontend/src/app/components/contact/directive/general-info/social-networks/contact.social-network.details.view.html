@@ -5,19 +5,19 @@
     <div class="form-group" crm-input-validation>
         <label for="socialNetworkAccountUrl">URL</label>
         <input ng-model="vm.account.url"
-               ng-init = "checker"
-               ng-change="checker = vm.details.isFacebookUrl"
                id="socialNetworkAccountUrl"
                name="socialNetworkAccountUrl"
                class="form-control"
-               required maxlength="255">
+               required maxlength="255"
+               validate-url="{{vm.socialNetworks[vm.account.socialNetwork-1].name}}"
+        >
         <span
             ng-show="socialNetworkForm.socialNetworkAccountUrl.$error.required"
             class="help-block">URL is required
         </span>
         <span
-            ng-show="checker"
-            class="help-block">URL validation fall
+            ng-show="socialNetworkForm.socialNetworkAccountUrl.$error.validUrl"
+            class="help-block">URL is not valid
         </span>
     </div>
     <div class="form-group crm-select-validation-icon" crm-input-validation>

@@ -30,7 +30,6 @@
             getNationalities: getNationalities,
             parseProfile: parseProfile,
             isLinkedInUrl: isLinkedInUrl,
-            isFacebookUrl: isFacebookUrl,
             isAllSelected: isAllSelected
         };
 
@@ -114,14 +113,6 @@
             if (url) {
                 return ("/.*linkedin.*/").test(url);
             }
-        }
-
-        function isFacebookUrl(url) {
-            var reg =/^(http\:\/\/|https\:\/\/)?(?:www\.)?facebook\.com\/(?:(?:\w\.)*#!\/)?(?:pages\/)?(?:[\w\-\.]*\/)*([\w\-\.]*)/;
-            if (url){
-                return reg.test(url);
-            }
-            return false;
         }
 
         function createAclHandler(getId) {
