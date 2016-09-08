@@ -49,10 +49,10 @@
             <a class="btn btn-default" ng-click="$ctrl.scope.add()">
                 Add
             </a>
-            <a class="btn btn-default" ng-click="$ctrl.scope.activate(true)">
+            <a class="btn btn-default" ng-click="$ctrl.scope.activate(true)" ng-disabled="!$ctrl.scope.bundle.isSelectedAny">
                 Activate
             </a>
-            <a class="btn btn-default" ng-click="$ctrl.scope.activate(false)">
+            <a class="btn btn-default" ng-click="$ctrl.scope.activate(false)" ng-disabled="!$ctrl.scope.bundle.isSelectedAny">
                 Deactivate
             </a>
         </div>

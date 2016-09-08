@@ -96,6 +96,7 @@
             var pageSize = 20;
 
             bundle.isSelectAll = false;
+            bundle.isSelectedAny=false;
             bundle.itemsList = [];
 
             bundle.paging = {
@@ -150,6 +151,12 @@
                 bundle.filter.sortProperty = property.name;
                 bundle.find();
             };
+
+            bundle.checkIfSelected=function(){
+                bundle.isSelectedAny=bundle.itemsList.some(function(user){
+                    return user.checked;
+                })
+            }
 
             bundle.selectOne = function () {
                 bundle.isSelectedAll = bundle.itemsList.every(function (user) {

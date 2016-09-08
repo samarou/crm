@@ -8,7 +8,7 @@
             <thead>
             <tr>
                 <th><input type="checkbox" ng-model="vm.bundle.isSelectedAll"
-                           ng-click="vm.bundle.selectAll(vm.bundle.isSelectedAll)"></th>
+                           ng-click="vm.bundle.selectAll(vm.bundle.isSelectedAll); vm.bundle.checkIfSelected()"></th>
                 <th class="crm-hover" ng-click="vm.bundle.sortBy(vm.bundle.sortProperties.userName)">
                         <span class="glyphicon" ng-show="vm.bundle.sortProperties.userName.enabled"
                               ng-class="vm.bundle.sortProperties.userName.asc ? 'glyphicon-sort-by-attributes' : 'glyphicon-sort-by-attributes-alt' ">
@@ -36,7 +36,7 @@
             <tr ng-class="{'crm-hover' : user.active, 'crm-user-inactive' : !user.active}"
                 ng-repeat="user in vm.bundle.itemsList" ng-click="vm.edit(user)">
                 <td><input type="checkbox" ng-model="user.checked" ng-disabled="user | isCurrentUser"
-                           ng-click="vm.bundle.selectOne(); $event.stopPropagation()">
+                           ng-click="vm.bundle.selectOne(); $event.stopPropagation(); vm.bundle.checkIfSelected()">
                 </td>
                 <td>{{user.userName}}</td>
                 <td data-title="name">{{user.firstName + ' ' + user.lastName}}</td>
