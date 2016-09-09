@@ -34,8 +34,8 @@ public class Contact extends SecuredEntity {
     @Column(name = "is_male")
     private Boolean isMale;
 
-    @Column(name = "nationality_id")
-    private Long nationalityId;
+    @Column(name = "nationality")
+    private String nationality;
 
     @Column(name = "photo_url")
     private String photoUrl;

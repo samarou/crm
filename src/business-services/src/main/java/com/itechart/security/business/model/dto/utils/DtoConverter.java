@@ -33,7 +33,7 @@ public class DtoConverter {
         ContactDto dto = convertMainFields(contact);
         dto.setDateOfBirth(contact.getDateOfBirth());
         dto.setIsMale(contact.getIsMale());
-        dto.setNationalityId(contact.getNationalityId());
+        dto.setNationality(contact.getNationality());
         dto.setPhotoUrl(contact.getPhotoUrl());
 //        dto.setOrders(convertOrders(contact.getOrders()));
         dto.setMessengers(convertMessengerAccounts(contact.getMessengers()));
@@ -67,7 +67,7 @@ public class DtoConverter {
         contact.setDateOfBirth(dto.getDateOfBirth());
         contact.setIsMale(dto.getIsMale());
         contact.setPhotoUrl(dto.getPhotoUrl());
-        contact.setNationalityId(dto.getNationalityId());
+        contact.setNationality(dto.getNationality());
 //        contact.setOrders(convertOrderDtos(dto.getOrders()));
         contact.setAddresses(convertAddressDtos(dto.getAddresses()));
         contact.setTelephones(convertTelephoneDtos(dto.getTelephones()));

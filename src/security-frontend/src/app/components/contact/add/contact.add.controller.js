@@ -11,6 +11,7 @@
 
         vm.canEdit = true;
         vm.contact = contactDetailsService.getEmptyContact();
+        vm.nationalityVisible = true;
         vm.title = 'Add contact';
         vm.submitText = 'Add';
         vm.submit = submit;
@@ -45,7 +46,14 @@
             })
         }
 
+        function detectNationality() {
+            if (vm.contact.nationalityList !== 'other'){
+                vm.contact.nationality = vm.contact.nationalityList;
+            }
+        }
+
         function submit() {
+            detectNationality();
             contactDetailsService.submit(vm.contact, vm.aclHandler.acls, true);
         }
     }

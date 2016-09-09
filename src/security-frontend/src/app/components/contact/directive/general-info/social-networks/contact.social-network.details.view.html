@@ -9,7 +9,7 @@
                name="socialNetworkAccountUrl"
                class="form-control"
                required maxlength="255"
-               validate-url="{{vm.socialNetworks[vm.account.socialNetwork-1].name}}"
+               validate-url="{{vm.account.socialNetwork}}"
         >
         <span
             ng-show="socialNetworkForm.socialNetworkAccountUrl.$error.required"
