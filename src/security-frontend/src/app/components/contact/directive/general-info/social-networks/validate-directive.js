@@ -11,10 +11,10 @@
             link: function(scope, element, attr, ctrl) {
                 function myValidation(value) {
                     var data=attr.validateUrl;
-                    if(data==''){
+                    if(!data){
                         ctrl.$setValidity('isSocialNetworkUrl', false);
                     }else {
-                        if (data != 'Other') {
+                        if (data !== 'Other') {
                             var patt = new RegExp(".*" + data.toLowerCase() + ".*");
                             if (patt.test(value)) {
                                 ctrl.$setValidity('isSocialNetworkUrl', true);
