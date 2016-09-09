@@ -4,6 +4,10 @@ import com.itechart.security.business.dao.*;
 import com.itechart.security.business.filter.ContactFilter;
 import com.itechart.security.business.model.dto.ContactDto;
 import com.itechart.security.business.model.dto.HistoryEntryDto;
+import com.itechart.security.business.model.dto.NationalityDto;
+import com.itechart.security.business.model.dto.utils.CompanyConverter;
+import com.itechart.security.business.model.dto.utils.ContactConverter;
+import com.itechart.security.business.model.dto.utils.DtoConverter;
 import com.itechart.security.business.model.enums.ObjectTypes;
 import com.itechart.security.business.model.persistent.*;
 import com.itechart.security.business.model.persistent.ObjectKey;
@@ -24,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.List;
 
+import static com.itechart.common.model.util.CollectionConverter.convertCollection;
 import static com.itechart.security.business.model.dto.utils.DtoConverter.convert;
 import static com.itechart.security.business.model.dto.utils.DtoConverter.convertContacts;
 
@@ -63,6 +68,9 @@ public class ContactServiceImpl implements ContactService {
     private UniversityEducationDao universityEducationDao;
 
     @Autowired
+    private NationalityDao nationalityDao;
+
+    @Autowired
     private FileService fileService;
 
     @Autowired
@@ -70,6 +78,14 @@ public class ContactServiceImpl implements ContactService {
 
     @Autowired
     private ObjectTypeService objectTypeService;
+
+    @Override
+    @Transactional (readOnly = true)
+    public List<NationalityDto> getNationalities(){
+        List<NationalityDto> nationalities = DtoConverter.convertNationalities(nationalityDao.loadAll());
+        logger.debug("GET ALL NATIONALITIES" + nationalities.toString());
+        return nationalities;
+    }
 
     @Override
     @Transactional

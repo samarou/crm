@@ -663,4 +663,27 @@ public class DtoConverter {
                 .map(DtoConverter::convert)
                 .collect(Collectors.toList());
     }
+
+    public static List<NationalityDto> convertNationalities(List<Nationality> nationalities) {
+        if (isEmpty(nationalities)) {
+            return emptyList();
+        }
+        return nationalities.stream().map(DtoConverter::convert).collect(toList());
+    }
+
+    public static NationalityDto convert(Nationality nationality) {
+        NationalityDto dto = new NationalityDto();
+        dto.setId(nationality.getId());
+        dto.setName(nationality.getName());
+        return dto;
+    }
+
+    public static Nationality convert(NationalityDto dto) {
+        Nationality nationality = new Nationality();
+        nationality.setId(dto.getId());
+        nationality.setName(dto.getName());
+        return nationality;
+    }
+
+
 }
