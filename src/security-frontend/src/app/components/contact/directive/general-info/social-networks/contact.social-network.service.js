@@ -23,6 +23,7 @@
         function add(scope) {
             openAddDialog(scope).then(function (model) {
                 scope.contact.socialNetworks.push(model.account);
+
             });
         }
 
@@ -67,5 +68,7 @@
                 socialNetworks: scope.dictionary.socialNetworks
             }).result;
         }
+
+
     }
 })();

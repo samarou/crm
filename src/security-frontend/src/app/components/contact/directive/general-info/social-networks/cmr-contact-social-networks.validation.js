@@ -14,13 +14,15 @@
 
                 function isValid(value) {
                     var data = attr.validateUrl;
+                    ctrl.$setValidity('validUrl', true);
                     if (!data) {
                         ctrl.$setValidity('validUrl', false);
                     } else {
                         if (data !== 'Other') {
-                            var regExp = new RegExp(".*" + data.toLowerCase() + ".*");
+                            var regExp = new RegExp(".*" + data.toLowerCase() + ".*", "i");
                             ctrl.$setValidity('validUrl', regExp.test(value));
                         }
+
                     }
                     return value;
                 }

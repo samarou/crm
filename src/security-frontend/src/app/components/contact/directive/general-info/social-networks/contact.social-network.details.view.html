@@ -2,6 +2,18 @@
                   submit-btn="vm.ok()"
                   cancel-btn="vm.cancel()" modal="true"
                   ng-form="socialNetworkForm">
+    <div class="form-group crm-select-validation-icon" crm-input-validation>
+        <label for="socialNetworkType">Social Network</label>
+        <select ng-model="vm.account.socialNetwork"
+                id="socialNetworkType"
+                name="socialNetworkType"
+                class="form-control"
+                onchange=""
+                ng-options="option.id as option.name for option in vm.socialNetworks">
+            <option selected disabled value="">Choose network</option>
+        </select>
+    </div>
+
     <div class="form-group" crm-input-validation>
         <label for="socialNetworkAccountUrl">URL</label>
         <input ng-model="vm.account.url"
@@ -9,25 +21,11 @@
                name="socialNetworkAccountUrl"
                class="form-control"
                required maxlength="255"
-               validate-url="{{vm.account.socialNetwork}}"
+               validate-url="{{vm.socialNetworks[vm.account.socialNetwork-1].name}}"
         >
         <span
-            ng-show="socialNetworkForm.socialNetworkAccountUrl.$error.required"
-            class="help-block">URL is required
-        </span>
-        <span
             ng-show="socialNetworkForm.socialNetworkAccountUrl.$error.validUrl"
-            class="help-block">URL is not valid
+            class="help-block">Valid URL is required
         </span>
-    </div>
-    <div class="form-group crm-select-validation-icon" crm-input-validation>
-        <label for="socialNetworkType">Social Network</label>
-        <select ng-model="vm.account.socialNetwork"
-                id="socialNetworkType"
-                name="socialNetworkType"
-                class="form-control"
-                ng-options="option.id as option.name for option in vm.socialNetworks">
-            <option value>Please, select</option>
-        </select>
     </div>
 </crm-form-wrapper>
