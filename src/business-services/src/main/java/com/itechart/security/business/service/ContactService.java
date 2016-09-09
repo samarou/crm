@@ -4,6 +4,7 @@ package com.itechart.security.business.service;
 
 import com.itechart.security.business.filter.ContactFilter;
 import com.itechart.security.business.model.dto.ContactDto;
+import com.itechart.security.business.model.dto.NationalityDto;
 
 import java.util.List;
 
@@ -17,6 +18,8 @@ public interface ContactService {
     Long saveContact(ContactDto contact);
 
     ContactDto get(Long id);
+
+    List <NationalityDto> getNationalities();
 
     ContactDto getByEmail(String email);
 

@@ -12,6 +12,7 @@
 
         vm.canEdit = false;
         vm.contact = contactDetailsService.getEmptyContact();
+        vm.nationalityVisible = false;
         vm.title = 'Edit contact';
         vm.submitText = 'Save';
         vm.submit = submit;
@@ -66,6 +67,6 @@
                 vm.contact = response.data;
             });
         }
-        
+
     }
 })();

@@ -4,8 +4,9 @@ import com.itechart.security.business.model.dto.helpers.NamedEntity;
 import lombok.Getter;
 import lombok.Setter;
 
+
 @Getter
 @Setter
-public class CountryDto extends NamedEntity {
+public class NationalityDto extends NamedEntity {
 
 }

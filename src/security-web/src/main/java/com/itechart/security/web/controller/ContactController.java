@@ -7,6 +7,7 @@ import com.itechart.security.business.filter.ContactFilter;
 import com.itechart.security.business.model.dto.ContactDto;
 import com.itechart.security.business.model.dto.ContactFilterDto;
 import com.itechart.security.business.model.dto.DictionaryDto;
+import com.itechart.security.business.model.dto.NationalityDto;
 import com.itechart.security.business.model.enums.ObjectTypes;
 import com.itechart.security.business.service.*;
 import com.itechart.security.model.dto.AclEntryDto;
@@ -56,6 +57,12 @@ public class ContactController extends SecuredController {
     @RequestMapping(value = "/contacts/{contactId}", method = GET)
     public ContactDto get(@PathVariable Long contactId) {
         return contactService.get(contactId);
+    }
+
+    @RequestMapping(value = "/contacts/nationalities", method = GET)
+    public List<NationalityDto> getNationalities (){
+        logger.debug("GETTING NATIONALITIES");
+        return contactService.getNationalities();
     }
 
     @RequestMapping(value = "/contacts/email/{email}", method = GET)

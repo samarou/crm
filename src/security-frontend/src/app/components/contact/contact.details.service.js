@@ -27,6 +27,7 @@
             now: new Date(),
             checkAll: checkAll,
             getDictionary: getDictionary,
+            getNationalities: getNationalities,
             parseProfile: parseProfile,
             isLinkedInUrl: isLinkedInUrl,
             isAllSelected: isAllSelected
@@ -38,7 +39,14 @@
             });
         }
 
+        function getNationalities() {
+            return contactService.getNationalityCategories().then(function (response) {
+                return response.data;
+            });
+        }
+
         function getEmptyContact() {
+
             return {
                 socialNetworks: [],
                 addresses: [],
@@ -48,7 +56,7 @@
                 workplaces: [],
                 skills: [],
                 educations: [],
-                attachments: [],
+                attachments: []
             };
         }
 
@@ -103,7 +111,7 @@
 
         function isLinkedInUrl(url) {
             if (url) {
-                return /.*linkedin.*/.test(url);
+                return ("/.*linkedin.*/").test(url);
             }
         }
 

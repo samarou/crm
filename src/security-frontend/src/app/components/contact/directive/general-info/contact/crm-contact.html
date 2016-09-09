@@ -55,11 +55,32 @@
                 </select>
             </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-4" ng-show="vm.nationalityVisible">
             <div class="form-group" crm-input-validation>
                 <label for="contact-nationality">Nationality</label>
-                <input ng-disabled="!vm.canEdit" id="contact-nationality" class="form-control"
-                       name="nationality" ng-model="vm.contact.nationality" maxlength="255">
+
+                <select ng-model="vm.contact.nationalityList"
+                        ng-show="vm.nationalityVisible"
+                        ng-disabled="!vm.canEdit"
+                        id="contact-nationality"
+                        class="form-control"
+                        name="nationality-type">
+                    <option ng-repeat="nationality in vm.nationalities" value={{nationality.name}}>{{nationality.name}}</option>
+                    <option value="other">Other</option>
+                </select>
+
+            </div>
+        </div>
+        <div class="col-sm-4" ng-show="!vm.nationalityVisible || vm.contact.nationalityList == 'other'">
+            <div class="form-group">
+                <label for="contact-nationality">Nationality</label>
+                <input
+                    ng-model="vm.contact.nationality"
+                    ng-disabled="!vm.canEdit"
+                    id="other-nationality"
+                    class="form-control"
+                    name="nationality"
+                    maxlength="255">
             </div>
         </div>
     </div>
