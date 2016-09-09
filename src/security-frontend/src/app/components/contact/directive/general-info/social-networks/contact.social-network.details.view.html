@@ -1,16 +1,7 @@
-<crm-form-wrapper form-title="vm.title" submit-text="{{socialNetworkForm.$valid?'Ok':null}}" cancel-text="Cancel" submit-btn="vm.ok()"
-                  cancel-btn="vm.cancel()" modal="true" ng-form="socialNetworkForm">
-    <div class="form-group" crm-input-validation>
-        <label for="socialNetworkAccountUrl">URL</label>
-        <input ng-model="vm.account.url"
-               id="socialNetworkAccountUrl"
-               name="socialNetworkAccountUrl"
-               class="form-control"
-               required maxlength="255">
-        <span
-            ng-show="socialNetworkForm.socialNetworkAccountUrl.$error.required"
-            class="help-block">URL is required</span>
-    </div>
+<crm-form-wrapper form-title="vm.title" submit-text="{{socialNetworkForm.$valid?'Ok':null}}" cancel-text="Cancel"
+                  submit-btn="vm.ok()"
+                  cancel-btn="vm.cancel()" modal="true"
+                  ng-form="socialNetworkForm">
     <div class="form-group crm-select-validation-icon" crm-input-validation>
         <label for="socialNetworkType">Social Network</label>
         <select ng-model="vm.account.socialNetwork"
@@ -18,7 +9,22 @@
                 name="socialNetworkType"
                 class="form-control"
                 ng-options="option.id as option.name for option in vm.socialNetworks">
-            <option value>Please, select</option>
+            <option selected disabled value="">Choose social-network</option>
         </select>
+    </div>
+
+    <div class="form-group" crm-input-validation>
+        <label for="socialNetworkAccountUrl">URL</label>
+        <input ng-model="vm.account.url"
+               id="socialNetworkAccountUrl"
+               name="socialNetworkAccountUrl"
+               class="form-control"
+               required maxlength="255"
+               validate-url="{{vm.socialNetworks[vm.account.socialNetwork-1].name}}"
+        >
+        <span
+            ng-show="socialNetworkForm.socialNetworkAccountUrl.$error.validUrl"
+            class="help-block">Valid URL is required
+        </span>
     </div>
 </crm-form-wrapper>
