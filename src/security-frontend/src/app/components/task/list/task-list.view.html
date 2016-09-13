@@ -13,7 +13,18 @@
     </div>
 </div>
 
-<task-chart tasks="vm.bundle.itemsList"></task-chart>
+<task-chart tasks="vm.statistics.itemsList"></task-chart>
+
+<div ng-class="vm.canEdit ? 'col-md-11' : 'col-md-12'">
+    <div class="row datetime-group">
+        <div class="col-md-6">
+            <crm-date-time-picker model="vm.bundle.startDate" label="Start date/time" onchange="vm.onStartDateTimeChange(newValue, isDate)" is-edit="true"></crm-date-time-picker>
+        </div>
+        <div class="col-md-6">
+            <crm-date-time-picker model="vm.bundle.endDate" label="End date/time" onchange="vm.onEndDateTimeChange(newValue, isDate)" is-edit="true"></crm-date-time-picker>
+        </div>
+    </div>
+</div>
 
 <div class="row">
     <div class="col-md-12">

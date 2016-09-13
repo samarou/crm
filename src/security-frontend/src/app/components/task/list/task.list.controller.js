@@ -15,6 +15,7 @@
         var vm = this;
 
         vm.bundle = searchService.getTaskBundle();
+        vm.statistics = searchService.getStatisticsBundle();
         vm.add = add;
         vm.edit = edit;
         vm.remove = remove;
@@ -40,6 +41,7 @@
 
         (function () {
             vm.bundle.find();
+            vm.statistics.find();
         })();
     }
 

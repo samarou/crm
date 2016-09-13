@@ -12,7 +12,8 @@
             userSecurityMode: getSecurityBundle,
             contactMode: getContactBundle,
             companyMode: getCompanyBundle,
-            getTaskBundle: getTaskBundle
+            getTaskBundle: getTaskBundle,
+            getStatisticsBundle: getStatisticsBundle
         };
 
         function getPublicBundle() {
@@ -62,6 +63,21 @@
         function getTaskBundle() {
             var bundle = createCommonBundle();
             bundle.selectAll = createSelectAllAction(bundle);
+            bundle.performSeach = taskService.find;
+            bundle.sortProperties = {
+                startDate: {name: 'startDate', asc: false, enabled: true},
+                status: {name: 'status', asc: true, enabled: false},
+                priority: {name: 'priority', asc: true, enabled: false}
+            };
+            bundle.filter.sortProperty = bundle.sortProperties.startDate.name;
+            bundle.filter.sortAsc = bundle.sortProperties.startDate.asc;
+            return bundle;
+        }
+
+        function getStatisticsBundle() {
+            var bundle = createCommonBundle();
+            bundle.filter.from = null;
+            bundle.filter.count =null;
             bundle.performSeach = taskService.find;
             bundle.sortProperties = {
                 startDate: {name: 'startDate', asc: false, enabled: true},
