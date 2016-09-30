@@ -93,7 +93,7 @@
         function createCommonBundle() {
             var bundle = {};
 
-            var pageSize = 5;
+            var pageSize = 20;
 
             bundle.isSelectAll = false;
             bundle.itemsList = [];
