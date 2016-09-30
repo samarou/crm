@@ -160,3 +160,7 @@ body.modal-open {
 .crm-text-center {
   text-align: center;
 }
+
+.table-condensed > tbody > tr > td {
+    padding: 2px;
+}
