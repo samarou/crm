@@ -106,6 +106,12 @@
             };
 
             bundle.paging.onPageChanged = function () {
+                var state = {};
+                var cState = $.bbq.getState();
+                console.log(cState);
+                state['#page'] = bundle.paging.currentPage;
+                console.log(state);
+                $.bbq.pushState( {'page':2} );
                 bundle.filter.from = (bundle.paging.currentPage - 1) * pageSize;
                 bundle.find();
             };

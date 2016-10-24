@@ -30,13 +30,14 @@ public class DtoConverter {
         dto.setDateOfBirth(contact.getDateOfBirth());
         dto.setIsMale(contact.getIsMale());
         dto.setNationality(contact.getNationality());
-        dto.setPhotoUrl(contact.getPhotoUrl());
+
 //        dto.setOrders(convertOrders(contact.getOrders()));
         dto.setMessengers(convertMessengerAccounts(contact.getMessengers()));
         dto.setSocialNetworks(convertSocialNetworkAccounts(contact.getSocialNetworks()));
         dto.setWorkplaces(convertWorkplaces(contact.getWorkplaces()));
         dto.setAttachments(convertAttachments(contact.getAttachments()));
         dto.setIndustry(contact.getIndustry());
+        dto.setPhotoUrl(contact.getPhotoUrl());
         dto.setSkills(convertSkills(contact.getSkills()));
         dto.setEducations(convertUniversityEducations(contact.getUniversityEducations()));
         return dto;

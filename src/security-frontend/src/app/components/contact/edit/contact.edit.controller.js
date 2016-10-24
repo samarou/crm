@@ -66,6 +66,6 @@
                 vm.contact = response.data;
             });
         }
-        
+
     }
 })();
