@@ -5,12 +5,16 @@ import com.itechart.security.business.model.enums.CertificateType;
 import com.itechart.security.business.model.enums.EmailType;
 import com.itechart.security.business.model.enums.TelephoneType;
 import com.itechart.security.business.model.persistent.*;
+import com.itechart.security.business.model.persistent.task.Task;
+import com.itechart.security.business.model.persistent.task.TaskComment;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import static com.itechart.security.model.util.UserConverter.convertToPublicDto;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptySet;
 import static java.util.stream.Collectors.toList;
@@ -628,4 +632,59 @@ public class DtoConverter {
         }
         return educations.stream().map(DtoConverter::convert).collect(toSet());
     }
+
+    public static TaskCommentDto convert(TaskComment comment) {
+        TaskCommentDto dto = new TaskCommentDto();
+        dto.setId(comment.getId());
+        dto.setDateCreated(comment.getDateCreated());
+        dto.setCommentAuthorId(comment.getCommentAuthorId());
+        dto.setTaskId(comment.getTask().getId());
+        dto.setText(comment.getText());
+        return dto;
+    }
+
+    public static TaskComment convert(TaskCommentDto commentDto) {
+        TaskComment comment = new TaskComment();
+        comment.setId(commentDto.getId());
+        comment.setDateCreated(commentDto.getDateCreated());
+        comment.setTask(new Task());
+        comment.getTask().setId(commentDto.getTaskId());
+        comment.setCommentAuthorId(commentDto.getCommentAuthorId());
+        comment.setText(commentDto.getText());
+        return comment;
+    }
+
+    public static List<TaskCommentDto> convertTaskComments(List<TaskComment> taskComments) {
+        if(isEmpty(taskComments)) {
+            return emptyList();
+        }
+        return taskComments
+                .stream()
+                .filter(comment -> comment.getDateDeleted() == null)
+                .map(DtoConverter::convert)
+                .collect(Collectors.toList());
+    }
+
+    public static List<NationalityDto> convertNationalities(List<Nationality> nationalities) {
+        if (isEmpty(nationalities)) {
+            return emptyList();
+        }
+        return nationalities.stream().map(DtoConverter::convert).collect(toList());
+    }
+
+    public static NationalityDto convert(Nationality nationality) {
+        NationalityDto dto = new NationalityDto();
+        dto.setId(nationality.getId());
+        dto.setName(nationality.getName());
+        return dto;
+    }
+
+    public static Nationality convert(NationalityDto dto) {
+        Nationality nationality = new Nationality();
+        nationality.setId(dto.getId());
+        nationality.setName(dto.getName());
+        return nationality;
+    }
+
+
 }

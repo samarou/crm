@@ -1,0 +1,38 @@
+<div ng-if="vm.task.id">
+    <div class="row form-group">
+        <div class="col-md-12">
+            <div class="panel-group">
+                <strong>Comments ({{vm.task.comments.length}}):</strong>
+                <div class="panel panel-default col-md-12 comment" ng-if="vm.task.comments.length" ng-repeat="comment in vm.task.comments">
+                    <div>
+                        <strong>{{comment.commentAuthor.firstName}} {{comment.commentAuthor.lastName}}</strong> {{comment.dateCreated | date: 'hh:mm:ss dd-MM-yyyy'}}
+                            <span ng-if="comment.commentAuthor.userName == vm.authService.getUserName()"
+                                  ng-click="vm.removeComment(comment)" class="comment__button comment__button--remove crm-hover pull-right">
+                            </span>
+                            <span ng-if="comment.commentAuthor.userName == vm.authService.getUserName()"
+                                  ng-click="vm.editComment(comment, $index)" class="comment__button comment__button--edit crm-hover pull-right">
+                            </span>
+                    </div>
+                    <hr>
+                    <p class="comment__content">{{comment.text}}</p>
+                </div>
+                <div class="panel panel-default col-md-12" ng-if="!vm.task.comments.length">
+                    <br>
+                    <h5 class="text-center">There are no comments for this task</h5>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-if="vm.task.assignee.userName == vm.authService.getUserName() && vm.canComment">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="comment">Leave a comment:</label>
+                    <textarea id="comment" class="form-control" ng-model="vm.newComment" rows="3" ng-maxlength="500"></textarea>
+                </div>
+                <button class="btn btn-default col-md-1 pull-right" ng-disabled="!vm.newComment" ng-click="vm.addComment()">Add</button>
+            </div>
+        </div>
+    </div>
+</div>

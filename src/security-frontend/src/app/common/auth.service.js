@@ -34,10 +34,11 @@
             service.authentication = authData;
         }
 
-        function login(username, password) {
+        function login(username, password, rememberMe) {
             return $http.post('rest/login', {
                 username: username,
-                password: password
+                password: password,
+                rememberMe: rememberMe
             }).then(function (response) {
                 setAuthentication(response.data);
                 return response;

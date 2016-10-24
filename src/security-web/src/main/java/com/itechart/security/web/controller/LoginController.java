@@ -5,8 +5,10 @@ import com.itechart.security.core.authority.RoleAuthority;
 import com.itechart.security.core.userdetails.UserDetails;
 import com.itechart.security.web.model.dto.LoginDataDto;
 import com.itechart.security.web.model.dto.SessionInfoDto;
+import com.itechart.security.web.security.remember.CustomRememberMeService;
 import com.itechart.security.web.security.token.TokenData;
 import com.itechart.security.web.security.token.TokenService;
+import org.hibernate.mapping.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,10 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -41,6 +41,9 @@ public class LoginController {
     @Autowired
     @Qualifier("authenticationManager")
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private CustomRememberMeService rememberMeServices;
 
     @Autowired
     private TokenService tokenService;
@@ -60,6 +63,8 @@ public class LoginController {
         tokenService.setTokenToResponse(response, token);
         SessionInfoDto info = getRoles();
         info.setToken(token);
+        rememberMeServices.setRememberMeCriteria(data.isRememberMe());
+        rememberMeServices.loginSuccess(request, response,authentication);
         return info;
     }
 
@@ -67,13 +72,15 @@ public class LoginController {
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public void logout(HttpServletResponse response) {
         tokenService.deleteTokenFromResponse(response);
+        rememberMeServices.deleteTokenFromResponse(response);
     }
 
     @ResponseBody
     @RequestMapping(value = "/login/check", method = RequestMethod.GET)
     public boolean getLoginStatus(HttpServletRequest request) {
         String token = tokenService.getTokenFromRequest(request);
-        return !Objects.isNull(token);
+        String rememberMeToken = rememberMeServices.getTokenFromRequest(request);
+        return !Objects.isNull(token) || !Objects.isNull(rememberMeToken);
     }
 
 

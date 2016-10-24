@@ -31,6 +31,7 @@ public class TaskConverter {
         task.setAssigneeId(dto.getAssignee() != null ? dto.getAssignee().getId() : null);
         task.setContacts(dto.getContacts().stream().map(DtoConverter::convert).collect(toList()));
         task.setCompanies(dto.getCompanies().stream().map(CompanyConverter::convert).collect(toList()));
+        task.setComments(dto.getComments().stream().map(DtoConverter::convert).collect(toList()));
         return task;
     }
 
@@ -93,6 +94,7 @@ public class TaskConverter {
         TaskDto dto = convertTaskMainFields(task, creator, assignee);
         dto.setCompanies(convertCollection(task.getCompanies(), CompanyConverter::convert));
         dto.setContacts(DtoConverter.convertContacts(task.getContacts()));
+        dto.setComments(DtoConverter.convertTaskComments(task.getComments()));
         return dto;
     }
 }

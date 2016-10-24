@@ -1,0 +1,10 @@
+<crm-form-wrapper form-title="vm.title" submit-text="{{editCommentForm.$valid?'Save':null}}" cancel-text="Cancel" submit-btn="vm.ok()"
+                  cancel-btn="vm.cancel()" modal="true" ng-form="editCommentForm">
+    <div class="form-group" crm-input-validation>
+        <label for="text">New comment</label>
+        <textarea ng-model="vm.comment.text" id="text" name="text"
+               class="form-control" rows="3" maxlength="500" required></textarea>
+        <span ng-show="editCommentForm.text.$error.required"
+              class="help-block">Comment is required</span>
+    </div>
+</crm-form-wrapper>

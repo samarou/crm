@@ -1,11 +1,13 @@
 package com.itechart.security.web.controller;
 
 import com.itechart.security.business.filter.TaskFilter;
+import com.itechart.security.business.model.dto.TaskCommentDto;
 import com.itechart.security.business.model.dto.TaskDto;
 import com.itechart.security.business.model.dto.helpers.NamedEntity;
 import com.itechart.security.business.model.enums.ObjectTypes;
 import com.itechart.security.business.service.PriorityService;
 import com.itechart.security.business.service.StatusService;
+import com.itechart.security.business.service.TaskCommentService;
 import com.itechart.security.business.service.TaskService;
 import com.itechart.security.model.dto.AclEntryDto;
 import com.itechart.security.model.dto.DataPageDto;
@@ -35,6 +37,9 @@ public class TaskController extends SecuredController {
 
     @Autowired
     private PriorityService priorityService;
+
+    @Autowired
+    private TaskCommentService taskCommentService;
 
     @RequestMapping(value = "/tasks", method = POST)
     public long save(@RequestBody TaskDto taskDto) {
@@ -72,6 +77,21 @@ public class TaskController extends SecuredController {
     @RequestMapping("/tasks/priorities")
     public List<NamedEntity> getPriority() {
         return priorityService.getAllPriorities();
+    }
+
+    @RequestMapping(value = "/tasks/{taskId}/addComment", method = RequestMethod.POST)
+    public long addComment(@PathVariable Long taskId, @RequestBody TaskCommentDto taskCommentDto) {
+        return taskCommentService.saveComment(taskCommentDto);
+    }
+
+    @RequestMapping(value = "/tasks/comments/update", method = RequestMethod.POST)
+    public void editComment(@RequestBody TaskCommentDto taskCommentDto) {
+        taskCommentService.updateComment(taskCommentDto);
+    }
+
+    @RequestMapping(value = "/tasks/comments/{commentId}/delete", method = RequestMethod.DELETE)
+    public void deleteComment(@PathVariable Long commentId) {
+        taskCommentService.delete(commentId);
     }
 
     @RequestMapping("/tasks/{taskId}/actions/{action}")

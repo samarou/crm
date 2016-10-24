@@ -48,26 +48,31 @@ public class TokenAuthenticationFilter extends GenericFilterBean {
     }
 
     public Authentication authenticate(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        String tokenFromCookie = tokenService.getTokenFromRequest(request);
-        String token = Objects.nonNull(tokenFromCookie) ? tokenFromCookie : request.getHeader(HEADER_AUTH_TOKEN);
-        if (Objects.isNull(token)) {
-            throw new InvalidTokenException("Authentication token is required");
-        }
-        logger.debug("Process token {} for request {}", token, request.getQueryString());
-        TokenData tokenData = tokenService.parseToken(token);
-        String remoteAddr = request.getRemoteAddr();
-        if (remoteAddr != null && !isEqualRemoteAddresses(remoteAddr, tokenData.getRemoteAddr())) {
-            logger.warn("IP address from token ({}) differs from client IP ({})", tokenData.getRemoteAddr(), remoteAddr);
-            throw new InvalidTokenException("Invalid authentication token attributes");
-        }
+        if(SecurityContextHolder.getContext().getAuthentication() == null) {
+            String tokenFromCookie = tokenService.getTokenFromRequest(request);
+            String token = Objects.nonNull(tokenFromCookie) ? tokenFromCookie : request.getHeader(HEADER_AUTH_TOKEN);
+            if (Objects.isNull(token)) {
+                throw new InvalidTokenException("Authentication token is required");
+            }
+            logger.debug("Process token {} for request {}", token, request.getQueryString());
+            TokenData tokenData = tokenService.parseToken(token);
+            String remoteAddr = request.getRemoteAddr();
+            if (remoteAddr != null && !isEqualRemoteAddresses(remoteAddr, tokenData.getRemoteAddr())) {
+                logger.warn("IP address from token ({}) differs from client IP ({})", tokenData.getRemoteAddr(), remoteAddr);
+                throw new InvalidTokenException("Invalid authentication token attributes");
+            }
 
-        token = tokenService.generateToken(tokenData);
-        tokenService.setTokenToResponse(response, token);
+            token = tokenService.generateToken(tokenData);
+            tokenService.setTokenToResponse(response, token);
 
-        Authentication authentication = new TokenAuthentication(token);
-        authentication = authenticationManager.authenticate(authentication);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        return authentication;
+            Authentication authentication = new TokenAuthentication(token);
+            authentication = authenticationManager.authenticate(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            return authentication;
+        }else{
+            logger.debug("Authentication token already exist:{}",SecurityContextHolder.getContext().getAuthentication());
+            return SecurityContextHolder.getContext().getAuthentication();
+        }
     }
 
     private boolean isEqualRemoteAddresses(String remoteAddr1, String remoteAddr2) {

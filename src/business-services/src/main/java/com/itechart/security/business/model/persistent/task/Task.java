@@ -64,6 +64,9 @@ public class Task extends SecuredEntity {
             inverseJoinColumns = {@JoinColumn(name = "contact_id", updatable = false)})
     private List<Contact> contacts;
 
+    @OneToMany(mappedBy = "task", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<TaskComment> comments;
+
     @Override
     public Long getId() {
         return id;
