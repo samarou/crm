@@ -3,8 +3,12 @@ package com.itechart.security.business.service.impl;
 import com.itechart.security.business.dao.CountryDao;
 import com.itechart.security.business.model.dto.*;
 import com.itechart.security.business.model.persistent.Country;
+import com.itechart.security.business.model.persistent.UniversityEducation;
 import com.itechart.security.business.service.ParsingService;
+import com.sun.org.apache.regexp.internal.RE;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -31,8 +35,8 @@ import java.util.stream.Collectors;
 @Service
 public class ParsingServiceImpl implements ParsingService {
     private static final Logger log = LoggerFactory.getLogger(ParsingServiceImpl.class);
-    private static final String USER_AGENT = "Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6";
-    private static final String REFFERRER = "http://www.google.com";
+    private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36";
+    private static final String REFFERRER = "http://www.google.com/";
 
     @Autowired
     private CountryDao countryDao;
@@ -41,13 +45,21 @@ public class ParsingServiceImpl implements ParsingService {
     @Transactional
     public LinkedInContactDto parse(String profileUrl) {
         log.debug("profile url = {}", profileUrl);
-        Document document;
+        Document document = null;
         LinkedInContactDto contact = new LinkedInContactDto();
         try {
+
             URI uri = new URI(URLDecoder.decode(profileUrl, "UTF-8"));
+
             document = Jsoup.connect(uri.toASCIIString())
+                    .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
+                    .header("Accept-Encoding", "gzip, deflate, sdch, br")
+                    .header("Accept-Language", "en-US,en;q=0.8")
                     .userAgent(USER_AGENT)
-                    .referrer(REFFERRER).get();
+                    .referrer(REFFERRER)
+                    .timeout(60 * 1000)
+                    .get();
+
             contact.setFullName(getFullName(document));
             contact.setFirstName(getFirstName(document));
             contact.setLastName(getLastName(document));
@@ -55,7 +67,7 @@ public class ParsingServiceImpl implements ParsingService {
             contact.setIndustry(getLocationOrIndustry(document, this::industryFilter));
             contact.setSummary(getSummary(document));
             contact.setSkills(getSkills(document));
-            contact.setSchools(getEducation(document));
+            contact.setEducations(getUniversityEducation(document));
             contact.setPhotoUrl(getPicture(document));
             contact.setLanguages(getLanguages(document));
             contact.setWorkplaces(getWorkplaces(document, this::jobFilter));
@@ -63,6 +75,7 @@ public class ParsingServiceImpl implements ParsingService {
             Set<AddressDto> addressDtoSet = new HashSet<>();
             addressDtoSet.add(getAddress(contact.getLocation()));
             contact.setAddresses(addressDtoSet);
+
         } catch (IOException | URISyntaxException e) {
             log.error("Can't get html page", profileUrl);
         }
@@ -110,24 +123,25 @@ public class ParsingServiceImpl implements ParsingService {
                 .map(ParsingServiceImpl::getSkillDto).collect(Collectors.toSet());
     }
 
-    private static SkillDto getSkillDto(Element element){
+    private static SkillDto getSkillDto(Element element) {
         SkillDto dto = new SkillDto();
         dto.setName(element.text());
         return dto;
     }
 
-    private Set<SchoolDto> getEducation(Document document) {
+    private Set<UniversityEducationDto> getUniversityEducation(Document document) {
         Element schools = document.getElementById("education");
         return Objects.isNull(schools) ? new HashSet<>() : schools.getElementsByClass("school").stream()
                 .map(element -> {
-                    SchoolDto school = new SchoolDto();
+                    UniversityEducationDto school = new UniversityEducationDto();
                     school.setName(element.getElementsByClass("item-title").first().text());
-                    school.setDegree(element.getElementsByClass("item-subtitle").text());
-                    school.setDateRange(element.getElementsByClass("date-range").text());
+                    school.setSpeciality(element.getElementsByClass("item-subtitle").select("span").first().text());
+                    List<Date> dates = getDateList(element.getElementsByClass("date-range").text());
+                    school.setStartDate(getDate(dates, 0));
+                    school.setEndDate(getDate(dates, 1));
                     return school;
                 }).collect(Collectors.toSet());
     }
-
 
     private String getPicture(Document document) {
         Elements photos = document.getElementsByClass("photo");

@@ -11,6 +11,7 @@ public enum CertificateType {
     private String value;
 
     public static CertificateType findByName(String certificateType){
+        if (certificateType == null){return CertificateType.SIMPLE;}
         for(CertificateType type: CertificateType.values()){
             if(type.name().equals(certificateType)){
                 return type;
