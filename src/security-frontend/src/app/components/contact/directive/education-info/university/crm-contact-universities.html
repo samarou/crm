@@ -14,8 +14,8 @@
                        ng-click="vm.details.checkAll(vm.contact.educations, vm.contact.educations.isSelectedAll)"
                        ng-model="vm.contact.educations.isSelectedAll"></th>
             <th class="col-xs-3">Name</th>
-            <th class="col-xs-2">Date beginning</th>
-            <th class="col-xs-2">Date ending</th>
+            <th class="col-xs-2">Date of beginning</th>
+            <th class="col-xs-2">Date of ending</th>
             <th class="col-xs-2">Type of diploma</th>
             <th class="col-xs-3">Specialization</th>
         </tr>
@@ -33,8 +33,8 @@
                        ng-init="vm.details.isAllSelected(vm.contact.educations)">
             </td>
             <td>{{education.name}}</td>
-            <td>{{education.startDate|date:"yyyy-MM-dd"}}</td>
-            <td>{{education.endDate|date:"yyyy-MM-dd"}}</td>
+            <td>{{education.startDate|date:"yyyy"}}</td>
+            <td>{{education.endDate|date:"yyyy"}}</td>
             <td>{{vm.details.education.getTypeName(education.type, vm.dictionary.certificateTypes)}}</td>
             <td>{{education.speciality}}</td>
         </tr>

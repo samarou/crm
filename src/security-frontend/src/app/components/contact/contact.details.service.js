@@ -21,7 +21,7 @@
             socialNetwork: contactSocialNetworkService,
             workplace: contactWorkplaceService,
             skill: contactSkillService,
-            education:contactEducationService,
+            education: contactEducationService,
             createAclHandler: createAclHandler,
             getEmptyContact: getEmptyContact,
             now: new Date(),
@@ -93,7 +93,12 @@
                 if (value) {
                     if (angular.isArray(value)) {
                         if (oldContact[key]) {
-                            oldContact[key] = oldContact[key].concat(value);
+                            angular.forEach(value, function(object){
+                                if (!arrayHasObject(oldContact[key], object)){
+                                    oldContact[key] = oldContact[key].concat(object);
+                                }
+                            });
+
                         } else {
                             oldContact[key] = value;
                         }
@@ -103,6 +108,24 @@
                 }
             });
             return oldContact;
+        }
+
+        function arrayHasObject(array, object){
+            for(var i = 0; i < array.length; i++){
+                if (equals(array[i], object)){
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function equals(obj1, obj2){
+            for(var key in obj1){
+                if (key === "id" || key === "$$hashKey"){continue;}
+                if(obj1[key] !== obj2[key]){
+                    return false; }
+            }
+            return true;
         }
 
         function isBlank(str) {

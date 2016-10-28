@@ -1,6 +1,3 @@
-/**
- * Created by yury.sauchuk on 7/11/2016.
- */
 (function () {
     'use strict';
 
@@ -60,8 +57,6 @@
                     now:new Date()
                 }
             }).result;
-
-
         }
 
         function openEditDialog(education, scope){
