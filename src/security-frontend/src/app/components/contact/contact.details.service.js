@@ -111,7 +111,7 @@
 
         function isLinkedInUrl(url) {
             if (url) {
-                return ("/.*linkedin.*/").test(url);
+                return new RegExp("/.*linkedin.*/").test(url);
             }
         }
 

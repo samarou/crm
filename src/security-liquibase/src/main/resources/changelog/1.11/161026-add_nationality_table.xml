@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet id="01" author="aliaksandr.halouchyk">
+        <createTable tableName="nationality" remarks="Nationality">
+            <column autoIncrement="true" name="id" remarks="Identifier" type="BIGINT UNSIGNED">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" remarks="Nationality name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="nationality"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="02" author="aliaksandr.halouchyk">
+        <sql dbms="mysql">
+            insert into nationality(name) values('no nationality'),('belarus'), ('russkiy'), ('ukrainec');
+        </sql>
+        <rollback>
+            <delete tableName="nationality"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="003" author="maksim.kalenik">
+        <sql dbms="mysql">
+            insert into social_network(name) values ('Interests');
+        </sql>
+        <rollback>
+            <delete tableName="social_network"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

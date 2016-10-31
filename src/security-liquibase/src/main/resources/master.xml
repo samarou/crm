@@ -5,6 +5,8 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
+    <property name="schema_name" value="security_sample" dbms="mysql"/>
+
     <include file="changelog/1.0/160414-initial_schema.xml" relativeToChangelogFile="true"/>
     <include file="changelog/1.0/160414-initial_data.xml" relativeToChangelogFile="true"/>
     <include file="changelog/1.0/160426-create_default_acl_table.xml" relativeToChangelogFile="true"/>
@@ -25,4 +27,5 @@
     <include file="changelog/1.10/160712-create_university_education_table.xml" relativeToChangelogFile="true"/>
     <include file="changelog/1.10/160725-d575822_add_description_field_for_messenger.xml" relativeToChangelogFile="true"/>
     <include file="changelog/1.11/160727-d577362_add_task_comments_table.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/1.11/161026-add_nationality_table.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
