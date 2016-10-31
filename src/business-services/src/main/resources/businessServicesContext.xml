@@ -51,6 +51,11 @@
         <property name="uploadDir" value="${upload.dir}"/>
     </bean>
 
+    <bean id="linkedinServiceImpl" class="com.itechart.security.business.service.impl.LinkedInServiceImpl">
+        <property name="linkedinUserLogin" value="${linkedin.user.login}"/>
+        <property name="linkedinUserPassword" value="${linkedin.user.password}"/>
+    </bean>
+
     <!-- Method Security -->
 
     <sec:global-method-security pre-post-annotations="enabled">

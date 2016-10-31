@@ -3,7 +3,7 @@
 
     angular
         .module('crm.contact')
-        .directive('crmAvatarImage', ['$http',crmAvatarImage]);
+        .directive('crmAvatarImage', ['$http', crmAvatarImage]);
 
     /** @ngInject */
     function crmAvatarImage($http) {
@@ -16,30 +16,34 @@
                 attrs.$observe('contact', function (value) {
                     if (value) {
                         $http.get("rest/images/contact/" + value + '?' + getCurrentTime(),
-                            {responseType:"arraybuffer"})
-                            .success(function(data){
-                                var arrayBufferView = new Uint8Array( data );
-                                var blob = new Blob( [ arrayBufferView ], { type: "image/png" } );
+                            {responseType: "arraybuffer"})
+                            .success(function (data) {
+                                var arrayBufferView = new Uint8Array(data);
+                                var blob = new Blob([arrayBufferView], {type: "image/png"});
                                 var urlCreator = window.URL || window.webkitURL;
-                                var imageUrl = urlCreator.createObjectURL( blob );
+                                var imageUrl = urlCreator.createObjectURL(blob);
                                 attrs.$set('ngSrc', imageUrl);
                             });
                     }
                 });
-                scope.ok = function(){
-                    angular.element('#imageID').attr('src',scope.vm.contact.photoUrl);
+                scope.$watch('vm.contact.photoUrl', function () {
+                    angular.element('#imageID').attr('src', scope.vm.contact.photoUrl);
+                });
+                scope.ok = function () {
+                    angular.element('#imageID').attr('src', scope.vm.contact.photoUrl);
                     hidePopover();
                 };
-                scope.cancel = function(){
+                scope.cancel = function () {
                     hidePopover();
                 };
-                scope.selectImage = function(){
+                scope.selectImage = function () {
                     angular.element('#attachmentFile').trigger('click');
                     hidePopover();
                 };
-                function hidePopover(){
+                function hidePopover() {
                     scope.vm.isOpen = false;
                 }
+
                 function getCurrentTime() {
                     return (new Date()).getTime();
                 }

@@ -1,11 +1,11 @@
-<div class="panel panel-default" ng-if="vm.canEdit || (!vm.canEdit && vm.contact.workplaces.length>0)">
+<div class="panel panel-default" ng-if="vm.canEdit || (!vm.canEdit && vm.contact.workplaces.length>0)" xmlns:>
 <div class="panel-heading">
         <crm-contact-table-header title="Workplaces"
                                   adding-function="vm.details.workplace.add"
                                   removing-function="vm.details.workplace.remove"
                                   vm="vm"></crm-contact-table-header>
     </div>
-    <table class="table table-condensed crm-table-fixed" ng-show="vm.contact.workplaces.length>0">
+    <table class="table table-condensed crm-table-fixed" ng-show="vm.contact.workplaces.length > 0" type="text">
         <thead>
         <tr>
             <th class="crm-narrow"><input type="checkbox"
@@ -13,18 +13,15 @@
                        title="select workplace"
                        ng-click="vm.details.checkAll(vm.contact.workplaces, vm.contact.workplaces.isSelectedAll)"
                        ng-model="vm.contact.workplaces.isSelectedAll"></th>
-            <th class="col-md-3 col-sm-3 col-xs-3">Name</th>
-            <th class="col-md-3 col-sm-3 col-xs-3">Position</th>
-            <th class="col-md-2 col-sm-3 col-xs-3">Start date</th>
-            <th class="col-md-2 col-sm-3 col-xs-3">End date</th>
-            <th class="col-md-2 hidden-sm hidden-xs">Comment</th>
+            <th class="col-md-4 col-sm-3 col-xs-3">Work Experience</th>
+            <th class="col-md-8 hidden-sm hidden-xs">Comment</th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="workplace in vm.contact.workplaces"
             ng-click="vm.canEdit ? vm.details.workplace.edit(workplace) : null"
             class="crm-hover">
-            <td>
+            <td class="crm-narrow">
                 <input type="checkbox"
                        ng-model="workplace.checked"
                        ng-show="vm.canEdit"
@@ -32,11 +29,18 @@
                        ng-click="vm.details.isAllSelected(vm.contact.workplaces); $event.stopPropagation()"
                        ng-init="vm.details.isAllSelected(vm.contact.workplaces)">
             </td>
-            <td>{{workplace.name}}</td>
-            <td>{{workplace.position}}</td>
-            <td>{{workplace.startDate | date:'yyyy-MM-dd'}}</td>
-            <td>{{workplace.endDate | date:'yyyy-MM-dd'}}</td>
-            <td class="hidden-sm hidden-xs">{{workplace.comment}}</td>
+            <td>
+                <p>
+                    <b>{{workplace.position}}</b><br>
+                    {{workplace.name}}
+                </p>
+               <p>
+                   <span class="h6">{{workplace.startDate | date:'yyyy-MM-dd'}} - {{workplace.endDate | date:'yyyy-MM-dd'}}
+                       <span ng-if="workplace.endDate === null">to present</span>
+                   </span>
+               </p>
+            </td>
+            <td class="hidden-sm hidden-xs" ><p ng-bind-html="workplace.comment | convertToHtml"></p></td>
         </tr>
         </tbody>
     </table>
